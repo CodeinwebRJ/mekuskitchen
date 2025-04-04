@@ -1,0 +1,212 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.breadcrumb {
+  color: #888;
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: #888;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.navigation {
+  display: flex;
+  gap: 5px;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #888;
+}
+
+.navButton:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.navButton:hover:not(:disabled) {
+  color: #555;
+}
+
+.productLayout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.imageContainer {
+  flex: 0 0 50%;
+  text-align: center;
+}
+
+.productImage {
+  max-width: 100%;
+  height: auto;
+}
+
+.productDetails {
+  flex: 0 0 50%;
+}
+
+.productDetails h1 {
+  font-size: 28px;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.price {
+  font-size: 24px;
+  color: #27ae60;
+  margin: 10px 0;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.quantityButton {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+}
+
+.quantityInput {
+  width: 40px;
+  height: 30px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 16px;
+}
+
+.addToCart {
+  background-color: #f5a623;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s;
+}
+
+.addToCart:hover {
+  background-color: #e69500;
+}
+
+.category {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.share {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.shareIcon {
+  color: #666;
+  margin-left: 10px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.shareIcon:hover {
+  color: #333;
+}
+
+.reviewsSection {
+  margin-top: 40px;
+}
+
+.reviewsSection h2 {
+  font-size: 24px;
+  color: #27ae60;
+  margin-bottom: 10px;
+}
+
+.reviewsSection p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.reviewForm h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.rating {
+  margin-bottom: 10px;
+}
+
+.rating label {
+  color: #333;
+  margin-right: 10px;
+}
+
+.star {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.reviewInput {
+  margin-bottom: 10px;
+}
+
+.reviewInput label {
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.reviewInput textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  resize: vertical;
+}
+
+.submitButton {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #219653;
+}

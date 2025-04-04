@@ -1,0 +1,50 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 350px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar.open {
+  right: 0; /* Slide the sidebar in */
+}
+
+.sidebarContent {
+  padding:20px;
+}
+
+.sidebarContent p {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  text-align: right;
+}
+
+.checkoutBtn {
+  background-color: #f4f4f4;
+  color: black;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.checkoutBtn:hover {
+  background-color: #ddd;
+}

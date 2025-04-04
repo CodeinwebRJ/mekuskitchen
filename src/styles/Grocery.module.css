@@ -1,0 +1,167 @@
+.container {
+  display: flex;
+  padding: 40px 140px;
+}
+
+.container2 {
+  display: flex;
+  width: 100%;
+}
+
+.range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0px;
+}
+
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.filterSection {
+  margin-bottom: 20px;
+}
+
+.filterSection h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.filterSection input[type="range"] {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.filterSection p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.filterbtn {
+  background-color: green;
+  color: white;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.topRatedItem {
+  display: flex;
+  align-items: center;
+}
+
+.topRatedImg {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.topRatedItem p {
+  margin: 0;
+}
+
+.rating {
+  color: gold;
+}
+
+.mainContent {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.sortingBar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.sortingOptions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.sortingBar select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.productGrid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.productGrid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.productGrid4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.gridIcons {
+  display: flex;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.productCard {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.productImg2 {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.productImg3 {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.productImg4 {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.productCard h3 {
+  font-size: 16px;
+  margin: 10px 0 5px;
+}
+
+.price {
+  color: green;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.addToCart {
+  background-color: green;
+  color: white;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 10px;
+}
