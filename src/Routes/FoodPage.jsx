@@ -8,6 +8,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPriceRange, setGrid } from "../../Store/Slice/FoodSlice";
+import Footer from "../Component/Footer";
 
 const FoodPage = () => {
   const { products, priceRange, grid, loading, error } = useSelector(
@@ -169,6 +170,7 @@ const FoodPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

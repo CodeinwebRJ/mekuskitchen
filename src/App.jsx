@@ -11,12 +11,16 @@ import TiffinPage from "./Routes/TiffinPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setProducts } from "../Store/Slice/FoodSlice";
 import { getProduct } from "./axiosConfig/AxiosConfig";
+import CartPage from "./Routes/CartPage";
 
 const App = () => {
   const { pathname } = useLocation();
 
   const { page, limit, search, sortBy, category } = useSelector((state) =>
-    pathname === "/product-category/food" ? state.food : state.grocery
+    pathname.startsWith("/product/food/") ||
+    pathname === "/product-category/food"
+      ? state.food
+      : state.grocery
   );
 
   const dispatch = useDispatch();
@@ -42,12 +46,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (
-      pathname === "/product-category/food" ||
-      pathname === "/product-category/grocery"
-    ) {
-      fetchProducts();
-    }
+    fetchProducts();
   }, [category]);
 
   return (
@@ -60,6 +59,7 @@ const App = () => {
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
         <Route path="/product/:category/:id" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
     </div>
   );
