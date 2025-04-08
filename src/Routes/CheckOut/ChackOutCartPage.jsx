@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Header from "../component/Header";
-import style from "../styles/Cart.module.css";
-import Banner from "../Component/Banner";
-import Footer from "../Component/Footer";
+import Header from "../../component/Header";
+import style from "../../styles/Cart.module.css";
+import Banner from "../../Component/Banner";
+import Footer from "../../Component/Footer";
 
-const CartPage = () => {
+const CheckOutCart = () => {
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -124,4 +124,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default CheckOutCart;

@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import "./index.css";
-import HomePage from "./Routes/HomePage";
+import HomePage from "./Routes/Home/HomePage.jsx";
 import { Route, Routes, useLocation } from "react-router-dom";
-import FoodPage from "./Routes/FoodPage";
-import GroceryPage from "./Routes/GroceryPage";
-import AboutPage from "./Routes/AboutPage";
-import ContactPage from "./Routes/ContactPage";
-import ProductPage from "./Routes/ProductPage";
-import TiffinPage from "./Routes/TiffinPage";
+import ContactPage from "./Routes/ContactUs/ContactPage";
+import ProductPage from "./Routes/ProductPage/ProductPage.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setProducts } from "../Store/Slice/FoodSlice";
 import { getProduct } from "./axiosConfig/AxiosConfig";
-import CartPage from "./Routes/CartPage";
+import CheckOutCart from "./Routes/CheckOut/ChackOutCartPage.jsx";
+import AboutPage from "./Routes/AboutUs/AboutPage.jsx";
+import FoodPage from "./Routes/OurMenu/FoodPage";
+import GroceryPage from "./Routes/OurMenu/GroceryPage";
+import DailyTiffinPage from "./Routes/DailyTiffin/DailyTiffinPage.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -55,11 +55,12 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/product-category/grocery" element={<GroceryPage />} />
         <Route path="/product-category/food" element={<FoodPage />} />
-        <Route path="/daily-tiffin" element={<TiffinPage />} />
+        <Route path="/daily-tiffin" element={<DailyTiffinPage />} />
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
         <Route path="/product/:category/:id" element={<ProductPage />} />
-        <Route path="/cart" element={<CartPage />} />
+        <Route path="/cart" element={<CheckOutCart />} />
+        <Route path="/contactus" element={<ContactPage />} />
       </Routes>
     </div>
   );

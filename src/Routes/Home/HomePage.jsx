@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../component/Header";
-import Carousel from "../Component/Carousel";
-import Footer from "../Component/Footer";
+import Carousel from "../../Component/Carousel";
+import Footer from "../../Component/Footer";
+import Header from "../../component/Header";
 
 const HomePage = () => {
   return (

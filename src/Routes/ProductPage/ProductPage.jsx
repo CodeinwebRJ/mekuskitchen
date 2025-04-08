@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import style from "../styles/ProductPage.module.css";
-import Header from "../Component/Header";
+import style from "../../styles/ProductPage.module.css";
+import Header from "../../component/Header";
 
 const ProductPage = () => {
   const location = useLocation();

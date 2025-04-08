@@ -1,18 +1,17 @@
 import React from "react";
-import Banner from "../Component/Banner";
-import Header from "../component/Header";
-import style from "../styles/Food.module.css";
+import Banner from "../../Component/Banner";
+import Header from "../../component/Header";
+import style from "../../styles/Grocery.module.css";
 import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setPriceRange, setGrid } from "../../Store/Slice/FoodSlice";
-import Footer from "../Component/Footer";
+import { setPriceRange, setGrid } from "../../../Store/Slice/FoodSlice";
 
-const FoodPage = () => {
+const GroceryPage = () => {
   const { products, priceRange, grid, loading, error } = useSelector(
-    (state) => state.food
+    (state) => state.grocery
   );
 
   const dispatch = useDispatch();
@@ -45,7 +44,7 @@ const FoodPage = () => {
   return (
     <div>
       <Header />
-      <Banner name={"Food"} />
+      <Banner name={"Grocery"} />
       <div className={style.container}>
         <div className={style.container2}>
           <aside className={style.sidebar}>
@@ -170,9 +169,8 @@ const FoodPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
 
-export default FoodPage;
+export default GroceryPage;
