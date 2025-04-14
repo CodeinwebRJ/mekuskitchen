@@ -5,6 +5,7 @@ import {
   addProductReview,
   getAllProductReview,
 } from "../../axiosConfig/AxiosConfig";
+import Button from "../../UI/Button";
 
 const ReviewComponent = ({
   reviews,
@@ -105,9 +106,9 @@ const ReviewComponent = ({
               className={style.textarea}
             />
           </div>
-          <button type="submit" className={style.submitButton}>
+          <Button variant="success" type="submit" className={style.submitButtonContainer}>
             Submit Review
-          </button>
+          </Button>
         </form>
       </div>
     </div>

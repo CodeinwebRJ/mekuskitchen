@@ -13,6 +13,7 @@ import FoodPage from "./Routes/OurMenu/FoodPage";
 import DailyTiffinPage from "./Routes/DailyTiffin/DailyTiffinPage.jsx";
 import SignUpPage from "./Routes/SignUp/SignUpPage.jsx";
 import LoginPage from "./Routes/Login/LoginPage.jsx";
+import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -57,6 +58,7 @@ const App = () => {
   const fetchTiffin = async () => {
     try {
       const res = await getAllTiffin({ Active: true });
+      dispatch(setTiffins(res.data.data));
       console.log(res.data.data);
     } catch (error) {
       console.log(error);

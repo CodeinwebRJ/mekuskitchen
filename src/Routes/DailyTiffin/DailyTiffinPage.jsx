@@ -12,6 +12,7 @@ import {
 import Header from "../../component/Header";
 import { Link } from "react-router-dom";
 import { getAllTiffin } from "../../axiosConfig/AxiosConfig";
+import { useSelector } from "react-redux";
 
 const DailyTiffinPage = () => {
   const product = {
@@ -21,44 +22,25 @@ const DailyTiffinPage = () => {
     description: "This is a daily tiffin",
   };
 
-  const fetchTiffin = async () => {
-    try {
-      data = {
-        Active: true,
-      };
-      const res = await getAllTiffin(data);
-      console.log(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTiffin();
-  }, []);
+  const tiffin = useSelector((state) => state.tiffin);
 
   return (
     <div>
       <Header />
-
-      {/* banner */}
       <Banner name={"Daily Tiffin"} />
       <div className={style.TiffinContainer}>
-        {/* customise tiffin */}
         <div className={style.CustomiseTiffinContainer}>
-          {/* header */}
           <div className={style.header}>
             <h3 className={style.headerTitle}>Customise Your Tiffin</h3>
           </div>
 
-          {/* note */}
           <p className={style.note}>
             Please Note: All orders will accepted a day before only. For any
             query please call admin: +1(672)-377-4949
           </p>
 
           <div className={style.TiffinCardContainer}>
-            {CustomiseTiffinData.map((item, index) => (
+            {tiffin.tiffins?.map((item, index) => (
               <Link
                 to={`/product/custom/${product.title.toLowerCase()}`}
                 state={{ id: product.id }}
@@ -69,49 +51,42 @@ const DailyTiffinPage = () => {
           </div>
         </div>
 
-        {/* regular tiffin */}
         <div className={style.RegularTiffinContainer}>
-          {/* header */}
           <div className={style.header}>
             <h3 className={style.headerTitle}>Order A Regular Tiffin</h3>
           </div>
 
-          {/* note */}
           <p className={style.note}>
             Please Note: All orders will accepted a day before only. For any
             query please call admin: +1(672)-377-4949
           </p>
 
           <div className={style.TiffinCardContainer}>
-            {RegularTiffinData.map((item, index) => (
+            {tiffin.tiffins?.map((item, index) => (
               <TiffinCard key={index} item={item} />
             ))}
           </div>
         </div>
 
-        {/* Breakfast Menu */}
         <div className={style.BreakfastMenuContainer}>
-          {/* header */}
           <div className={style.header}>
             <h3 className={style.headerTitle}>Breakfast Menu</h3>
           </div>
 
           <div className={style.TiffinCardContainer}>
-            {BreakfastMenuData.map((item, index) => (
+            {tiffin.tiffins?.map((item, index) => (
               <TiffinCard key={index} item={item} />
             ))}
           </div>
         </div>
 
-        {/* Sweets */}
         <div className={style.SweetsContainer}>
-          {/* header */}
           <div className={style.header}>
             <h4 className={style.headerTitle}>Sweets</h4>
           </div>
 
           <div className={style.TiffinCardContainer}>
-            {SweetsData.map((item, index) => (
+            {tiffin.tiffins?.map((item, index) => (
               <TiffinCard key={index} item={item} />
             ))}
           </div>

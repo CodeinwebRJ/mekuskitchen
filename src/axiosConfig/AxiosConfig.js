@@ -24,5 +24,5 @@ export const getAllProductReview = async (data) => {
 };
 
 export const getAllTiffin = async (data) => {
-  return axiosInstance.get("/api/v1/tiffin-menu", data);
+  return axiosInstance.post("/api/v1/tiffin-menu", data);
 };

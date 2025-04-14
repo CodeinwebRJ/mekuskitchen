@@ -127,3 +127,36 @@ export const SweetsData = [
     price: 6,
   },
 ];
+
+export const RelatedProductData = [
+  {
+    id: 1,
+    title: "Live Mohanthal",
+    image: "/Mohanthal.jpg",
+    price: 6,
+  },
+  {
+    id: 2,
+    title: "Live Mohanthal",
+    image: "/Mohanthal.jpg",
+    price: 6,
+  },
+  {
+    id: 3,
+    title: "Live Mohanthal",
+    image: "/Mohanthal.jpg",
+    price: 6,
+  },
+  {
+    id: 4,
+    title: "Live Mohanthal",
+    image: "/Mohanthal.jpg",
+    price: 6,
+  },
+  {
+    id: 5,
+    title: "Live Mohanthal",
+    image: "/Mohanthal.jpg",
+    price: 6,
+  },
+];

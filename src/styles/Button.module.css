@@ -3,7 +3,7 @@
   background-color: #46a3df;
   color: white;
   border: none;
-  padding: 8px 24px;
+  padding: 12px 24px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -79,16 +79,16 @@
 /* success variant */
 
 .success {
-  background-color: #00ff00;
+  background-color: #28a745;
   color: white;
 }
 
 .success:hover {
-  background-color: #00e600;
+  background-color: #218838;
 }
 
 .success:disabled {
-  background-color: #00ff00;
+  background-color: #28a745;
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;

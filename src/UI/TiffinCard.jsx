@@ -2,9 +2,14 @@ import React from "react";
 import style from "../styles/TiffinCard.module.css";
 import { Link } from "react-router-dom";
 import AddToCartButton from "./AddToCartButton";
+import { format } from "date-fns";
 
 const TiffinCard = (props) => {
   const { item } = props;
+
+  const formattedDate = item?.date
+    ? format(new Date(item.date), "dd MMM yyyy")
+    : null;
 
   return (
     // <Link
@@ -14,19 +19,19 @@ const TiffinCard = (props) => {
     <div className={style.tiffinCard}>
       <div className={style.tiffinImgContainer}>
         <img
-          src={item?.image || ""}
-          alt={item?.title} 
+          src={item?.image_url[0] || ""}
+          alt={item?.title}
           className={style.tiffinImg}
         />
 
         {item?.date && (
-          <span className={style.tiffinDate}>D: {item?.date}</span>
+          <span className={style.tiffinDate}>D: {formattedDate}</span>
         )}
       </div>
 
       <p className={style.tiffinTitle}>{item?.title}</p>
-      {item?.price && (
-        <p className={style.price}>${Number(item?.price).toFixed(2)}</p>
+      {item?.subTotal && (
+        <p className={style.price}>${Number(item?.subTotal).toFixed(2)}</p>
       )}
 
       <AddToCartButton onclick={() => {}} />

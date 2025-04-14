@@ -1,6 +1,6 @@
 .container {
   padding: 20px;
-  max-width: 1200px;
+  max-width: 1250px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
 }
@@ -195,7 +195,7 @@
 /* Reviews Section */
 .reviewsSection {
   margin-top: 48px;
-  padding: 24px;
+  padding: 4px;
   background-color: #f9fafb;
   border-radius: 8px;
 }
@@ -309,16 +309,16 @@
   font-size: 14px;
   color: #1a1a1a;
   resize: vertical;
-  transition: border-color 0.2s ease-in-out;
+  transition: border-color 0.1s ease-in-out;
 }
 
 .textarea:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  /* box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); */
 }
 
-.submitButton {
+/* .submitButton {
   background-color: #2563eb;
   color: #ffffff;
   border: none;
@@ -337,10 +337,21 @@
 .submitButton:disabled {
   background-color: #9ca3af;
   cursor: not-allowed;
+} */
+
+.submitButtonContainer {
+  width: 160px;
+  margin-top: 20px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .productLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: flex-start;
+  }
   .reviewsSection {
     padding: 16px;
   }
@@ -364,5 +375,9 @@
   .submitButton {
     width: 100%;
     padding: 12px;
+  }
+
+  .submitButtonContainer {
+    width: 100%;
   }
 }
