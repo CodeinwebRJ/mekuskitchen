@@ -1,0 +1,42 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.SelectFieldContainer {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #0000001b;
+  border-radius: 5px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.label {
+  cursor: pointer;
+  margin-bottom: 8px;
+  /* font-weight: 500; */
+}
+
+.selectfocus {
+  outline: none;
+  border-color: #46a3df;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

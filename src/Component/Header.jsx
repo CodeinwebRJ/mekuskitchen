@@ -1,48 +1,65 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaSearch, FaUser, FaShoppingCart } from "react-icons/fa";
+import React, { useState } from "react";
 import styles from "../styles/Header.module.css";
+import { Link } from "react-router-dom";
+import { IoSearch } from "react-icons/io5";
+import { LuUserRound } from "react-icons/lu";
+import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import Sidebar from "../Component/Sidebar";
+import { setCategory } from "../../Store/Slice/ProductSlice";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
-  const [showMenu, setShowMenu] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen((prev) => !prev);
   };
+
+  const handleCategoryClick = (categoryName) => {
+    dispatch(setCategory(categoryName));
+  };
+
+  const data = [
+    {
+      name: "Food",
+      value: "food",
+    },
+    {
+      name: "Grocery",
+      value: "grocery",
+    },
+  ];
 
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>Et world</div>
+      <Link to="/" className={styles.logo}>
+        <img src="/logo2.png" alt="logo" className={styles.logoImage} />
+      </Link>
+
       <nav className={styles.navLinks}>
         <Link to="/" className={styles.link}>
           HOME
         </Link>
-        <div
-          className={styles.menuWrapper}
-          onMouseEnter={() => setShowMenu(true)}
-          onMouseLeave={() => setShowMenu(false)}
-        >
-          <Link className={styles.link}>
-            OUR MENU
-          </Link>
-          {showMenu && (
-            <div className={styles.dropdownMenu}>
-              <Link to="/product-category/food" className={styles.dropdownItem}>
-                Food
-              </Link>
+
+        <div className={styles.ourMenuDropdown}>
+          <span className={styles.ourMenuDropdownLink}>OUR MENU</span>
+          <div className={styles.ourMenuDropdownMenu}>
+            {data?.map((item) => (
               <Link
-                to="/product-category/grocery"
-                className={styles.dropdownItem}
+                to={`/product-category/${item.value}`}
+                className={styles.ourMenuDropdownItem}
+                onClick={() => handleCategoryClick(item.value)}
               >
-                Grocery
+                {item.name}
               </Link>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
+
         <Link to="/daily-tiffin" className={styles.link}>
           DAILY TIFFIN
         </Link>
@@ -53,15 +70,32 @@ const Header = () => {
           CONTACT US
         </Link>
       </nav>
+
       <div className={styles.headerIcons}>
-        <FaSearch className={styles.icon} />
-        <FaUser className={styles.icon} />
+        <IoSearch className={styles.icon} />
+
+        <div className={styles.userDropdown}>
+          <LuUserRound className={styles.userDropdownIcon} />
+          <div className={styles.userDropdownMenu}>
+            <Link to="/" className={styles.userDropdownItem}>
+              Dashboard
+            </Link>
+            <span className={styles.userDropdownItem}>Orders</span>
+            <span className={styles.userDropdownItem}>Downloads</span>
+            <span className={styles.userDropdownItem}>Address</span>
+            <span className={styles.userDropdownItem}>Account Details</span>
+            <span className={styles.userDropdownItem}>Logout</span>
+          </div>
+        </div>
+
         <div className={styles.cart} onClick={toggleSidebar}>
-          <FaShoppingCart className={styles.icon} />
+          <PiShoppingCartSimpleBold className={styles.icon} />
           <span className={styles.cartCount}>{cartCount}</span>
         </div>
+
         <span className={styles.cartTotal}>${cartTotal.toFixed(2)}</span>
       </div>
+
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
     </header>
   );

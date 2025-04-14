@@ -1,0 +1,131 @@
+.submitButton {
+  width: 100%;
+  background-color: #46a3df;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  align-self: flex-start;
+}
+
+.submitButton:hover {
+  background-color: #3a8bc7;
+}
+
+.disabled {
+  background-color: #46a3df;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* primary variant */
+
+.primary {
+  background-color: #46a3df;
+  color: white;
+}
+
+.primary:hover {
+  background-color: #3a8bc7;
+}
+
+.primary:disabled {
+  background-color: #46a3df;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* secondary variant */
+
+.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.secondary:hover {
+  background-color: #5c636a;
+}
+
+.secondary:disabled {
+  background-color: #6c757d;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* danger variant */
+
+.danger {
+  background-color: #ff0000;
+  color: white;
+}
+
+.danger:hover {
+  background-color: #e60000;
+}
+
+.danger:disabled {
+  background-color: #ff0000;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* success variant */
+
+.success {
+  background-color: #00ff00;
+  color: white;
+}
+
+.success:hover {
+  background-color: #00e600;
+}
+
+.success:disabled {
+  background-color: #00ff00;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* warning variant */
+
+.warning {
+  background-color: #ffa500;
+  color: white;
+}
+
+.warning:hover {
+  background-color: #e69500;
+}
+
+.warning:disabled {
+  background-color: #ffa500;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* light variant */
+
+.light {
+  background-color: white;
+  color: black;
+}
+
+.light:hover {
+  background-color: #e6e6e6;
+}
+
+.light:disabled {
+  background-color: white;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

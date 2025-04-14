@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "../../component/Header";
+import Header from "../../Component/Header";
 import style from "../../styles/Cart.module.css";
 import Banner from "../../Component/Banner";
 import Footer from "../../Component/Footer";

@@ -1,0 +1,219 @@
+bharat1505.mbinfoways .ContactContainer {
+  display: flex;
+  padding: 40px 140px;
+}
+
+.ContactContainer2 {
+  display: flex;
+  width: 100%;
+}
+
+.leftContainer {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 30px 50px;
+}
+
+.leftContainerTitlecontainer {
+  width: 100%;
+  border-bottom: 2px solid #0000001b;
+}
+
+.leftContainerTitle {
+  width: fit-content;
+  font-size: 40px;
+  font-weight: 600;
+  padding-bottom: 10px;
+  margin-bottom: -2px;
+  border-bottom: 2px solid #46a3df;
+}
+
+.leftContainerTitleSpan {
+  color: #46a3df;
+}
+
+.leftContainerDescription {
+  text-align: justify;
+}
+
+.leftContainerContact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.leftContainerContactIcon {
+  font-size: 35px;
+  color: black;
+}
+
+.leftContainerContactNumber {
+  font-size: 17px;
+}
+.leftContainerMail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.leftContainerMailIcon {
+  font-size: 35px;
+  color: black;
+}
+
+.leftContainerMailNumber {
+  font-size: 17px;
+}
+
+.leftContainerSocialMedia {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.leftContainerSocialMediaButton,
+.leftContainerMailButton,
+.leftContainerTelephonetButton {
+  height: 30px;
+  width: 30px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftContainerSocialMediaButton img,
+.leftContainerMailButton img,
+.leftContainerTelephonetButton img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.leftContainerSocialMediaButton:hover,
+.leftContainerMailButton:hover,
+.leftContainerTelephonetButton:hover {
+  opacity: 0.8;
+}
+
+/* right container */
+
+.rightContainer {
+  padding: 30px 50px;
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  border-left: 1px solid #0000001b;
+}
+
+.rightContainerTitlecontainer {
+  width: 100%;
+  border-bottom: 2px solid #0000001b;
+}
+
+.rightContainerTitle {
+  width: fit-content;
+  font-size: 40px;
+  font-weight: 600;
+  padding-bottom: 10px;
+  margin-bottom: -2px;
+  border-bottom: 2px solid #46a3df;
+}
+
+.rightContainerTitleSpan {
+  color: #46a3df;
+}
+
+.rightContainerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nameEmailContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.phoneMenusContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.messageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  cursor: pointer;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  border: 1px solid #0000001b;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  resize: vertical;
+  outline: none;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #46a3df;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.submitButtonContainer {
+  width: 21%;
+}
+
+@media (max-width: 1200px) {
+  .ContactContainer {
+    padding: 40px 80px;
+  }
+
+  .nameEmailContainer {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .phoneMenusContainer {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ContactContainer {
+    padding: 40px 20px;
+  }
+
+  .ContactContainer2 {
+    flex-direction: column;
+  }
+
+  .leftContainer,
+  .rightContainer {
+    width: 100%;
+    padding: 20px;
+  }
+}

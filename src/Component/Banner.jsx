@@ -3,22 +3,24 @@ import style from "../styles/Banner.module.css";
 import { BsArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-const Banner = ({ name }) => {
+const Banner = (props) => {
+  const { name } = props;
+
   const foodImages = [
     {
-      src: "https://cdn.pixabay.com/photo/2024/01/29/21/50/ai-generated-8540840_640.jpg",
+      src: "/dabeli.png",
       alt: "Food Item",
     },
     {
-      src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxmhdxg2hJqHRit2iNKKD7cTrVe7y3CKyySg&s",
+      src: "/samosa.png",
       alt: "Food Item",
     },
     {
-      src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcB65vTPvWrMKGMJCmHpK1qIpqX4TznWRG4A&s",
+      src: "/dosa.png",
       alt: "Food Item",
     },
     {
-      src: "https://cdn.pixabay.com/photo/2024/01/29/21/50/ai-generated-8540840_640.jpg",
+      src: "/chole.png",
       alt: "Food Item",
     },
   ];
@@ -27,21 +29,35 @@ const Banner = ({ name }) => {
     <div className={style.banner}>
       <div className={style.foodImages}>
         {foodImages.map((image, index) => (
-          <img
-            key={index}
-            src={image.src}
-            alt={`${image.alt} ${index + 1}`}
-            className={style.foodItem}
-          />
+          <div className={style.imagesContainer} key={index}>
+            <img
+              key={index}
+              src={image.src}
+              alt={`${image.alt} ${index + 1}`}
+              className={style.foodItem}
+            />
+          </div>
         ))}
       </div>
 
       <h1 className={style.bannerText}>
-        <Link to={"/"} className={style.arrow}>
-          <BsArrowLeft />
-        </Link>
+        {name === "FOOD" || name === "GROCERY" ? (
+          <Link to={"/"} className={style.arrow}>
+            <BsArrowLeft />
+          </Link>
+        ) : null}
+
         {name}
       </h1>
+
+      {name !== "FOOD" || name !== "GROCERY" ? (
+        <div className={style.bannerBreadcrumb}>
+          <Link to={"/"} className={style.link}>
+            Home
+          </Link>
+          /<span className={style.currentPage}>{name}</span>
+        </div>
+      ) : null}
     </div>
   );
 };

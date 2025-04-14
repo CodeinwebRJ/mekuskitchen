@@ -122,8 +122,8 @@ const Footer = () => {
 
       <div className={styles.footerBottom}>
         <p className={styles.footerText}>
-          Copyright © 2023 Meku’s Kitchen All Right Reserved. Developed by Node
-          Solutions Ltd.
+          {` Copyright © ${new Date().getFullYear()} Meku’s Kitchen All Right Reserved. Developed by Node
+          Solutions Ltd.`}
         </p>
       </div>
     </footer>

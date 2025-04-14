@@ -5,26 +5,32 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import ContactPage from "./Routes/ContactUs/ContactPage";
 import ProductPage from "./Routes/ProductPage/ProductPage.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setProducts } from "../Store/Slice/FoodSlice";
+import { setLoading, setProducts } from "../Store/Slice/ProductSlice.jsx";
 import { getProduct } from "./axiosConfig/AxiosConfig";
 import CheckOutCart from "./Routes/CheckOut/ChackOutCartPage.jsx";
 import AboutPage from "./Routes/AboutUs/AboutPage.jsx";
 import FoodPage from "./Routes/OurMenu/FoodPage";
-import GroceryPage from "./Routes/OurMenu/GroceryPage";
 import DailyTiffinPage from "./Routes/DailyTiffin/DailyTiffinPage.jsx";
+import SignUpPage from "./Routes/SignUp/SignUpPage.jsx";
+import LoginPage from "./Routes/Login/LoginPage.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
 
-  const { page, limit, search, sortBy, category } = useSelector((state) =>
-    pathname.startsWith("/product/food/") ||
-    pathname === "/product-category/food"
-      ? state.food
-      : state.grocery
+  const { page, limit, search, sortBy, category } = useSelector(
+    (state) => state.product
   );
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [pathname]);
+
+  // Fetch products
   const fetchProducts = async () => {
     try {
       dispatch(setLoading(true));
@@ -37,7 +43,6 @@ const App = () => {
       };
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));
-      console.log(response.data.data);
     } catch (err) {
       console.error("Error fetching products:", err);
     } finally {
@@ -52,9 +57,10 @@ const App = () => {
   return (
     <div>
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/product-category/grocery" element={<GroceryPage />} />
-        <Route path="/product-category/food" element={<FoodPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/product-category/:id" element={<FoodPage />} />
         <Route path="/daily-tiffin" element={<DailyTiffinPage />} />
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />

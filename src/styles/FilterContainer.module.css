@@ -1,0 +1,60 @@
+.sidebar {
+  width: 20%;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0px;
+}
+
+.filterbtn {
+  background-color: green;
+  color: white;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.topRatedItem {
+  display: flex;
+  align-items: center;
+}
+
+.topRatedImg {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.topRatedItem p {
+  margin: 0;
+}
+
+.rating {
+  pointer-events: none; 
+}
+
+.filterSection {
+  margin-bottom: 20px;
+}
+
+.filterSection h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.filterSection input[type="range"] {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.filterSection p {
+  color: #666;
+}

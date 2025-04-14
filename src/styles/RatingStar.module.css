@@ -1,0 +1,10 @@
+.fill {
+  color: gold;
+  font-size: 18px;
+}
+
+.unFill {
+  color: black;
+  opacity: 0.2;
+  font-size: 18px;
+}

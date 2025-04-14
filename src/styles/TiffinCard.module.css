@@ -1,0 +1,54 @@
+.tiffinCard {
+  width: 300px;
+  height: fit-content;
+  background: white;
+  padding: 12px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.tiffinImgContainer {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.tiffinImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.tiffinDate {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #83c1ea;
+  color: white;
+  padding: 9px 12px;
+  border-top-left-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  /* letter-spacing: 0.8px; */
+}
+
+.tiffinTitle {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: -7px;
+}
+
+.price {
+  color: #83b735;
+  font-weight: bold;
+  font-size: 14px;
+  /* margin: 5px 0; */
+}
+
