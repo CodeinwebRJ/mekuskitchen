@@ -7,7 +7,7 @@ function Navbar2() {
       <nav className="navbar navbar-expand-lg bg-white navbar-light shadow border-top border-5 border-primary sticky-top p-0">
         <div className="navbar-brand d-flex align-items-center px-4 px-lg-5">
           <NavLink
-            to="/home"
+            to="/"
             className="d-flex align-items-center"
             style={{ height: "auto" }}
           >

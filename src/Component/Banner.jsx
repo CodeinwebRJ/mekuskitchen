@@ -46,6 +46,7 @@ const Banner = (props) => {
             <BsArrowLeft />
           </Link>
         ) : null}
+
         {name}
       </h1>
 

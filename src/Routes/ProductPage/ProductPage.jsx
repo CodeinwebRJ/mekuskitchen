@@ -1,219 +1,217 @@
-import React, { useEffect, useState } from "react";
-import style from "../../styles/ProductPage.module.css";
-import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../component/Header";
-import ReviewComponent from "./ReviewComponent";
-import RelatedProduct from "./RelatedProduct";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Navbar2 from "../../Component/Navbar2";
+import Banner2 from "../../Component/Banner2";
 
-const ProductPage = () => {
-  const location = useLocation();
+function LoginPage() {
+  const [credintials, setCredentials] = useState({
+    unique_id: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const id = location.state?.id;
 
-  const productState = useSelector((state) => state.product);
-  const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const products = productState.products?.data || [];
-  const loading = productState.loading;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credintials,
+      [name]: value,
+    });
+  };
 
-  useEffect(() => {
-    if (Array.isArray(products) && products.length > 0) {
-      const foundProduct = products.find((p) => p._id === id);
-      if (foundProduct) {
-        setProduct(foundProduct);
-        setSelectedImage(foundProduct.image_url?.[0] || null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!credintials.unique_id || !credintials.password) {
+      setError("Please enter both Unique ID and Password.");
+      return;
+    }
+
+    setError("");
+
+    try {
+      // Send API request to login
+      const response = await axios.post(
+        "https://eyemesto.com/mapp_dev/signin.php",
+        new URLSearchParams({
+          signin: true,
+          unique_id: credintials.unique_id,
+          password: credintials.password,
+        })
+      );
+
+      if (response.data.response === "1") {
+        // Successful login
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("api_token", response.data.api_token);
+        console.log("Login successful:", response.data);
+        console.log("Login successful, navigating to home...");
+        navigate("/home");
+      } else if (response.data.response === "0") {
+        setError("Invalid Unique ID or password");
       } else {
-        setProduct(null);
+        setError("Login failed. Please check your credentials.");
       }
-    }
-  }, [id, products]);
-
-  const currentIndex = products.findIndex((p) => p._id === id);
-
-  const handleNext = () => {
-    if (currentIndex !== -1 && currentIndex < products.length - 1) {
-      const nextProduct = products[currentIndex + 1];
-      setProduct(nextProduct);
-      navigate(location.pathname, { state: { id: nextProduct._id } });
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred. Please try again later.");
     }
   };
 
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      const prevProduct = products[currentIndex - 1];
-      setProduct(prevProduct);
-      navigate(location.pathname, { state: { id: prevProduct._id } });
-    }
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
-
-  const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    setQuantity(isNaN(value) ? 1 : Math.max(1, value));
-  };
-
-  const handleAddToCart = () => {
-    if (product) {
-      console.log(`Added ${quantity} ${product.product_name} to cart`);
-    }
-  };
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!product || !Array.isArray(products) || products.length === 0) {
-    return <p>Product not found</p>;
-  }
 
   return (
-    <div>
-      <Header />
-      <div className={style.container}>
-        <div className={style.header}>
-          <div className={style.breadcrumb}>
-            <a href="/home">Home</a> / <a href="/food">Food</a> /{" "}
-            {product.product_name}
-          </div>
-          <div className={style.navigation}>
-            <button
-              onClick={handlePrev}
-              disabled={currentIndex <= 0}
-              className={style.navButton}
-              aria-label="Previous product"
-            >
-              <img
-                src="/nextArrow.png"
-                alt="Previous"
-                className={style.navIconPrev}
-              />
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={currentIndex >= products.length - 1}
-              className={style.navButton}
-              aria-label="Next product"
-            >
-              <img
-                src="/nextArrow.png"
-                alt="Next"
-                className={style.navIconNext}
-              />
-            </button>
-          </div>
-        </div>
-        <div className={style.productLayout}>
-          <div className={style.imageContainer}>
-            <div className={style.productImageContainer}>
-              <img
-                src={
-                  selectedImage || product.image_url?.[0] || "/placeholder.png"
-                }
-                alt={product.product_name}
-                className={style.productImage}
-              />
-            </div>
-            <div className={style.thumbnailsContainer}>
-              {product.image_url?.slice(0, 4).map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`${product.product_name} thumbnail ${index + 1}`}
-                  className={style.thumbnail}
-                  onClick={() => setSelectedImage(image)}
-                />
-              ))}
-            </div>
-          </div>
-          <div className={style.productDetails}>
-            <h1>{product.product_name}</h1>
-            <p className={style.price}>${product?.price}</p>
-            <div className={style.quantity}>
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className={style.quantityButton}
-                aria-label="Decrease quantity"
-              >
-                -
-              </button>
-              <input
-                type="number"
-                value={quantity}
-                onChange={handleQuantityChange}
-                min="1"
-                className={style.quantityInput}
-                aria-label="Quantity"
-              />
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className={style.quantityButton}
-                aria-label="Increase quantity"
-              >
-                +
-              </button>
-              <button
-                onClick={handleAddToCart}
-                className={style.addToCart}
-                disabled={!product}
-              >
-                ADD TO CART
-              </button>
-            </div>
-            <p className={style.categoryContaine}>
-              Category:{" "}
-              <span className={style.category}>{product.category}</span>
-            </p>
-            <div className={style.share}>
-              Share:
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Facebook"
-              >
-                f
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Twitter"
-              >
-                t
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Instagram"
-              >
-                i
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Pinterest"
-              >
-                p
-              </a>
-            </div>
-          </div>
-        </div>
-        <ReviewComponent
-          reviews={reviews}
-          setReviews={setReviews}
-          product={product}
-          rating={rating}
-          review={review}
-          id={id}
-          setReview={setReview}
-          setRating={setRating}
-        />
-        <RelatedProduct />
-      </div>
-    </div>
-  );
-};
+    <>
+      {/* <Navbar /> */}
+      <Navbar2 />
+      <Banner2 title="Login" secondtitle="Login" />
 
-export default ProductPage;
+      <div className="container">
+        <div
+          style={{
+            display: "flex",
+            height: "80vh",
+          }}
+          className="mt-5 d-flex align-items-stretch"
+        >
+          <div className="col-lg-6 col-md-8 p-0">
+            <div
+              style={{
+                flex: 1,
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                alt="Decorative"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+          </div>
+          <div className="col-lg-6 col-md-8 d-flex align-items-center">
+            <div
+              className="card shadow w-100"
+              style={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                padding: "40px 80px",
+              }}
+            >
+              <div className="card-body p-0">
+                <h4 className="card-title text-center mb-4">Log in</h4>
+                <form className="was-validated" onSubmit={handleSubmit}>
+                  <div className="mb-3 mt-3">
+                    <input
+                      // style={{
+                      //   border: "none",
+                      //   borderBottom: "1px solid black",
+                      //   textDecoration: "none",
+                      // }}
+                      type="text"
+                      className="form-control"
+                      value={credintials.unique_id}
+                      onChange={handleChange}
+                      id="unique_id"
+                      placeholder="Unique Id"
+                      name="unique_id"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3" style={{ position: "relative" }}>
+                    <input
+                      // style={{
+                      //   border: "none",
+                      //   borderBottom: "1px solid black",
+                      //   textDecoration: "none",
+                      // }}
+                      type={showPassword ? "text" : "password"}
+                      value={credintials.password}
+                      onChange={handleChange}
+                      className="form-control"
+                      id="password"
+                      placeholder="Password"
+                      name="password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="btn btn-link"
+                      style={{
+                        position: "absolute",
+                        right: "20px",
+                        top: "2px",
+                        fontSize: "16px",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {showPassword ? (
+                        <i className="fas fa-eye"></i>
+                      ) : (
+                        <i className="fas fa-eye-slash"></i>
+                      )}
+                    </button>
+                  </div>
+                  {error && <p className="text-danger">{error}</p>}
+                  <div className="d-flex justify-content-between mb-3">
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="terms"
+                      />
+                      <label className="form-check-label" htmlFor="terms">
+                        Remember me
+                      </label>
+                    </div>
+                    <div>
+                      <Link
+                        to="/veryfy-email"
+                        className="text-end"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Forget Password
+                      </Link>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-100"
+                    style={{ borderRadius: "15px" }}
+                  >
+                    Login
+                  </button>
+                </form>
+                <hr className="my-4" />
+                <div className="text-center">
+                  <p className="mb-0">
+                    don't have an account? <Link to="/signup">SIGNUP</Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+}
+
+export default LoginPage;

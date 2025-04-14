@@ -6,7 +6,7 @@ import ContactPage from "./Routes/ContactUs/ContactPage";
 import ProductPage from "./Routes/ProductPage/ProductPage.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setProducts } from "../Store/Slice/ProductSlice.jsx";
-import { getProduct } from "./axiosConfig/AxiosConfig";
+import { getAllTiffin, getProduct } from "./axiosConfig/AxiosConfig";
 import CheckOutCart from "./Routes/CheckOut/ChackOutCartPage.jsx";
 import AboutPage from "./Routes/AboutUs/AboutPage.jsx";
 import FoodPage from "./Routes/OurMenu/FoodPage";
@@ -53,6 +53,19 @@ const App = () => {
   useEffect(() => {
     fetchProducts();
   }, [category]);
+
+  const fetchTiffin = async () => {
+    try {
+      const res = await getAllTiffin({ Active: true });
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTiffin();
+  }, []);
 
   return (
     <div>

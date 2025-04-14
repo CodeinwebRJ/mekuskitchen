@@ -35,12 +35,14 @@ function SignUpPage() {
       return;
     }
 
+    //phone number validation
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.mobile)) {
       setError("Phone number must be exactly 10 digits.");
       return;
     }
 
+    // Password validation
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]).{8,}$/;
     if (!passwordRegex.test(formData.password)) {
@@ -66,6 +68,8 @@ function SignUpPage() {
           refcode: formData.refcode,
         })
       );
+
+      // console.log("API Response:", response.data);
 
       if (response.data.response === "1") {
         setFormData({
@@ -109,6 +113,7 @@ function SignUpPage() {
 
   return (
     <>
+      {/* <Navbar /> */}
       <Navbar2 />
       <Banner2 title="Signup" secondtitle="signup" />
       <div className="container">
