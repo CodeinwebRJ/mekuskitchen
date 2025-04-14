@@ -36,12 +36,12 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <Link to="/" className={styles.logo}>
+      <Link to="/home" className={styles.logo}>
         <img src="/logo2.png" alt="logo" className={styles.logoImage} />
       </Link>
 
       <nav className={styles.navLinks}>
-        <Link to="/" className={styles.link}>
+        <Link to="/home" className={styles.link}>
           HOME
         </Link>
 
@@ -77,7 +77,7 @@ const Header = () => {
         <div className={styles.userDropdown}>
           <LuUserRound className={styles.userDropdownIcon} />
           <div className={styles.userDropdownMenu}>
-            <Link to="/" className={styles.userDropdownItem}>
+            <Link to="/home" className={styles.userDropdownItem}>
               Dashboard
             </Link>
             <span className={styles.userDropdownItem}>Orders</span>

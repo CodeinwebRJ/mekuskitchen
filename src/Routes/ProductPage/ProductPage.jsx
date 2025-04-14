@@ -76,7 +76,7 @@ const ProductPage = () => {
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <a href="/">Home</a> / <a href="/food">Food</a> /{" "}
+            <a href="/home">Home</a> / <a href="/food">Food</a> /{" "}
             {product.product_name}
           </div>
           <div className={style.navigation}>

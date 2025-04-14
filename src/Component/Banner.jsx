@@ -42,17 +42,16 @@ const Banner = (props) => {
 
       <h1 className={style.bannerText}>
         {name === "FOOD" || name === "GROCERY" ? (
-          <Link to={"/"} className={style.arrow}>
+          <Link to={"/home"} className={style.arrow}>
             <BsArrowLeft />
           </Link>
         ) : null}
-
         {name}
       </h1>
 
       {name !== "FOOD" || name !== "GROCERY" ? (
         <div className={style.bannerBreadcrumb}>
-          <Link to={"/"} className={style.link}>
+          <Link to={"/home"} className={style.link}>
             Home
           </Link>
           /<span className={style.currentPage}>{name}</span>

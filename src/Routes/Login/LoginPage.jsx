@@ -3,12 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/Navbar2";
 import Banner2 from "../../Component/Banner2";
+import { useDispatch } from "react-redux";
+import { login } from "../../../Store/Slice/UserSlice";
 
 function LoginPage() {
   const [credintials, setCredentials] = useState({
     unique_id: "",
     password: "",
   });
+
+  const dispatch = useDispatch();
 
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +37,6 @@ function LoginPage() {
     setError("");
 
     try {
-      // Send API request to login
       const response = await axios.post(
         "https://eyemesto.com/mapp_dev/signin.php",
         new URLSearchParams({
@@ -44,12 +47,19 @@ function LoginPage() {
       );
 
       if (response.data.response === "1") {
-        // Successful login
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("api_token", response.data.api_token);
-        console.log("Login successful:", response.data);
+        const token = response.data.api_token;
+        const user = response.data;
+
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("api_token", token);
+        dispatch(
+          login({
+            token,
+            user,
+          })
+        );
         console.log("Login successful, navigating to home...");
-        navigate("/");
+        navigate("/home");
       } else if (response.data.response === "0") {
         setError("Invalid Unique ID or password");
       } else {

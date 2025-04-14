@@ -16,7 +16,7 @@ function Banner2(props) {
           <nav aria-label="breadcrumb animated slideInDown">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <Link className="text-white" to="/">
+                <Link className="text-white" to="/home">
                   Home
                 </Link>
               </li>
