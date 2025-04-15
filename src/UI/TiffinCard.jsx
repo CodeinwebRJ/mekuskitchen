@@ -11,8 +11,6 @@ const TiffinCard = (props) => {
     ? format(new Date(item.date), "MM/dd/yyyy")
     : "N/A";
 
-  console.log(item);
-
   return (
     <Link
       to={`/product/tiffin/${String(item.day).toLowerCase()}`}
@@ -22,7 +20,7 @@ const TiffinCard = (props) => {
         <div className={style.tiffinImgContainer}>
           <img
             src={item?.image_url[0] || ""}
-            alt={item?.product_name}
+            alt={item?.day}
             className={style.tiffinImg}
           />
 
@@ -31,9 +29,9 @@ const TiffinCard = (props) => {
           )}
         </div>
 
-        <p className={style.tiffinTitle}>{item?.product_name}</p>
-        {item?.price && (
-          <p className={style.price}>${Number(item?.price).toFixed(2)}</p>
+        <p className={style.tiffinTitle}>{item?.day}</p>
+        {item?.subTotal && (
+          <p className={style.price}>${Number(item?.subTotal).toFixed(2)}</p>
         )}
 
         <AddToCartButton onclick={() => {}} />

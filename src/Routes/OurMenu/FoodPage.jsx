@@ -4,7 +4,7 @@ import Banner from "../../Component/Banner";
 import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPriceRange, setGrid } from "../../../Store/Slice/ProductSlice.jsx";
 import Footer from "../../Component/Footer";

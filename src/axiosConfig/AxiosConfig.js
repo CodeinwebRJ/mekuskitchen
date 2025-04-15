@@ -28,6 +28,13 @@ export const getAllTiffin = async (data) => {
 };
 
 export const getRelatedProduct = async (data) => {
-  console.log(data)
   return axiosInstance.post("/api/v1/product/category/related", data);
+};
+
+export const AddtoCart = async (data) => {
+  return axiosInstance.post("/api/v1/cart/create", data);
+};
+
+export const getUserCart = async (data) => {
+  return axiosInstance.get(`/api/v1/cart/${data}`);
 };

@@ -30,7 +30,8 @@ const FilterContainer = (props) => {
             <div key={index}>
               <li className={style.topRatedItem}>
                 <img
-                  src={product.image_url[0]}x
+                  src={product.image_url[0]}
+                  x
                   alt={product.name}
                   className={style.topRatedImg}
                 />
@@ -41,9 +42,7 @@ const FilterContainer = (props) => {
 
                     <RatingStar rating={product.avgRating} start={0} stop={5} />
                   </div>
-                  <p className={style.topRatedPrice}>
-                    ${product.price}
-                  </p>
+                  <p className={style.topRatedPrice}>${product.price}</p>
                 </div>
               </li>
               <hr />

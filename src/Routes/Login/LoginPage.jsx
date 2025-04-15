@@ -5,27 +5,31 @@ import Navbar2 from "../../Component/Navbar2";
 import Banner2 from "../../Component/Banner2";
 
 function LoginPage() {
-  const [credintials, setCredentials] = useState({
+  const [credentials, setCredentials] = useState({
     unique_id: "",
     password: "",
   });
-
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials({
-      ...credintials,
+      ...credentials,
       [name]: value,
     });
+  };
+
+  const handleCheckboxChange = (e) => {
+    setRememberMe(e.target.checked);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!credintials.unique_id || !credintials.password) {
+    if (!credentials.unique_id || !credentials.password) {
       setError("Please enter both Unique ID and Password.");
       return;
     }
@@ -33,20 +37,20 @@ function LoginPage() {
     setError("");
 
     try {
-      // Send API request to login
       const response = await axios.post(
         "https://eyemesto.com/mapp_dev/signin.php",
         new URLSearchParams({
           signin: true,
-          unique_id: credintials.unique_id,
-          password: credintials.password,
+          unique_id: credentials.unique_id,
+          password: credentials.password,
         })
       );
 
       if (response.data.response === "1") {
-        // Successful login
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("api_token", response.data.api_token);
+        if (rememberMe) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("api_token", response.data.api_token);
+        }
         console.log("Login successful:", response.data);
         console.log("Login successful, navigating to home...");
         navigate("/home");
@@ -67,7 +71,6 @@ function LoginPage() {
 
   return (
     <>
-      {/* <Navbar /> */}
       <Navbar2 />
       <Banner2 title="Login" secondtitle="Login" />
 
@@ -115,14 +118,9 @@ function LoginPage() {
                 <form className="was-validated" onSubmit={handleSubmit}>
                   <div className="mb-3 mt-3">
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
                       type="text"
                       className="form-control"
-                      value={credintials.unique_id}
+                      value={credentials.unique_id}
                       onChange={handleChange}
                       id="unique_id"
                       placeholder="Unique Id"
@@ -132,13 +130,8 @@ function LoginPage() {
                   </div>
                   <div className="mb-3" style={{ position: "relative" }}>
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
                       type={showPassword ? "text" : "password"}
-                      value={credintials.password}
+                      value={credentials.password}
                       onChange={handleChange}
                       className="form-control"
                       id="password"
@@ -174,6 +167,8 @@ function LoginPage() {
                         type="checkbox"
                         className="form-check-input"
                         id="terms"
+                        checked={rememberMe}
+                        onChange={handleCheckboxChange} // Handle checkbox change
                       />
                       <label className="form-check-label" htmlFor="terms">
                         Remember me
@@ -209,7 +204,6 @@ function LoginPage() {
           </div>
         </div>
       </div>
-      {/* <Footer /> */}
     </>
   );
 }

@@ -11,8 +11,6 @@ const RelatedProductCard = (props) => {
     ? format(new Date(item.date), "MM/dd/yyyy")
     : "N/A";
 
-  console.log(item);
-
   return (
     <Link
       to={`/product/${item?.category.toLowerCase()}/${item.product_name.toLowerCase()}`}

@@ -4,9 +4,14 @@ import userDetail from "../../src/Utils/localStorage";
 const userData = userDetail || {};
 
 const initialState = {
-  isAuthenticated: Boolean(userData.token),
-  token: userData.token || null,
-  user: userData.user || null,
+  isAuthenticated: Boolean(userData.api_token),
+  token: userData.api_token || null,
+  user: {
+    userid: userDetail.userid,
+    first_name: userDetail.first_name,
+    last_name: userDetail.last_name,
+    unique_id: userDetail.unique_id,
+  },
 };
 
 const authSlice = createSlice({

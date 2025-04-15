@@ -77,7 +77,7 @@ const Header = () => {
         <div className={styles.userDropdown}>
           <LuUserRound className={styles.userDropdownIcon} />
           <div className={styles.userDropdownMenu}>
-            <Link to="/home" className={styles.userDropdownItem}>
+            <Link to="/my-account" className={styles.userDropdownItem}>
               Dashboard
             </Link>
             <span className={styles.userDropdownItem}>Orders</span>

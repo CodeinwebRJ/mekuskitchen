@@ -123,6 +123,7 @@ const ProductPage = () => {
                   className={style.thumbnail}
                   onClick={() => setSelectedImage(image)}
                   onMouseEnter={() => setSelectedImage(image)}
+                  onMouseLeave={() => setSelectedImage(product.image_url[0])}
                 />
               ))}
             </div>

@@ -16,6 +16,7 @@ import LoginPage from "./Routes/Login/LoginPage.jsx";
 import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
 import TiffinProductPage from "./Routes/TiffinProductPage/ProductPage/TiffinProductPage.jsx";
 import MyAccount from "./Routes/MyAccount/MyAccount.jsx";
+import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -74,7 +75,14 @@ const App = () => {
     <div>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/product-category/:id" element={<FoodPage />} />
         <Route path="/daily-tiffin" element={<DailyTiffinPage />} />
