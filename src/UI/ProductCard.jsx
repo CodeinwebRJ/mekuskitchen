@@ -2,9 +2,17 @@ import React from "react";
 import style from "../styles/ProductCard.module.css";
 import { Link } from "react-router-dom";
 import RatingStar from "../Component/RatingStar";
+import AddToCartButton from "./AddToCartButton";
 
 const ProductCard = (props) => {
   const { product, grid } = props;
+
+  const reviews = 4;
+
+  // const averageRating =
+  //   reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+
+  // console.log(`/product/${product?.category.toLowerCase()}/${product.product_name.toLowerCase()}`);
 
   return (
     <Link
@@ -31,7 +39,7 @@ const ProductCard = (props) => {
           <RatingStar rating={3} start={0} stop={5} />
         </div>
         <p className={style.price}>${product.price}</p>
-        <button className={style.addToCart}>ADD TO CART</button>
+        <AddToCartButton onclick={() => {}} />
       </div>
     </Link>
   );

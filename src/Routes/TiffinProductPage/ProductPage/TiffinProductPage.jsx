@@ -3,9 +3,9 @@ import style from "../../../styles/ProductPage.module.css";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../../Component/Footer";
-import Header from "../../../component/Header";
 import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
+import Header from "../../../Component/Header";
 
 const TiffinProductPage = () => {
   const location = useLocation();
@@ -57,12 +57,6 @@ const TiffinProductPage = () => {
     setQuantity(isNaN(value) ? 1 : Math.max(1, value));
   };
 
-  const handleAddToCart = () => {
-    if (product) {
-      console.log(`Added ${quantity} ${product.product_name} to cart`);
-    }
-  };
-
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -70,8 +64,6 @@ const TiffinProductPage = () => {
   if (!product || !Array.isArray(products) || products.length === 0) {
     return <p>Product not found</p>;
   }
-
-  console.log(product);
 
   return (
     <div>
@@ -158,11 +150,7 @@ const TiffinProductPage = () => {
               >
                 +
               </button>
-              <button
-                onClick={handleAddToCart}
-                className={style.addToCart}
-                disabled={!product}
-              >
+              <button className={style.addToCart} disabled={!product}>
                 ADD TO CART
               </button>
             </div>

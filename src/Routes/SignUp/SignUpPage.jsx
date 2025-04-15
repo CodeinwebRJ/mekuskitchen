@@ -69,8 +69,6 @@ function SignUpPage() {
         })
       );
 
-      // console.log("API Response:", response.data);
-
       if (response.data.response === "1") {
         setFormData({
           first_name: "",

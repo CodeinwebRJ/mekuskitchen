@@ -1,6 +1,7 @@
 .aboutContainer {
-  display: flex;
-  padding: 40px 140px;
+  padding: 50px 15px;
+  max-width: 1250px;
+  margin: 0 auto;
 }
 
 .aboutContainer2 {

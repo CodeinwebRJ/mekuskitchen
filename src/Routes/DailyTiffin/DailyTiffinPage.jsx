@@ -26,7 +26,7 @@ const DailyTiffinPage = () => {
 
           <div className={style.TiffinCardContainer}>
             {tiffin.tiffins?.map((item, index) => (
-              <TiffinCard key={index} item={item} path={`/product/${String(item?.day).toLowerCase()}`}/>
+              <TiffinCard key={index} item={item} path={`/product/tiffin/${String(item?.day).toLowerCase()}`}/>
             ))}
           </div>
         </div>

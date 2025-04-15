@@ -5,19 +5,24 @@ import AddToCartButton from "./AddToCartButton";
 import { format } from "date-fns";
 
 const TiffinCard = (props) => {
-  const { item, path } = props;
+  const { item } = props;
 
   const formattedDate = item?.date
-    ? format(new Date(item.date), "dd MMM yyyy")
-    : null;
+    ? format(new Date(item.date), "MM/dd/yyyy")
+    : "N/A";
+
+  console.log(item);
 
   return (
-    <Link to={path} state={{ id: item._id }}>
+    <Link
+      to={`/product/tiffin/${String(item.day).toLowerCase()}`}
+      state={{ id: item._id }}
+    >
       <div className={style.tiffinCard}>
         <div className={style.tiffinImgContainer}>
           <img
             src={item?.image_url[0] || ""}
-            alt={item?.title}
+            alt={item?.product_name}
             className={style.tiffinImg}
           />
 
@@ -26,9 +31,9 @@ const TiffinCard = (props) => {
           )}
         </div>
 
-        <p className={style.tiffinTitle}>{item?.title}</p>
-        {item?.subTotal && (
-          <p className={style.price}>${Number(item?.subTotal).toFixed(2)}</p>
+        <p className={style.tiffinTitle}>{item?.product_name}</p>
+        {item?.price && (
+          <p className={style.price}>${Number(item?.price).toFixed(2)}</p>
         )}
 
         <AddToCartButton onclick={() => {}} />

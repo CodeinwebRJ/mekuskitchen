@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../../styles/RelatedProduct.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -10,8 +10,27 @@ import "swiper/css/bundle";
 import RelatedProductCard from "../../../UI/RelatedProductCard";
 import { RelatedProductData } from "../../../StaticData";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 
 const TiffinRelatedProduct = () => {
+  const { pathname } = useLocation();
+  const category = pathname.split("/").filter((segment) => segment);
+
+  const [relatedProduct, setRelatedProduct] = useState(null);
+
+  const fetchProduct = async () => {
+    try {
+      const data = {
+        category: category[1],
+      };
+      const res = await getRelatedProduct(data);
+      setRelatedProduct(res.data.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, []);
   return (
     <div className={style.relatedProductContainer}>
       {/* Header */}
@@ -48,7 +67,7 @@ const TiffinRelatedProduct = () => {
             1110: { slidesPerView: 4 },
           }}
         >
-          {RelatedProductData.map((card, index) => (
+          {relatedProduct?.map((card, index) => (
             <SwiperSlide key={index}>
               <div className={style.relatedProductCard}>
                 <RelatedProductCard item={card} />

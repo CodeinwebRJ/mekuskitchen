@@ -1,10 +1,16 @@
 import React from "react";
 import style from "../styles/RelatedProductCard.module.css";
-import { Link } from "react-router-dom";
 import AddToCartButton from "./AddToCartButton";
+import { format } from "date-fns";
 
 const RelatedProductCard = (props) => {
   const { item } = props;
+
+  const formattedDate = item?.date
+    ? format(new Date(item.date), "MM/dd/yyyy")
+    : "N/A";
+
+    console.log(item)
 
   return (
     // <Link
@@ -14,17 +20,17 @@ const RelatedProductCard = (props) => {
     <div className={style.relatedProductCard}>
       <div className={style.relatedProductImgContainer}>
         <img
-          src={item?.image || ""}
-          alt={item?.title}
+          src={item?.image_url[0] || ""}
+          alt={item?.product_name}
           className={style.relatedProductImg}
         />
 
         {item?.date && (
-          <span className={style.relatedProductDate}>D: {item?.date}</span>
+          <span className={style.relatedProductDate}>D: {formattedDate}</span>
         )}
       </div>
 
-      <p className={style.relatedProductTitle}>{item?.title}</p>
+      <p className={style.relatedProductTitle}>{item?.product_name}</p>
       {item?.price && (
         <p className={style.relatedProductPrice}>
           ${Number(item?.price).toFixed(2)}

@@ -1,3 +1,11 @@
+.ratingStarContainer {
+  pointer-events: default;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
 .fill {
   color: gold;
   font-size: 18px;

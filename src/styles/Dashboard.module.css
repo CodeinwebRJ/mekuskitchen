@@ -1,0 +1,21 @@
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.dashboardCardContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.userMessage {
+  display: flex;
+  gap: 5px;
+  color: #7a7a7a;
+}
+
+.userName {
+  font-weight: 600;
+}

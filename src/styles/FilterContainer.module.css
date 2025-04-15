@@ -12,13 +12,18 @@
 }
 
 .filterbtn {
-  background-color: green;
+  background-color: #28a745;
   color: white;
-  padding: 8px;
+  padding: 8px 15px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.filterbtn:hover {
+  background-color: #218838;
 }
 
 .topRatedItem {

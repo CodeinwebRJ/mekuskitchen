@@ -1,0 +1,9 @@
+.myAccountContainer {
+  display: flex;
+}
+
+.myAccountContainerLeft {
+  width: 20%;
+}
+
+

@@ -1,6 +1,7 @@
-bharat1505.mbinfoways .ContactContainer {
-  display: flex;
-  padding: 40px 140px;
+.ContactContainer {
+  padding: 50px 15px;
+  max-width: 1250px;
+  margin: 0 auto;
 }
 
 .ContactContainer2 {

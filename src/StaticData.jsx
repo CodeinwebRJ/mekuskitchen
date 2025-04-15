@@ -1,3 +1,9 @@
+import { PiNotepadLight } from "react-icons/pi";
+import { TfiLocationPin } from "react-icons/tfi";
+import { IoDownloadOutline } from "react-icons/io5";
+import { PiUserCircleLight } from "react-icons/pi";
+import { IoLogOutOutline } from "react-icons/io5";
+  
 export const CustomiseTiffinData = [
   {
     id: 1,
@@ -119,15 +125,6 @@ export const BreakfastMenuData = [
   },
 ];
 
-export const SweetsData = [
-  {
-    id: 1,
-    title: "Live Mohanthal",
-    image: "/Mohanthal.jpg",
-    price: 6,
-  },
-];
-
 export const RelatedProductData = [
   {
     id: 1,
@@ -158,5 +155,38 @@ export const RelatedProductData = [
     title: "Live Mohanthal",
     image: "/Mohanthal.jpg",
     price: 6,
+  },
+];
+
+export const MyAccountData = [
+  {
+    id: 1,
+    title: "Dashboard",
+    icon: "/Dashboard.svg",
+  },
+  {
+    id: 2,
+    title: "Orders",
+    icon: <PiNotepadLight />,
+  },
+  {
+    id: 3,
+    title: "Downloads",
+    icon: <IoDownloadOutline />,
+  },
+  {
+    id: 4,
+    title: "Addresses",
+    icon: <TfiLocationPin />,
+  },
+  {
+    id: 5,
+    title: "Account Details",
+    icon: <PiUserCircleLight />,
+  },
+  {
+    id: 6,
+    title: "Logout",
+    icon: <IoLogOutOutline />,
   },
 ];
