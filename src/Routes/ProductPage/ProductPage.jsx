@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import style from "../../styles/ProductPage.module.css";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../Component/Header";
+import Header from "../../component/Header";
 import ReviewComponent from "./ReviewComponent";
 import RelatedProduct from "./RelatedProduct";
 import Footer from "../../Component/Footer";
+import Button from "../../UI/Button";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -154,9 +155,10 @@ const ProductPage = () => {
               >
                 +
               </button>
-              <button className={style.addToCart} disabled={!product}>
-                ADD TO CART
-              </button>
+
+              <div className={style.addToCartContainer}>
+                <Button variant="warning">ADD TO CART</Button>
+              </div>
             </div>
             <p className={style.categoryContaine}>
               Category:{" "}

@@ -12,10 +12,9 @@ import ProductCard from "../../UI/ProductCard";
 import FilterContainer from "../../Component/FilterContainer.jsx";
 import ShowProducts from "../../Component/ShowProducts";
 import { getTopRatedProduct } from "../../axiosConfig/AxiosConfig.js";
-import Header from "../../Component/Header.jsx";
+import Header from "../../component/Header";
 
 const FoodPage = () => {
-  const [isActivePerPageProducts, setIsActivePerPageProducts] = useState(9);
   const { id } = useParams();
 
   const { products, priceRange, grid, loading, error } = useSelector(
@@ -45,8 +44,13 @@ const FoodPage = () => {
 
   return (
     <div>
+      {/* Header */}
       <Header />
+
+      {/* Banner */}
       <Banner name={id.toUpperCase()} />
+
+      {/* Container */}
       <div className={style.container}>
         <div className={style.container2}>
           {/* Filter Container */}
@@ -64,28 +68,42 @@ const FoodPage = () => {
               </div>
               <div className={style.sortingOptions}>
                 {/* Show Products */}
-                <ShowProducts
-                  isActivePerPageProducts={isActivePerPageProducts}
-                  setIsActivePerPageProducts={setIsActivePerPageProducts}
-                />
+                <ShowProducts />
 
                 {/* Grid Icons */}
                 <div className={style.gridIcons}>
                   <span onClick={() => dispatch(setGrid(2))}>
-                    <IoGrid size={24} />
+                    <IoGrid
+                      size={24}
+                      className={
+                        grid === 2 ? style.gridIconActive : style.gridIcon
+                      }
+                    />
                   </span>
                   <span
                     onClick={(e) => {
                       dispatch(setGrid(3));
                     }}
                   >
-                    <BsFillGrid3X3GapFill size={24} />
+                    <BsFillGrid3X3GapFill
+                      size={24}
+                      className={
+                        grid === 3 ? style.gridIconActive : style.gridIcon
+                      }
+                    />
                   </span>
                   <span onClick={() => dispatch(setGrid(4))}>
-                    <TfiLayoutGrid4Alt size={24} />
+                    <TfiLayoutGrid4Alt
+                      size={24}
+                      className={
+                        grid === 4 ? style.gridIconActive : style.gridIcon
+                      }
+                    />
                   </span>
                 </div>
-                <select>
+
+                {/* Sorting */}
+                <select className={style.sortingSelect}>
                   <option>Default sorting</option>
                   <option>Sort by price: low to high</option>
                   <option>Sort by price: high to low</option>
@@ -116,6 +134,8 @@ const FoodPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

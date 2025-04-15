@@ -34,6 +34,14 @@ const Header = () => {
     },
   ];
 
+  // Handle Link Active
+  const handleLinkActive = (link) => {
+    if (link === window.location.pathname) {
+      return styles.linkActive;
+    }
+    return styles.link;
+  };
+
   return (
     <header className={styles.header}>
       <Link to="/home" className={styles.logo}>
@@ -41,17 +49,21 @@ const Header = () => {
       </Link>
 
       <nav className={styles.navLinks}>
-        <Link to="/home" className={styles.link}>
+        <Link
+          to="/home"
+          className={`${styles.link} ${handleLinkActive("/home")}`}
+        >
           HOME
         </Link>
 
         <div className={styles.ourMenuDropdown}>
           <span className={styles.ourMenuDropdownLink}>OUR MENU</span>
           <div className={styles.ourMenuDropdownMenu}>
-            {data?.map((item) => (
+            {data?.map((item, index) => (
               <Link
+                key={index}
                 to={`/product-category/${item.value}`}
-                className={styles.ourMenuDropdownItem}
+                className={styles.ourMenuDropdownItem }
                 onClick={() => handleCategoryClick(item.value)}
               >
                 {item.name}
@@ -60,13 +72,22 @@ const Header = () => {
           </div>
         </div>
 
-        <Link to="/daily-tiffin" className={styles.link}>
+        <Link
+          to="/daily-tiffin"
+          className={`${styles.link} ${handleLinkActive("/daily-tiffin")}`}
+        >
           DAILY TIFFIN
         </Link>
-        <Link to="/about-us" className={styles.link}>
+        <Link
+          to="/about-us"
+          className={`${styles.link} ${handleLinkActive("/about-us")}`}
+        >
           ABOUT US
         </Link>
-        <Link to="/contact-us" className={styles.link}>
+        <Link
+          to="/contact-us"
+          className={`${styles.link} ${handleLinkActive("/contact-us")}`}
+        >
           CONTACT US
         </Link>
       </nav>
@@ -80,10 +101,27 @@ const Header = () => {
             <Link to="/my-account" className={styles.userDropdownItem}>
               Dashboard
             </Link>
-            <span className={styles.userDropdownItem}>Orders</span>
-            <span className={styles.userDropdownItem}>Downloads</span>
-            <span className={styles.userDropdownItem}>Address</span>
-            <span className={styles.userDropdownItem}>Account Details</span>
+            <Link to="/my-account/orders" className={styles.userDropdownItem}>
+              Orders
+            </Link>
+            <Link
+              to="/my-account/downloads"
+              className={styles.userDropdownItem}
+            >
+              Downloads
+            </Link>
+            <Link
+              to="/my-account/edit-address"
+              className={styles.userDropdownItem}
+            >
+              Address
+            </Link>
+            <Link
+              to="/my-account/account-details"
+              className={styles.userDropdownItem}
+            >
+              Account Details
+            </Link>
             <span className={styles.userDropdownItem}>Logout</span>
           </div>
         </div>

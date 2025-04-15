@@ -8,9 +8,9 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import "swiper/css/bundle";
 import RelatedProductCard from "../../../UI/RelatedProductCard";
-import { RelatedProductData } from "../../../StaticData";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useLocation } from "react-router-dom";
+import { getRelatedProduct } from "../../../axiosConfig/AxiosConfig";
 
 const TiffinRelatedProduct = () => {
   const { pathname } = useLocation();

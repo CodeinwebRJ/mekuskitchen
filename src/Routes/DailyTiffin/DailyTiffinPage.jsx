@@ -4,15 +4,20 @@ import Footer from "../../Component/Footer";
 import Banner from "../../Component/Banner";
 import TiffinCard from "../../UI/TiffinCard";
 import { useSelector } from "react-redux";
-import Header from "../../Component/Header";
+import Header from "../../component/Header";
 
 const DailyTiffinPage = () => {
   const tiffin = useSelector((state) => state.tiffin);
 
   return (
     <div>
+      {/* Header */}
       <Header />
+
+      {/* Banner */}
       <Banner name={"Daily Tiffin"} />
+
+      {/* Tiffin Container */}
       <div className={style.TiffinContainer}>
         <div className={style.CustomiseTiffinContainer}>
           <div className={style.header}>
@@ -43,7 +48,7 @@ const DailyTiffinPage = () => {
 
           <div className={style.TiffinCardContainer}>
             {tiffin.tiffins?.map((item, index) => (
-              <TiffinCard key={index} item={item} path={`/product/${String(item?.day).toLowerCase()}`}/>
+              <TiffinCard key={index} item={item} path={`/product/tiffin/${String(item?.day).toLowerCase()}`}/>
             ))}
           </div>
         </div>
@@ -72,6 +77,8 @@ const DailyTiffinPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

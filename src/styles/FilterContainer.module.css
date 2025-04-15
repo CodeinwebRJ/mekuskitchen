@@ -43,10 +43,12 @@
 }
 
 .rating {
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 .filterSection {
+  position: sticky;
+  top: 100px;
   margin-bottom: 20px;
 }
 

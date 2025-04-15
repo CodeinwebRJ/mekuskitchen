@@ -32,6 +32,8 @@ const RelatedProduct = () => {
     fetchProduct();
   }, []);
 
+  // console.log(relatedProduct);
+
   return (
     <div className={style.relatedProductContainer}>
       {/* Header */}

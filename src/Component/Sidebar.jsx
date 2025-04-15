@@ -29,6 +29,8 @@ const Sidebar = ({ isOpen, onClose }) => {
     fetchUserCart();
   }, []);
 
+  console.log(Cart?.cart?.items);
+
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
       <div className={styles.closeBtn} onClick={onClose}>
@@ -41,18 +43,18 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div className={styles.cartItem} key={index}>
             <div className={styles.cartItemImageContainer}>
               <img
-                src={item.productDetails.image_url[0]}
+                src={item?.productDetails?.image_url[0]}
                 alt="image 1"
                 className={styles.cartItemImage}
               />
             </div>
 
             <div className={styles.cartItemDetails}>
-              <p className={styles.cartItemName}>Masala Paratha</p>
+              <p className={styles.cartItemName}>{item?.productDetails?.product_name}</p>
               <p className={styles.cartItemCalculation}>
-                <span className={styles.quantity}>{item.quantity}</span>
+                <span className={styles.quantity}>{item?.quantity}</span>
                 <span className={styles.multiply}>×</span>
-                <span className={styles.price}>{item.price}</span>
+                <span className={styles.price}>{item?.price}</span>
               </p>
 
               <RiDeleteBin5Fill className={styles.deleteIcon} />

@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 });
 
 export const getProduct = async (data) => {
-  return axiosInstance.post("/api/v1/product/", data);
+  return axiosInstance.post("/api/v1/product", data);
 };
 
 export const getTopRatedProduct = async () => {

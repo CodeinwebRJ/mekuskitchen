@@ -5,7 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../../Component/Footer";
 import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
-import Header from "../../../Component/Header";
+import Header from "../../../component/Header";
+import Button from "../../../UI/Button";
 
 const TiffinProductPage = () => {
   const location = useLocation();
@@ -135,6 +136,7 @@ const TiffinProductPage = () => {
               >
                 -
               </button>
+
               <input
                 type="number"
                 value={quantity}
@@ -143,6 +145,7 @@ const TiffinProductPage = () => {
                 className={style.quantityInput}
                 aria-label="Quantity"
               />
+
               <button
                 onClick={() => setQuantity(quantity + 1)}
                 className={style.quantityButton}
@@ -150,9 +153,10 @@ const TiffinProductPage = () => {
               >
                 +
               </button>
-              <button className={style.addToCart} disabled={!product}>
-                ADD TO CART
-              </button>
+
+              <div className={style.addToCartContainer}>
+                <Button variant="warning">ADD TO CART</Button>
+              </div>
             </div>
             <p className={style.categoryContaine}>
               Category:{" "}

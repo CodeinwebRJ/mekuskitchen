@@ -24,12 +24,16 @@ const TiffinCard = (props) => {
             className={style.tiffinImg}
           />
 
+          {/* Date */}
           {item?.date && (
             <span className={style.tiffinDate}>D: {formattedDate}</span>
           )}
         </div>
 
-        <p className={style.tiffinTitle}>{item?.day}</p>
+        {/* Title */}
+        {item?.day && <p className={style.tiffinTitle}>{item?.day}</p>}
+
+        {/* Price */}
         {item?.subTotal && (
           <p className={style.price}>${Number(item?.subTotal).toFixed(2)}</p>
         )}

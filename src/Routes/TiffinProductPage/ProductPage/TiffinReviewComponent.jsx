@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import style from "../../../styles/ProductPage.module.css";
+import style from "../../../styles/ReviewComponent.module.css";
 import RatingStar from "../../../Component/RatingStar";
 import {
   addProductReview,
@@ -52,9 +52,11 @@ const TiffinReviewComponent = ({
 
   return (
     <div className={style.reviewsSection}>
-      <h2 className={style.sectionTitle}>
-        Customer Reviews ({reviews.length})
-      </h2>
+      <div className={style.sectionTitleContainer}>
+        <h2 className={style.sectionTitle}>
+          Customer Reviews ({reviews.length})
+        </h2>
+      </div>
       {reviews.length === 0 ? (
         <p className={style.noReviews}>
           No reviews yet. Be the first to share your thoughts!
@@ -64,18 +66,15 @@ const TiffinReviewComponent = ({
           {reviews.map((rev, index) => (
             <div key={index} className={style.reviewItem}>
               <div className={style.reviewHeader}>
-                <span className={style.reviewUser}>User {rev.user_id}</span>
+                <span className={style.reviewUser}>User: {rev.user_id}</span>
                 <div className={style.reviewRating}>
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      className={`${style.star} ${
-                        i < rev.rating ? style.filled : ""
-                      }`}
-                    >
-                      ★
-                    </span>
-                  ))}
+                  <RatingStar
+                    rating={rev.rating}
+                    start={0}
+                    stop={5}
+                    fractions={2}
+                    disabled={true}
+                  />
                 </div>
               </div>
               <p className={style.reviewComment}>{rev.comment}</p>
@@ -94,6 +93,7 @@ const TiffinReviewComponent = ({
             </label>
             <RatingStar rating={rating} onChange={setRating} maxRating={5} />
           </div>
+
           <div className={style.reviewInput}>
             <label className={style.formLabel}>
               Your Review <span className={style.required}>*</span>
@@ -106,13 +106,12 @@ const TiffinReviewComponent = ({
               className={style.textarea}
             />
           </div>
-          <Button
-            variant="success"
-            type="submit"
-            className={style.submitButtonContainer}
-          >
-            Submit Review
-          </Button>
+
+          <div className={style.submitButtonContainer}>
+            <Button variant="success" type="submit">
+              Submit Review
+            </Button>
+          </div>
         </form>
       </div>
     </div>

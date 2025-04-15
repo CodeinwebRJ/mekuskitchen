@@ -11,18 +11,21 @@ const RatingStar = (props) => {
     stop = 5,
     fractions = 2,
     onChange = () => {},
+    disabled = false,
   } = props;
 
   return (
-    <Rating
-      emptySymbol={<FiStar className={style.unFill} />}
-      fullSymbol={<GoStarFill className={style.fill} />}
-      fractions={fractions}
-      initialRating={rating}
-      start={start}
-      stop={stop}
-      onChange={onChange}
-    />
+    <div className={disabled ? style.disabled : style.ratingStarContainer}>
+      <Rating
+        emptySymbol={<FiStar className={style.unFill} />}
+        fullSymbol={<GoStarFill className={style.fill} />}
+        fractions={fractions}
+        initialRating={rating}
+        start={start}
+        stop={stop}
+        onChange={onChange}
+      />
+    </div>
   );
 };
 

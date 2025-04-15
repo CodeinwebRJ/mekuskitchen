@@ -1,10 +1,13 @@
-import React from 'react'
+import React from "react";
 import style from "../../../styles/Downloads.module.css";
+import MyAccountContainer from "../MyAccountContainer";
 
 const Downloads = () => {
   return (
-    <div>Downloads</div>
-  )
-}
+    <MyAccountContainer>
+      <div>Downloads</div>
+    </MyAccountContainer>
+  );
+};
 
-export default Downloads
+export default Downloads;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import style from "../../styles/MyAccount.module.css";
-import Header from "../../Component/Header";
 import Footer from "../../Component/Footer";
 import Banner from "../../Component/Banner";
 import Dashboard from "./Dashboard/Dashboard";
@@ -9,11 +8,12 @@ import Orders from "./Orders/Orders";
 import Addresses from "./Addresses/Addresses";
 import Downloads from "./Downloads/Downloads";
 import AccountDetails from "./AccountDetails/AccountDetails";
+import Header from "../../component/Header";
+import MyAccountContainer from "./MyAccountContainer";
 
 const MyAccount = () => {
-  const sideTitles = MyAccountData.map((item) => item.title);
-
   const [active, setActive] = useState("Dashboard");
+  const sideTitles = MyAccountData.map((item) => item.title);
 
   const handleSideTitleClick = (title) => {
     setActive(title);
@@ -23,7 +23,6 @@ const MyAccount = () => {
     <div>
       <Header />
 
-      {/* Banner */}
       <Banner name={"My Account"} />
 
       {/* Container */}

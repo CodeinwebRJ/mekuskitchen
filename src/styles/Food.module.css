@@ -23,7 +23,7 @@
 .sortingOptions {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 30px;
 }
 
 .sortingBar select {
@@ -47,11 +47,13 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
+
 .productGrid3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
+
 .productGrid4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -60,11 +62,27 @@
 
 .gridIcons {
   display: flex;
-  gap: 4px;
+  gap: 10px;
   cursor: pointer;
+}
+
+.gridIconActive {
+  color: #000;
+}
+
+.gridIcon {
+  color: #c3c3c3;
+}
+
+.gridIcon:hover {
+  color: #929292;
 }
 
 .productCard h3 {
   font-size: 16px;
   margin: 10px 0 5px;
+}
+
+.sortingSelect {
+  outline: none;
 }

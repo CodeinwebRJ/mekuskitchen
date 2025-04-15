@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import MyAccountContainer from "../MyAccountContainer";
 
 const Orders = () => {
   return (
-    <div>Orders</div>
-  )
-}
+    <MyAccountContainer>
+      <div>Orders</div>
+    </MyAccountContainer>
+  );
+};
 
-export default Orders
+export default Orders;

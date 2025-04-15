@@ -1,5 +1,35 @@
-.showOptions {
+.showOptionsContainer {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.showOptionsText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.showOptionsItems {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #c3c3c3;
+  font-weight: 400;
+}
+
+.showOptions {
+  cursor: pointer;
+  color: #c3c3c3;
+  transition: all 0.2s ease-in-out;
+}
+
+.showOptions:hover {
+  color: #000;
+}
+
+
+.showOptionsActive {
+  cursor: pointer;
+  color: #000;
 }

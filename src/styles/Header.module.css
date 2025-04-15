@@ -55,6 +55,19 @@
   width: 100%;
 }
 
+.linkActive {
+  position: relative;
+}
+
+.linkActive::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+}
+
 .menuWrapper {
   position: relative;
   padding: 10px 0;
