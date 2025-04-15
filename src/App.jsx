@@ -14,6 +14,7 @@ import DailyTiffinPage from "./Routes/DailyTiffin/DailyTiffinPage.jsx";
 import SignUpPage from "./Routes/SignUp/SignUpPage.jsx";
 import LoginPage from "./Routes/Login/LoginPage.jsx";
 import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
+import TiffinProductPage from "./Routes/TiffinProductPage/ProductPage/TiffinProductPage.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -30,7 +31,7 @@ const App = () => {
       behavior: "smooth",
     });
   }, [pathname]);
-
+-8
   // Fetch products
   const fetchProducts = async () => {
     try {
@@ -59,7 +60,6 @@ const App = () => {
     try {
       const res = await getAllTiffin({ Active: true });
       dispatch(setTiffins(res.data.data));
-      console.log(res.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -80,6 +80,7 @@ const App = () => {
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
         <Route path="/product/:category/:id" element={<ProductPage />} />
+        <Route path="/product/:id" element={<TiffinProductPage />} />
         <Route path="/cart" element={<CheckOutCart />} />
         <Route path="/contactus" element={<ContactPage />} />
       </Routes>

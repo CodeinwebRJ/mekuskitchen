@@ -12,7 +12,7 @@ import ProductCard from "../../UI/ProductCard";
 import FilterContainer from "../../Component/FilterContainer.jsx";
 import ShowProducts from "../../Component/ShowProducts";
 import { getTopRatedProduct } from "../../axiosConfig/AxiosConfig.js";
-import Header from "../../component/Header.jsx";
+import Header from "../../Component/Header.jsx";
 
 const FoodPage = () => {
   const [isActivePerPageProducts, setIsActivePerPageProducts] = useState(9);

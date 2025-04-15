@@ -3,25 +3,10 @@ import style from "../../styles/DailyTiffinPage.module.css";
 import Footer from "../../Component/Footer";
 import Banner from "../../Component/Banner";
 import TiffinCard from "../../UI/TiffinCard";
-import {
-  CustomiseTiffinData,
-  RegularTiffinData,
-  BreakfastMenuData,
-  SweetsData,
-} from "../../StaticData";
-import Header from "../../component/Header";
-import { Link } from "react-router-dom";
-import { getAllTiffin } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
+import Header from "../../Component/Header";
 
 const DailyTiffinPage = () => {
-  const product = {
-    title: "Monday",
-    image: "/tiffin.png",
-    price: 15,
-    description: "This is a daily tiffin",
-  };
-
   const tiffin = useSelector((state) => state.tiffin);
 
   return (
@@ -41,12 +26,7 @@ const DailyTiffinPage = () => {
 
           <div className={style.TiffinCardContainer}>
             {tiffin.tiffins?.map((item, index) => (
-              <Link
-                to={`/product/custom/${product.title.toLowerCase()}`}
-                state={{ id: product.id }}
-              >
-                <TiffinCard key={index} item={item} />
-              </Link>
+              <TiffinCard key={index} item={item} path={`/product/${String(item?.day).toLowerCase()}`}/>
             ))}
           </div>
         </div>
@@ -63,7 +43,7 @@ const DailyTiffinPage = () => {
 
           <div className={style.TiffinCardContainer}>
             {tiffin.tiffins?.map((item, index) => (
-              <TiffinCard key={index} item={item} />
+              <TiffinCard key={index} item={item} path={`/product/${String(item?.day).toLowerCase()}`}/>
             ))}
           </div>
         </div>

@@ -14,7 +14,7 @@ export const getProduct = async (data) => {
 export const getTopRatedProduct = async () => {
   return axiosInstance.get("/api/v1/review/top-rated");
 };
-
+  
 export const addProductReview = async (data) => {
   return axiosInstance.post("/api/v1/review/addreview", data);
 };
