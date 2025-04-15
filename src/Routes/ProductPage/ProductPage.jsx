@@ -122,6 +122,7 @@ const ProductPage = () => {
                   alt={`${product.product_name} thumbnail ${index + 1}`}
                   className={style.thumbnail}
                   onClick={() => setSelectedImage(image)}
+                  onMouseEnter={() => setSelectedImage(image)}
                 />
               ))}
             </div>
@@ -152,10 +153,7 @@ const ProductPage = () => {
               >
                 +
               </button>
-              <button
-                className={style.addToCart}
-                disabled={!product}
-              >
+              <button className={style.addToCart} disabled={!product}>
                 ADD TO CART
               </button>
             </div>

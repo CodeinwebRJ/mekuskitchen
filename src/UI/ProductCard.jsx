@@ -9,11 +9,6 @@ const ProductCard = (props) => {
 
   const reviews = 4;
 
-  // const averageRating =
-  //   reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
-
-  // console.log(`/product/${product?.category.toLowerCase()}/${product.product_name.toLowerCase()}`);
-
   return (
     <Link
       to={`/product/${product?.category.toLowerCase()}/${product.product_name.toLowerCase()}`}
