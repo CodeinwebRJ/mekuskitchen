@@ -37,13 +37,13 @@
 
 .filterSection p {
   font-size: 14px;
-  color: #666;
+  color: var(--gray-deep);
   margin-bottom: 10px;
 }
 
 .filterbtn {
   background-color: green;
-  color: white;
+  color: var(--white);
   padding: 8px;
   border: none;
   cursor: pointer;
@@ -88,7 +88,7 @@
 .sortingBar select {
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-border);
 }
 
 .productGrid2 {

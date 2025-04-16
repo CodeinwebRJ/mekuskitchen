@@ -12,8 +12,8 @@
 }
 
 .filterbtn {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--success);
+  color: var(--white);
   padding: 8px 15px;
   border: none;
   cursor: pointer;
@@ -23,7 +23,7 @@
 }
 
 .filterbtn:hover {
-  background-color: #218838;
+  background-color: var(--primary-green-dark);
 }
 
 .topRatedItem {
@@ -63,5 +63,5 @@
 }
 
 .filterSection p {
-  color: #666;
+  color: var(--gray-deep);
 }

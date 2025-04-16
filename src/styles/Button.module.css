@@ -1,7 +1,7 @@
 .submitButton {
   width: 100%;
-  background-color: #46a3df;
-  color: white;
+  background-color: var(--primary-blue);
+  color: var(--white);
   border: none;
   padding: 12px 24px;
   font-size: 14px;
@@ -12,11 +12,11 @@
 }
 
 .submitButton:hover {
-  background-color: #3a8bc7;
+  background-color: var(--primary-blue-dark);
 }
 
 .disabled {
-  background-color: #46a3df;
+  background-color: var(--primary-blue);
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
@@ -25,16 +25,16 @@
 /* primary variant */
 
 .primary {
-  background-color: #46a3df;
-  color: white;
+  background-color: var(--primary-blue);
+  color: var(--white);
 }
 
 .primary:hover {
-  background-color: #3a8bc7;
+  background-color: var(--primary-blue-dark);
 }
 
 .primary:disabled {
-  background-color: #46a3df;
+  background-color: var(--primary-blue);
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
@@ -43,16 +43,16 @@
 /* secondary variant */
 
 .secondary {
-  background-color: #6c757d;
-  color: white;
+  background-color: var(--gray-muted);
+  color: var(--white);
 }
 
 .secondary:hover {
-  background-color: #5c636a;
+  background-color: var(--gray-secondary);
 }
 
 .secondary:disabled {
-  background-color: #6c757d;
+  background-color: var(--gray-muted);
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
@@ -61,16 +61,16 @@
 /* danger variant */
 
 .danger {
-  background-color: #ff0000;
-  color: white;
+  background-color: var(--error);
+  color: var(--white);
 }
 
 .danger:hover {
-  background-color: #e60000;
+  background-color: var(--error-dark);
 }
 
 .danger:disabled {
-  background-color: #ff0000;
+  background-color: var(--error);
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
@@ -79,16 +79,16 @@
 /* success variant */
 
 .success {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--success);
+  color: var(--white);
 }
 
 .success:hover {
-  background-color: #218838;
+  background-color: var(--primary-green-dark);
 }
 
 .success:disabled {
-  background-color: #28a745;
+  background-color: var(--success);
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
@@ -97,16 +97,16 @@
 /* warning variant */
 
 .warning {
-  background-color: #ffa500;
-  color: white;
+  background-color: var(--primary-orange);
+  color: var(--white);
 }
 
 .warning:hover {
-  background-color: #e69500;
+  background-color: var(--primary-orange-dark);
 }
 
 .warning:disabled {
-  background-color: #ffa500;
+  background-color: var(--primary-orange);
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
@@ -115,16 +115,16 @@
 /* light variant */
 
 .light {
-  background-color: white;
-  color: black;
+  background-color: var(--white);
+  color: var(--black);
 }
 
 .light:hover {
-  background-color: #e6e6e6;
+  background-color: var(--gray-surface);
 }
 
 .light:disabled {
-  background-color: white;
+  background-color: var(--white);
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;

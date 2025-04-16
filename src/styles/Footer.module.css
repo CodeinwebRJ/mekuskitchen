@@ -1,6 +1,10 @@
 .footer {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
-  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--gray-solid) 0%,
+    var(--gray-solid-2) 100%
+  );
+  color: var(--white);
   padding: 50px 80px;
   font-family: "Arial", sans-serif;
   position: relative;
@@ -39,8 +43,8 @@
 
 .readMoreBtn {
   background: none;
-  border: 1px solid #fff;
-  color: #fff;
+  border: 1px solid var(--white);
+  color: var(--white);
   padding: 8px 16px;
   cursor: pointer;
   font-size: 18px;
@@ -52,8 +56,8 @@
 }
 
 .readMoreBtn:hover {
-  background-color: #fff;
-  color: #1a1a1a;
+  background-color: var(--white);
+  color: var(--gray-solid);
 }
 
 .arrowIcon {
@@ -70,7 +74,7 @@
 }
 
 .footerLink {
-  color: #fff;
+  color: var(--white);
   text-decoration: none;
   font-size: 18px;
   display: flex;
@@ -86,7 +90,7 @@
 
 .arrow {
   font-size: 18px;
-  color: #fff;
+  color: var(--white);
 }
 
 .icon {
@@ -108,13 +112,13 @@
 .socialIcon {
   margin-right: 15px;
   font-size: 20px;
-  color: #fff;
+  color: var(--white);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .socialIcon:hover {
-  color: #f39c12; /* Orange color for hover */
+  color: var(--primary-yellow); /* Orange color for hover */
 }
 
 .socialIcon .icon {

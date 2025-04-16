@@ -29,7 +29,7 @@
 .sortingBar select {
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-border);
 }
 
 /* .loading {
@@ -67,15 +67,15 @@
 }
 
 .gridIconActive {
-  color: #000;
+  color: var(--black);
 }
 
 .gridIcon {
-  color: #c3c3c3;
+  color: var(--gray-medium);
 }
 
 .gridIcon:hover {
-  color: #929292;
+  color: var(--gray-regular);
 }
 
 .productCard h3 {

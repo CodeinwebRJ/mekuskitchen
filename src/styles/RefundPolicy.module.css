@@ -16,13 +16,13 @@
 .section h2 {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .section p {
   font-size: 16px;
   line-height: 1.5;
-  color: #666;
+  color: var(--gray-deep);
   margin-bottom: 10px;
 }
 
@@ -34,7 +34,7 @@
 .sidebar h3 {
   font-size: 18px;
   margin-bottom: 10px;
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .sidebar ul {
@@ -44,12 +44,12 @@
 
 .sidebar ul li {
   font-size: 14px;
-  color: #666;
+  color: var(--gray-deep);
   margin-bottom: 10px;
 }
 
 .sidebar ul li:before {
   content: "▸";
   margin-right: 10px;
-  color: #999;
+  color: var(--gray-label);
 }

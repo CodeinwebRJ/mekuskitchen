@@ -13,12 +13,12 @@
 }
 
 .breadcrumb {
-  color: #888;
+  color: var(--gray-muted);
   font-size: 14px;
 }
 
 .breadcrumb a {
-  color: #888;
+  color: var(--gray-muted);
   text-decoration: none;
 }
 
@@ -36,17 +36,17 @@
   border: none;
   font-size: 18px;
   cursor: pointer;
-  color: #888;
+  color: var(--gray-muted);
 }
 
 .navButton:disabled {
-  color: #ccc;
+  color: var(--gray-border-light);
   cursor: not-allowed;
   opacity: 0.5;
 }
 
 .navButton:hover:not(:disabled) {
-  color: #555;
+  color: var(--gray-steel);
 }
 
 .navIconPrev,
@@ -80,7 +80,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-border);
   border-radius: 4px;
 }
 
@@ -103,12 +103,12 @@
 .productDetails h1 {
   font-size: 28px;
   margin: 0 0 10px 0;
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .price {
   font-size: 24px;
-  color: #27ae60;
+  color: var(--primary-green-alt);
   margin: 10px 0;
 }
 
@@ -122,17 +122,17 @@
 .quantityButton {
   width: 30px;
   height: 30px;
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid var(--gray-border);
+  background: var(--white);
   cursor: pointer;
   font-size: 18px;
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .quantityInput {
   width: 40px;
   height: 30px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-border);
   text-align: center;
   font-size: 16px;
   padding-top: 3px;
@@ -144,13 +144,13 @@
 }
 
 .addToCart:hover {
-  background-color: #e69500;
+  background-color: var(--primary-orange-dark);
 }
 
 .categoryContaine {
   text-transform: capitalize;
   font-size: 14px;
-  color: #666;
+  color: var(--gray-deep);
   margin: 10px 0;
   font-weight: 600;
 }
@@ -158,26 +158,26 @@
 .category {
   text-transform: capitalize;
   font-size: 14px;
-  color: #666;
+  color: var(--gray-deep);
   margin: 10px 0;
   font-weight: 400;
 }
 
 .share {
   font-size: 14px;
-  color: #666;
+  color: var(--gray-deep);
   margin: 10px 0;
 }
 
 .shareIcon {
-  color: #666;
+  color: var(--gray-deep);
   margin-left: 10px;
   text-decoration: none;
   font-size: 16px;
 }
 
 .shareIcon:hover {
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 /* Responsive Design */

@@ -1,5 +1,5 @@
 .productCard_grid2 {
-  background: white;
+  background: var(--white);
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -9,7 +9,7 @@
 }
 
 .productCard_grid3 {
-  background: white;
+  background: var(--white);
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -19,7 +19,7 @@
 }
 
 .productCard_grid4 {
-  background: white;
+  background: var(--white);
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -57,15 +57,15 @@
 }
 
 .price {
-  color: #83b735;
+  color: var(--primary-green-light);
   font-weight: bold;
   font-size: 18px;
   /* margin: 5px 0; */
 }
 
 .addToCart {
-  background-color: #46a3df;
-  color: white;
+  background-color: var(--primary-blue);
+  color: var(--white);
   padding: 10px;
   width: 100%;
   border: none;

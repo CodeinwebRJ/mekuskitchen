@@ -40,14 +40,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: white;
+  color: var(--white);
   font-size: 68px;
   font-weight: bold;
   z-index: 10;
 }
 
 .arrow {
-  color: white;
+  color: var(--white);
   font-size: 2rem;
   transition: opacity 0.2s ease-in-out;
 }
@@ -62,14 +62,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: white;
+  color: var(--white);
   text-transform: uppercase;
   font-weight: 600;
   font-size: 12px;
 }
 
 .link {
-  color: white;
+  color: var(--white);
   text-decoration: none;
   transition: color 0.2s ease-in-out;
 }

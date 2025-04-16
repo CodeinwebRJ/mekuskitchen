@@ -1,3 +1,65 @@
+:root {
+  /* Base Colors */
+  --black: #000000;
+  --white: #ffffff;
+  --gray-light: #f5f5f5;
+  --gray-lighter: #f9fafb;
+  --gray-lightest: #ffffff26;
+  --gray-offwhite: #eee;
+  --gray-surface: #e6e6e6;
+  --gray-border: #ddd;
+  --gray-medium: #c3c3c3;
+  --gray-regular: #929292;
+  --gray-dark: #7a7a7a;
+  --gray-darker: #777777;
+  --gray-muted: #6c757d;
+  --gray-secondary: #5c636a;
+  --gray-soft: #908f8f;
+  --gray-placeholder: #6b7280;
+  --gray-solid: #1a1a1a;
+  --gray-solid-2: #2c2c2c;
+  --gray-shadow: #0000001b;
+
+  /* Primary / Accent Colors */
+  --primary-green: #218837;
+  --primary-green-dark: #218838;
+  --primary-green-soft: #2188378b;
+  --primary-blue: #46a3df;
+  --primary-blue-dark: #3a8bc7;
+  --primary-blue-soft: #46a2df20;
+  --primary-orange: #ffa500;
+  --primary-orange-dark: #e69500;
+  --primary-orange-alt: #f59e0b;
+  --primary-yellow: #f39c12;
+  --primary-pink: #c31b7f;
+  --primary-green-light: #83b735;
+  --primary-green-alt: #27ae60;
+  --primary-blue-light: #83c1ea;
+
+  /* Status / Feedback Colors */
+  --success: #28a745;
+  --error: #ff0000;
+  --error-dark: #e60000;
+  --error-alt: #ef4444;
+  --error-soft: #f85353;
+  --info: #3b82f6;
+
+  /* UI / Utility Colors */
+  --text-muted: #4b5563;
+  --text-dark: #374151;
+  --text-light: #d1d5db;
+
+  --black-translucent: #000000ac;
+  --gray-medium-transparent: #838282e0;
+  --gray-deep: #666666;
+  --black-light-shadow: #0000001a;
+  --gray-darkest: #333333;
+  --gray-steel: #555555;
+  --gray-border-light: #cccccc;
+  --blue-soft-overlay: #46a2df20;
+  --gray-label: #999999;
+}
+
 body {
   margin: 0;
   padding: 0;

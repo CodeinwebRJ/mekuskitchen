@@ -11,14 +11,12 @@ import { setCart } from "../../Store/Slice/UserCartSlice";
 const Sidebar = ({ isOpen, onClose }) => {
   const User = useSelector((state) => state.auth.user);
   const Cart = useSelector((state) => state.cart);
-  console.log(Cart.cart.items);
   const dispatch = useDispatch();
 
   const fetchUserCart = async () => {
     try {
       const user_id = User?.userid;
       const res = await getUserCart(user_id);
-      console.log(res.data.data);
       dispatch(setCart(res.data.data));
     } catch (error) {
       console.log(error);
@@ -27,9 +25,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     fetchUserCart();
-  }, []);
-
-  console.log(Cart?.cart?.items);
+  }, [Cart]);
 
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
@@ -50,7 +46,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             </div>
 
             <div className={styles.cartItemDetails}>
-              <p className={styles.cartItemName}>{item?.productDetails?.product_name}</p>
+              <p className={styles.cartItemName}>
+                {item?.productDetails?.product_name}
+              </p>
               <p className={styles.cartItemCalculation}>
                 <span className={styles.quantity}>{item?.quantity}</span>
                 <span className={styles.multiply}>×</span>

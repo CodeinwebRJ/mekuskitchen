@@ -1,7 +1,7 @@
 .relatedProductCard {
   width: 100%;
   height: fit-content;
-  background: white;
+  background: var(--white);
   padding: 12px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -30,8 +30,8 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  background-color: #83c1ea;
-  color: white;
+  background-color: var(--primary-blue-light);
+  color: var(--white);
   padding: 9px 12px;
   border-top-left-radius: 8px;
   font-size: 12px;
@@ -46,7 +46,7 @@
 }
 
 .relatedProductPrice {
-  color: #83b735;
+  color: var(--primary-green-light);
   font-weight: bold;
   font-size: 14px;
   /* margin: 5px 0; */

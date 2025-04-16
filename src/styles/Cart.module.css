@@ -6,7 +6,7 @@
 
 .cartItems {
   flex: 1;
-  background: #fff;
+  background: var(--white);
   padding: 20px 30px;
   border-radius: 5px;
 }
@@ -17,7 +17,7 @@
 }
 
 .cartItem {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .cartItem th,
@@ -50,7 +50,7 @@
 }
 
 .quantityControl button {
-  background: #eee;
+  background: var(--gray-offwhite);
   border: none;
   padding: 5px 10px;
   margin: 0 5px;
@@ -59,7 +59,7 @@
 
 .cartTotals {
   width: 30%;
-  background: #fff;
+  background: var(--white);
   padding: 20px;
   border-radius: 5px;
   text-align: left;
@@ -81,7 +81,7 @@
   padding: 10px;
   margin: 12px 0px;
   background: green;
-  color: white;
+  color: var(--white);
   border: none;
   cursor: pointer;
 }

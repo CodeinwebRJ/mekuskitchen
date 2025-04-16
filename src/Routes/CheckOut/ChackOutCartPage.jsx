@@ -1,46 +1,37 @@
+// src/CheckOutCart.js
 import React, { useState } from "react";
-import Header from "../../Component/Header";
 import style from "../../styles/Cart.module.css";
+import Header from "../../Component/Header";
 import Banner from "../../Component/Banner";
 import Footer from "../../Component/Footer";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateCartItemQuantity,
+  removeFromCart,
+} from "../../../Store/Slice/UserCartSlice";
 
 const CheckOutCart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Dosa",
-      price: 10.0,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9zYXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      id: 2,
-      name: "Roti",
-      price: 0.5,
-      quantity: 1,
-      image:
-        "https://media.istockphoto.com/id/516359240/photo/bhendi-masala-or-bhindi-masala-ladies-finger-curry-with-chapati.jpg?s=612x612&w=0&k=20&c=0mGnvNM2lxl-dTTJlhAfVJE5WidxYmmvrvNs1NZUKvs=",
-    },
-  ]);
+  const dispatch = useDispatch();
 
-  const taxRate = 0.05; // 5% tax rate
+  const Cart = useSelector((state) => state.cart);
+  const [cart, setCart] = useState(Cart);
+
+  const taxRate = 0.05;
 
   const updateQuantity = (id, amount) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + amount) }
-          : item
-      )
-    );
+    dispatch(updateCartItemQuantity({ id, amount }));
   };
 
-  // Calculate subtotal, tax, and total
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const handleRemove = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const subtotal =
+    cart?.cart?.items?.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    ) || 0;
+
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
@@ -61,36 +52,45 @@ const CheckOutCart = () => {
               </tr>
             </thead>
             <tbody>
-              {cartItems.map((item) => (
-                <tr key={item.id} className={style.cartItem}>
-                  <td>
-                    <button>x</button>
-                  </td>
-                  <td>
-                    <div className={style.productCell}>
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className={style.cartItemImage}
-                      />
-                      <span>{item.name}</span>
-                    </div>
-                  </td>
-                  <td>${item.price.toFixed(2)}</td>
-                  <td>
-                    <div className={style.quantityControl}>
-                      <button onClick={() => updateQuantity(item.id, -1)}>
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, 1)}>
-                        +
-                      </button>
-                    </div>
-                  </td>
-                  <td>${(item.price * item.quantity).toFixed(2)}</td>
+              {cart?.cart?.items?.length > 0 ? (
+                cart.cart.items.map((item) => (
+                  <tr key={item.id} className={style.cartItem}>
+                    <td>
+                      <button onClick={() => handleRemove(item.id)}>x</button>
+                    </td>
+                    <td>
+                      <div className={style.productCell}>
+                        <img
+                          src={item?.productDetails?.image_url[0]}
+                          alt="product"
+                          className={style.cartItemImage}
+                        />
+                        <span>{item?.productDetails?.product_name}</span>
+                      </div>
+                    </td>
+                    <td>${item?.price}</td>
+                    <td>
+                      <div className={style.quantityControl}>
+                        <button
+                          onClick={() => updateQuantity(item.id, -1)}
+                          disabled={item.quantity <= 1} // Optional: Disable if quantity is 1
+                        >
+                          -
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.id, 1)}>
+                          +
+                        </button>
+                      </div>
+                    </td>
+                    <td>${(item.price * item.quantity).toFixed(2)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5}>Your cart is empty</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

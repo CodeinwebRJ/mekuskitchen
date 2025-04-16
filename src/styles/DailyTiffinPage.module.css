@@ -17,7 +17,7 @@
 
 .header {
   width: 100%;
-  border-bottom: 2px solid #0000001b;
+  border-bottom: 2px solid var(--gray-shadow);
 }
 
 .headerTitle {
@@ -25,13 +25,13 @@
   padding-bottom: 15px;
   font-weight: 700;
   margin-bottom: -2px;
-  border-bottom: 2px solid #46a3df;
+  border-bottom: 2px solid var(--primary-blue);
 }
 
 .note {
   margin: 0;
   font-size: 16px;
-  color: #777777;
+  color: var(--gray-darker);
 }
 
 .TiffinCardContainer {
