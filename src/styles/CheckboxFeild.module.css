@@ -1,0 +1,13 @@
+.checkboxContainer {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.checkboxContainer input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}

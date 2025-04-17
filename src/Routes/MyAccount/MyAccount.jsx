@@ -8,8 +8,8 @@ import Orders from "./Orders/Orders";
 import Addresses from "./Addresses/Addresses";
 import Downloads from "./Downloads/Downloads";
 import AccountDetails from "./AccountDetails/AccountDetails";
-import Header from "../../component/Header";
 import MyAccountContainer from "./MyAccountContainer";
+import Header from "../../Component/Header";
 
 const MyAccount = () => {
   const [active, setActive] = useState("Dashboard");

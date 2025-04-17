@@ -41,10 +41,14 @@ export const getUserCart = async (data) => {
 
 export const UpdateUserCart = async (data) => {
   console.log(data);
-  return axiosInstance.put("/api/v1/cart/update", data);
+  return axiosInstance.put("/api/v1/cart/update", data);  
 };
 
 export const SendQuestions = async (data) => {
   console.log(data);
   return axiosInstance.post("/api/v1/contact", data);
+};
+
+export const getUserAddress = async (id) => {
+  return axiosInstance.get(`/api/v1/address/${id}`);
 };

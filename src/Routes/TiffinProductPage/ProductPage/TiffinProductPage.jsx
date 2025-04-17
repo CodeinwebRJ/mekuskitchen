@@ -5,8 +5,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../../Component/Footer";
 import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
-import Header from "../../../component/Header";
 import Button from "../../../UI/Button";
+import { FaFacebookF, FaTwitter, FaPinterest } from "react-icons/fa";
+import { BiLogoInstagramAlt } from "react-icons/bi";
+import { FaLinkedinIn } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import Header from "../../../Component/Header";
 
 const TiffinProductPage = () => {
   const location = useLocation();
@@ -16,6 +20,7 @@ const TiffinProductPage = () => {
   const tiffin = useSelector((state) => state.tiffin);
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [itemQuantity, setItemQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -114,7 +119,7 @@ const TiffinProductPage = () => {
               />
             </div>
             <div className={style.thumbnailsContainer}>
-              {/* {product.image_url?.slice(0, 4).map((image, index) => (
+              {product.image_url?.slice(0, 4).map((image, index) => (
                 <img
                   key={index}
                   src={image}
@@ -122,7 +127,7 @@ const TiffinProductPage = () => {
                   className={style.thumbnail}
                   onClick={() => setSelectedImage(image)}
                 />
-              ))} */}
+              ))}
             </div>
           </div>
           <div className={style.productDetails}>
@@ -155,43 +160,69 @@ const TiffinProductPage = () => {
               </button>
 
               <div className={style.addToCartContainer}>
-                <Button variant="warning">ADD TO CART</Button>
+                <Button variant="warning" size="sm">
+                  ADD TO CART
+                </Button>
               </div>
             </div>
             <p className={style.categoryContaine}>
               Category:{" "}
               <span className={style.category}>{product?.category}</span>
             </p>
+
             <div className={style.share}>
               Share:
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Facebook"
-              >
-                f
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Twitter"
-              >
-                t
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Instagram"
-              >
-                i
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Pinterest"
-              >
-                p
-              </a>
+              <div className={style.shareIcons}>
+                <FaFacebookF className={style.shareIcon} />
+                <FaTwitter className={style.shareIcon} />
+                <BiLogoInstagramAlt className={style.shareIcon} />
+                <FaPinterest className={style.shareIcon} />
+                <FaLinkedinIn className={style.shareIcon} />
+              </div>
+            </div>
+
+            {/* items container */}
+            <div className={style.itemsContainer}>
+              {product.items.map((item, index) => (
+                <div className={style.items} key={index}>
+                  <div className={style?.itemNo}>{index + 1}.</div>
+                  <div className={style?.itemName}>{item.name}</div>
+                  <div className={style?.itemPrice}>${item.price}</div>
+                  <div className={style?.itemQuantity}>
+                    <button
+                      onClick={() =>
+                        setItemQuantity(Math.max(1, itemQuantity - 1))
+                      }
+                      className={style.quantityButton}
+                      aria-label="Decrease quantity"
+                    >
+                      -
+                    </button>
+
+                    <input
+                      type="number"
+                      value={itemQuantity}
+                      onChange={handleQuantityChange}
+                      min="1"
+                      className={style.quantityInput}
+                      aria-label="Quantity"
+                    />
+                    <button
+                      onClick={() => setItemQuantity(itemQuantity + 1)}
+                      className={style.quantityButton}
+                      aria-label="Increase quantity"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <div className={style?.itemQuantityUnit}>
+                    {item?.quantityUnit}
+                  </div>
+
+                  <RiDeleteBin5Fill className={style.deleteIcon} />
+                </div>
+              ))}
             </div>
           </div>
         </div>

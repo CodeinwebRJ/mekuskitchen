@@ -3,6 +3,7 @@ import productSlice from "./Slice/ProductSlice";
 import authSlice from "../Store/Slice/UserSlice";
 import TiffinSlice from "../Store/Slice/TiffinSlice";
 import UserCartSlice from "../Store/Slice/UserCartSlice";
+import addressSlice from "../Store/Slice/AddressSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     auth: authSlice,
     tiffin: TiffinSlice,
     cart: UserCartSlice,
+    address: addressSlice,
   },
 });
 

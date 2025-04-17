@@ -1,0 +1,62 @@
+.addressContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.billingAddressContainer,
+.shippingAddressContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.addressTitle {
+  font-size: 21px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Address Card */
+.addressCardContainer {
+  width: 100%;
+  height: 100%;
+  /* padding: 13px; */
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.1s ease-in-out;
+}
+
+.addressCard {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.fullName {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+}
+
+.address,
+.cityState,
+.CountryPostcode,
+.phoneNumber {
+  font-size: 15px;
+  color: #333;
+}
+
+/* Address Not Found Message */
+.addressNotFoundMessage {
+  font-size: 17px;
+  font-style: italic;
+  color: var(--gray-dark);
+}

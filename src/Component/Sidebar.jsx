@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import styles from "../styles/Sidebar.module.css";
+import React, { useEffect, useRef } from "react";
+import style from "../styles/Sidebar.module.css";
 import { FaTimes } from "react-icons/fa";
 import Button from "../UI/Button";
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -12,6 +12,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const User = useSelector((state) => state.auth.user);
   const Cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const sidebarRef = useRef(null);
 
   const fetchUserCart = async () => {
     try {
@@ -48,55 +49,79 @@ const Sidebar = ({ isOpen, onClose }) => {
       .toFixed(2);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-      <div className={styles.closeBtn} onClick={onClose}>
-        <h5>SHOPPING CART</h5>
-        <FaTimes className={styles.closeIcon} />
-      </div>
+    <>
+      {isOpen && <div className={style.backdrop} onClick={onClose}></div>}
+      <div
+        className={`${style.sidebar} ${isOpen ? style.open : ""}`}
+        ref={sidebarRef}
+      >
+        <div className={style.closeBtn}>
+          <h5>SHOPPING CART</h5>
+          <FaTimes className={style.closeIcon} onClick={onClose} />
+        </div>
 
-      <div className={styles.cartContainer}>
-        {Cart?.items?.items?.map((item, index) => (
-          <div className={styles.cartItem} key={index}>
-            <div className={styles.cartItemImageContainer}>
-              <img
-                src={item?.productDetails?.image_url[0]}
-                alt="product"
-                className={styles.cartItemImage}
-              />
-            </div>
+        <div className={style.cartContainer}>
+          {Cart?.items?.items?.map((item, index) => (
+            <div className={style.cartItem} key={index}>
+              <div className={style.cartItemImageContainer}>
+                <img
+                  src={item?.productDetails?.image_url[0]}
+                  alt="product"
+                  className={style.cartItemImage}
+                />
+              </div>
 
-            <div className={styles.cartItemDetails}>
-              <p className={styles.cartItemName}>
-                {item?.productDetails?.product_name}
-              </p>
-              <p className={styles.cartItemCalculation}>
-                <span className={styles.quantity}>{item?.quantity}</span>
-                <span className={styles.multiply}>×</span>
-                <span className={styles.price}>${item?.price}</span>
-              </p>
-              <div onClick={() => handleDeleteItem(item.product_id)}>
-                <RiDeleteBin5Fill className={styles.deleteIcon} />
+              <div className={style.cartItemDetails}>
+                <p className={style.cartItemName}>
+                  {item?.productDetails?.product_name}
+                </p>
+                <p className={style.cartItemCalculation}>
+                  <span className={style.quantity}>{item?.quantity}</span>
+                  <span className={style.multiply}>×</span>
+                  <span className={style.price}>${item?.price}</span>
+                </p>
+                <div onClick={() => handleDeleteItem(item.product_id)}>
+                  <RiDeleteBin5Fill className={style.deleteIcon} />
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        <div className={style.cartItemSubtotal}>
+          <div className={style.subtotalContainer}>
+            <h5 className={style.subtotalText}>SUBTOTAL:</h5>
+            <h5 className={style.subtotalPrice}>${calculateSubtotal()}</h5>
           </div>
-        ))}
-      </div>
 
-      <div className={styles.cartItemSubtotal}>
-        <div className={styles.subtotalContainer}>
-          <h5 className={styles.subtotalText}>SUBTOTAL:</h5>
-          <h5 className={styles.subtotalPrice}>${calculateSubtotal()}</h5>
-        </div>
-
-        <div className={styles.subtotalButtons}>
-          <Link to={"/cart"}>
-            <Button variant="light">VIEW CART</Button>
-          </Link>
-          <Button variant="primary">CHECKOUT</Button>
+          <div className={style.subtotalButtons}>
+            <Link to={"/cart"}>
+              <Button variant="light" size="sm">
+                VIEW CART
+              </Button>
+            </Link>
+            <Button variant="primary" size="sm">
+              CHECKOUT
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -15,10 +15,6 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
-
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategory(categoryName));
   };
@@ -63,7 +59,7 @@ const Header = () => {
               <Link
                 key={index}
                 to={`/product-category/${item.value}`}
-                className={styles.ourMenuDropdownItem }
+                className={styles.ourMenuDropdownItem}
                 onClick={() => handleCategoryClick(item.value)}
               >
                 {item.name}
@@ -111,7 +107,7 @@ const Header = () => {
               Downloads
             </Link>
             <Link
-              to="/my-account/edit-address"
+              to="/my-account/addresses"
               className={styles.userDropdownItem}
             >
               Address
@@ -126,7 +122,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className={styles.cart} onClick={toggleSidebar}>
+        <div className={styles.cart} onClick={() => setIsSidebarOpen(true)}>
           <PiShoppingCartSimpleBold className={styles.icon} />
           <span className={styles.cartCount}>{cartCount}</span>
         </div>
@@ -134,7 +130,7 @@ const Header = () => {
         <span className={styles.cartTotal}>${cartTotal.toFixed(2)}</span>
       </div>
 
-      <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </header>
   );
 };

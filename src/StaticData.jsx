@@ -27,7 +27,7 @@ export const MyAccountData = [
     id: 4,
     title: "Addresses",
     icon: <TfiLocationPin />,
-    route: "/my-account/edit-address",
+    route: "/my-account/addresses",
   },
   {
     id: 5,

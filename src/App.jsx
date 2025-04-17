@@ -15,13 +15,13 @@ import SignUpPage from "./Routes/SignUp/SignUpPage.jsx";
 import LoginPage from "./Routes/Login/LoginPage.jsx";
 import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
 import TiffinProductPage from "./Routes/TiffinProductPage/ProductPage/TiffinProductPage.jsx";
-import MyAccount from "./Routes/MyAccount/MyAccount.jsx";
 import Addresses from "./Routes/MyAccount/Addresses/Addresses.jsx";
 import Downloads from "./Routes/MyAccount/Downloads/Downloads.jsx";
 import Orders from "./Routes/MyAccount/Orders/Orders.jsx";
 import AccountDetails from "./Routes/MyAccount/AccountDetails/AccountDetails.jsx";
 import Dashboard from "./Routes/MyAccount/Dashboard/Dashboard.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
+import AddressForm from "./Routes/MyAccount/Addresses/AddressForm.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -98,11 +98,16 @@ const App = () => {
         <Route path="/cart" element={<CheckOutCart />} />
         <Route path="/contactus" element={<ContactPage />} />
 
+        {/* dashboard routes */}
         <Route path="/my-account" element={<Dashboard />} />
         <Route path="/my-account/orders" element={<Orders />} />
         <Route path="/my-account/downloads" element={<Downloads />} />
-        <Route path="/my-account/edit-address" element={<Addresses />} />
-        <Route path="/my-account/account-details" element={<AccountDetails />} />
+        <Route path="/my-account/addresses" element={<Addresses />} />
+        <Route path="/my-account/add-new-address" element={<AddressForm />} />
+        <Route
+          path="/my-account/account-details"
+          element={<AccountDetails />}
+        />
       </Routes>
     </div>
   );

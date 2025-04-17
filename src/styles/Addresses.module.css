@@ -1,52 +1,80 @@
-.addressesContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-  }
-  
-  .userMessage {
-    display: flex;
-    gap: 5px;
-    color: var(--gray-dark);
-  }
-  
-  .addressContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .billingAddressContainer,
-  .shippingAddressContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 19px;
-  }
-  
-  .addressTitle {
-    font-size: 21px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  .addBillingText,
-  .addShippingText {
-    width: fit-content;
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--gray-dark);
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.1s ease-in-out;
-  }
-  
-  .addBillingText:hover,
-  .addShippingText:hover {
-    color: var(--primary-green);
-  }
-  
-  .addressNotFoundMessage {
-    font-size: 17px;
-    font-style: italic;
-    color: var(--gray-dark);
-  }
-  
+.addressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.userMessage {
+  display: flex;
+  gap: 5px;
+  color: var(--gray-dark);
+}
+
+.addressHeaderButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.addNewAddressButton {
+  width: fit-content;
+}
+
+.billingAddressContainer {
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 35px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.billingTitle {
+  font-size: 21px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.billingForm {
+  padding: 25px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.billingFormColumn1 {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+}
+
+.billingFormColumn3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkboxLabel {
+  user-select: none;
+  cursor: pointer;
+}
+
+.billingFormButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.submitButtonContainer {
+  width: fit-content;
+  margin-top: 10px;
+}
+
+.shippingAddress {
+  margin: 5px 0;
+}
