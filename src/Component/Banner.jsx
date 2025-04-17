@@ -41,12 +41,9 @@ const Banner = (props) => {
       </div>
 
       <h1 className={style.bannerText}>
-        {name === "FOOD" || name === "GROCERY" ? (
-          <Link to={"/home"} className={style.arrow}>
-            <BsArrowLeft />
-          </Link>
-        ) : null}
-
+        <Link to={"/home"} className={style.arrow}>
+          <BsArrowLeft />
+        </Link>
         {name}
       </h1>
 

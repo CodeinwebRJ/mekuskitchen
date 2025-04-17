@@ -25,7 +25,6 @@ const ProductCard = (props) => {
 
     try {
       const res = await AddtoCart(cartItem);
-      console.log(res.data.data);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }

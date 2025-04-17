@@ -89,3 +89,8 @@ ul {
     url(../public/grocery_1.jpg) center center no-repeat;
   background-size: cover;
 }
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+}

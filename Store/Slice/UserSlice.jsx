@@ -3,8 +3,6 @@ import userDetail from "../../src/Utils/localStorage";
 
 const userData = userDetail || {};
 
-console.log(userDetail)
-
 const initialState = {
   isAuthenticated: Boolean(userData.api_token),
   token: userData.api_token || null,

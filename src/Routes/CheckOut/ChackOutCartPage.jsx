@@ -5,29 +5,59 @@ import Header from "../../Component/Header";
 import Banner from "../../Component/Banner";
 import Footer from "../../Component/Footer";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  updateCartItemQuantity,
-  removeFromCart,
-} from "../../../Store/Slice/UserCartSlice";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
+import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 
 const CheckOutCart = () => {
   const dispatch = useDispatch();
 
+  const User = useSelector((state) => state.auth.user);
   const Cart = useSelector((state) => state.cart);
-  const [cart, setCart] = useState(Cart);
 
   const taxRate = 0.05;
 
-  const updateQuantity = (id, amount) => {
-    dispatch(updateCartItemQuantity({ id, amount }));
+  const handleRemove = async (id) => {
+    try {
+      const data = {
+        user_id: User?.userid,
+        type: "product",
+        product_id: id,
+        quantity: 0,
+      };
+      const res = await UpdateUserCart(data);
+      dispatch(setCart(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleRemove = (id) => {
-    dispatch(removeFromCart(id));
+  const updateQuantity = async (id, delta) => {
+    try {
+      console.log(Cart);
+      console.log(id);
+      const currentItem = Cart?.items?.items?.find((item) => item._id === id);
+      if (!currentItem) return;
+
+      const newQuantity = currentItem.quantity + delta;
+
+      if (newQuantity < 1) return;
+
+      const data = {
+        user_id: User?.userid,
+        type: "product",
+        product_id: currentItem.product_id,
+        quantity: newQuantity,
+      };
+
+      const res = await UpdateUserCart(data);
+      dispatch(setCart(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const subtotal =
-    cart?.cart?.items?.reduce(
+    Cart?.items?.items?.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
     ) || 0;
@@ -52,11 +82,13 @@ const CheckOutCart = () => {
               </tr>
             </thead>
             <tbody>
-              {cart?.cart?.items?.length > 0 ? (
-                cart.cart.items.map((item) => (
+              {Cart?.items?.items?.length > 0 ? (
+                Cart?.items?.items?.map((item) => (
                   <tr key={item.id} className={style.cartItem}>
                     <td>
-                      <button onClick={() => handleRemove(item.id)}>x</button>
+                      <button onClick={() => handleRemove(item.product_id)}>
+                        x
+                      </button>
                     </td>
                     <td>
                       <div className={style.productCell}>
@@ -72,13 +104,13 @@ const CheckOutCart = () => {
                     <td>
                       <div className={style.quantityControl}>
                         <button
-                          onClick={() => updateQuantity(item.id, -1)}
-                          disabled={item.quantity <= 1} // Optional: Disable if quantity is 1
+                          onClick={() => updateQuantity(item._id, -1)}
+                          disabled={item.quantity <= 1}
                         >
                           -
                         </button>
                         <span>{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.id, 1)}>
+                        <button onClick={() => updateQuantity(item._id, 1)}>
                           +
                         </button>
                       </div>
