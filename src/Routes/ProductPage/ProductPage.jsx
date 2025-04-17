@@ -66,6 +66,8 @@ const ProductPage = () => {
     return <p>Product not found</p>;
   }
 
+  console.log(product);
+
   return (
     <div>
       <Header />
@@ -194,6 +196,10 @@ const ProductPage = () => {
               >
                 p
               </a>
+            </div>
+
+            <div>
+              {product.description && <span>{product.description}</span>}
             </div>
           </div>
         </div>
