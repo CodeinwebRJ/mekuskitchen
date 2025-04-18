@@ -22,6 +22,7 @@ import AccountDetails from "./Routes/MyAccount/AccountDetails/AccountDetails.jsx
 import Dashboard from "./Routes/MyAccount/Dashboard/Dashboard.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import AddressForm from "./Routes/MyAccount/Addresses/AddressForm.jsx";
+import WishlistPage from "./Routes/Wishlist/WishlistPage.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -96,6 +97,7 @@ const App = () => {
         <Route path="/product/:category/:id" element={<ProductPage />} />
         <Route path="/product/tiffin/:id" element={<TiffinProductPage />} />
         <Route path="/cart" element={<CheckOutCart />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/contactus" element={<ContactPage />} />
 
         {/* dashboard routes */}

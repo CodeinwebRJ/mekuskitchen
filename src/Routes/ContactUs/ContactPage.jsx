@@ -119,8 +119,8 @@ const ContactPage = () => {
             </div>
 
             <form onSubmit={handleSubmit} className={style.rightContainerForm}>
-              <div className={style.nameEmailContainer}>
-                <div>
+              <div className={style.formFieldsColumn2}>
+                <div className={style.inputFieldContainer}>
                   <InputField
                     label={true}
                     labelName="Your Name"
@@ -133,7 +133,8 @@ const ContactPage = () => {
                     <div className="errorMessage">{errors.name}</div>
                   )}
                 </div>
-                <div>
+
+                <div className={style.inputFieldContainer}>
                   <InputField
                     label={true}
                     labelName="Your Email"
@@ -148,18 +149,20 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className={style.phoneMenusContainer}>
-                <InputField
-                  label={true}
-                  labelName="Phone Number"
-                  type="number"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-                {formData.phone === "" && errors.phone && (
-                  <div className="errorMessage">{errors.phone}</div>
-                )}
+              <div className={style.formFieldsColumn1}>
+                <div className={style.inputFieldContainer}>
+                  <InputField
+                    label={true}
+                    labelName="Phone Number"
+                    type="number"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                  {formData.phone === "" && errors.phone && (
+                    <div className="errorMessage">{errors.phone}</div>
+                  )}
+                </div>
               </div>
 
               <div className={style.messageContainer}>
@@ -180,7 +183,12 @@ const ContactPage = () => {
               </div>
 
               <div className={style.submitButtonContainer}>
-                <Button type="submit" onClick={handleSubmit}>
+                <Button
+                  type="submit"
+                  onClick={handleSubmit}
+                  variant="primary"
+                  size="md"
+                >
                   Ask A Question
                 </Button>
               </div>

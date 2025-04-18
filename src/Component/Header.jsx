@@ -7,6 +7,7 @@ import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import Sidebar from "../Component/Sidebar";
 import { setCategory } from "../../Store/Slice/ProductSlice";
 import { useDispatch } from "react-redux";
+import { FaRegHeart } from "react-icons/fa6";
 
 const Header = () => {
   const [cartCount, setCartCount] = useState(0);
@@ -121,6 +122,10 @@ const Header = () => {
             <span className={styles.userDropdownItem}>Logout</span>
           </div>
         </div>
+
+        <Link to="/wishlist" className={styles.wishlist}>
+          <FaRegHeart className={styles.icon} />
+        </Link>
 
         <div className={styles.cart} onClick={() => setIsSidebarOpen(true)}>
           <PiShoppingCartSimpleBold className={styles.icon} />

@@ -23,7 +23,6 @@
 
 .submitButton.sm {
   padding: 8px 16px;
-  padding-bottom: 6px;
 }
 
 .submitButton.md {
@@ -49,7 +48,8 @@
 }
 
 .primary:hover {
-  background-color: var(--primary-blue-dark);
+  /* background-color: var(--primary-blue-dark); */
+  background-color: #3592cd;
 }
 
 .primary:disabled {

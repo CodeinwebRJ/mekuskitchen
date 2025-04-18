@@ -27,7 +27,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  user-select: none;
   transition: all 0.1s ease-in-out;
 }
 

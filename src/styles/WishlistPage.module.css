@@ -1,0 +1,50 @@
+.wishlistContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 40px 140px;
+}
+
+.headingContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border-bottom: 2px solid var(--gray-shadow); */
+  padding-bottom: 40px;
+}
+
+.headingTitle {
+  width: fit-content;
+  padding-bottom: 15px;
+  font-weight: 700;
+  margin-bottom: -2px;
+  border-bottom: 2px solid var(--primary-blue);
+}
+
+.headerContainer {
+  width: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerLeftSide p {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.headerRightSide {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.headerRightSide .listIcon {
+  font-size: 28px;
+}

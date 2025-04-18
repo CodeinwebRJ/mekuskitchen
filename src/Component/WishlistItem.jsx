@@ -1,0 +1,56 @@
+import React from "react";
+import style from "../styles/WishlistItem.module.css";
+import RatingStar from "./RatingStar";
+import { RiShareLine } from "react-icons/ri";
+import { AiOutlineDelete } from "react-icons/ai";
+import Button from "../UI/Button";
+
+const WishlistItem = (props) => {
+  const { product } = props;
+
+  return (
+    <div className={`${style.itemContainer} ${style.borderBottom}`}>
+      <div className={style.item}>
+        <div className={style.itemLeftSide}>
+          <div className={style.itemImage}>
+            <img
+              src={`${product?.productDetails?.image_url[0]}`}
+              alt="wishlist-item"
+            />
+          </div>
+          <div className={style.itemContent}>
+            <span className={style.itemName}>
+              {product?.productDetails?.product_name}
+            </span>
+            <span className={style.itemDescription}>
+              {product?.productDetails?.description}
+            </span>
+            <span className={style.itemPrice}>
+              ${product?.productDetails?.price}
+            </span>
+          </div>
+        </div>
+
+        <div className={style.itemRightSide}>
+          <div className={style.stockContainer}>
+            <span className={style.stockTitle}>In Stock</span>
+            <RatingStar start={0} stop={5} rating={3} disabled={true} />
+
+            <div className={style.controllers}>
+              <RiShareLine className={style.icon} />
+              <AiOutlineDelete className={style.icon} />
+            </div>
+          </div>
+
+          <div className={style.buttonContainer}>
+            <Button variant="primary" size="sm">
+              Add to Cart
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default WishlistItem;

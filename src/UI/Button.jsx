@@ -12,12 +12,13 @@ const Button = (props) => {
     onChange = () => {},
     onFocus = () => {},
     disabled = false,
+    size = "md",
   } = props;
 
   return (
     <button
       type={type}
-      className={`${style.submitButton} ${style[variant]} ${className} ${
+      className={`${style.submitButton} ${style[variant]} ${style[size]} ${className} ${
         disabled && style.disabled
       }`}
       onClick={onClick}

@@ -140,13 +140,15 @@
   gap: 20px;
 }
 
-.nameEmailContainer {
-  display: flex;
+.formFieldsColumn2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
-.phoneMenusContainer {
-  display: flex;
+.formFieldsColumn1 {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
   gap: 20px;
 }
 
@@ -184,7 +186,7 @@
 }
 
 .submitButtonContainer {
-  width: 21%;
+  width: fit-content;
 }
 
 @media (max-width: 1200px) {
@@ -192,13 +194,13 @@
     padding: 40px 80px;
   }
 
-  .nameEmailContainer {
-    flex-direction: column;
+  .formFieldsColumn2 {
+    grid-template-columns: repeat(1, 1fr);
     gap: 20px;
   }
 
-  .phoneMenusContainer {
-    flex-direction: column;
+  .formFieldsColumn1 {
+    grid-template-columns: repeat(1, 1fr);
     gap: 20px;
   }
 }

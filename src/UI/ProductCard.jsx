@@ -51,7 +51,7 @@ const ProductCard = (props) => {
         />
         <p className={style.productName}>{product.product_name}</p>
         <div className={style.rating}>
-          <RatingStar rating={3} start={0} stop={5} />
+          <RatingStar rating={3} start={0} stop={5} disabled={true} />
         </div>
         <p className={style.price}>${product.price}</p>
       </Link>

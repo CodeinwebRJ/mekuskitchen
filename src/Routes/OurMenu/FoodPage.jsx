@@ -12,18 +12,30 @@ import ProductCard from "../../UI/ProductCard";
 import FilterContainer from "../../Component/FilterContainer.jsx";
 import ShowProducts from "../../Component/ShowProducts";
 import { getTopRatedProduct } from "../../axiosConfig/AxiosConfig.js";
-import Header from "../../component/Header";
+import Header from "../../Component/Header";
+import FilterAndShorting from "../../UI/FilterAndShorting.jsx";
 
 const FoodPage = () => {
+  const [toprated, setTopRated] = useState(null);
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const { products, priceRange, grid, loading, error } = useSelector(
     (state) => state.product
   );
 
-  const [toprated, setTopRated] = useState(null);
-
-  const dispatch = useDispatch();
+  const sortingOption = [
+    {
+      id: 1,
+      label: "Sort by price: low to high",
+      value: "priceLowToHigh",
+    },
+    {
+      id: 2,
+      label: "Sort by price: high to low",
+      value: "priceHighToLow",
+    },
+  ];
 
   const handlePriceChange = (e) => {
     dispatch(setPriceRange(parseInt(e.target.value)));
@@ -103,11 +115,10 @@ const FoodPage = () => {
                 </div>
 
                 {/* Sorting */}
-                <select className={style.sortingSelect}>
-                  <option>Default sorting</option>
-                  <option>Sort by price: low to high</option>
-                  <option>Sort by price: high to low</option>
-                </select>
+                <FilterAndShorting
+                  options={sortingOption}
+                  placeholder="Default sorting"
+                />
               </div>
             </div>
             {loading ? (

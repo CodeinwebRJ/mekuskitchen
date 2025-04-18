@@ -12,11 +12,11 @@ const TiffinCard = (props) => {
     : "N/A";
 
   return (
-    <Link
-      to={`/product/tiffin/${String(item.day).toLowerCase()}`}
-      state={{ id: item._id }}
-    >
-      <div className={style.tiffinCard}>
+    <div className={style.tiffinCard}>
+      <Link
+        to={`/product/tiffin/${String(item.day).toLowerCase()}`}
+        state={{ id: item._id }}
+      >
         <div className={style.tiffinImgContainer}>
           <img
             src={item?.image_url[0] || ""}
@@ -37,10 +37,13 @@ const TiffinCard = (props) => {
         {item?.subTotal && (
           <p className={style.price}>${Number(item?.subTotal).toFixed(2)}</p>
         )}
-
-        <AddToCartButton onclick={() => {}} />
-      </div>
-    </Link>
+      </Link>
+      <AddToCartButton
+        onclick={() => {
+          console.log("first");
+        }}
+      />
+    </div>
   );
 };
 

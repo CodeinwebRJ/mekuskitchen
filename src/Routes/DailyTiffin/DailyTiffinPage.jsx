@@ -4,7 +4,7 @@ import Footer from "../../Component/Footer";
 import Banner from "../../Component/Banner";
 import TiffinCard from "../../UI/TiffinCard";
 import { useSelector } from "react-redux";
-import Header from "../../component/Header";
+import Header from "../../Component/Header";
 
 const DailyTiffinPage = () => {
   const tiffin = useSelector((state) => state.tiffin);
