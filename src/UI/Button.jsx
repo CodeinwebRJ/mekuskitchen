@@ -13,12 +13,13 @@ const Button = (props) => {
     onFocus = () => {},
     disabled = false,
     size = "md",
+    radius = "rd-md",
   } = props;
 
   return (
     <button
       type={type}
-      className={`${style.submitButton} ${style[variant]} ${style[size]} ${className} ${
+      className={`${style.submitButton} ${style[variant]} ${style[size]} ${style[radius]} ${className} ${
         disabled && style.disabled
       }`}
       onClick={onClick}

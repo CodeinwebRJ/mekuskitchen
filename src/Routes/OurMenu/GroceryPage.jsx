@@ -159,7 +159,7 @@ const GroceryPage = () => {
                       <div className={style.rating}>
                         <span>★</span>
                       </div>
-                      <p className={style.price}>${product.price}</p>
+                      <p className="price">${product.price}</p>
                       <button className={style.addToCart}>ADD TO CART</button>
                     </div>
                   </Link>

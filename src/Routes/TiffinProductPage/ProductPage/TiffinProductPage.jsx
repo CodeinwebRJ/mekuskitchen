@@ -132,7 +132,7 @@ const TiffinProductPage = () => {
           </div>
           <div className={style.productDetails}>
             <h1>{product.day}</h1>
-            <p className={style.price}>${product?.subTotal}</p>
+            <p className="price">${product?.subTotal}</p>
             <div className={style.quantity}>
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}

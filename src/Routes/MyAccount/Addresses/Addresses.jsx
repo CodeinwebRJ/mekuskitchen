@@ -27,7 +27,6 @@ const Addresses = () => {
 
   console.log(formResponse);
 
-    
   // fetching user address
   const handleFetchAddress = async () => {
     try {
@@ -112,12 +111,7 @@ const Addresses = () => {
 
       {showAddressForm && <AddressForm />}
 
-      {isEditAddress && (
-        <EditAddressForm
-          formResponse={formResponse}
-          setFormResponse={setFormResponse}
-        />
-      )}
+      {isEditAddress && <AddressForm />}
     </MyAccountContainer>
   );
 };

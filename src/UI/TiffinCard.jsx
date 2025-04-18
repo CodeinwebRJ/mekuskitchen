@@ -35,7 +35,7 @@ const TiffinCard = (props) => {
 
         {/* Price */}
         {item?.subTotal && (
-          <p className={style.price}>${Number(item?.subTotal).toFixed(2)}</p>
+          <p className="price">${Number(item?.subTotal).toFixed(2)}</p>
         )}
       </Link>
       <AddToCartButton

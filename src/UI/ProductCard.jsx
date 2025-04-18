@@ -5,10 +5,13 @@ import RatingStar from "../Component/RatingStar";
 import AddToCartButton from "./AddToCartButton";
 import { useSelector } from "react-redux";
 import { AddtoCart } from "../axiosConfig/AxiosConfig";
+import { useDispatch } from "react-redux";
+import { setCart } from "../../Store/Slice/UserCartSlice";
 
 const ProductCard = (props) => {
   const { product, grid } = props;
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
   const handleAddtoCart = async () => {
     if (!user) {
@@ -25,6 +28,7 @@ const ProductCard = (props) => {
 
     try {
       const res = await AddtoCart(cartItem);
+      dispatch(setCart(res.data.data));
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -53,7 +57,7 @@ const ProductCard = (props) => {
         <div className={style.rating}>
           <RatingStar rating={3} start={0} stop={5} disabled={true} />
         </div>
-        <p className={style.price}>${product.price}</p>
+        <p className="price">${product.price}</p>
       </Link>
       <AddToCartButton onclick={handleAddtoCart} />
     </div>

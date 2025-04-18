@@ -56,13 +56,6 @@
   margin: 0;
 }
 
-.price {
-  color: var(--primary-green-light);
-  font-weight: bold;
-  font-size: 18px;
-  /* margin: 5px 0; */
-}
-
 .addToCart {
   background-color: var(--primary-blue);
   color: var(--white);

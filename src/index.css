@@ -94,3 +94,9 @@ ul {
   color: red;
   font-size: 12px;
 }
+
+.price {
+  color: var(--primary-green-light) !important;
+  font-weight: bold !important;
+  /* font-size: 18px; */
+}

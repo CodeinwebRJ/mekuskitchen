@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "../../styles/ProductPage.module.css";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../component/Header";
+import Header from "../../Component/Header";
 import ReviewComponent from "./ReviewComponent";
 import RelatedProduct from "./RelatedProduct";
 import Footer from "../../Component/Footer";
@@ -65,8 +65,6 @@ const ProductPage = () => {
   if (!product || !Array.isArray(products) || products.length === 0) {
     return <p>Product not found</p>;
   }
-
-  console.log(product);
 
   return (
     <div>
@@ -133,7 +131,7 @@ const ProductPage = () => {
           </div>
           <div className={style.productDetails}>
             <h1>{product.product_name}</h1>
-            <p className={style.price}>${product?.price}</p>
+            <p className={`${style.productPrice} price`}>${product?.price}</p>
             <div className={style.quantity}>
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -159,7 +157,9 @@ const ProductPage = () => {
               </button>
 
               <div className={style.addToCartContainer}>
-                <Button variant="warning">ADD TO CART</Button>
+                <Button variant="warning" size="sm">
+                  ADD TO CART
+                </Button>
               </div>
             </div>
             <p className={style.categoryContaine}>

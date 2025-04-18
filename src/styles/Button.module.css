@@ -33,6 +33,11 @@
   padding: 16px 32px;
 }
 
+.submitButton.rd-sm {
+  border-radius: 5px;
+  font-weight: 400;
+}
+
 .disabled {
   background-color: var(--primary-blue);
   opacity: 0.5;

@@ -20,7 +20,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       const res = await getUserCart(user_id);
       dispatch(setCart(res.data.data));
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching user cart", error);
     }
   };
 
@@ -39,14 +39,15 @@ const Sidebar = ({ isOpen, onClose }) => {
       const res = await UpdateUserCart(data);
       dispatch(setCart(res.data.data));
     } catch (error) {
-      console.log(error);
+      console.error("Error deleting item from cart", error);
     }
   };
 
   const calculateSubtotal = () => {
-    return Cart?.items?.items
+    const subtotal = Cart?.items?.items
       ?.reduce((acc, item) => acc + item?.price * item?.quantity, 0)
       .toFixed(2);
+    return subtotal;
   };
 
   useEffect(() => {
@@ -93,7 +94,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <p className={style.cartItemCalculation}>
                   <span className={style.quantity}>{item?.quantity}</span>
                   <span className={style.multiply}>×</span>
-                  <span className={style.price}>${item?.price}</span>
+                  <span className="price">${item?.price}</span>
                 </p>
                 <div onClick={() => handleDeleteItem(item.product_id)}>
                   <RiDeleteBin5Fill className={style.deleteIcon} />
@@ -106,7 +107,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
-            <h5 className={style.subtotalPrice}>${calculateSubtotal()}</h5>
+            <h5 className={`${style.subtotalPrice} price`}>${calculateSubtotal()}</h5>
           </div>
 
           <div className={style.subtotalButtons}>

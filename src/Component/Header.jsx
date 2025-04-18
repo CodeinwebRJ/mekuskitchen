@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/Header.module.css";
 import { Link } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
@@ -6,19 +6,26 @@ import { LuUserRound } from "react-icons/lu";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import Sidebar from "../Component/Sidebar";
 import { setCategory } from "../../Store/Slice/ProductSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart } from "react-icons/fa6";
 
 const Header = () => {
-  const [cartCount, setCartCount] = useState(0);
-  const [cartTotal, setCartTotal] = useState(0);
+  // const [cartCount, setCartCount] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const dispatch = useDispatch();
+
+  const Cart = useSelector((state) => state.cart);
 
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategory(categoryName));
   };
+
+  const totalAmount = Cart?.items?.totalAmount;
+
+  const cartCount = Cart?.items?.items?.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
 
   const data = [
     {
@@ -129,10 +136,12 @@ const Header = () => {
 
         <div className={styles.cart} onClick={() => setIsSidebarOpen(true)}>
           <PiShoppingCartSimpleBold className={styles.icon} />
-          <span className={styles.cartCount}>{cartCount}</span>
+          <span className={styles.cartCount}>{cartCount ?? 0}</span>
         </div>
 
-        <span className={styles.cartTotal}>${cartTotal.toFixed(2)}</span>
+        <span className={styles.cartTotal}>
+          ${totalAmount ?? (0).toFixed(2)}
+        </span>
       </div>
 
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
