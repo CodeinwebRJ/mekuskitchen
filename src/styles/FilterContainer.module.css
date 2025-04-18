@@ -11,6 +11,10 @@
   margin: 12px 0px;
 }
 
+.filterBtn {
+  width: fit-content;
+}
+
 .filterbtn {
   background-color: var(--success);
   color: var(--white);
@@ -44,6 +48,9 @@
 
 .rating {
   pointer-events: none;
+}
+.topRatedPrice {
+  color: var(--green-light);
 }
 
 .filterSection {

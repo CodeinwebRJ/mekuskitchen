@@ -111,7 +111,7 @@ const ReviewComponent = ({
           </div>
 
           <div className={style.submitButtonContainer}>
-            <Button variant="success" type="submit">
+            <Button variant="success" type="submit" size="sm">
               Submit Review
             </Button>
           </div>

@@ -1,9 +1,10 @@
 import React from "react";
 import style from "../styles/FilterContainer.module.css";
 import RatingStar from "./RatingStar";
+import Button from "../UI/Button";
 
 const FilterContainer = (props) => {
-  const { priceRange, handlePriceChange, topRatedProducts } = props;
+  const { priceRange, handlePriceChange, data } = props;
 
   return (
     <aside className={style.sidebar}>
@@ -21,28 +22,37 @@ const FilterContainer = (props) => {
           <p>
             Price: ${priceRange[0]} - ${priceRange[1]}
           </p>
-          <button className={style.filterbtn}>FILTER</button>
+
+          <div className={style.filterBtn}>
+            <Button variant="success" size="sm" radius="rd-sm">
+              FILTER
+            </Button>
+          </div>
         </div>
         <hr />
         <h3>TOP RATED PRODUCTS</h3>
         <ul>
-          {topRatedProducts?.map((product, index) => (
+          {data?.map((product, index) => (
             <div key={index}>
               <li className={style.topRatedItem}>
                 <img
-                  src={product.image_url[0]}
+                  src={product?.productDetails?.image_url[0]}
                   x
-                  alt={product.name}
+                  alt={product?.productDetails?.product_name}
                   className={style.topRatedImg}
                 />
                 <div className={style.topRatedInfo}>
-                  <p>{product.product_name}</p>
+                  <p>{product?.productDetails?.product_name}</p>
                   <div className={style.rating}>
                     {/* <span>★</span> */}
 
-                    <RatingStar rating={product.avgRating} start={0} stop={5} />
+                    <RatingStar
+                      rating={product?.averageRating}
+                      start={0}
+                      stop={5}
+                    />
                   </div>
-                  <p className={style.topRatedPrice}>${product.price}</p>
+                  <p className="price">${product?.productDetails?.price}</p>
                 </div>
               </li>
               <hr />

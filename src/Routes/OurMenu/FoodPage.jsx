@@ -20,9 +20,11 @@ const FoodPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { products, priceRange, grid, loading, error } = useSelector(
+  const { priceRange, grid, loading, error } = useSelector(
     (state) => state.product
   );
+
+  const { products } = useSelector((state) => state.product);
 
   const sortingOption = [
     {
@@ -45,8 +47,9 @@ const FoodPage = () => {
     try {
       const res = await getTopRatedProduct();
       setTopRated(res?.data?.data);
+      console.log(res?.data?.data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching top rated product", error);
     }
   };
 
@@ -69,7 +72,7 @@ const FoodPage = () => {
           <FilterContainer
             priceRange={priceRange}
             handlePriceChange={handlePriceChange}
-            topRatedProducts={toprated}
+            data={toprated}
           />
 
           {/* Main Content */}

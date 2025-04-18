@@ -12,7 +12,7 @@ export const getProduct = async (data) => {
 };
 
 export const getTopRatedProduct = async () => {
-  return axiosInstance.get("/api/v1/review/top-rated");
+  return axiosInstance.get("/api/v1/review/product/top-rated");
 };
 
 export const addProductReview = async (data) => {

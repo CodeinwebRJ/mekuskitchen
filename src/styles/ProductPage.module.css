@@ -106,9 +106,8 @@
   color: var(--gray-darkest);
 }
 
-.price {
+.productPrice {
   font-size: 24px;
-  color: var(--primary-green-alt);
   margin: 10px 0;
 }
 
