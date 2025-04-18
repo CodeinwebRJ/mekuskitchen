@@ -1,8 +1,8 @@
 import React from "react";
 import style from "../../styles/RefundPolicy.module.css";
-import Header from "../../component/Header";
-import Footer from "../../component/Footer"; 
-import Banner from "../../component/Banner";
+import Header from "../../Component/Header";
+import Footer from "../../Component/Footer"; 
+import Banner from "../../Component/Banner";
 
 const RefundPolicyPage = () => {
   return (

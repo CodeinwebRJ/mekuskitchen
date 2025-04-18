@@ -4,7 +4,7 @@ import Footer from "../../Component/Footer";
 import Banner from "../../Component/Banner";
 import InputField from "../../UI/InputField";
 import Button from "../../UI/Button";
-import Header from "../../component/Header";
+import Header from "../../Component/Header";
 import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 

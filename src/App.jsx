@@ -23,6 +23,8 @@ import Dashboard from "./Routes/MyAccount/Dashboard/Dashboard.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import AddressForm from "./Routes/MyAccount/Addresses/AddressForm.jsx";
 import WishlistPage from "./Routes/Wishlist/WishlistPage.jsx";
+import RefundPolicyPage from "./Routes/RefundPolicy/RefundPolicyPage.jsx";
+import PrivecyPolicyPage from "./Routes/PrivacyPolicy/PrivecyPolicyPage.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -110,6 +112,9 @@ const App = () => {
           path="/my-account/account-details"
           element={<AccountDetails />}
         />
+
+        <Route path="/refund-policy" element={<RefundPolicyPage />} />
+        <Route path="/privacy-policy" element={<PrivecyPolicyPage />} />
       </Routes>
     </div>
   );

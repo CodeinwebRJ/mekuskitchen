@@ -1,6 +1,6 @@
 import React from "react";
 import Banner from "../../Component/Banner";
-import Header from "../../component/Header";
+import Header from "../../Component/Header";
 import style from "../../styles/Grocery.module.css";
 import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";

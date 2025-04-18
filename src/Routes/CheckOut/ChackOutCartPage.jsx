@@ -7,6 +7,9 @@ import Footer from "../../Component/Footer";
 import { useSelector, useDispatch } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
+import Button from "../../UI/Button";
+import { RxCross2 } from "react-icons/rx";
+import EmptyCartPage from "./EmptyCartPage";
 
 const CheckOutCart = () => {
   const dispatch = useDispatch();
@@ -27,7 +30,7 @@ const CheckOutCart = () => {
       const res = await UpdateUserCart(data);
       dispatch(setCart(res.data.data));
     } catch (error) {
-      console.log(error);
+      console.error("Error removing item from cart:", error);
     }
   };
 
@@ -52,7 +55,7 @@ const CheckOutCart = () => {
       const res = await UpdateUserCart(data);
       dispatch(setCart(res.data.data));
     } catch (error) {
-      console.log(error);
+      console.error("Error updating quantity:", error);
     }
   };
 
@@ -68,27 +71,30 @@ const CheckOutCart = () => {
   return (
     <div>
       <Header />
+      
       <Banner name={"CART"} />
-      <div className={style.cartContainer}>
-        <div className={style.cartItems}>
-          <table className={style.cartTable}>
-            <thead>
-              <tr className={style.cartItem}>
-                <th />
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Cart?.items?.items?.length > 0 ? (
-                Cart?.items?.items?.map((item) => (
+
+      {Cart?.items?.items?.length > 0 ? (
+        <div className={style.cartContainer}>
+          <div className={style.cartItems}>
+            <table className={style.cartTable}>
+              <thead>
+                <tr className={style.cartItem}>
+                  <th />
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Cart?.items?.items?.map((item) => (
                   <tr key={item.id} className={style.cartItem}>
                     <td>
-                      <button onClick={() => handleRemove(item.product_id)}>
-                        x
-                      </button>
+                      <RxCross2
+                        className={style.removeIcon}
+                        onClick={() => handleRemove(item.product_id)}
+                      />
                     </td>
                     <td>
                       <div className={style.productCell}>
@@ -109,48 +115,54 @@ const CheckOutCart = () => {
                         >
                           -
                         </button>
-                        <span>{item.quantity}</span>
+                        <span className={style.quantity}>{item.quantity}</span>
                         <button onClick={() => updateQuantity(item._id, 1)}>
                           +
                         </button>
                       </div>
                     </td>
-                    <td>${(item.price * item.quantity).toFixed(2)}</td>
+                    <td className={style.totalPrice}>
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5}>Your cart is empty</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        <div className={style.cartTotals}>
-          <h3>Cart Totals</h3>
-          <p>
-            Subtotal: <span>${subtotal.toFixed(2)}</span>
-          </p>
-          <hr />
-          <p>
-            Shipping: <span>Self Pickup</span>
-          </p>
-          <hr />
-          <p>
-            Shipping to: <strong>Calgary, AB</strong>
-          </p>
-          <hr />
-          <p>
-            Tax: <span>${tax.toFixed(2)}</span>
-          </p>
-          <hr />
-          <p className={style.total}>
-            Total: <span>${total.toFixed(2)}</span>
-          </p>
-          <button className={style.checkoutButton}>Proceed to Checkout</button>
+          <div className={style.cartTotals}>
+            <h3>Cart Totals</h3>
+            <p>
+              Subtotal: <span>${subtotal.toFixed(2)}</span>
+            </p>
+            <hr />
+            <p>
+              Shipping: <span>Self Pickup</span>
+            </p>
+            <hr />
+            <p>
+              Shipping to: <strong>Calgary, AB</strong>
+            </p>
+            <hr />
+            <p>
+              Tax: <span className={style.taxAmount}>${tax.toFixed(2)}</span>
+            </p>
+            <hr />
+            <p className={style.total}>
+              Total:{" "}
+              <span className={style.totalAmount}>${total.toFixed(2)}</span>
+            </p>
+
+            <div className={style.checkoutButton}>
+              <Button variant="success" size="md">
+                Proceed to Checkout
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <EmptyCartPage />
+      )}
       <Footer />
     </div>
   );

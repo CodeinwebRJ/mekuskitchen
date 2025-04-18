@@ -1,6 +1,7 @@
 // src/Footer.js
 import React from "react";
 import styles from "../styles/Footer.module.css";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -49,14 +50,14 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="#" className={styles.footerLink}>
+              <Link to="/privacy-policy" className={styles.footerLink}>
                 <span className={styles.arrow}>›</span> Privacy Policy
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className={styles.footerLink}>
+              <Link to="/refund-policy" className={styles.footerLink}>
                 <span className={styles.arrow}>›</span> Refund Policy
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

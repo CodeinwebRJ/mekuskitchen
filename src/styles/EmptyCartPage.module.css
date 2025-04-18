@@ -1,0 +1,25 @@
+.emptyCartPage {
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.emptyCartIcon {
+  font-size: 10rem;
+  font-weight: bold;
+  color: var(--gray-offwhite);
+}
+
+.emptyCartText {
+  text-transform: capitalize;
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--gray-solid-2);
+}
+
+.emptyCartButton {
+  width: fit-content;
+}

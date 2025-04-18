@@ -96,7 +96,7 @@ ul {
 }
 
 .price {
-  color: var(--primary-green-light) !important;
+  color: var(--success) !important;
   font-weight: bold !important;
   /* font-size: 18px; */
 }
