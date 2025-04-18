@@ -3,21 +3,19 @@ import style from "../styles/SelectField.module.css";
 
 const SelectField = (props) => {
   const {
-    label = false,
     labelName = "",
     name = "",
     value = "",
     onChange = () => {},
-    onBlur = () => {},
+
     error = "",
-    touched = false,
     options = [],
     placeholder = "Select an option",
   } = props;
 
   return (
     <div className={style.Container}>
-      {label && (
+      {labelName && (
         <label className={style.label} htmlFor={name}>
           {labelName}
         </label>
@@ -29,7 +27,6 @@ const SelectField = (props) => {
           name={name}
           value={value}
           onChange={onChange}
-          onBlur={onBlur}
           className={style.select}
         >
           <option value="">{placeholder}</option>
@@ -40,7 +37,7 @@ const SelectField = (props) => {
           ))}
         </select>
       </div>
-      {error && touched && <div className={style.errorMessage}>{error}</div>}
+      {error && <div className={style.errorMessage}>{error}</div>}
     </div>
   );
 };

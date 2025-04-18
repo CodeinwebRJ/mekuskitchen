@@ -6,7 +6,6 @@ const addressSlice = createSlice({
     addresses: [],
     defaultAddress: null,
     showAddressForm: false,
-    isEditAddress: false,
   },
   reducers: {
     setAddresses: (state, action) => {
@@ -17,9 +16,6 @@ const addressSlice = createSlice({
     },
     setShowAddressForm: (state, action) => {
       state.showAddressForm = action.payload;
-    },
-    setIsEditAddress: (state, action) => {
-      state.isEditAddress = action.payload;
     },
   },
 });

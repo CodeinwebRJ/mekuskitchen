@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import style from "../../../styles/Addresses.module.css";
 import MyAccountContainer from "../MyAccountContainer";
 import Button from "../../../UI/Button";
@@ -9,59 +9,42 @@ import { getUserAddress } from "../../../axiosConfig/AxiosConfig";
 import {
   setAddresses,
   setDefaultAddress,
-  setIsEditAddress,
+  setShowAddressForm,
 } from "../../../../Store/Slice/AddressSlice";
 import AddressForm from "./AddressForm";
-import { setShowAddressForm } from "../../../../Store/Slice/AddressSlice";
-import { useLocation } from "react-router-dom";
-import EditAddressForm from "./EditAddressForm";
-import { USER_ADDRESS_SCHEMA } from "../../../Utils/Schema";
 
 const Addresses = () => {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const [formResponse, setFormResponse] = useState(USER_ADDRESS_SCHEMA);
+  const [isEdit, setIsEdit] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const { addresses, showAddressForm } = useSelector((state) => state.address);
 
-  const { addresses, showAddressForm, isEditAddress, selectedAddress } =
-    useSelector((state) => state.address);
+  const handleEdit = () => {
+    setIsEdit(true);
+    dispatch(setShowAddressForm(true));
+  };
 
-  console.log(formResponse);
-
-    
-  // fetching user address
-  const handleFetchAddress = async () => {
+  const fetchAddresses = async () => {
     try {
-      const response = await getUserAddress("65123abcde456f7890123456");
+      const response = await getUserAddress(user.userid);
       if (response.status === 200) {
-        dispatch(setAddresses(response?.data?.data));
-
-        activeAddressFetch(response?.data?.data);
+        const data = response?.data?.data || [];
+        dispatch(setAddresses(data));
+        const activeAddress = data.find((addr) => addr.isActive);
+        if (activeAddress) dispatch(setDefaultAddress(activeAddress));
       }
-    } catch (error) {
-      console.error("fetching address error", error);
-    }
-  };
-
-  const activeAddressFetch = (address) => {
-    const activeAddress = address.find((item) => item.isActive);
-    if (activeAddress) {
-      dispatch(setDefaultAddress(activeAddress));
+    } catch (err) {
+      console.error("Error fetching addresses:", err);
     }
   };
 
   useEffect(() => {
-    handleFetchAddress();
+    fetchAddresses();
   }, []);
-
-  // reset address form and edit address when pathname changes
-  useEffect(() => {
-    dispatch(setShowAddressForm(false));
-    dispatch(setIsEditAddress(false));
-  }, [pathname]);
 
   return (
     <MyAccountContainer>
-      {!showAddressForm && (
+      {!showAddressForm ? (
         <>
           <div className={style.addressHeader}>
             <p className={style.userMessage}>
@@ -74,10 +57,8 @@ const Addresses = () => {
                 <Button
                   text="Edit Address"
                   variant="warning"
-                  size="xs"
-                  onClick={() => {
-                    dispatch(setShowAddressForm(true));
-                  }}
+                  size="sm"
+                  onClick={handleEdit}
                 >
                   Edit Address
                 </Button>
@@ -86,7 +67,7 @@ const Addresses = () => {
                 <Button
                   text="Add New Address"
                   variant="success"
-                  size="xs"
+                  size="sm"
                   onClick={() => {
                     dispatch(setShowAddressForm(true));
                   }}
@@ -108,15 +89,8 @@ const Addresses = () => {
             </div>
           </div>
         </>
-      )}
-
-      {showAddressForm && <AddressForm />}
-
-      {isEditAddress && (
-        <EditAddressForm
-          formResponse={formResponse}
-          setFormResponse={setFormResponse}
-        />
+      ) : (
+        <AddressForm isEdit={isEdit} />
       )}
     </MyAccountContainer>
   );

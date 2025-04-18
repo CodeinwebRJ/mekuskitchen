@@ -1,215 +1,209 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import style from "../../../styles/Addresses.module.css";
 import FormField from "./FormField";
 import Button from "../../../UI/Button";
 import CheckboxFeild from "../../../UI/CheckboxFeild";
 import { useDispatch } from "react-redux";
+import { GoArrowLeft } from "react-icons/go";
 import { setShowAddressForm } from "../../../../Store/Slice/AddressSlice";
+import {
+  addUserAddress,
+  UpdateUserAddress,
+} from "../../../axiosConfig/AxiosConfig";
 
-const AddressForm = () => {
-  const [isDifferentShipping, setIsDifferentShipping] = useState(false);
-  const [billingErrors, setBillingErrors] = useState({});
-  const [shippingErrors, setShippingErrors] = useState({});
-
-  // Refs to access the AddressForm methods
-  const billingFormRef = useRef();
-  const shippingFormRef = useRef();
-
+const AddressForm = ({ isEdit }) => {
   const dispatch = useDispatch();
 
-  const countries = [
-    { id: 1, value: "United States", label: "United States" },
-    { id: 2, value: "Canada", label: "Canada" },
-    { id: 3, value: "Mexico", label: "Mexico" },
-    { id: 4, value: "United Kingdom", label: "United Kingdom" },
-    { id: 5, value: "Australia", label: "Australia" },
-    { id: 6, value: "New Zealand", label: "New Zealand" },
-    { id: 7, value: "South Africa", label: "South Africa" },
-    { id: 8, value: "India", label: "India" },
-    { id: 9, value: "Brazil", label: "Brazil" },
-  ];
-
-  const states = [
-    { id: 1, value: "California", label: "California" },
-    { id: 2, value: "New York", label: "New York" },
-    { id: 3, value: "Texas", label: "Texas" },
-    { id: 4, value: "Florida", label: "Florida" },
-    { id: 5, value: "Illinois", label: "Illinois" },
-  ];
-
-  const [billingData, setBillingData] = useState({
-    firstName: "",
-    lastName: "",
-    country: "",
-    state: "",
-    city: "",
-    address: "",
-    postCode: "",
-    phone: "",
-    email: "",
+  const [formData, setFormData] = useState({
+    billingData: {
+      firstName: "",
+      lastName: "",
+      country: "",
+      state: "",
+      city: "",
+      address: "",
+      postCode: "",
+      phone: "",
+      email: "",
+    },
+    isDifferentShipping: false,
+    shippingData: {
+      firstName: "",
+      lastName: "",
+      country: "",
+      state: "",
+      city: "",
+      address: "",
+      postCode: "",
+      phone: "",
+      email: "",
+    },
   });
 
-  const [shippingData, setShippingData] = useState({
-    firstName: "",
-    lastName: "",
-    country: "",
-    state: "",
-    city: "",
-    address: "",
-    postCode: "",
-    phone: "",
-    email: "",
+  const [errors, setErrors] = useState({
+    billingErrors: {},
+    shippingErrors: {},
   });
 
-  const handleBillingChange = (name, value) => {
-    setBillingData({
-      ...billingData,
-      [name]: value,
-    });
-  };
+  const countries = [{ value: "US", label: "United States" }];
+  const states = [{ value: "CA", label: "California" }];
 
-  const handleShippingChange = (name, value) => {
-    setShippingData({
-      ...shippingData,
-      [name]: value,
-    });
-  };
+  const validateAddressForm = (data) => {
+    const validationErrors = {};
+    const requiredFields = {
+      firstName: "First Name is required",
+      lastName: "Last Name is required",
+      country: "Country is required",
+      state: "State is required",
+      city: "City is required",
+      address: "Address is required",
+      postCode: "Postcode / ZIP is required",
+      phone: "Phone is required",
+      email: "Email is required",
+    };
 
-  // Validation function that can be reused for both forms
-  const validateAddressForm = (formData) => {
-    const errors = {};
-
-    if (!formData.firstName) {
-      errors.firstName = "First Name is required";
-    }
-    if (!formData.lastName) {
-      errors.lastName = "Last Name is required";
-    }
-    if (!formData.country) {
-      errors.country = "Country is required";
-    }
-    if (!formData.state) {
-      errors.state = "State is required";
-    }
-    if (!formData.city) {
-      errors.city = "City is required";
-    }
-    if (!formData.address) {
-      errors.address = "Address is required";
-    }
-    if (!formData.postCode) {
-      errors.postCode = "Postcode / ZIP is required";
-    } else if (!/^\d{6}$/.test(formData.postCode)) {
-      errors.postCode = "Please enter a valid 6-digit pincode";
-    }
-    if (!formData.phone) {
-      errors.phone = "Phone is required";
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      errors.phone = "Please enter a valid 10-digit phone number";
-    }
-    if (!formData.email) {
-      errors.email = "Email is required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
-    ) {
-      errors.email = "Invalid email address";
-    }
-
-    return errors;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Validate billing form
-    const isBillingValid = billingFormRef.current.validateAllFields();
-
-    // Validate shipping form if needed
-    let isShippingValid = true;
-    if (isDifferentShipping) {
-      isShippingValid = shippingFormRef.current.validateAllFields();
-    }
-
-    // If both forms are valid, proceed with submission
-    if (isBillingValid && isShippingValid) {
-      console.log("Billing Form submitted successfully:", billingData);
-      if (isDifferentShipping) {
-        console.log("Shipping Form submitted successfully:", shippingData);
+    for (const [field, message] of Object.entries(requiredFields)) {
+      if (!data[field]?.trim()) {
+        validationErrors[field] = message;
       }
-
-      // TODO: Add your API call here to save the addresses
     }
+
+    if (data.postCode && !/^\d{5,6}$/.test(data.postCode)) {
+      validationErrors.postCode = "Please enter a valid 5-6 digit pincode";
+    }
+
+    if (data.phone && !/^\d{10}$/.test(data.phone)) {
+      validationErrors.phone = "Please enter a valid 10-digit phone number";
+    }
+
+    if (
+      data.email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(data.email)
+    ) {
+      validationErrors.email = "Invalid email address";
+    }
+
+    return validationErrors;
   };
 
+  const handleChange = (e, type) => {
+    const { name, value } = e.target;
+    const dataKey = type === "billing" ? "billingData" : "shippingData";
+    const errorKey = type === "billing" ? "billingErrors" : "shippingErrors";
+
+    setFormData((prev) => ({
+      ...prev,
+      [dataKey]: {
+        ...prev[dataKey],
+        [name]: value,
+      },
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [errorKey]: {
+        ...prev[errorKey],
+        [name]: "",
+      },
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const billingErrors = validateAddressForm(formData.billingData);
+    const shippingErrors = formData.isDifferentShipping
+      ? validateAddressForm(formData.shippingData)
+      : {};
+    const combinedErrors = {
+      billingErrors,
+      shippingErrors,
+    };
+    setErrors(combinedErrors);
+
+    const hasBillingErrors = Object.keys(billingErrors).length > 0;
+    const hasShippingErrors = Object.keys(shippingErrors).length > 0;
+
+    if (hasBillingErrors || hasShippingErrors) {
+      return;
+    }
+
+    try {
+      const res = isEdit
+        ? await UpdateUserAddress(formData)
+        : await addUserAddress(formData);
+      if (res?.data?.success) {
+        console.log(res.data.data);
+        dispatch(setShowAddressForm(false));
+      } else {
+        console.error("Failed to submit address:", res);
+      }
+    } catch (error) {
+      console.error("Error submitting address:", error);
+    }
+  };
 
   return (
     <div>
-      <div className={style.billingTitle}>Billing Address</div>
+      <div className={style.billingTitle}>
+        <div onClick={() => dispatch(setShowAddressForm(false))}>
+          <GoArrowLeft size={24} />
+        </div>
+        {isEdit ? "Edit Address" : "Billing Address"}
+      </div>
 
-      <form onSubmit={handleSubmit} className={style.billingForm}>
+      <form className={style.billingForm} onSubmit={handleSubmit}>
         <FormField
-          ref={billingFormRef}
-          formData={billingData}
-          handleChange={handleBillingChange}
+          formData={formData.billingData}
+          handleChange={(e) => handleChange(e, "billing")}
           countries={countries}
           states={states}
-          validateForm={validateAddressForm}
-          formErrors={billingErrors}
+          formErrors={errors.billingErrors}
         />
 
-        {/* Shipping address is different from billing address */}
         <div className={`${style.billingFormColumn1} ${style.shippingAddress}`}>
           <div className={style.checkboxContainer}>
             <CheckboxFeild
-              checked={isDifferentShipping}
-              onChange={() => setIsDifferentShipping(!isDifferentShipping)}
+              checked={formData.isDifferentShipping}
+              onChange={() =>
+                setFormData((prev) => ({
+                  ...prev,
+                  isDifferentShipping: !prev.isDifferentShipping,
+                }))
+              }
+              id="different-shipping"
             />
-            <label
-              className={style.checkboxLabel}
-              onClick={() => setIsDifferentShipping(!isDifferentShipping)}
-            >
+            <label htmlFor="different-shipping" className={style.checkboxLabel}>
               Shipping address is different from billing address!
             </label>
           </div>
         </div>
 
-        {isDifferentShipping && (
+        {formData.isDifferentShipping && (
           <div className={style.billingContainer}>
             <div className={style.billingTitle}>Shipping Address</div>
             <div className={style.billingForm}>
               <FormField
-                ref={shippingFormRef}
-                formData={shippingData}
-                handleChange={handleShippingChange}
+                formData={formData.shippingData}
+                handleChange={(e) => handleChange(e, "shipping")}
                 countries={countries}
                 states={states}
-                validateForm={validateAddressForm}
-                formErrors={shippingErrors}
+                formErrors={errors.shippingErrors}
               />
             </div>
           </div>
         )}
 
         <div className={style.billingFormButtons}>
-          {/* Submit Button */}
           <div className={style.submitButtonContainer}>
             <Button
               variant="warning"
               size="sm"
-              onClick={() => {
-                dispatch(setShowAddressForm(false));
-
-                window.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                });
-              }}
+              type="button"
+              onClick={() => dispatch(setShowAddressForm(false))}
             >
               Cancel
             </Button>
           </div>
-
-          {/* Submit Button */}
           <div className={style.submitButtonContainer}>
             <Button type="submit" variant="success" size="sm">
               Save Address

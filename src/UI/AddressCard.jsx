@@ -2,18 +2,11 @@ import React from "react";
 import style from "../styles/AddressCard.module.css";
 
 const AddressCard = ({ address }) => {
-  // const [isActive, setIsActive] = useState(false);
-
-  // const handleClick = () => {
-  //   setIsActive(!isActive);
-  // };
-
   return (
     <div
       className={`${style.addressCardContainer} ${
         address?.isActive ? style.addressCardContainerActive : ""
       }`}
-        // onClick={handleClick}
     >
       <div className={style.addressCard}>
         <h1 className={style.fullName}>
@@ -33,9 +26,7 @@ const AddressCard = ({ address }) => {
         <p className={style.phoneNumber}>Phone: {address?.billing?.phone}</p>
       </div>
 
-      {address?.isActive && (
-        <span className={style.defaultLabel}>Default</span>
-      )}
+      {address?.isActive && <span className={style.defaultLabel}>Default</span>}
     </div>
   );
 };

@@ -41,7 +41,7 @@ export const getUserCart = async (data) => {
 
 export const UpdateUserCart = async (data) => {
   console.log(data);
-  return axiosInstance.put("/api/v1/cart/update", data);  
+  return axiosInstance.put("/api/v1/cart/update", data);
 };
 
 export const SendQuestions = async (data) => {
@@ -51,4 +51,12 @@ export const SendQuestions = async (data) => {
 
 export const getUserAddress = async (id) => {
   return axiosInstance.get(`/api/v1/address/${id}`);
+};
+
+export const addUserAddress = async (data) => {
+  return axiosInstance.post("/api/v1/address/create", data);
+};
+
+export const UpdateUserAddress = async (data) => {
+  return axiosInstance.put("/api/v1/address/update", data);
 };

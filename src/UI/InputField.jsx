@@ -3,7 +3,6 @@ import style from "../styles/InputField.module.css";
 
 const InputField = (props) => {
   const {
-    label = false,
     labelName = "",
     placeholder = "",
     type = "text",
@@ -12,12 +11,11 @@ const InputField = (props) => {
     onChange = () => {},
     onBlur = () => {},
     error = "",
-    touched,
   } = props;
 
   return (
     <div className={style.Container}>
-      {label && (
+      {labelName && (
         <label className={style.label} htmlFor={name}>
           {labelName}
         </label>
