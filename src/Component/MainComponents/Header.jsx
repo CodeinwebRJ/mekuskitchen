@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import style from "../styles/Header.module.css";
+import style from "../../styles/Header.module.css";
 import { Link } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
-import Sidebar from "../Component/Sidebar";
-import { setCategory } from "../../Store/Slice/ProductSlice";
+import Sidebar from "./Sidebar";
+import { setCategory } from "../../../Store/Slice/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart } from "react-icons/fa6";
 
 const Header = () => {
-  // const [cartCount, setCartCount] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -38,7 +37,6 @@ const Header = () => {
     },
   ];
 
-  // Handle Link Active
   const handleLinkActive = (link) => {
     if (link === window.location.pathname) {
       return style.linkActive;

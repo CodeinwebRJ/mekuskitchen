@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import style from "../../styles/ContactPage.module.css";
-import Footer from "../../Component/Footer";
-import Banner from "../../Component/Banner";
-import InputField from "../../UI/InputField";
-import Button from "../../UI/Button";
-import Header from "../../Component/Header";
+import Footer from "../../Component/MainComponents/Footer";
+import Banner from "../../Component/MainComponents/Banner";
+import InputField from "../../Component/UI-Components/InputField";
+import Button from "../../Component/Buttons/Button";
+import Header from "../../Component/MainComponents/Header";
 import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 

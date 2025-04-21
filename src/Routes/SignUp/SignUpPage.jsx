@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Footer from "../../Component/Footer";
+import Footer from "../../Component/MainComponents/Footer";
 import Navbar2 from "../../Component/Navbar2";
-import Banner2 from "../../Component/Banner2";
+import Banner2 from "../../Component/MainComponents/Banner2";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({

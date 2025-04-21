@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import style from "../../styles/EmptyCartPage.module.css";
 import { BsCartX } from "react-icons/bs";
-import Button from "../../UI/Button";
+import Button from "../../Component/Buttons/Button";
 import { Link } from "react-router-dom";
 
 const EmptyCartPage = () => {

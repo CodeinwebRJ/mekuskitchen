@@ -1,7 +1,7 @@
 import React from "react";
 import style from "../styles/FilterContainer.module.css";
 import RatingStar from "./RatingStar";
-import Button from "../UI/Button";
+import Button from "../Component/Buttons/Button";
 
 const FilterContainer = (props) => {
   const { priceRange, handlePriceChange, data } = props;

@@ -5,7 +5,7 @@ import {
   addProductReview,
   getAllProductReview,
 } from "../../axiosConfig/AxiosConfig";
-import Button from "../../UI/Button";
+import Button from "../../Component/Buttons/Button";
 
 const ReviewComponent = ({
   reviews,

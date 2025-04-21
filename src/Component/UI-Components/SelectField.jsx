@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../styles/SelectField.module.css";
+import style from "../../styles/SelectField.module.css";
 
 const SelectField = (props) => {
   const {

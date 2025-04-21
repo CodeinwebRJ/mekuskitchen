@@ -1,6 +1,6 @@
 import React from "react";
-import style from "../styles/RelatedProductCard.module.css";
-import AddToCartButton from "./AddToCartButton";
+import style from "../../styles/RelatedProductCard.module.css";
+import AddToCartButton from "../Buttons/AddToCartButton";
 import { format } from "date-fns";
 import { Link, useLocation } from "react-router-dom";
 

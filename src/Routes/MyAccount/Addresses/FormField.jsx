@@ -1,7 +1,7 @@
 import React from "react";
 import style from "../../../styles/FormField.module.css";
-import InputField from "../../../UI/InputField";
-import SelectField from "../../../UI/SelectField";
+import InputField from "../../../Component/UI-Components/InputField";
+import SelectField from "../../../Component/UI-Components/SelectField";
 
 const FormField = ({
   formData,

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import style from "../styles/ProductCard.module.css";
+import style from "../../styles/ProductCard.module.css";
 import { Link } from "react-router-dom";
-import RatingStar from "../Component/RatingStar";
-import AddToCartButton from "./AddToCartButton";
+import RatingStar from "../RatingStar";
+import AddToCartButton from "../Buttons/AddToCartButton";
 import { useSelector } from "react-redux";
-import { AddtoCart } from "../axiosConfig/AxiosConfig";
+import { AddtoCart } from "../../axiosConfig/AxiosConfig";
 import { useDispatch } from "react-redux";
-import { setCart } from "../../Store/Slice/UserCartSlice";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { FaRegHeart } from "react-icons/fa";
 
 const ProductCard = (props) => {
@@ -36,9 +36,7 @@ const ProductCard = (props) => {
     }
   };
 
-  const addToWishlish = () => {
-    
-  };
+  const addToWishlish = () => {};
 
   return (
     <div className={style.productCard}>

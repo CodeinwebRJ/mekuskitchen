@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import style from "../../../styles/Addresses.module.css";
 import FormField from "./FormField";
-import Button from "../../../UI/Button";
-import CheckboxFeild from "../../../UI/CheckboxFeild";
+import Button from "../../../Component/Buttons/Button";
+import CheckboxFeild from "../../../Component/UI-Components/CheckboxFeild";
 import { useDispatch, useSelector } from "react-redux";
 import { GoArrowLeft } from "react-icons/go";
 import {

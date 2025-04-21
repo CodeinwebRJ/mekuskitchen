@@ -1,9 +1,9 @@
 import React from "react";
-import style from "../styles/WishlistItem.module.css";
-import RatingStar from "./RatingStar";
+import style from "../../styles/WishlistItem.module.css";
+import RatingStar from "../RatingStar";
 import { RiShareLine } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
-import Button from "../UI/Button";
+import Button from "../Buttons/Button";
 
 const WishlistItem = (props) => {
   const { product } = props;

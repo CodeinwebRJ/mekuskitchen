@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "../../../styles/Addresses.module.css";
 import MyAccountContainer from "../MyAccountContainer";
-import Button from "../../../UI/Button";
-import AddressCard from "../../../UI/AddressCard";
+import AddressCard from "../../../Component/Cards/AddressCard";
 import { useDispatch, useSelector } from "react-redux";
 import BillingShipping from "./BillingShipping";
 import {
@@ -16,7 +15,7 @@ import {
   setShowAddressForm,
 } from "../../../../Store/Slice/AddressSlice";
 import AddressForm from "./AddressForm";
-import AddAddressCard from "../../../UI/AddAddressCard";
+import AddAddressCard from "../../../Component/UI-Components/AddAddressCard";
 
 const Addresses = () => {
   const dispatch = useDispatch();

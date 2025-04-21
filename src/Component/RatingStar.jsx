@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../styles/RatingStar.module.css";
+import style from ".././styles/RatingStar.module.css";
 import Rating from "react-rating";
 import { FiStar } from "react-icons/fi";
 import { GoStarFill } from "react-icons/go";

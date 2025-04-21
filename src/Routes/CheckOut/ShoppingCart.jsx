@@ -1,13 +1,13 @@
 // src/CheckOutCart.js
 import React, { useState } from "react";
 import style from "../../styles/Cart.module.css";
-import Header from "../../Component/Header";
-import Banner from "../../Component/Banner";
-import Footer from "../../Component/Footer";
+import Header from "../../Component/MainComponents/Header";
+import Banner from "../../Component/MainComponents/Banner";
+import Footer from "../../Component/MainComponents/Footer";
 import { useSelector, useDispatch } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
-import Button from "../../UI/Button";
+import Button from "../../Component/Buttons/Button";
 import { RxCross2 } from "react-icons/rx";
 import EmptyCartPage from "./EmptyCartPage";
 import { Link } from "react-router-dom";

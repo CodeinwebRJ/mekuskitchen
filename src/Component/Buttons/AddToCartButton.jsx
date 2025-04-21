@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../styles/AddToCartButton.module.css";
+import style from "../../styles/AddToCartButton.module.css";
 import { BsCartPlus } from "react-icons/bs";
 
 const AddToCartButton = (props) => {

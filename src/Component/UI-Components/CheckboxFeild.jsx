@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../styles/CheckboxFeild.module.css";
+import style from "../../styles/CheckboxFeild.module.css";
 
 const CheckboxFeild = (props) => {
   const { checked, defaultChecked = false, onChange, onClick } = props;

@@ -9,11 +9,11 @@ import {
 } from "react-icons/fa";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import style from "../../../styles/ProductPage.module.css";
-import Footer from "../../../Component/Footer";
+import Footer from "../../../Component/MainComponents/Footer";
 import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
-import Button from "../../../UI/Button";
-import Header from "../../../Component/Header";
+import Button from "../../../Component/Buttons/Button";
+import Header from "../../../Component/MainComponents/Header";
 import { AddtoCart } from "../../../axiosConfig/AxiosConfig";
 
 const useProductNavigation = (products, currentIndex) => {

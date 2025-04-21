@@ -1,7 +1,7 @@
 import React from "react";
-import style from "../styles/TiffinCard.module.css";
+import style from "../../styles/TiffinCard.module.css";
 import { Link } from "react-router-dom";
-import AddToCartButton from "./AddToCartButton";
+import AddToCartButton from "../Buttons/AddToCartButton";
 import { format } from "date-fns";
 
 const TiffinCard = (props) => {

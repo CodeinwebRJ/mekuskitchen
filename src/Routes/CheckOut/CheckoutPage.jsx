@@ -1,8 +1,8 @@
 import React from "react";
 import style from "../../styles/CheckoutPage.module.css";
-import Header from "../../Component/Header";
-import Banner from "../../Component/Banner";
-import Footer from "../../Component/Footer";
+import Header from "../../Component/MainComponents/Header";
+import Banner from "../../Component/MainComponents/Banner";
+import Footer from "../../Component/MainComponents/Footer";
 import { Link, useLocation } from "react-router-dom";
 import { GoArrowLeft } from "react-icons/go";
 import { useSelector } from "react-redux";

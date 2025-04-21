@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import style from "../styles/Sidebar.module.css";
+import style from "../../styles/Sidebar.module.css";
 import { FaTimes } from "react-icons/fa";
-import Button from "../UI/Button";
+import Button from "../Buttons/Button";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { getUserCart, UpdateUserCart } from "../axiosConfig/AxiosConfig";
+import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { setCart } from "../../Store/Slice/UserCartSlice";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const User = useSelector((state) => state.auth.user);

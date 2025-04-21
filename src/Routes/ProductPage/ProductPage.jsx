@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import style from "../../styles/ProductPage.module.css";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../Component/Header";
+import Header from "../../Component/MainComponents/Header";
 import ReviewComponent from "./ReviewComponent";
 import RelatedProduct from "./RelatedProduct";
-import Footer from "../../Component/Footer";
-import Button from "../../UI/Button";
+import Footer from "../../Component/MainComponents/Footer";
+import Button from "../../Component/Buttons/Button";
 
 const ProductPage = () => {
   const location = useLocation();

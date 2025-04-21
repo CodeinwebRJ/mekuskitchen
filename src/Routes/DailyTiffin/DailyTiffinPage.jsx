@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import style from "../../styles/DailyTiffinPage.module.css";
-import Footer from "../../Component/Footer";
-import Banner from "../../Component/Banner";
-import TiffinCard from "../../UI/TiffinCard";
+import Footer from "../../Component/MainComponents/Footer";
+import Banner from "../../Component/MainComponents/Banner";
+import TiffinCard from "../../Component/Cards/TiffinCard";
 import { useSelector } from "react-redux";
-import Header from "../../Component/Header";
+import Header from "../../Component/MainComponents/Header";
 
 const DailyTiffinPage = () => {
   const tiffin = useSelector((state) => state.tiffin);

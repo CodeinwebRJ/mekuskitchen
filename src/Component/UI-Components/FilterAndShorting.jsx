@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../styles/FilterAndShorting.module.css";
+import style from "../../styles/FilterAndShorting.module.css";
 
 const FilterAndShorting = (props) => {
   const { options, placeholder } = props;

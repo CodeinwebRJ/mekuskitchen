@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import style from "../../styles/Food.module.css";
-import Banner from "../../Component/Banner";
+import Banner from "../../Component/MainComponents/Banner";
 import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPriceRange, setGrid } from "../../../Store/Slice/ProductSlice.jsx";
-import Footer from "../../Component/Footer";
-import ProductCard from "../../UI/ProductCard";
+import Footer from "../../Component/MainComponents/Footer";
+import ProductCard from "../../Component/Cards/ProductCard.jsx";
 import FilterContainer from "../../Component/FilterContainer.jsx";
 import ShowProducts from "../../Component/ShowProducts";
 import { getTopRatedProduct } from "../../axiosConfig/AxiosConfig.js";
-import Header from "../../Component/Header";
-import FilterAndShorting from "../../UI/FilterAndShorting.jsx";
+import Header from "../../Component/MainComponents/Header";
+import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
 
 const FoodPage = () => {
   const [toprated, setTopRated] = useState(null);

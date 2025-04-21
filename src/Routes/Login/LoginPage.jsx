@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/Navbar2";
-import Banner2 from "../../Component/Banner2";
+import Banner2 from "../../Component/MainComponents/Banner2";
 
 function LoginPage() {
   const [credentials, setCredentials] = useState({

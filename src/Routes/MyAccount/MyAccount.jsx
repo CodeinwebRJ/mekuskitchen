@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import style from "../../styles/MyAccount.module.css";
-import Footer from "../../Component/Footer";
-import Banner from "../../Component/Banner";
+import Footer from "../../Component/MainComponents/Footer";
+import Banner from "../../Component/MainComponents/Banner";
 import Dashboard from "./Dashboard/Dashboard";
 import { MyAccountData } from "../../StaticData";
 import Orders from "./Orders/Orders";
 import Addresses from "./Addresses/Addresses";
 import Downloads from "./Downloads/Downloads";
 import AccountDetails from "./AccountDetails/AccountDetails";
-import MyAccountContainer from "./MyAccountContainer";
-import Header from "../../Component/Header";
+import Header from "../../Component/MainComponents/Header";
 
 const MyAccount = () => {
   const [active, setActive] = useState("Dashboard");

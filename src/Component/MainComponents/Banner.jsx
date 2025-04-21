@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../styles/Banner.module.css";
+import style from "../../styles/Banner.module.css";
 import { BsArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
