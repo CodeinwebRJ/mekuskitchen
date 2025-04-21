@@ -38,6 +38,10 @@
   align-items: center;
 }
 
+.backButton {
+  cursor: pointer;
+}
+
 .billingForm {
   padding: 25px 0;
   display: flex;

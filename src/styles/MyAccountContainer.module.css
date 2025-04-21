@@ -10,6 +10,11 @@
   padding-right: 28px;
 }
 
+.myAccountLeftContainerSticky {
+  position: sticky;
+  top: 100px;
+}
+
 .myAccountRightContainer {
   border-left: 1px solid var(--gray-shadow);
   padding: 8px 30px;

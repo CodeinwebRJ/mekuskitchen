@@ -10,9 +10,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: all 0.1s ease-in-out;
   cursor: pointer;
   user-select: none;
-  transition: all 0.1s ease-in-out;
 }
 
 /* .addressCardContainer:hover {
@@ -42,7 +42,11 @@
   color: #333;
 }
 
-.address, .cityState, .CountryPostcode, .phoneNumber {
+.address,
+.city,
+.state,
+.CountryPostcode,
+.phoneNumber {
   font-size: 15px;
   color: #333;
 }
@@ -57,4 +61,20 @@
   background-color: #f0f0f09b;
   padding: 5px 10px;
   border-radius: 5px;
+}
+
+.addressControllers {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.link {
+  color: var(--text-link);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
 }

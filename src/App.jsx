@@ -6,8 +6,12 @@ import ContactPage from "./Routes/ContactUs/ContactPage";
 import ProductPage from "./Routes/ProductPage/ProductPage.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setProducts } from "../Store/Slice/ProductSlice.jsx";
-import { getAllTiffin, getProduct } from "./axiosConfig/AxiosConfig";
-import CheckOutCart from "./Routes/CheckOut/ChackOutCartPage.jsx";
+import {
+  getAllTiffin,
+  getProduct,
+  getUserAddress,
+} from "./axiosConfig/AxiosConfig";
+import ShoppingCart from "./Routes/CheckOut/ShoppingCart.jsx";
 import AboutPage from "./Routes/AboutUs/AboutPage.jsx";
 import FoodPage from "./Routes/OurMenu/FoodPage";
 import DailyTiffinPage from "./Routes/DailyTiffin/DailyTiffinPage.jsx";
@@ -25,8 +29,14 @@ import AddressForm from "./Routes/MyAccount/Addresses/AddressForm.jsx";
 import WishlistPage from "./Routes/Wishlist/WishlistPage.jsx";
 import RefundPolicyPage from "./Routes/RefundPolicy/RefundPolicyPage.jsx";
 import PrivecyPolicyPage from "./Routes/PrivacyPolicy/PrivecyPolicyPage.jsx";
+import CheckoutPage from "./Routes/CheckOut/CheckoutPage.jsx";
+import {
+  setAddresses,
+  setDefaultAddress,
+} from "../Store/Slice/AddressSlice.jsx";
 
 const App = () => {
+  const { user } = useSelector((state) => state.auth);
   const { pathname } = useLocation();
 
   const { page, limit, search, sortBy, category } = useSelector(
@@ -41,7 +51,7 @@ const App = () => {
       behavior: "smooth",
     });
   }, [pathname]);
-  -8;
+
   // Fetch products
   const fetchProducts = async () => {
     try {
@@ -75,8 +85,24 @@ const App = () => {
     }
   };
 
+  // Fetch addresses
+  const fetchAddresses = async () => {
+    try {
+      const response = await getUserAddress(user.userid);
+      if (response.status === 200) {
+        const data = response?.data?.data || [];
+        dispatch(setAddresses(data));
+        const activeAddress = data.find((addr) => addr.isActive);
+        if (activeAddress) dispatch(setDefaultAddress(activeAddress));
+      }
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    }
+  };
+
   useEffect(() => {
     fetchTiffin();
+    fetchAddresses();
   }, []);
 
   return (
@@ -98,7 +124,8 @@ const App = () => {
         <Route path="/contact-us" element={<ContactPage />} />
         <Route path="/product/:category/:id" element={<ProductPage />} />
         <Route path="/product/tiffin/:id" element={<TiffinProductPage />} />
-        <Route path="/cart" element={<CheckOutCart />} />
+        <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/contactus" element={<ContactPage />} />
 

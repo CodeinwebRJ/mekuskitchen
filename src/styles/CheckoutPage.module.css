@@ -1,0 +1,51 @@
+.checkoutContianer {
+  padding: 50px 15px;
+  max-width: 1250px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.billingTitle {
+  display: flex;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+.backButton {
+  cursor: pointer;
+}
+
+.addressDetails {
+  margin-top: 20px;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.column1 {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 25px;
+}
+
+.column2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.fullname {
+  font-size: 20px;
+  text-transform: capitalize;
+}
+
+.Country {
+  font-size: 15px;
+}

@@ -3,18 +3,25 @@ import style from "../../../styles/Addresses.module.css";
 import FormField from "./FormField";
 import Button from "../../../UI/Button";
 import CheckboxFeild from "../../../UI/CheckboxFeild";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GoArrowLeft } from "react-icons/go";
-import { setShowAddressForm } from "../../../../Store/Slice/AddressSlice";
+import {
+  setAddresses,
+  setDefaultAddress,
+  setShowAddressForm,
+} from "../../../../Store/Slice/AddressSlice";
 import {
   addUserAddress,
+  getUserAddress,
   UpdateUserAddress,
 } from "../../../axiosConfig/AxiosConfig";
 
-const AddressForm = ({ isEdit }) => {
+const AddressForm = ({ isEdit, fetchAddresses }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
+    userId: user.userid,
     billingData: {
       firstName: "",
       lastName: "",
@@ -26,7 +33,6 @@ const AddressForm = ({ isEdit }) => {
       phone: "",
       email: "",
     },
-    isDifferentShipping: false,
     shippingData: {
       firstName: "",
       lastName: "",
@@ -38,6 +44,8 @@ const AddressForm = ({ isEdit }) => {
       phone: "",
       email: "",
     },
+    isDifferent: false,
+    isActive: true,
   });
 
   const [errors, setErrors] = useState({
@@ -45,8 +53,10 @@ const AddressForm = ({ isEdit }) => {
     shippingErrors: {},
   });
 
-  const countries = [{ value: "US", label: "United States" }];
-  const states = [{ value: "CA", label: "California" }];
+  const countries = [{ value: "United States", label: "United States" }];
+  const states = [{ value: "California", label: "California" }];
+
+  const { showAddressForm } = useSelector((state) => state.address);
 
   const validateAddressForm = (data) => {
     const validationErrors = {};
@@ -108,10 +118,17 @@ const AddressForm = ({ isEdit }) => {
     }));
   };
 
+  const handleCheckboxChange = () => {
+    setFormData((prev) => ({
+      ...prev,
+      isDifferent: !prev.isDifferent,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const billingErrors = validateAddressForm(formData.billingData);
-    const shippingErrors = formData.isDifferentShipping
+    const shippingErrors = formData.isDifferent
       ? validateAddressForm(formData.shippingData)
       : {};
     const combinedErrors = {
@@ -130,10 +147,37 @@ const AddressForm = ({ isEdit }) => {
     try {
       const res = isEdit
         ? await UpdateUserAddress(formData)
-        : await addUserAddress(formData);
-      if (res?.data?.success) {
-        console.log(res.data.data);
+        : await addUserAddress({
+            userId: user.userid,
+            isDifferent: formData.isDifferent,
+            billing: {
+              firstName: formData.billingData.firstName,
+              lastName: formData.billingData.lastName,
+              country: formData.billingData.country,
+              state: formData.billingData.state,
+              city: formData.billingData.city,
+              address: formData.billingData.address,
+              postcode: formData.billingData.postCode,
+              phone: formData.billingData.phone,
+              email: formData.billingData.email,
+            },
+            ...(formData.isDifferent && {
+              shipping: {
+                firstName: formData.shippingData.firstName,
+                lastName: formData.shippingData.lastName,
+                country: formData.shippingData.country,
+                state: formData.shippingData.state,
+                city: formData.shippingData.city,
+                address: formData.shippingData.address,
+                postcode: formData.shippingData.postCode,
+                phone: formData.shippingData.phone,
+                email: formData.shippingData.email,
+              },
+            }),
+          });
+      if (res?.status === 201) {
         dispatch(setShowAddressForm(false));
+        fetchAddresses();
       } else {
         console.error("Failed to submit address:", res);
       }
@@ -146,7 +190,7 @@ const AddressForm = ({ isEdit }) => {
     <div>
       <div className={style.billingTitle}>
         <div onClick={() => dispatch(setShowAddressForm(false))}>
-          <GoArrowLeft size={24} />
+          <GoArrowLeft size={24} className={style.backButton} />
         </div>
         {isEdit ? "Edit Address" : "Billing Address"}
       </div>
@@ -163,13 +207,8 @@ const AddressForm = ({ isEdit }) => {
         <div className={`${style.billingFormColumn1} ${style.shippingAddress}`}>
           <div className={style.checkboxContainer}>
             <CheckboxFeild
-              checked={formData.isDifferentShipping}
-              onChange={() =>
-                setFormData((prev) => ({
-                  ...prev,
-                  isDifferentShipping: !prev.isDifferentShipping,
-                }))
-              }
+              checked={formData.isDifferent}
+              onChange={handleCheckboxChange}
               id="different-shipping"
             />
             <label htmlFor="different-shipping" className={style.checkboxLabel}>
@@ -178,7 +217,7 @@ const AddressForm = ({ isEdit }) => {
           </div>
         </div>
 
-        {formData.isDifferentShipping && (
+        {formData.isDifferent && (
           <div className={style.billingContainer}>
             <div className={style.billingTitle}>Shipping Address</div>
             <div className={style.billingForm}>
@@ -199,7 +238,9 @@ const AddressForm = ({ isEdit }) => {
               variant="warning"
               size="sm"
               type="button"
-              onClick={() => dispatch(setShowAddressForm(false))}
+              onClick={() => {
+                dispatch(setShowAddressForm(false));
+              }}
             >
               Cancel
             </Button>

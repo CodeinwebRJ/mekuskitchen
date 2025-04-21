@@ -42,12 +42,13 @@
   --error-dark: #e60000;
   --error-alt: #ef4444;
   --error-soft: #f85353;
-  --info: #3b82f6;
+  --info: #0b2e66;
 
   /* UI / Utility Colors */
   --text-muted: #4b5563;
   --text-dark: #374151;
   --text-light: #d1d5db;
+  --text-link: #2057b0;
 
   --black-translucent: #000000ac;
   --gray-medium-transparent: #838282e0;

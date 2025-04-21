@@ -107,7 +107,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
-            <h5 className={`${style.subtotalPrice} price`}>${calculateSubtotal()}</h5>
+            <h5 className={`${style.subtotalPrice} price`}>
+              ${calculateSubtotal()}
+            </h5>
           </div>
 
           <div className={style.subtotalButtons}>
@@ -116,9 +118,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                 VIEW CART
               </Button>
             </Link>
-            <Button variant="primary" size="sm">
-              CHECKOUT
-            </Button>
+            <Link to="/checkout">
+              <Button variant="primary" size="sm">
+                CHECKOUT
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

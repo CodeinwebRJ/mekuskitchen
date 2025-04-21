@@ -1,0 +1,27 @@
+.addAddressCardContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.1s ease-in-out;
+  border: 2px dashed var(--gray-border-light);
+  cursor: pointer;
+}
+
+.addAddressCardIcon {
+  font-size: 45px !important;
+  color: var(--gray-border-light);
+}
+
+.addAddressCardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-darkest);
+}
+

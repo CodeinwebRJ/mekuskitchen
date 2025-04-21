@@ -136,13 +136,15 @@
   cursor: pointer;
 }
 
-.cart {
+.cart,
+.wishlist {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.cartCount {
+.cartCount,
+.wishlistCount {
   position: absolute;
   top: 3px;
   right: 0px;

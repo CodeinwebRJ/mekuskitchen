@@ -40,12 +40,10 @@ export const getUserCart = async (data) => {
 };
 
 export const UpdateUserCart = async (data) => {
-  console.log(data);
   return axiosInstance.put("/api/v1/cart/update", data);
 };
 
 export const SendQuestions = async (data) => {
-  console.log(data);
   return axiosInstance.post("/api/v1/contact", data);
 };
 
@@ -59,4 +57,12 @@ export const addUserAddress = async (data) => {
 
 export const UpdateUserAddress = async (data) => {
   return axiosInstance.put("/api/v1/address/update", data);
+};
+
+export const ActiveUserAddress = async (data) => {
+  return axiosInstance.post("/api/v1/address/active", data);
+};
+
+export const DeleteUserAddress = async (data) => {
+  return axiosInstance.put("/api/v1/address/delete", data);
 };

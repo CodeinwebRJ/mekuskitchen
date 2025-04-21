@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "../styles/ProductCard.module.css";
 import { Link } from "react-router-dom";
 import RatingStar from "../Component/RatingStar";
@@ -7,11 +7,13 @@ import { useSelector } from "react-redux";
 import { AddtoCart } from "../axiosConfig/AxiosConfig";
 import { useDispatch } from "react-redux";
 import { setCart } from "../../Store/Slice/UserCartSlice";
+import { FaRegHeart } from "react-icons/fa";
 
 const ProductCard = (props) => {
   const { product, grid } = props;
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleAddtoCart = async () => {
     if (!user) {
@@ -32,6 +34,10 @@ const ProductCard = (props) => {
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
+  };
+
+  const addToWishlish = () => {
+    
   };
 
   return (
@@ -59,6 +65,10 @@ const ProductCard = (props) => {
         </div>
         <p className="price">${product.price}</p>
       </Link>
+      <FaRegHeart
+        className={style.wishlistIcon}
+        onclick={() => addToWishlish}
+      />
       <AddToCartButton onclick={handleAddtoCart} />
     </div>
   );

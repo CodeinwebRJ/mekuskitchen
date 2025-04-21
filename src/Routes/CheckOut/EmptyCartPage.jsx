@@ -5,24 +5,6 @@ import Button from "../../UI/Button";
 import { Link } from "react-router-dom";
 
 const EmptyCartPage = () => {
-  // Scroll to the empty cart page when it is rendered
-  useEffect(() => {
-    setTimeout(() => {
-      const element = document.querySelector(`.${style.emptyCartPage}`);
-
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      } else {
-        window.scrollTo({
-          top: window.innerHeight * 0.3,
-          behavior: "smooth",
-        });
-      }
-    }, 100);
-  }, []);
 
   return (
     <div className={style.emptyCartPage}>

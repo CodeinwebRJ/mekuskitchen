@@ -5,24 +5,24 @@ import Button from "../../../UI/Button";
 import AddressCard from "../../../UI/AddressCard";
 import { useDispatch, useSelector } from "react-redux";
 import BillingShipping from "./BillingShipping";
-import { getUserAddress } from "../../../axiosConfig/AxiosConfig";
+import {
+  ActiveUserAddress,
+  DeleteUserAddress,
+  getUserAddress,
+} from "../../../axiosConfig/AxiosConfig";
 import {
   setAddresses,
   setDefaultAddress,
   setShowAddressForm,
 } from "../../../../Store/Slice/AddressSlice";
 import AddressForm from "./AddressForm";
+import AddAddressCard from "../../../UI/AddAddressCard";
 
 const Addresses = () => {
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { addresses, showAddressForm } = useSelector((state) => state.address);
-
-  const handleEdit = () => {
-    setIsEdit(true);
-    dispatch(setShowAddressForm(true));
-  };
 
   const fetchAddresses = async () => {
     try {
@@ -33,14 +33,50 @@ const Addresses = () => {
         const activeAddress = data.find((addr) => addr.isActive);
         if (activeAddress) dispatch(setDefaultAddress(activeAddress));
       }
-    } catch (err) {
-      console.error("Error fetching addresses:", err);
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
     }
   };
 
-  useEffect(() => {
-    fetchAddresses();
-  }, []);
+  // Update Address
+  const handleUpdateAddress = (addressId) => {
+    setIsEdit(true);
+    dispatch(setShowAddressForm(true));
+  };
+
+  // Delete Address
+  const handleDeleteAddress = async (addressId) => {
+    try {
+      const data = {
+        userId: user.userid,
+        addressId: addressId,
+      };
+      const response = await DeleteUserAddress(data);
+      if (response.status === 200) {
+        fetchAddresses();
+      }
+    } catch (error) {
+      console.error("Error deleting address:", error);
+    }
+  };
+
+  // Set as Default Address
+  const handleSetAsDefaultAddress = async (addressId) => {
+    try {
+      const data = {
+        userId: user.userid,
+        addressId: addressId,
+      };
+      const response = await ActiveUserAddress(data);
+      if (response.status === 200) {
+        fetchAddresses();
+      }
+    } catch (error) {
+      console.error("Error activating address:", error);
+    }
+  };
+
+  console.log(addresses);
 
   return (
     <MyAccountContainer>
@@ -51,46 +87,37 @@ const Addresses = () => {
               The following addresses will be used on the checkout page by
               default.
             </p>
-
-            <div className={style.addressHeaderButtons}>
-              <div className={style.addNewAddressButton}>
-                <Button
-                  text="Edit Address"
-                  variant="warning"
-                  size="sm"
-                  onClick={handleEdit}
-                >
-                  Edit Address
-                </Button>
-              </div>
-              <div className={style.addNewAddressButton}>
-                <Button
-                  text="Add New Address"
-                  variant="success"
-                  size="sm"
-                  onClick={() => {
-                    dispatch(setShowAddressForm(true));
-                  }}
-                >
-                  Add New Address
-                </Button>
-              </div>
-            </div>
           </div>
 
           <BillingShipping />
 
           <div className={style.billingContainer}>
             <div className={style.billingAddressContainer}>
+              {addresses.length < 3 ? (
+                <AddAddressCard
+                  onClick={() => {
+                    dispatch(setShowAddressForm(true));
+                    setIsEdit(false);
+                    gotToTop();
+                  }}
+                />
+              ) : null}
+
               {addresses &&
                 addresses.map((address, index) => (
-                  <AddressCard key={index} address={address} />
+                  <AddressCard
+                    key={index}
+                    address={address}
+                    handleUpdateAddress={handleUpdateAddress}
+                    handleDeleteAddress={handleDeleteAddress}
+                    handleSetAsDefaultAddress={handleSetAsDefaultAddress}
+                  />
                 ))}
             </div>
           </div>
         </>
       ) : (
-        <AddressForm isEdit={isEdit} />
+        <AddressForm isEdit={isEdit} fetchAddresses={fetchAddresses} />
       )}
     </MyAccountContainer>
   );

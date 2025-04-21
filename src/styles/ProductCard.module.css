@@ -1,3 +1,7 @@
+.productCard {
+  position: relative;
+}
+
 .productCard_grid2 {
   background: var(--white);
   padding: 12px;
@@ -54,6 +58,17 @@
   font-size: 18px;
   font-weight: 600;
   margin: 0;
+}
+
+.wishlistIcon {
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  z-index: 1;
+  font-size: 25px;
+  color: var(--gray-solid-2);
+  cursor: pointer;
+  font-weight: lighter;
 }
 
 .addToCart {

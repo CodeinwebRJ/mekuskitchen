@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styles from "../styles/Header.module.css";
+import React, { useState } from "react";
+import style from "../styles/Header.module.css";
 import { Link } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
@@ -41,33 +41,33 @@ const Header = () => {
   // Handle Link Active
   const handleLinkActive = (link) => {
     if (link === window.location.pathname) {
-      return styles.linkActive;
+      return style.linkActive;
     }
-    return styles.link;
+    return style.link;
   };
 
   return (
-    <header className={styles.header}>
-      <Link to="/home" className={styles.logo}>
-        <img src="/logo2.png" alt="logo" className={styles.logoImage} />
+    <header className={style.header}>
+      <Link to="/home" className={style.logo}>
+        <img src="/logo2.png" alt="logo" className={style.logoImage} />
       </Link>
 
-      <nav className={styles.navLinks}>
+      <nav className={style.navLinks}>
         <Link
           to="/home"
-          className={`${styles.link} ${handleLinkActive("/home")}`}
+          className={`${style.link} ${handleLinkActive("/home")}`}
         >
           HOME
         </Link>
 
-        <div className={styles.ourMenuDropdown}>
-          <span className={styles.ourMenuDropdownLink}>OUR MENU</span>
-          <div className={styles.ourMenuDropdownMenu}>
+        <div className={style.ourMenuDropdown}>
+          <span className={style.ourMenuDropdownLink}>OUR MENU</span>
+          <div className={style.ourMenuDropdownMenu}>
             {data?.map((item, index) => (
               <Link
                 key={index}
                 to={`/product-category/${item.value}`}
-                className={styles.ourMenuDropdownItem}
+                className={style.ourMenuDropdownItem}
                 onClick={() => handleCategoryClick(item.value)}
               >
                 {item.name}
@@ -78,68 +78,69 @@ const Header = () => {
 
         <Link
           to="/daily-tiffin"
-          className={`${styles.link} ${handleLinkActive("/daily-tiffin")}`}
+          className={`${style.link} ${handleLinkActive("/daily-tiffin")}`}
         >
           DAILY TIFFIN
         </Link>
         <Link
           to="/about-us"
-          className={`${styles.link} ${handleLinkActive("/about-us")}`}
+          className={`${style.link} ${handleLinkActive("/about-us")}`}
         >
           ABOUT US
         </Link>
         <Link
           to="/contact-us"
-          className={`${styles.link} ${handleLinkActive("/contact-us")}`}
+          className={`${style.link} ${handleLinkActive("/contact-us")}`}
         >
           CONTACT US
         </Link>
       </nav>
 
-      <div className={styles.headerIcons}>
-        <IoSearch className={styles.icon} />
+      <div className={style.headerIcons}>
+        <IoSearch className={style.icon} />
 
-        <div className={styles.userDropdown}>
-          <LuUserRound className={styles.userDropdownIcon} />
-          <div className={styles.userDropdownMenu}>
-            <Link to="/my-account" className={styles.userDropdownItem}>
+        <div className={style.userDropdown}>
+          <LuUserRound className={style.userDropdownIcon} />
+          <div className={style.userDropdownMenu}>
+            <Link to="/my-account" className={style.userDropdownItem}>
               Dashboard
             </Link>
-            <Link to="/my-account/orders" className={styles.userDropdownItem}>
+            <Link to="/my-account/orders" className={style.userDropdownItem}>
               Orders
             </Link>
             <Link
               to="/my-account/downloads"
-              className={styles.userDropdownItem}
+              className={style.userDropdownItem}
             >
               Downloads
             </Link>
             <Link
               to="/my-account/addresses"
-              className={styles.userDropdownItem}
+              className={style.userDropdownItem}
             >
               Address
             </Link>
             <Link
               to="/my-account/account-details"
-              className={styles.userDropdownItem}
+              className={style.userDropdownItem}
             >
               Account Details
             </Link>
-            <span className={styles.userDropdownItem}>Logout</span>
+            <span className={style.userDropdownItem}>Logout</span>
           </div>
         </div>
 
-        <Link to="/wishlist" className={styles.wishlist}>
-          <FaRegHeart className={styles.icon} />
+        <Link to="/wishlist" className={style.wishlist}>
+          <FaRegHeart className={style.icon} />
+          <span className={style.wishlistCount}>{cartCount ?? 0}</span>
         </Link>
 
-        <div className={styles.cart} onClick={() => setIsSidebarOpen(true)}>
-          <PiShoppingCartSimpleBold className={styles.icon} />
-          <span className={styles.cartCount}>{cartCount ?? 0}</span>
+        <div className={style.cart} onClick={() => setIsSidebarOpen(true)}>
+          <PiShoppingCartSimpleBold className={style.icon} />
+          <span className={style.cartCount}>{cartCount ?? 0}</span>
         </div>
 
-        <span className={styles.cartTotal}>
+        <span className={style.cartTotal}>
           ${totalAmount ?? (0).toFixed(2)}
         </span>
       </div>

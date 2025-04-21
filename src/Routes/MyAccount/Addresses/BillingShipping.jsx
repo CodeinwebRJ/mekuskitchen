@@ -11,7 +11,7 @@ const BillingShipping = () => {
       <div className={style.billingAddressContainer}>
         <div className={style.addressTitle}>BILLING ADDRESS</div>
 
-        {defaultAddress ? (
+        {defaultAddress?.billing ? (
           <div className={`${style.addressCardContainer}`}>
             <div className={style.addressCard}>
               <h1 className={style.fullName}>
@@ -44,10 +44,10 @@ const BillingShipping = () => {
       </div>
 
       {/* Shipping Address */}
-      <div className={style.shippingAddressContainer}>
-        <div className={style.addressTitle}>SHIPPING ADDRESS</div>
+      {defaultAddress?.shipping && (
+        <div className={style.shippingAddressContainer}>
+          <div className={style.addressTitle}>SHIPPING ADDRESS</div>
 
-        {defaultAddress ? (
           <div className={`${style.addressCardContainer}`}>
             <div className={style.addressCard}>
               <h1 className={style.fullName}>
@@ -72,12 +72,8 @@ const BillingShipping = () => {
               </p>
             </div>
           </div>
-        ) : (
-          <p className={style.addressNotFoundMessage}>
-            You have not set up this type of address yet.
-          </p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

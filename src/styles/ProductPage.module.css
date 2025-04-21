@@ -207,10 +207,6 @@
 }
 
 .deleteIcon {
-  position: absolute;
-  right: -40px;
-  top: 50%;
-  transform: translateY(-50%);
   font-size: 15px;
   cursor: pointer;
   color: var(--error-soft);

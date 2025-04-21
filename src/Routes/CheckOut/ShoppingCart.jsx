@@ -10,8 +10,9 @@ import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import Button from "../../UI/Button";
 import { RxCross2 } from "react-icons/rx";
 import EmptyCartPage from "./EmptyCartPage";
+import { Link } from "react-router-dom";
 
-const CheckOutCart = () => {
+const ShoppingCart = () => {
   const dispatch = useDispatch();
 
   const User = useSelector((state) => state.auth.user);
@@ -71,7 +72,7 @@ const CheckOutCart = () => {
   return (
     <div>
       <Header />
-      
+
       <Banner name={"CART"} />
 
       {Cart?.items?.items?.length > 0 ? (
@@ -88,8 +89,8 @@ const CheckOutCart = () => {
                 </tr>
               </thead>
               <tbody>
-                {Cart?.items?.items?.map((item) => (
-                  <tr key={item.id} className={style.cartItem}>
+                {Cart?.items?.items?.map((item, index) => (
+                  <tr key={index} className={style.cartItem}>
                     <td>
                       <RxCross2
                         className={style.removeIcon}
@@ -153,11 +154,13 @@ const CheckOutCart = () => {
               <span className={style.totalAmount}>${total.toFixed(2)}</span>
             </p>
 
-            <div className={style.checkoutButton}>
-              <Button variant="success" size="md">
-                Proceed to Checkout
-              </Button>
-            </div>
+            <Link to="/checkout" state={{ id: "123" }}>
+              <div className={style.checkoutButton}>
+                <Button variant="success" size="md">
+                  Proceed to Checkout
+                </Button>
+              </div>
+            </Link>
           </div>
         </div>
       ) : (
@@ -168,4 +171,4 @@ const CheckOutCart = () => {
   );
 };
 
-export default CheckOutCart;
+export default ShoppingCart;
