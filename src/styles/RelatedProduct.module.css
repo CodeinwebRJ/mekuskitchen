@@ -6,29 +6,13 @@
   user-select: none;
 }
 
-.relatedProductHeader {
-  margin-bottom: 40px;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 99%;
-  border-bottom: 2px solid var(--gray-shadow);
-}
-
-.relatedProductHeaderText {
-  width: fit-content;
-  padding-bottom: 15px;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: -2px;
-  border-bottom: 2px solid var(--primary-blue);
-}
-
 .relatedProductCard {
   padding: 0 10px;
   padding-bottom: 50px;
 }
 
 .sliderWrapper {
+  margin-top: 35px;
   position: relative;
   display: flex;
   align-items: center;

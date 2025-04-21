@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import style from "../../../styles/ProductPage.module.css";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -8,7 +9,6 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 import { BiLogoInstagramAlt } from "react-icons/bi";
-import style from "../../../styles/ProductPage.module.css";
 import Footer from "../../../Component/MainComponents/Footer";
 import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
@@ -267,7 +267,7 @@ const TiffinProductPage = () => {
 
           <div className={style.productDetails}>
             <h1>{product.day}</h1>
-            <p className={style.price}>${product.subTotal}</p>
+            <p className={`${style.productPrice} price`}>${product.subTotal}</p>
 
             <div className={style.itemsContainer}>
               {product.items?.map((item, index) => (

@@ -7,6 +7,7 @@ import Button from "../../Component/Buttons/Button";
 import Header from "../../Component/MainComponents/Header";
 import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
+import Heading from "../../Component/UI-Components/Heading";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -67,12 +68,7 @@ const ContactPage = () => {
       <div className={style.ContactContainer}>
         <div className={style.ContactContainer2}>
           <div className={style.leftContainer}>
-            <div className={style.leftContainerTitlecontainer}>
-              <h1 className={style.leftContainerTitle}>
-                Get in{" "}
-                <span className={style.leftContainerTitleSpan}>Touch</span>
-              </h1>
-            </div>
+            <Heading title=" Get in" titleColor="Touch" />
 
             <p className={style.leftContainerDescription}>
               Have questions or special requests? We're here to assist you.
@@ -111,12 +107,7 @@ const ContactPage = () => {
           </div>
 
           <div className={style.rightContainer}>
-            <div className={style.rightContainerTitlecontainer}>
-              <h1 className={style.rightContainerTitle}>
-                Contact Us For Any{" "}
-                <span className={style.rightContainerTitleSpan}>Questions</span>
-              </h1>
-            </div>
+            <Heading title="Contact Us For Any" titleColor="Questions" />
 
             <form onSubmit={handleSubmit} className={style.rightContainerForm}>
               <div className={style.formFieldsColumn2}>

@@ -11,6 +11,7 @@ import RelatedProductCard from "../../../Component/Cards/RelatedProductCard";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import { getRelatedProduct } from "../../../axiosConfig/AxiosConfig";
+import Heading from "../../../Component/UI-Components/Heading";
 
 const TiffinRelatedProduct = () => {
   const { pathname } = useLocation();
@@ -33,12 +34,7 @@ const TiffinRelatedProduct = () => {
   }, []);
   return (
     <div className={style.relatedProductContainer}>
-      {/* Header */}
-      <div className={style.relatedProductHeader}>
-        <div className={style.relatedProductHeaderText}>
-          <p>RELATED PRODUCTS</p>
-        </div>
-      </div>
+      <Heading title="RELATED PRODUCTS" size="xs" />
 
       {/* Slider */}
       <div className={style.sliderWrapper}>

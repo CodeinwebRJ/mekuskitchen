@@ -6,6 +6,7 @@ import {
   getAllProductReview,
 } from "../../../axiosConfig/AxiosConfig";
 import Button from "../../../Component/Buttons/Button";
+import Heading from "../../../Component/UI-Components/Heading";
 
 const TiffinReviewComponent = ({
   reviews,
@@ -57,6 +58,8 @@ const TiffinReviewComponent = ({
           Customer Reviews ({reviews.length})
         </h2>
       </div>
+      {/* <Heading title="Customer Reviews" review={reviews.length} size="sm" /> */}
+
       {reviews.length === 0 ? (
         <p className={style.noReviews}>
           No reviews yet. Be the first to share your thoughts!

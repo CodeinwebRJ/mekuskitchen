@@ -63,10 +63,9 @@ const ProductCard = (props) => {
         </div>
         <p className="price">${product.price}</p>
       </Link>
-      <FaRegHeart
-        className={style.wishlistIcon}
-        onclick={() => addToWishlish}
-      />
+      <div className={style.wishlist}>
+        <FaRegHeart onclick={() => addToWishlish} />
+      </div>
       <AddToCartButton onclick={handleAddtoCart} />
     </div>
   );

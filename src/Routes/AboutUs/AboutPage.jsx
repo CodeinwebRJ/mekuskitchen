@@ -3,6 +3,7 @@ import style from "../../styles/AboutPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer";
 import Banner from "../../Component/MainComponents/Banner";
+import Heading from "../../Component/UI-Components/Heading";
 
 const AboutPage = () => {
   const [foundingYear, setFoundingYear] = useState(0);
@@ -97,11 +98,8 @@ const AboutPage = () => {
 
           {/* right container */}
           <div className={style.aboutRightContainer}>
-            <div className={style.aboutTitleContainer}>
-              <h1 className={style.aboutTitle}>
-                About Our <span>Kitchen</span>
-              </h1>
-            </div>
+            <Heading title="About Our" titleColor="Kitchen" />
+
             <p className={style.aboutDescription}>
               At Meku's Kitchen, we believe that enjoying the food is more than
               just eating; it's an opportunity to create cherished memories. Our

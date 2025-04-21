@@ -15,25 +15,6 @@
   width: 100%;
 }
 
-.header {
-  width: 100%;
-  border-bottom: 2px solid var(--gray-shadow);
-}
-
-.headerTitle {
-  width: fit-content;
-  padding-bottom: 15px;
-  font-weight: 700;
-  margin-bottom: -2px;
-  border-bottom: 2px solid var(--primary-blue);
-}
-
-.note {
-  margin: 0;
-  font-size: 16px;
-  color: var(--gray-darker);
-}
-
 .TiffinCardContainer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
