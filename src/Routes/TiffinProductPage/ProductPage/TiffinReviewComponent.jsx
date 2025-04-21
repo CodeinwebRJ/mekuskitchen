@@ -32,7 +32,7 @@ const TiffinReviewComponent = ({
 
     try {
       const data = {
-        user_id: "123435", // TODO: Replace with real user ID
+        user_id: "123435",
         rating,
         comment: review,
         product_id: id,
@@ -83,9 +83,6 @@ const TiffinReviewComponent = ({
         </div>
       )}
       <div className={style.reviewForm}>
-        <h3 className={style.formTitle}>
-          Write a Review for "{product.product_name}"
-        </h3>
         <form onSubmit={handleSubmitReview}>
           <div className={style.rating}>
             <label className={style.formLabel}>

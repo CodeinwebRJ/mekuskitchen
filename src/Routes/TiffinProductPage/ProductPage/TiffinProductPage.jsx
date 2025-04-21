@@ -1,80 +1,229 @@
-import React, { useEffect, useState } from "react";
-import style from "../../../styles/ProductPage.module.css";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaPinterest,
+  FaLinkedinIn,
+} from "react-icons/fa";
+import { BiLogoInstagramAlt } from "react-icons/bi";
+import style from "../../../styles/ProductPage.module.css";
 import Footer from "../../../Component/Footer";
 import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
 import Button from "../../../UI/Button";
-import { FaFacebookF, FaTwitter, FaPinterest } from "react-icons/fa";
-import { BiLogoInstagramAlt } from "react-icons/bi";
-import { FaLinkedinIn } from "react-icons/fa";
-import { RiDeleteBin5Fill } from "react-icons/ri";
 import Header from "../../../Component/Header";
+import { AddtoCart } from "../../../axiosConfig/AxiosConfig";
 
-const TiffinProductPage = () => {
-  const location = useLocation();
+const useProductNavigation = (products, currentIndex) => {
   const navigate = useNavigate();
-  const id = location.state?.id;
-
-  const tiffin = useSelector((state) => state.tiffin);
-  const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [itemQuantity, setItemQuantity] = useState(1);
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const products = tiffin.tiffins || [];
-  const loading = tiffin.loading;
-
-  useEffect(() => {
-    if (Array.isArray(products) && products.length > 0) {
-      const foundProduct = products.find((p) => p._id === id);
-      if (foundProduct) {
-        setProduct(foundProduct);
-        setSelectedImage(foundProduct.image_url?.[0] || null);
-      } else {
-        setProduct(null);
-      }
-    }
-  }, [id, products]);
-
-  const currentIndex = products.findIndex((p) => p._id === id);
+  const location = useLocation();
 
   const handleNext = () => {
-    if (currentIndex !== -1 && currentIndex < products.length - 1) {
-      const nextProduct = products[currentIndex + 1];
-      setProduct(nextProduct);
-      navigate(location.pathname, { state: { id: nextProduct._id } });
+    if (currentIndex < products.length - 1) {
+      navigate(location.pathname, {
+        state: { id: products[currentIndex + 1]._id },
+      });
     }
   };
 
   const handlePrev = () => {
     if (currentIndex > 0) {
-      const prevProduct = products[currentIndex - 1];
-      setProduct(prevProduct);
-      navigate(location.pathname, { state: { id: prevProduct._id } });
+      navigate(location.pathname, {
+        state: { id: products[currentIndex - 1]._id },
+      });
     }
   };
 
-  const handleQuantityChange = (e) => {
+  return { handleNext, handlePrev };
+};
+
+const ProductImageGallery = ({
+  images,
+  selectedImage,
+  setSelectedImage,
+  productName,
+}) => (
+  <div className={style.imageContainer}>
+    <div className={style.productImageContainer}>
+      <img
+        src={selectedImage || "/placeholder.png"}
+        alt={productName}
+        className={style.productImage}
+      />
+    </div>
+    <div className={style.thumbnailsContainer}>
+      {images?.slice(0, 4).map((image, index) => (
+        <img
+          key={index}
+          src={image}
+          alt={`${productName} thumbnail ${index + 1}`}
+          className={`${style.thumbnail} ${
+            selectedImage === image ? style.selectedThumbnail : ""
+          }`}
+          onClick={() => setSelectedImage(image)}
+        />
+      ))}
+    </div>
+  </div>
+);
+
+const ItemQuantitySelector = ({
+  item,
+  index,
+  quantities,
+  handleItemDecrease,
+  handleItemInputChange,
+  handleItemIncrease,
+}) => (
+  <div className={style.items} key={index}>
+    <div className={style.itemNo}>{index + 1}.</div>
+    <div className={style.itemName}>{item.name}</div>
+    <div className={style.itemPrice}>${item.price}</div>
+    <div className={style.itemQuantity}>
+      <button
+        onClick={() => handleItemDecrease(index)}
+        className={style.quantityButton}
+        aria-label={`Decrease quantity for ${item.name}`}
+      >
+        -
+      </button>
+      <input
+        type="number"
+        value={quantities.items[index]?.quantity ?? 1}
+        onChange={(e) =>
+          handleItemInputChange(index, parseInt(e.target.value, 10))
+        }
+        min="0"
+        className={style.quantityInput}
+        aria-label={`Quantity for ${item.name}`}
+      />
+      <button
+        onClick={() => handleItemIncrease(index)}
+        className={style.quantityButton}
+        aria-label={`Increase quantity for ${item.name}`}
+      >
+        +
+      </button>
+    </div>
+    <div className={style.itemQuantityUnit}>
+      {(item?.quantityUnit || "").toUpperCase()}
+    </div>
+    <div>({item?.weight})</div>
+  </div>
+);
+
+const TiffinProductPage = () => {
+  const location = useLocation();
+  const id = location.state?.id;
+
+  const { user } = useSelector((state) => state.auth);
+  const tiffin = useSelector((state) => state.tiffin);
+  const products = tiffin.tiffins || [];
+  const loading = tiffin.loading;
+
+  const product = useMemo(
+    () => products.find((p) => p._id === id) || null,
+    [id, products]
+  );
+
+  const [quantities, setQuantities] = useState({ main: 1, items: [] });
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState("");
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    if (product) {
+      setSelectedImage(product.image_url?.[0] || null);
+      setQuantities({
+        main: 1,
+        items:
+          product.items?.map((item) => ({
+            itemId: item._id,
+            name: item.name,
+            price: item.price,
+            quantity: 1,
+          })) || [],
+      });
+    }
+  }, [product]);
+
+  const currentIndex = products.findIndex((p) => p._id === id);
+  const { handleNext, handlePrev } = useProductNavigation(
+    products,
+    currentIndex
+  );
+
+  const handleMainQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    setQuantity(isNaN(value) ? 1 : Math.max(1, value));
+    setQuantities((prev) => ({
+      ...prev,
+      main: isNaN(value) ? 1 : Math.max(1, value),
+    }));
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  const handleItemDecrease = (index) => {
+    setQuantities((prev) => ({
+      ...prev,
+      items: prev.items.map((item, i) =>
+        i === index
+          ? { ...item, quantity: Math.max(0, item.quantity - 1) }
+          : item
+      ),
+    }));
+  };
 
-  if (!product || !Array.isArray(products) || products.length === 0) {
+  const handleItemInputChange = (index, value) => {
+    setQuantities((prev) => ({
+      ...prev,
+      items: prev.items.map((item, i) =>
+        i === index
+          ? { ...item, quantity: isNaN(value) ? 0 : Math.max(0, value) }
+          : item
+      ),
+    }));
+  };
+
+  const handleItemIncrease = (index) => {
+    setQuantities((prev) => ({
+      ...prev,
+      items: prev.items.map((item, i) =>
+        i === index ? { ...item, quantity: item.quantity + 1 } : item
+      ),
+    }));
+  };
+
+  const productItems = quantities.items.filter((item) => item.quantity !== 0);
+
+  const handleSubmit = async (e) => {
+    try {
+      const data = {
+        user_id: user.userid,
+        isTiffinCart: true,
+        tiffinMenuId: id,
+        customizedItems: productItems,
+        specialInstructions: "No onions, please.",
+        orderDate: "2025-04-16",
+        day: "Tuesday",
+        quantity: 1,
+        price: "500.00",
+      };
+      const res = await AddtoCart(data);
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (!product || !Array.isArray(products) || products.length === 0)
     return <p>Product not found</p>;
-  }
 
   return (
     <div>
       <Header />
-
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
@@ -107,67 +256,36 @@ const TiffinProductPage = () => {
             </button>
           </div>
         </div>
+
         <div className={style.productLayout}>
-          <div className={style.imageContainer}>
-            <div className={style.productImageContainer}>
-              <img
-                src={
-                  selectedImage || product.image_url?.[0] || "/placeholder.png"
-                }
-                alt={product.day}
-                className={style.productImage}
-              />
-            </div>
-            <div className={style.thumbnailsContainer}>
-              {product.image_url?.slice(0, 4).map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`${product.product_name} thumbnail ${index + 1}`}
-                  className={style.thumbnail}
-                  onClick={() => setSelectedImage(image)}
+          <ProductImageGallery
+            images={product.image_url}
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            productName={product.day}
+          />
+
+          <div className={style.productDetails}>
+            <h1>{product.day}</h1>
+            <p className={style.price}>${product.subTotal}</p>
+
+            <div className={style.itemsContainer}>
+              {product.items?.map((item, index) => (
+                <ItemQuantitySelector
+                  key={item._id}
+                  item={item}
+                  index={index}
+                  quantities={quantities}
+                  handleItemDecrease={handleItemDecrease}
+                  handleItemInputChange={handleItemInputChange}
+                  handleItemIncrease={handleItemIncrease}
                 />
               ))}
             </div>
-          </div>
-          <div className={style.productDetails}>
-            <h1>{product.day}</h1>
-            <p className="price">${product?.subTotal}</p>
-            <div className={style.quantity}>
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className={style.quantityButton}
-                aria-label="Decrease quantity"
-              >
-                -
-              </button>
 
-              <input
-                type="number"
-                value={quantity}
-                onChange={handleQuantityChange}
-                min="1"
-                className={style.quantityInput}
-                aria-label="Quantity"
-              />
-
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className={style.quantityButton}
-                aria-label="Increase quantity"
-              >
-                +
-              </button>
-
-              <div className={style.addToCartContainer}>
-                <Button variant="warning" size="sm">
-                  ADD TO CART
-                </Button>
-              </div>
-            </div>
-            <p className={style.categoryContaine}>
+            <p className={style.categoryContainer}>
               Category:{" "}
-              <span className={style.category}>{product?.category}</span>
+              <span className={style.category}>{product.category}</span>
             </p>
 
             <div className={style.share}>
@@ -181,48 +299,41 @@ const TiffinProductPage = () => {
               </div>
             </div>
 
-            {/* items container */}
-            <div className={style.itemsContainer}>
-              {product.items.map((item, index) => (
-                <div className={style.items} key={index}>
-                  <div className={style?.itemNo}>{index + 1}.</div>
-                  <div className={style?.itemName}>{item.name}</div>
-                  <div className={style?.itemPrice}>${item.price}</div>
-                  <div className={style?.itemQuantity}>
-                    <button
-                      onClick={() =>
-                        setItemQuantity(Math.max(1, itemQuantity - 1))
-                      }
-                      className={style.quantityButton}
-                      aria-label="Decrease quantity"
-                    >
-                      -
-                    </button>
-
-                    <input
-                      type="number"
-                      value={itemQuantity}
-                      onChange={handleQuantityChange}
-                      min="1"
-                      className={style.quantityInput}
-                      aria-label="Quantity"
-                    />
-                    <button
-                      onClick={() => setItemQuantity(itemQuantity + 1)}
-                      className={style.quantityButton}
-                      aria-label="Increase quantity"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  <div className={style?.itemQuantityUnit}>
-                    {item?.quantityUnit}
-                  </div>
-
-                  <RiDeleteBin5Fill className={style.deleteIcon} />
-                </div>
-              ))}
+            <div className={style.quantity}>
+              <button
+                onClick={() =>
+                  setQuantities((prev) => ({
+                    ...prev,
+                    main: Math.max(1, prev.main - 1),
+                  }))
+                }
+                className={style.quantityButton}
+                aria-label="Decrease main quantity"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                value={quantities.main}
+                onChange={handleMainQuantityChange}
+                min="1"
+                className={style.quantityInput}
+                aria-label="Main quantity"
+              />
+              <button
+                onClick={() =>
+                  setQuantities((prev) => ({ ...prev, main: prev.main + 1 }))
+                }
+                className={style.quantityButton}
+                aria-label="Increase main quantity"
+              >
+                +
+              </button>
+              <div className={style.addToCartContainer}>
+                <Button onClick={handleSubmit} variant="warning" size="sm">
+                  ADD TO CART
+                </Button>
+              </div>
             </div>
           </div>
         </div>

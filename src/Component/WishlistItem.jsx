@@ -9,7 +9,7 @@ const WishlistItem = (props) => {
   const { product } = props;
 
   return (
-    <div className={`${style.itemContainer} ${style.borderBottom}`}>
+    <div className={style.borderBottom}>
       <div className={style.item}>
         <div className={style.itemLeftSide}>
           <div className={style.itemImage}>
@@ -20,7 +20,7 @@ const WishlistItem = (props) => {
           </div>
           <div className={style.itemContent}>
             <span className={style.itemName}>
-              {product?.productDetails?.product_name}
+              {product?.productDetails?.product_name.toUpperCase()}
             </span>
             <span className={style.itemDescription}>
               {product?.productDetails?.description}
@@ -41,12 +41,10 @@ const WishlistItem = (props) => {
               <AiOutlineDelete className={style.icon} />
             </div>
           </div>
-
-          <div className={style.buttonContainer}>
+ 
             <Button variant="primary" size="sm">
               Add to Cart
             </Button>
-          </div>
         </div>
       </div>
     </div>

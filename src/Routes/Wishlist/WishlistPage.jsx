@@ -27,13 +27,8 @@ const WishlistPage = () => {
 
   return (
     <div>
-      {/* header */}
       <Header />
-
-      {/* banner */}
       <Banner name="Wishlist" />
-
-      {/* wishlist */}
       <div className={style.wishlistContainer}>
         <div className={style.headingContainer}>
           <h3 className={style.headingTitle}>Your Wishlist</h3>
