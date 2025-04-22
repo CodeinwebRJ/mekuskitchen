@@ -9,14 +9,14 @@
 
 .emptyCartIcon {
   font-size: 10rem;
-  font-weight: bold;
+  font-weight: var(--font-bold);
   color: var(--gray-offwhite);
 }
 
 .emptyCartText {
   text-transform: capitalize;
   font-size: 3rem;
-  font-weight: bold;
+  font-weight: var(--font-bold);
   color: var(--gray-solid-2);
 }
 

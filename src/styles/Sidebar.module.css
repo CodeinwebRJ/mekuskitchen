@@ -37,8 +37,8 @@
 }
 
 .noProduct {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
   text-align: center;
 }
 
@@ -47,7 +47,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 15px;
-  font-size: 24px;
+  font-size : var(--font-2xl);
   color: var(--white);
   cursor: pointer;
   text-align: right;
@@ -55,7 +55,7 @@
 }
 
 .closeIcon {
-  font-size: 15px;
+  font-size: var(--font-base);
   margin-right: 7px;
   transition: color 0.2s ease-in-out;
 }
@@ -70,7 +70,7 @@
   color: var(--black);
   border: none;
   padding: 10px;
-  font-size: 16px;
+  font-size: var(--font-md);
   cursor: pointer;
   width: 100%;
 }
@@ -100,7 +100,7 @@
   width: auto;
   position: relative;
   display: flex;
-  gap: 15px;
+  gap: var(--gap-7);
   margin: 17px;
   cursor: pointer;
 }
@@ -121,30 +121,30 @@
   padding: 3px 0;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--gap-3);
 }
 
 .cartItemName {
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .cartItemCalculation {
-  font-size: 13px;
+  font-size: var(--font-sm);
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--gap-2);
 }
 
 .quantity,
 .multiply {
   color: var(--gray-soft);
-  font-size: 13px;
-  font-weight: bold;
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
 }
 
 .price {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
   color: var(--primary-blue);
 }
 
@@ -153,7 +153,7 @@
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 15px;
+  font-size: var(--font-base);
   cursor: pointer;
   color: var(--error-soft);
 }
@@ -183,5 +183,5 @@
 .subtotalButtons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--gap-5);
 }

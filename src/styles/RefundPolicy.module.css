@@ -14,13 +14,13 @@
 }
 
 .section h2 {
-  font-size: 24px;
+  font-size : var(--font-2xl);
   margin-bottom: 10px;
   color: var(--gray-darkest);
 }
 
 .section p {
-  font-size: 16px;
+  font-size: var(--font-md);
   line-height: 1.5;
   color: var(--gray-deep);
   margin-bottom: 10px;
@@ -32,7 +32,7 @@
 }
 
 .sidebar h3 {
-  font-size: 18px;
+  font-size: var(--font-lg);
   margin-bottom: 10px;
   color: var(--gray-darkest);
 }
@@ -43,7 +43,7 @@
 }
 
 .sidebar ul li {
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--gray-deep);
   margin-bottom: 10px;
 }

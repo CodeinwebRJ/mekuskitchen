@@ -31,13 +31,13 @@
 .cardIcon svg {
   height: 100%;
   width: 100%;
-  font-weight: 300;
+  font-weight: var(--font-light);
   object-fit: cover;
   transition: color 0.3s ease-in-out;
 }
 
 .cardIconText {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-base);
+  font-weight: var(--font-semibold);
   text-transform: uppercase;
 }

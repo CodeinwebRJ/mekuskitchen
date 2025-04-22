@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: var(--gap-6);
   overflow: hidden;
 }
 
@@ -39,16 +39,16 @@
 .bannerText {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-4);
   color: var(--white);
   font-size: 68px;
-  font-weight: bold;
+  font-weight: var(--font-bold);
   z-index: 10;
 }
 
 .arrow {
   color: var(--white);
-  font-size: 2rem;
+  font-size: var(--font-3x);
   transition: opacity 0.2s ease-in-out;
 }
 
@@ -61,11 +61,11 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-4);
   color: var(--white);
   text-transform: uppercase;
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: var(--font-semibold);
+  font-size: var(--font-sm);
 }
 
 .link {

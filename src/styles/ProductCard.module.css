@@ -6,12 +6,12 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: var(--gap-4);
 }
 
 .productCard_grid3,
 .productCard_grid4 {
-  gap: 3px;
+  gap: var(--gap-2);
 }
 
 .productImg2 {
@@ -37,8 +37,8 @@
 
 .productName {
   text-transform: capitalize;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--font-lg);
+  font-weight: var(--font-semibold);
   margin: 0;
 }
 
@@ -48,8 +48,8 @@
 }
 
 .price {
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: var(--font-bold);
+  font-size: var(--font-md);
   color: var(--dark-gray);
 }
 
@@ -61,7 +61,7 @@
   top: 5%;
   right: 6%;
   z-index: 1;
-  font-size: 24px;
+  font-size : var(--font-2xl);
   cursor: pointer;
   border-radius: 50%;
   display: flex;
@@ -86,5 +86,5 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: var(--font-base);
 }

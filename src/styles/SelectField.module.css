@@ -19,7 +19,7 @@
   height: 100%;
   border: none;
   outline: none;
-  font-size: 16px;
+  font-size: var(--font-md);
   background-color: transparent;
   cursor: pointer;
 }
@@ -27,7 +27,7 @@
 .label {
   cursor: pointer;
   margin-bottom: 8px;
-  /* font-weight: 500; */
+  /* font-weight: var(--font-medium); */
 }
 
 .selectfocus {
@@ -37,6 +37,6 @@
 
 .errorMessage {
   color: red;
-  font-size: 12px;
+  font-size: var(--font-sm);
   margin-top: 5px;
 }

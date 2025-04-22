@@ -1,21 +1,21 @@
 .showOptionsContainer {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .showOptionsText {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-4);
 }
 
 .showOptionsItems {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: var(--gap-4);
   color: var(--gray-medium);
-  font-weight: 400;
+  font-weight: var(--font-normal);
 }
 
 .showOptions {

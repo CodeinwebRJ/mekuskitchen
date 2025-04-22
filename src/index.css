@@ -1,4 +1,41 @@
 :root {
+  /* Font Sizes */
+  --font-xs: 10px;
+  --font-sm: 12px;
+  --font-base: 14px;
+  --font-md: 16px;
+  --font-lg: 18px;
+  --font-xl: 20px;
+  --font-2xl: 24px;
+  --font-3xl: 30px;
+  --font-4xl: 36px;
+  --font-5xl: 48px;
+
+  /* font-weight */
+  --font-thin: 100;
+  --font-extralight: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
+  /* Spacing */
+  --gap-0: 0;
+  --gap-1: 2px;
+  --gap-2: 4px;
+  --gap-3: 6px;
+  --gap-4: 8px;
+  --gap-5: 10px;
+  --gap-6: 12px;
+  --gap-7: 14px;
+  --gap-8: 16px;
+  --gap-9: 20px;
+  --gap-10: 24px;
+  --gap-11: 28px;
+
   /* Base Colors */
   --black: #000000;
   --white: #ffffff;
@@ -93,11 +130,10 @@ ul {
 
 .errorMessage {
   color: red;
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .price {
   color: var(--success) !important;
-  font-weight: bold !important;
-  /* font-size: 18px; */
+  font-weight: var(--font-bold) !important;
 }

@@ -31,7 +31,7 @@
 .aboutDescription {
   text-align: justify;
   margin-top: 30px;
-  font-size: 18px;
+  font-size: var(--font-lg);
 }
 
 /* info section */
@@ -60,19 +60,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: left;
-  gap: 15px;
+  gap: var(--gap-7);
 }
 
 .infoLeftTitle {
-  font-size: 35px;
-  font-weight: 600;
+  font-size: var(--font-4xl);
+  font-weight: var(--font-semibold);
   color: var(--white);
 }
 
 .infoLeftDescription {
   width: fit-content;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
   color: var(--white);
   border-bottom: 2px solid var(--gray-medium-transparent);
   cursor: pointer;
@@ -97,14 +97,14 @@
 }
 
 .countNumber {
-  font-size: 35px;
-  font-weight: 600;
+  font-size: var(--font-4xl);
+  font-weight: var(--font-semibold);
   color: var(--white);
 }
 
 .countText {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: var(--font-lg);
+  font-weight: var(--font-medium);
   color: var(--gray-medium-transparent);
 }
 
@@ -121,7 +121,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: var(--gap-1);
   padding: 25px 0;
   width: 100%;
 }
@@ -135,7 +135,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: var(--gap-1);
   padding: 25px 0;
   width: 100%;
   border-top: 1px solid var(--gray-medium-transparent);

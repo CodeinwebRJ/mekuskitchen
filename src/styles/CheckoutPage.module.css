@@ -4,14 +4,14 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .billingTitle {
   display: flex;
-  gap: 8px;
-  font-size: 20px;
-  font-weight: bold;
+  gap: var(--gap-4);
+  font-size: var(--font-xl);
+  font-weight: var(--font-bold);
   text-transform: uppercase;
   align-items: center;
 }
@@ -26,7 +26,7 @@
   justify-content: start;
   align-items: start;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--gap-3);
 }
 
 .column1 {
@@ -42,10 +42,10 @@
 }
 
 .fullname {
-  font-size: 20px;
+  font-size: var(--font-xl);
   text-transform: capitalize;
 }
 
 .Country {
-  font-size: 15px;
+  font-size: var(--font-base);
 }

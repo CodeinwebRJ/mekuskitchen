@@ -32,7 +32,7 @@
 }
 
 .customArrow {
-  font-size: 37px;
+  font-size: var(--font-4xl);
 }
 
 .prevArrow {

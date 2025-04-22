@@ -37,8 +37,8 @@
 }
 
 .fullName {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: var(--font-md);
+  font-weight: var(--font-semibold);
   color: #333;
 }
 
@@ -47,7 +47,7 @@
 .state,
 .CountryPostcode,
 .phoneNumber {
-  font-size: 15px;
+  font-size: var(--font-md);
   color: #333;
 }
 
@@ -55,7 +55,7 @@
   position: absolute;
   top: 5%;
   right: 5%;
-  font-size: 0.7rem;
+  font-size: var(--font-base);
   font-style: italic;
   color: #333;
   background-color: #f0f0f09b;
@@ -68,7 +68,7 @@
   margin-top: 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .link {
@@ -76,5 +76,5 @@
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  font-size: 14px;
+  font-size: var(--font-base);
 }

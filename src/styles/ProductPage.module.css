@@ -14,7 +14,7 @@
 
 .breadcrumb {
   color: var(--gray-muted);
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .breadcrumb a {
@@ -28,13 +28,13 @@
 
 .navigation {
   display: flex;
-  gap: 5px;
+  gap: var(--gap-3);
 }
 
 .navButton {
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: var(--font-lg);
   cursor: pointer;
   color: var(--gray-muted);
 }
@@ -68,7 +68,7 @@
 .imageContainer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .productImageContainer {
@@ -86,7 +86,7 @@
 
 .thumbnailsContainer {
   display: flex;
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .thumbnail {
@@ -107,14 +107,14 @@
 }
 
 .productPrice {
-  font-size: 24px;
+  font-size : var(--font-2xl)(--font-2xl);
   margin: 10px 0;
 }
 
 .quantity {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-5);
   margin: 20px 0;
 }
 
@@ -124,7 +124,7 @@
   border: 1px solid var(--gray-border);
   background: var(--white);
   cursor: pointer;
-  font-size: 18px;
+  font-size: var(--font-lg);
   color: var(--gray-darkest);
 }
 
@@ -133,7 +133,7 @@
   height: 30px;
   border: 1px solid var(--gray-border);
   text-align: center;
-  font-size: 16px;
+  font-size: var(--font-md);
   padding-top: 3px;
 }
 
@@ -148,25 +148,25 @@
 
 .categoryContaine {
   text-transform: capitalize;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--gray-deep);
   margin: 10px 0;
-  font-weight: 600;
+  font-weight: var(--font-semibold);
 }
 
 .category {
   text-transform: capitalize;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--gray-deep);
   margin: 10px 0;
-  font-weight: 400;
+  font-weight: var(--font-normal);
 }
 
 .share {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: var(--gap-5);
+  font-size: var(--font-base);
   color: var(--gray-deep);
   margin: 10px 0;
 }
@@ -174,11 +174,11 @@
 .shareIcons {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--gap-2);
 }
 
 .shareIcon {
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--gray-deep);
 }
 
@@ -186,27 +186,27 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--gap-1);
 }
 
 .items {
   display: grid;
   grid-template-columns:  0.5fr 2fr 0.5fr 1.5fr 1fr 1fr;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-5);
   padding: 10px 0;
-  font-size: 15px;
+  font-size: var(--font-base);
   color: var(--gray-deep);
 }
 
 .itemPrice {
   color: var(--primary-green-alt);
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   letter-spacing: 0.6px;
 }
 
 .deleteIcon {
-  font-size: 15px;
+  font-size: var(--font-base);
   cursor: pointer;
   color: var(--error-soft);
 }

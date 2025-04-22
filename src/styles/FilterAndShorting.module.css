@@ -1,5 +1,5 @@
 .filterAndSort {
-  font-size: 12px !important;
+  font-size: var(--font-sm) !important;
   padding: 6px 10px !important;
   border-radius: 45px !important;
   outline: none !important;

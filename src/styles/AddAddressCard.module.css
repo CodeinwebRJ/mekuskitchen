@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: var(--gap-3);
   transition: all 0.1s ease-in-out;
   border: 2px dashed var(--gray-border-light);
   cursor: pointer;
@@ -20,8 +20,8 @@
 }
 
 .addAddressCardTitle {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--font-md);
+  font-weight: var(--font-semibold);
   color: var(--gray-darkest);
 }
 

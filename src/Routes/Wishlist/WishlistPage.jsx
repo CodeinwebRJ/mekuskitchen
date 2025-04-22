@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../styles/WishlistPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer";
@@ -8,9 +8,26 @@ import { IoReorderThreeOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import WishlistItem from "../../Component/Cards/WishlistItemsCard";
 import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
+import { getUserWishlist } from "../../axiosConfig/AxiosConfig";
 
 const WishlistPage = () => {
-  const products = useSelector((state) => state.cart?.items?.items);
+  const [data, setData] = useState(null);
+
+  const { user } = useSelector((state) => state.auth);
+
+  const fetchWishlist = async () => {
+    try {
+      const res = await getUserWishlist(user.userid);
+      console.log(res.data.data);
+      setData(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
 
   const filterAndShortingOptions = [
     {
@@ -53,8 +70,8 @@ const WishlistPage = () => {
           </div>
         </div>
 
-        {products &&
-          products.map((product, index) => (
+        {data &&
+          data?.items?.map((product, index) => (
             <WishlistItem key={index} product={product} />
           ))}
       </div>

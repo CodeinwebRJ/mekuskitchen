@@ -26,7 +26,7 @@
 }
 
 .filterSection h3 {
-  font-size: 16px;
+  font-size: var(--font-md);
   margin-bottom: 10px;
 }
 
@@ -36,7 +36,7 @@
 }
 
 .filterSection p {
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--gray-deep);
   margin-bottom: 10px;
 }
@@ -48,7 +48,7 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .topRatedItem {
@@ -82,7 +82,7 @@
 .sortingOptions {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--gap-10);
 }
 
 .sortingBar select {
@@ -94,26 +94,26 @@
 .productGrid2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
 }
 .productGrid3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
 }
 .productGrid4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .gridIcons {
   display: flex;
-  gap: 4px;
+  gap: var(--gap-2);
   cursor: pointer;
 }
 
 .productCard h3 {
-  font-size: 16px;
+  font-size: var(--font-md);
   margin: 10px 0 5px;
 }

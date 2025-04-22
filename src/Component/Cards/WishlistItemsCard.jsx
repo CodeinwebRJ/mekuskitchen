@@ -14,19 +14,19 @@ const WishlistItem = (props) => {
         <div className={style.itemLeftSide}>
           <div className={style.itemImage}>
             <img
-              src={`${product?.productDetails?.image_url[0]}`}
+              src={`${product?.productId?.image_url[0]}`}
               alt="wishlist-item"
             />
           </div>
           <div className={style.itemContent}>
             <span className={style.itemName}>
-              {product?.productDetails?.product_name.toUpperCase()}
+              {product?.productId?.product_name.toUpperCase()}
             </span>
             <span className={style.itemDescription}>
-              {product?.productDetails?.description}
+              {product?.productId?.description}
             </span>
             <span className={style.itemPrice}>
-              ${product?.productDetails?.price}
+              ${product?.productId?.price}
             </span>
           </div>
         </div>
@@ -41,10 +41,10 @@ const WishlistItem = (props) => {
               <AiOutlineDelete className={style.icon} />
             </div>
           </div>
- 
-            <Button variant="primary" size="sm">
-              Add to Cart
-            </Button>
+
+          <Button variant="primary" size="sm">
+            Add to Cart
+          </Button>
         </div>
       </div>
     </div>

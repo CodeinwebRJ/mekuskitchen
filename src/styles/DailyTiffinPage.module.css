@@ -11,13 +11,13 @@
 .SweetsContainer {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: var(--gap-6);
   width: 100%;
 }
 
 .TiffinCardContainer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
   margin-top: 15px;
 }

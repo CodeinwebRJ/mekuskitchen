@@ -22,7 +22,7 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: var(--font-base);
   transition: background-color 0.2s ease-in-out;
 }
 
@@ -60,7 +60,7 @@
 }
 
 .filterSection h3 {
-  font-size: 16px;
+  font-size: var(--font-md);
   margin-bottom: 10px;
 }
 

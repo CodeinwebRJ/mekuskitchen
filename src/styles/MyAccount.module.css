@@ -16,8 +16,8 @@
 }
 
 .myAccountLeftContainerTitle {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--font-lg);
+  font-weight: var(--font-semibold);
   padding-bottom: 10px;
   border-bottom: 1px solid var(--gray-shadow);
   margin-bottom: 10px;

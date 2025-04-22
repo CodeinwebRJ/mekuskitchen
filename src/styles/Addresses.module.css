@@ -7,13 +7,13 @@
 
 .userMessage {
   display: flex;
-  gap: 5px;
+  gap: var(--gap-3);
   color: var(--gray-dark);
 }
 
 .addressHeaderButtons {
   display: flex;
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .addNewAddressButton {
@@ -26,14 +26,14 @@
   margin-bottom: 35px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .billingTitle {
   display: flex;
-  gap: 8px;
-  font-size: 20px;
-  font-weight: bold;
+  gap: var(--gap-4);
+  font-size: var(--font-xl);
+  font-weight: var(--font-bold);
   text-transform: uppercase;
   align-items: center;
 }
@@ -46,25 +46,25 @@
   padding: 25px 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .billingFormColumn1 {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .billingFormColumn3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .checkboxContainer {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .checkboxLabel {
@@ -74,7 +74,7 @@
 
 .billingFormButtons {
   display: flex;
-  gap: 10px;
+  gap: var(--gap-5);
 }
 
 .submitButtonContainer {

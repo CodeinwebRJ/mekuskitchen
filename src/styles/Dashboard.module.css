@@ -7,15 +7,15 @@
 .dashboardCardContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .userMessage {
   display: flex;
-  gap: 5px;
+  gap: var(--gap-3);
   color: var(--gray-dark);
 }
 
 .userName {
-  font-weight: 600;
+  font-weight: var(--font-semibold);
 }

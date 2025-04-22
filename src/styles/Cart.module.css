@@ -30,11 +30,11 @@
 }
 
 .cartItem th {
-  font-weight: bold;
+  font-weight: var(--font-bold);
 }
 
 .removeIcon {
-  font-size: 17px;
+  font-size: var(--font-md);
   cursor: pointer;
   color: var(--error-dark);
   transition: all 0.2s ease-in-out;
@@ -54,7 +54,7 @@
 .productCell {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-4);
 }
 
 .quantityControl {
@@ -80,7 +80,7 @@
 
 .totalPrice {
   color: var(--success);
-  font-weight: 500;
+  font-weight: var(--font-medium);
 }
 
 .cartTotals {
@@ -111,14 +111,14 @@
 }
 
 .total {
-  font-weight: 700;
-  font-size: 24px;
+  font-weight: var(--font-bold);
+  font-size : var(--font-2xl);
   text-align: right;
 }
 
 .taxAmount {
   color: var(--success);
-  font-weight: 500;
+  font-weight: var(--font-medium);
 }
 
 .totalAmount {

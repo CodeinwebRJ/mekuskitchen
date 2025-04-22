@@ -15,7 +15,7 @@
   justify-content: space-evenly;
   margin: 0 auto;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .footerColumn {
@@ -25,8 +25,8 @@
 }
 
 .footerHeading {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: var(--font-lg);
+  font-weight: var(--font-bold);
   margin-bottom: 20px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -34,8 +34,7 @@
 
 .footerText {
   text-align: justify;
-  font-size: 18px;
-  font-size: 18px;
+  font-size: var(--font-lg);
   line-height: 1.8;
   margin-bottom: 15px;
   opacity: 0.9;
@@ -47,11 +46,11 @@
   color: var(--white);
   padding: 8px 16px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: var(--font-lg);
   /* border-radius: 5px; */
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--gap-3);
   transition: all 0.3s ease;
 }
 
@@ -61,7 +60,7 @@
 }
 
 .arrowIcon {
-  font-size: 18px;
+  font-size: var(--font-lg);
 }
 
 .footerList {
@@ -76,10 +75,10 @@
 .footerLink {
   color: var(--white);
   text-decoration: none;
-  font-size: 18px;
+  font-size: var(--font-lg);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-4);
   opacity: 0.9;
   transition: opacity 0.3s ease;
 }
@@ -89,13 +88,13 @@
 }
 
 .arrow {
-  font-size: 18px;
+  font-size: var(--font-lg);
   color: var(--white);
 }
 
 .icon {
   margin-right: 8px;
-  font-size: 18px;
+  font-size: var(--font-lg);
 }
 
 .socialLinks {
@@ -103,7 +102,7 @@
 }
 
 .socialHeading {
-  font-size: 18px;
+  font-size: var(--font-lg);
   margin-bottom: 10px;
   font-weight: normal;
   opacity: 0.9;
@@ -111,7 +110,7 @@
 
 .socialIcon {
   margin-right: 15px;
-  font-size: 20px;
+  font-size: var(--font-xl);
   color: var(--white);
   text-decoration: none;
   transition: color 0.3s ease;
@@ -122,7 +121,7 @@
 }
 
 .socialIcon .icon {
-  font-size: 24px;
+  font-size : var(--font-2xl);
 }
 
 .footerBottom {
@@ -133,7 +132,7 @@
   margin: 30px auto 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 20px;
-  font-size: 12px;
+  font-size: var(--font-sm);
   opacity: 0.8;
 }
 
@@ -160,7 +159,7 @@
   .footerBottom {
     flex-direction: column;
     text-align: center;
-    gap: 15px;
+    gap: var(--gap-7);
   }
 
   .paymentIcons {

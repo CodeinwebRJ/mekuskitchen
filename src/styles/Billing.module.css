@@ -7,12 +7,12 @@
 .shippingAddressContainer {
   display: flex;
   flex-direction: column;
-  gap: 19px;
+  gap: var(--gap-9);
 }
 
 .addressTitle {
-  font-size: 21px;
-  font-weight: bold;
+  font-size: var(--font-xl);
+  font-weight: var(--font-bold);
   text-transform: uppercase;
 }
 
@@ -40,8 +40,8 @@
 }
 
 .fullName {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: var(--font-md);
+  font-weight: var(--font-semibold);
   color: #333;
 }
 
@@ -49,13 +49,13 @@
 .cityState,
 .CountryPostcode,
 .phoneNumber {
-  font-size: 15px;
+  font-size: var(--font-base);
   color: #333;
 }
 
 /* Address Not Found Message */
 .addressNotFoundMessage {
-  font-size: 17px;
+  font-size: var(--font-md);
   font-style: italic;
   color: var(--gray-dark);
 }

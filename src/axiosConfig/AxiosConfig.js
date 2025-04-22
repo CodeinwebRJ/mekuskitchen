@@ -66,3 +66,6 @@ export const ActiveUserAddress = async (data) => {
 export const DeleteUserAddress = async (data) => {
   return axiosInstance.put("/api/v1/address/delete", data);
 };
+export const getUserWishlist = async (id) => {
+  return axiosInstance.get(`/api/v1/wishlist/${id}`);
+};
