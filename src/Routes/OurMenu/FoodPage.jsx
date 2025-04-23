@@ -47,7 +47,6 @@ const FoodPage = () => {
     try {
       const res = await getTopRatedProduct();
       setTopRated(res?.data?.data);
-      console.log(res?.data?.data);
     } catch (error) {
       console.error("Error fetching top rated product", error);
     }

@@ -37,8 +37,6 @@ const ShoppingCart = () => {
 
   const updateQuantity = async (id, delta) => {
     try {
-      console.log(Cart);
-      console.log(id);
       const currentItem = Cart?.items?.items?.find((item) => item._id === id);
       if (!currentItem) return;
 

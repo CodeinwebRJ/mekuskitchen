@@ -43,6 +43,22 @@ const Sidebar = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleDeleteTiffin = async (id, dayName) => {
+    try {
+      const data = {
+        user_id: User?.userid,
+        type: "tiffin",
+        quantity: 0,
+        tiffinMenuId: id,
+        day: dayName,
+      };
+      const res = await UpdateUserCart(data);
+      dispatch(setCart(res.data.data));
+    } catch (error) {
+      console.error("Error deleting item from cart", error);
+    }
+  };
+
   const calculateSubtotal = () => {
     const subtotal = Cart?.items?.items
       ?.reduce((acc, item) => acc + item?.price * item?.quantity, 0)
@@ -56,9 +72,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         onClose();
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -76,33 +90,65 @@ const Sidebar = ({ isOpen, onClose }) => {
           <FaTimes className={style.closeIcon} onClick={onClose} />
         </div>
 
-        <div className={style.cartContainer}>
-          {Cart?.items?.items?.map((item, index) => (
-            <div className={style.cartItem} key={index}>
-              <div className={style.cartItemImageContainer}>
-                <img
-                  src={item?.productDetails?.image_url[0]}
-                  alt="product"
-                  className={style.cartItemImage}
-                />
-              </div>
+        {Cart?.items?.items && Cart?.items?.items?.length > 0 && (
+          <div className={style.cartContainer}>
+            {Cart?.items?.tiffins?.map((item, index) => (
+              <div className={style.cartItem} key={index}>
+                <div className={style.cartItemImageContainer}>
+                  <img
+                    src={item?.tiffinMenuDetails?.image_url[0]}
+                    alt="product"
+                    className={style.cartItemImage}
+                  />
+                </div>
 
-              <div className={style.cartItemDetails}>
-                <p className={style.cartItemName}>
-                  {item?.productDetails?.product_name}
-                </p>
-                <p className={style.cartItemCalculation}>
-                  <span className={style.quantity}>{item?.quantity}</span>
-                  <span className={style.multiply}>×</span>
-                  <span className="price">${item?.price}</span>
-                </p>
-                <div onClick={() => handleDeleteItem(item.product_id)}>
-                  <RiDeleteBin5Fill className={style.deleteIcon} />
+                <div className={style.cartItemDetails}>
+                  <p className={style.cartItemName}>{item?.day}</p>
+                  <p className={style.cartItemCalculation}>
+                    <span className={style.quantity}>{item?.quantity}</span>
+                    <span className={style.multiply}>×</span>
+                    <span className="price">${item?.totalAmount}</span>
+                  </p>
+                  <div onClick={() => handleDeleteItem(item.product_id)}>
+                    <RiDeleteBin5Fill className={style.deleteIcon} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {Cart?.items?.tiffins && Cart.items.tiffins.length > 0 && (
+          <div className={style.cartContainer}>
+            {Cart.items.tiffins.map((item, index) => (
+              <div className={style.cartItem} key={index}>
+                <div className={style.cartItemImageContainer}>
+                  <img
+                    src={item?.tiffinMenuDetails?.image_url?.[0]}
+                    alt="product"
+                    className={style.cartItemImage}
+                  />
+                </div>
+
+                <div className={style.cartItemDetails}>
+                  <p className={style.cartItemName}>{item?.day}</p>
+                  <p className={style.cartItemCalculation}>
+                    <span className={style.quantity}>{item?.quantity}</span>
+                    <span className={style.multiply}>×</span>
+                    <span className="price">${item?.totalAmount}</span>
+                  </p>
+                  <div
+                    onClick={() =>
+                      handleDeleteTiffin(item.tiffinMenuId, item.day)
+                    }
+                  >
+                    <RiDeleteBin5Fill className={style.deleteIcon} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>

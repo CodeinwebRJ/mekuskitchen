@@ -4,6 +4,8 @@ import authSlice from "../Store/Slice/UserSlice";
 import TiffinSlice from "../Store/Slice/TiffinSlice";
 import UserCartSlice from "../Store/Slice/UserCartSlice";
 import addressSlice from "../Store/Slice/AddressSlice";
+import CountSlice from "../Store/Slice/CountSlice";
+import UserWishlistSlice from "../Store/Slice/UserWishlistSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
     tiffin: TiffinSlice,
     cart: UserCartSlice,
     address: addressSlice,
+    count: CountSlice,
+    wishlist: UserWishlistSlice,
   },
 });
 

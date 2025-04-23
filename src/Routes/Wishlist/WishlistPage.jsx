@@ -5,29 +5,14 @@ import Footer from "../../Component/MainComponents/Footer";
 import Banner from "../../Component/MainComponents/Banner";
 import { RiShareLine } from "react-icons/ri";
 import { IoReorderThreeOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import WishlistItem from "../../Component/Cards/WishlistItemsCard";
 import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
 import { getUserWishlist } from "../../axiosConfig/AxiosConfig";
+import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
 
 const WishlistPage = () => {
-  const [data, setData] = useState(null);
-
-  const { user } = useSelector((state) => state.auth);
-
-  const fetchWishlist = async () => {
-    try {
-      const res = await getUserWishlist(user.userid);
-      console.log(res.data.data);
-      setData(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchWishlist();
-  }, []);
+  const data = useSelector((state) => state.wishlist);
 
   const filterAndShortingOptions = [
     {
@@ -71,7 +56,7 @@ const WishlistPage = () => {
         </div>
 
         {data &&
-          data?.items?.map((product, index) => (
+          data?.items?.items?.map((product, index) => (
             <WishlistItem key={index} product={product} />
           ))}
       </div>

@@ -10,8 +10,6 @@ import { useSelector } from "react-redux";
 const CheckoutPage = () => {
   const { defaultAddress } = useSelector((state) => state.address);
 
-  console.log(defaultAddress);
-
   return (
     <div>
       <Header />

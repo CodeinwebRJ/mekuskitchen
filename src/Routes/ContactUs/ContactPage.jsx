@@ -48,7 +48,6 @@ const ContactPage = () => {
       ...formData,
     };
     const res = await SendQuestions(data);
-    console.log(res.data.data);
 
     if (Object.keys(newErrors).length === 0) {
       setFormData({

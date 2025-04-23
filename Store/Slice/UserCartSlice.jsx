@@ -15,12 +15,6 @@ const UserCartSlice = createSlice({
   },
 });
 
-export const {
-  setCart,
-  addToCart,
-  removeFromCart,
-  updateCartItemQuantity,
-  clearCart,
-} = UserCartSlice.actions;
+export const { setCart } = UserCartSlice.actions;
 
 export default UserCartSlice.reducer;

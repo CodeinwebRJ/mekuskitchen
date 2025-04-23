@@ -157,13 +157,6 @@
   text-align: center;
 }
 
-.cartTotal {
-  margin-left: 5px;
-  font-size: var(--font-md);
-}
-
-/* our menu dropdown */
-
 .ourMenuDropdown {
   position: relative;
 }

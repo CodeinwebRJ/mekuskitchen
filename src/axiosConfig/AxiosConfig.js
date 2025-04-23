@@ -69,3 +69,15 @@ export const DeleteUserAddress = async (data) => {
 export const getUserWishlist = async (id) => {
   return axiosInstance.get(`/api/v1/wishlist/${id}`);
 };
+
+export const getCount = async (id) => {
+  return axiosInstance.get(`/api/v1/count/${id}`);
+};
+
+export const AddtoWishlist = async (data) => {
+  return axiosInstance.post("/api/v1/wishlist/create", data);
+};
+
+export const RemoveWishlist = async (data) => {
+  return axiosInstance.put("/api/v1/wishlist/remove", data);
+};

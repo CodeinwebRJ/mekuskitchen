@@ -12,19 +12,13 @@ import { FaRegHeart } from "react-icons/fa6";
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
-
+  const { cartCount, wishlistCount } = useSelector((state) => state.count);
   const Cart = useSelector((state) => state.cart);
+  const totalAmount = Cart?.items?.totalAmount;
 
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategory(categoryName));
   };
-
-  const totalAmount = Cart?.items?.totalAmount;
-
-  const cartCount = Cart?.items?.items?.reduce(
-    (acc, item) => acc + item.quantity,
-    0
-  );
 
   const data = [
     {
@@ -130,7 +124,7 @@ const Header = () => {
 
         <Link to="/wishlist" className={style.wishlist}>
           <FaRegHeart className={style.icon} />
-          <span className={style.wishlistCount}>{cartCount ?? 0}</span>
+          <span className={style.wishlistCount}>{wishlistCount ?? 0}</span>
         </Link>
 
         <div className={style.cart} onClick={() => setIsSidebarOpen(true)}>

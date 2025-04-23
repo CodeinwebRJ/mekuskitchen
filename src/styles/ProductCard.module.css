@@ -1,7 +1,7 @@
 .productCard {
   position: relative;
   background: var(--white);
-  padding: 12px;
+  padding: 8px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -58,8 +58,8 @@
   width: 36px;
   background: #e4e4e475;
   position: absolute;
-  top: 5%;
-  right: 6%;
+  top: 3%;
+  right: 3%;
   z-index: 1;
   font-size : var(--font-2xl);
   cursor: pointer;

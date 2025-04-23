@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import style from "../../../styles/ProductPage.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   FaFacebookF,
@@ -15,6 +15,8 @@ import TiffinRelatedProduct from "./TiffinRelatedProduct";
 import Button from "../../../Component/Buttons/Button";
 import Header from "../../../Component/MainComponents/Header";
 import { AddtoCart } from "../../../axiosConfig/AxiosConfig";
+import { setCart } from "../../../../Store/Slice/UserCartSlice";
+import { Toast } from "../../../Utils/Toast";
 
 const useProductNavigation = (products, currentIndex) => {
   const navigate = useNavigate();
@@ -120,6 +122,7 @@ const TiffinProductPage = () => {
 
   const { user } = useSelector((state) => state.auth);
   const tiffin = useSelector((state) => state.tiffin);
+  const cart = useSelector((state) => state.cart); // Added cart state
   const products = tiffin.tiffins || [];
   const loading = tiffin.loading;
 
@@ -134,6 +137,7 @@ const TiffinProductPage = () => {
   const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
 
+  const dispatch = useDispatch();
   useEffect(() => {
     if (product) {
       setSelectedImage(product.image_url?.[0] || null);
@@ -197,7 +201,23 @@ const TiffinProductPage = () => {
 
   const productItems = quantities.items.filter((item) => item.quantity !== 0);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
+    if (!user?.userid) {
+      Toast({
+        message: "Please log in to add items to cart",
+        type: "warn",
+      });
+      return;
+    }
+
+    if (cart?.items?.length > 0) {
+      Toast({
+        message: "Cannot add tiffin - cart already contains items",
+        type: "error",
+      });
+      return;
+    }
+
     try {
       const data = {
         user_id: user.userid,
@@ -205,15 +225,24 @@ const TiffinProductPage = () => {
         tiffinMenuId: id,
         customizedItems: productItems,
         specialInstructions: "No onions, please.",
-        orderDate: "2025-04-16",
-        day: "Tuesday",
-        quantity: 1,
-        price: "500.00",
+        orderDate: new Date().toISOString().split("T")[0],
+        day: product.day,
+        quantity: quantities.main,
+        price: product.subTotal,
       };
+
       const res = await AddtoCart(data);
-      console.log(res.data.data);
+      dispatch(setCart(res?.data?.data));
+      Toast({
+        message: "Tiffin added to cart successfully",
+        type: "success",
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Error adding to cart:", error);
+      Toast({
+        message: "Failed to add tiffin to cart",
+        type: "success",
+      });
     }
   };
 
