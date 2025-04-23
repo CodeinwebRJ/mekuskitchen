@@ -75,8 +75,6 @@ const Addresses = () => {
     }
   };
 
-  console.log(addresses);
-
   return (
     <MyAccountContainer>
       {!showAddressForm ? (
@@ -96,8 +94,7 @@ const Addresses = () => {
                 <AddAddressCard
                   onClick={() => {
                     dispatch(setShowAddressForm(true));
-                    setIsEdit(false);
-                    gotToTop();
+                    setIsEdit(false);a
                   }}
                 />
               ) : null}

@@ -40,7 +40,6 @@ const AddressCard = ({
         <span
           onClick={() => {
             handleUpdateAddress(address?._id);
-            gotToTop();
           }}
           className={style.link}
         >

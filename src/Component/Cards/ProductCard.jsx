@@ -46,6 +46,10 @@ const ProductCard = ({ product, grid }) => {
         price: product.price,
       });
       dispatch(setCart(res.data.data));
+      Toast({
+        message: "Product added to cart suceessfully",
+        type: "success",
+      });
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -95,7 +99,7 @@ const ProductCard = ({ product, grid }) => {
                 : style.productImg3
             }
           />
-          <p className={style.productName}>{product.product_name}</p>
+          <p className={style.productName}>{product?.product_name}</p>
           <div className={style.rating}>
             <RatingStar rating={3} start={0} stop={5} disabled />
           </div>

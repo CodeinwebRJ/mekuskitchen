@@ -58,33 +58,22 @@ const FoodPage = () => {
 
   return (
     <div>
-      {/* Header */}
       <Header />
-
-      {/* Banner */}
       <Banner name={id.toUpperCase()} />
-
-      {/* Container */}
       <div className={style.container}>
         <div className={style.container2}>
-          {/* Filter Container */}
           <FilterContainer
             priceRange={priceRange}
             handlePriceChange={handlePriceChange}
             data={toprated}
           />
-
-          {/* Main Content */}
           <div className={style.mainContent}>
             <div className={style.sortingBar}>
               <div className={style.breadcrumb}>
                 <span>Home / Food</span>
               </div>
               <div className={style.sortingOptions}>
-                {/* Show Products */}
                 <ShowProducts />
-
-                {/* Grid Icons */}
                 <div className={style.gridIcons}>
                   <span onClick={() => dispatch(setGrid(2))}>
                     <IoGrid
@@ -115,8 +104,6 @@ const FoodPage = () => {
                     />
                   </span>
                 </div>
-
-                {/* Sorting */}
                 <FilterAndShorting
                   options={sortingOption}
                   placeholder="Default sorting"

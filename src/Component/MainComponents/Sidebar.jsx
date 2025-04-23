@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import style from "../../styles/Sidebar.module.css";
 import { FaTimes } from "react-icons/fa";
 import Button from "../Buttons/Button";
-import { RiDeleteBin5Fill } from "react-icons/ri";
+import { BsTrash } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,6 +78,17 @@ const Sidebar = ({ isOpen, onClose }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && <div className={style.backdrop} onClick={onClose}></div>}
@@ -90,27 +101,39 @@ const Sidebar = ({ isOpen, onClose }) => {
           <FaTimes className={style.closeIcon} onClick={onClose} />
         </div>
 
-        {Cart?.items?.items && Cart?.items?.items?.length > 0 && (
+        {Cart?.items?.items?.length > 0 && (
           <div className={style.cartContainer}>
-            {Cart?.items?.tiffins?.map((item, index) => (
-              <div className={style.cartItem} key={index}>
+            {Cart.items.items.map((item, index) => (
+              <div className={style.cartItem} key={item._id || index}>
                 <div className={style.cartItemImageContainer}>
                   <img
-                    src={item?.tiffinMenuDetails?.image_url[0]}
-                    alt="product"
+                    src={
+                      item?.productDetails?.image_url?.[0] ||
+                      "/default-image.jpg"
+                    }
+                    alt={item.day || "Tiffin item"}
                     className={style.cartItemImage}
                   />
                 </div>
 
                 <div className={style.cartItemDetails}>
-                  <p className={style.cartItemName}>{item?.day}</p>
-                  <p className={style.cartItemCalculation}>
-                    <span className={style.quantity}>{item?.quantity}</span>
-                    <span className={style.multiply}>×</span>
-                    <span className="price">${item?.totalAmount}</span>
-                  </p>
-                  <div onClick={() => handleDeleteItem(item.product_id)}>
-                    <RiDeleteBin5Fill className={style.deleteIcon} />
+                  <div>
+                    <p className={style.cartItemName}>
+                      {item?.productDetails?.product_name?.toUpperCase()}
+                    </p>
+                    <p className={style.cartItemCalculation}>
+                      <span className={style.quantity}>{item.quantity}</span>
+                      <span className={style.multiply}>×</span>
+                      <span className={style.price}>
+                        ${item?.productDetails?.price}
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    className={style.deleteButton}
+                    onClick={() => handleDeleteItem(item.product_id, item.day)}
+                  >
+                    <BsTrash className={style.deleteIcon} />
                   </div>
                 </div>
               </div>
@@ -118,31 +141,38 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         )}
 
-        {Cart?.items?.tiffins && Cart.items.tiffins.length > 0 && (
+        {Cart?.items?.tiffins?.length > 0 && (
           <div className={style.cartContainer}>
             {Cart.items.tiffins.map((item, index) => (
-              <div className={style.cartItem} key={index}>
+              <div className={style.cartItem} key={item._id || index}>
                 <div className={style.cartItemImageContainer}>
                   <img
-                    src={item?.tiffinMenuDetails?.image_url?.[0]}
-                    alt="product"
+                    src={
+                      item.tiffinMenuDetails?.image_url?.[0] ||
+                      "/default-image.jpg"
+                    }
+                    alt={item.day || "Tiffin item"}
                     className={style.cartItemImage}
                   />
                 </div>
 
                 <div className={style.cartItemDetails}>
-                  <p className={style.cartItemName}>{item?.day}</p>
-                  <p className={style.cartItemCalculation}>
-                    <span className={style.quantity}>{item?.quantity}</span>
-                    <span className={style.multiply}>×</span>
-                    <span className="price">${item?.totalAmount}</span>
-                  </p>
+                  <div>
+                    <p className={style.cartItemName}>{item?.day}</p>
+                    <p className={style.cartItemCalculation}>
+                      <span className={style.quantity}>{item?.quantity}</span>
+                      <span className={style.multiply}>×</span>
+                      <span className={style.price}>${item?.totalAmount}</span>
+                    </p>
+                  </div>
+
                   <div
+                    className={style.deleteButton}
                     onClick={() =>
                       handleDeleteTiffin(item.tiffinMenuId, item.day)
                     }
                   >
-                    <RiDeleteBin5Fill className={style.deleteIcon} />
+                    <BsTrash className={style.deleteIcon} />
                   </div>
                 </div>
               </div>
@@ -150,14 +180,14 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         )}
 
-        {(Cart?.items?.items?.length === 0 ||
-          Cart?.items?.tiffins?.length === 0) && (
-          <div className={style.cartContainer}>
-            <div className={style.emptyCartText}>
-              <h5>Your Cart Is Empty</h5>
+        {Cart?.items?.items?.length === 0 &&
+          Cart?.items?.tiffins?.length === 0 && (
+            <div className={style.cartContainer}>
+              <div className={style.emptyCartText}>
+                <h5>Your Cart Is Empty</h5>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
@@ -168,11 +198,13 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
 
           <div className={style.subtotalButtons}>
-            <Link to={"/cart"}>
-              <Button variant="light" size="sm">
-                VIEW CART
-              </Button>
-            </Link>
+            <div className={style.viewCart}>
+              <Link to={"/cart"}>
+                <Button variant="light" size="sm">
+                  VIEW CART
+                </Button>
+              </Link>
+            </div>
             <Link to="/checkout">
               <Button variant="primary" size="sm">
                 CHECKOUT

@@ -1,7 +1,7 @@
 import React from "react";
 import style from "../../styles/Heading.module.css";
 
-const Heading = (props) => {
+const   Heading = (props) => {
   const { title, titleColor, note, size = "md", review } = props;
 
   return (

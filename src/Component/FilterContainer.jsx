@@ -29,6 +29,9 @@ const FilterContainer = (props) => {
             </Button>
           </div>
         </div>
+
+        <hr />
+        <div>hello</div>
         <hr />
         <h3>TOP RATED PRODUCTS</h3>
         <ul>

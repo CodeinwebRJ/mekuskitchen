@@ -131,10 +131,6 @@ const Header = () => {
           <PiShoppingCartSimpleBold className={style.icon} />
           <span className={style.cartCount}>{cartCount ?? 0}</span>
         </div>
-
-        <span className={style.cartTotal}>
-          ${totalAmount ?? (0).toFixed(2)}
-        </span>
       </div>
 
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
