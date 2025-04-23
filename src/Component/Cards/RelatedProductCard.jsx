@@ -1,18 +1,14 @@
 import React from "react";
 import style from "../../styles/RelatedProductCard.module.css";
 import AddToCartButton from "../Buttons/AddToCartButton";
-import { format } from "date-fns";
 import { Link, useLocation } from "react-router-dom";
+import { formatDate } from "../../Utils/FormateDate";
 
 const RelatedProductCard = (props) => {
   const { item } = props;
 
   const { pathname } = useLocation();
   const category = pathname.split("/").filter((segment) => segment);
-
-  const formattedDate = item?.date
-    ? format(new Date(item.date), "MM/dd/yyyy")
-    : "N/A";
 
   return (
     <Link
@@ -32,9 +28,7 @@ const RelatedProductCard = (props) => {
             alt={item?.product_name}
             className={style.relatedProductImg}
           />
-          {item?.date && (
-            <span className={style.relatedProductDate}>D: {formattedDate}</span>
-          )}
+          {item?.date && <DateChip name={formatDate(item?.date)} />}
         </div>
         <p className={style.relatedProductTitle}>
           {category[1] === "tiffin" ? item?.day : item?.product_name}

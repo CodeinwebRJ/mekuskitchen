@@ -1,3 +1,9 @@
+.emptyCartText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .sidebar {
   position: fixed;
   top: 0;
@@ -47,7 +53,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 15px;
-  font-size : var(--font-2xl);
+  font-size: var(--font-2xl);
   color: var(--white);
   cursor: pointer;
   text-align: right;

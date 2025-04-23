@@ -31,8 +31,8 @@ const ProductCard = ({ product, grid }) => {
     if (!user) return;
     if (Cart?.items?.tiffins.length > 0) {
       Toast({
-        message: "Tiffin added to cart successfully!",
-        type: "success",
+        message: "Tiffin is already added to cart!",
+        type: "error",
       });
       return;
     }

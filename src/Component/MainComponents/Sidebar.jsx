@@ -150,6 +150,15 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         )}
 
+        {(Cart?.items?.items?.length === 0 ||
+          Cart?.items?.tiffins?.length === 0) && (
+          <div className={style.cartContainer}>
+            <div className={style.emptyCartText}>
+              <h5>Your Cart Is Empty</h5>
+            </div>
+          </div>
+        )}
+
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>

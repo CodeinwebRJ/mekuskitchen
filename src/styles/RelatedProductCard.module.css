@@ -26,19 +26,6 @@
   border-radius: 5px;
 }
 
-.relatedProductDate {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background-color: var(--primary-blue-light);
-  color: var(--white);
-  padding: 9px 12px;
-  border-top-left-radius: 8px;
-  font-size: var(--font-sm);
-  font-weight: var(--font-semibold);
-  /* letter-spacing: 0.8px; */
-}
-
 .relatedProductTitle {
   font-size: var(--font-md);
   font-weight: var(--font-semibold);

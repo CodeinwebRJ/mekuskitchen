@@ -2,14 +2,34 @@ import React from "react";
 import style from "../../styles/TiffinCard.module.css";
 import { Link } from "react-router-dom";
 import AddToCartButton from "../Buttons/AddToCartButton";
-import { format } from "date-fns";
+import { formatDate } from "../../Utils/FormateDate";
+import DateChip from "../Buttons/DateChip";
 
 const TiffinCard = (props) => {
   const { item } = props;
+  const handleAddToCart = async () => {
+    if (!user) return;
+    if (Cart?.items?.items.length > 0) {
+      Toast({
+        message: "Product is already added to cart!",
+        type: "error",
+      });
+      return;
+    }
 
-  const formattedDate = item?.date
-    ? format(new Date(item.date), "MM/dd/yyyy")
-    : "N/A";
+    try {
+      const res = await AddtoCart({
+        user_id: user.userid,
+        isTiffinCart: false,
+        product_id: product._id,
+        quantity: 1,
+        price: product.price,
+      });
+      dispatch(setCart(res.data.data));
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   return (
     <div className={style.tiffinCard}>
@@ -25,9 +45,7 @@ const TiffinCard = (props) => {
           />
 
           {/* Date */}
-          {item?.date && (
-            <span className={style.tiffinDate}>D: {formattedDate}</span>
-          )}
+          {item?.date && <DateChip name={formatDate(item?.date)} />}
         </div>
 
         {/* Title */}
@@ -38,11 +56,7 @@ const TiffinCard = (props) => {
           <p className="price">${Number(item?.subTotal).toFixed(2)}</p>
         )}
       </Link>
-      <AddToCartButton
-        onclick={() => {
-          console.log("first");
-        }}
-      />
+      <AddToCartButton onclick={() => handleAddToCart()} />
     </div>
   );
 };
