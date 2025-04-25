@@ -1,5 +1,4 @@
-// src/CheckOutCart.js
-import React, { useState } from "react";
+import React from "react";
 import style from "../../styles/Cart.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
@@ -14,42 +13,46 @@ import { Link } from "react-router-dom";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
-
   const User = useSelector((state) => state.auth.user);
   const Cart = useSelector((state) => state.cart);
-
   const taxRate = 0.05;
 
-  const handleRemove = async (id) => {
+  const updateItemQuantity = async (id, delta, type, dayName = null) => {
     try {
-      const data = {
-        user_id: User?.userid,
-        type: "product",
-        product_id: id,
-        quantity: 0,
-      };
-      const res = await UpdateUserCart(data);
-      dispatch(setCart(res.data.data));
-    } catch (error) {
-      console.error("Error removing item from cart:", error);
-    }
-  };
+      let currentItem;
+      let newQuantity;
+      let data;
 
-  const updateQuantity = async (id, delta) => {
-    try {
-      const currentItem = Cart?.items?.items?.find((item) => item._id === id);
-      if (!currentItem) return;
+      if (type === "product") {
+        currentItem = Cart?.items?.items?.find((item) => item._id === id);
+        if (!currentItem) return;
 
-      const newQuantity = currentItem.quantity + delta;
+        newQuantity = currentItem.quantity + delta;
+        if (newQuantity < 1) return;
 
-      if (newQuantity < 1) return;
+        data = {
+          user_id: User?.userid,
+          type: "product",
+          product_id: currentItem.product_id,
+          quantity: newQuantity,
+        };
+      } else if (type === "tiffin") {
+        currentItem = Cart?.items?.tiffins?.find((item) => item._id === id);
+        if (!currentItem) return;
 
-      const data = {
-        user_id: User?.userid,
-        type: "product",
-        product_id: currentItem.product_id,
-        quantity: newQuantity,
-      };
+        newQuantity = currentItem.quantity + delta;
+        if (newQuantity < 1) return;
+
+        data = {
+          user_id: User?.userid,
+          type: "tiffin",
+          tiffinMenuId: currentItem.tiffinMenuId,
+          quantity: newQuantity,
+          day: dayName,
+        };
+      } else {
+        return;
+      }
 
       const res = await UpdateUserCart(data);
       dispatch(setCart(res.data.data));
@@ -58,11 +61,33 @@ const ShoppingCart = () => {
     }
   };
 
+  const handleDelete = async (id, type, dayName = null) => {
+    try {
+      const data = {
+        user_id: User?.userid,
+        type: type,
+        quantity: 0,
+        product_id: type === "product" ? id : undefined,
+        tiffinMenuId: type === "tiffin" ? id : undefined,
+        day: type === "tiffin" ? dayName : undefined,
+      };
+
+      const res = await UpdateUserCart(data);
+      dispatch(setCart(res.data.data));
+    } catch (error) {
+      console.error("Error deleting item from cart", error);
+    }
+  };
+
   const subtotal =
-    Cart?.items?.items?.reduce(
+    (Cart?.items?.items?.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
-    ) || 0;
+    ) || 0) +
+    (Cart?.items?.tiffins?.reduce(
+      (acc, item) => acc + item.tiffinMenuDetails?.totalAmount * item.quantity,
+      0
+    ) || 0);
 
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
@@ -70,10 +95,9 @@ const ShoppingCart = () => {
   return (
     <div>
       <Header />
-
       <Banner name={"CART"} />
 
-      {Cart?.items?.items?.length > 0 ? (
+      {Cart?.items?.items?.length > 0 || Cart?.items?.tiffins?.length > 0 ? (
         <div className={style.cartContainer}>
           <div className={style.cartItems}>
             <table className={style.cartTable}>
@@ -92,7 +116,7 @@ const ShoppingCart = () => {
                     <td>
                       <RxCross2
                         className={style.removeIcon}
-                        onClick={() => handleRemove(item.product_id)}
+                        onClick={() => handleDelete(item.product_id, "product")}
                       />
                     </td>
                     <td>
@@ -109,19 +133,88 @@ const ShoppingCart = () => {
                     <td>
                       <div className={style.quantityControl}>
                         <button
-                          onClick={() => updateQuantity(item._id, -1)}
+                          onClick={() =>
+                            updateItemQuantity(item._id, -1, "product")
+                          }
                           disabled={item.quantity <= 1}
                         >
                           -
                         </button>
                         <span className={style.quantity}>{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item._id, 1)}>
+                        <button
+                          onClick={() =>
+                            updateItemQuantity(item._id, 1, "product")
+                          }
+                        >
                           +
                         </button>
                       </div>
                     </td>
                     <td className={style.totalPrice}>
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ${item.price * item.quantity}
+                    </td>
+                  </tr>
+                ))}
+
+                {Cart?.items?.tiffins?.map((tiffin, index) => (
+                  <tr key={index} className={style.cartItem}>
+                    <td>
+                      <RxCross2
+                        className={style.removeIcon}
+                        onClick={() =>
+                          handleDelete(
+                            tiffin.tiffinMenuId,
+                            "tiffin",
+                            tiffin.day
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <div className={style.productCell}>
+                        <img
+                          src={tiffin.tiffinMenuDetails?.image_url?.[0]}
+                          alt="tiffin"
+                          className={style.cartItemImage}
+                        />
+                        <span>{tiffin?.day}</span>
+                      </div>
+                    </td>
+                    <td>${tiffin.tiffinMenuDetails?.totalAmount}</td>
+                    <td>
+                      <div className={style.quantityControl}>
+                        <button
+                          onClick={() =>
+                            updateItemQuantity(
+                              tiffin._id,
+                              -1,
+                              "tiffin",
+                              tiffin.day
+                            )
+                          }
+                          disabled={tiffin.quantity <= 1}
+                        >
+                          -
+                        </button>
+                        <span className={style.quantity}>
+                          {tiffin.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateItemQuantity(
+                              tiffin._id,
+                              1,
+                              "tiffin",
+                              tiffin.day
+                            )
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+                    <td className={style.totalPrice}>
+                      ${tiffin.tiffinMenuDetails?.totalAmount * tiffin.quantity}
                     </td>
                   </tr>
                 ))}

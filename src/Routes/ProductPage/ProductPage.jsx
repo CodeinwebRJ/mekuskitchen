@@ -197,9 +197,11 @@ const ProductPage = () => {
                 p
               </a>
             </div>
-
             <div>
-              {product.description && <span>{product.description}</span>}
+              <h5>description</h5>
+              <div>
+                {product.description && <span>{product.description}</span>}
+              </div>
             </div>
           </div>
         </div>

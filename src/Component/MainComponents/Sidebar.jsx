@@ -28,30 +28,17 @@ const Sidebar = ({ isOpen, onClose }) => {
     fetchUserCart();
   }, [isOpen]);
 
-  const handleDeleteItem = async (id) => {
+  const handleDelete = async (id, type, dayName = null) => {
     try {
       const data = {
         user_id: User?.userid,
-        type: "product",
-        product_id: id,
+        type: type,
         quantity: 0,
+        product_id: type === "product" ? id : undefined,
+        tiffinMenuId: type === "tiffin" ? id : undefined,
+        day: type === "tiffin" ? dayName : undefined,
       };
-      const res = await UpdateUserCart(data);
-      dispatch(setCart(res.data.data));
-    } catch (error) {
-      console.error("Error deleting item from cart", error);
-    }
-  };
 
-  const handleDeleteTiffin = async (id, dayName) => {
-    try {
-      const data = {
-        user_id: User?.userid,
-        type: "tiffin",
-        quantity: 0,
-        tiffinMenuId: id,
-        day: dayName,
-      };
       const res = await UpdateUserCart(data);
       dispatch(setCart(res.data.data));
     } catch (error) {
@@ -131,7 +118,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                   <div
                     className={style.deleteButton}
-                    onClick={() => handleDeleteItem(item.product_id, item.day)}
+                    onClick={() => handleDelete(item.product_id, "product")}
                   >
                     <BsTrash className={style.deleteIcon} />
                   </div>
@@ -169,7 +156,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <div
                     className={style.deleteButton}
                     onClick={() =>
-                      handleDeleteTiffin(item.tiffinMenuId, item.day)
+                      handleDelete(item.tiffinMenuId, "tiffin", item.day)
                     }
                   >
                     <BsTrash className={style.deleteIcon} />
