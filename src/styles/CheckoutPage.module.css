@@ -1,51 +1,124 @@
 .checkoutContianer {
-  padding: 50px 15px;
+  padding: 60px 20px;
   max-width: 1250px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--gap-5);
+  grid-template-columns: 1fr 0.6fr;
+  gap: 40px;
+  align-items: start;
 }
 
 .billingTitle {
   display: flex;
-  gap: var(--gap-4);
-  font-size: var(--font-xl);
-  font-weight: var(--font-bold);
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 700;
   text-transform: uppercase;
   align-items: center;
+  margin-bottom: 25px;
+  color: #111827;
 }
 
 .backButton {
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.backButton:hover {
+  transform: translateX(-3px);
 }
 
 .addressDetails {
-  margin-top: 20px;
   display: flex;
-  justify-content: start;
-  align-items: start;
   flex-direction: column;
-  gap: var(--gap-3);
-}
-
-.column1 {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 25px;
-}
-
-.column2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
+  gap: 12px;
+  font-size: 1rem;
+  color: #374151;
+  background-color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 }
 
 .fullname {
-  font-size: var(--font-xl);
+  font-size: 1.25rem;
+  font-weight: 600;
   text-transform: capitalize;
+  color: #111827;
 }
 
 .Country {
-  font-size: var(--font-base);
+  font-size: 1rem;
+}
+
+.orderSummaryContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.orderCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 25px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 400px;
+}
+
+.orderTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: #111827;
+}
+
+.orderRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #374151;
+}
+
+.orderRow.total {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #d1d5db;
+}
+
+.paymentMethod {
+  margin-top: 25px;
+  padding: 15px;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+}
+
+.privacyText {
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.placeOrder {
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .checkoutContianer {
+    grid-template-columns: 1fr;
+    padding: 30px 15px;
+  }
+
+  .orderCard {
+    max-width: 100%;
+  }
 }

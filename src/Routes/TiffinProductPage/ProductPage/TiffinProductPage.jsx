@@ -219,6 +219,7 @@ const TiffinProductPage = () => {
     }
 
     try {
+      console.log(productItems);
       const data = {
         user_id: user.userid,
         isTiffinCart: true,
@@ -241,7 +242,7 @@ const TiffinProductPage = () => {
       console.error("Error adding to cart:", error);
       Toast({
         message: "Failed to add tiffin to cart",
-        type: "success",
+        type: "error",
       });
     }
   };

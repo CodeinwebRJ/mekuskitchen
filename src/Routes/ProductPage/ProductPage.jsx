@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import style from "../../styles/ProductPage.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../Component/MainComponents/Header";
 import ReviewComponent from "./ReviewComponent";
 import RelatedProduct from "./RelatedProduct";
 import Footer from "../../Component/MainComponents/Footer";
 import Button from "../../Component/Buttons/Button";
+import { Toast } from "../../Utils/Toast";
+import { AddtoCart } from "../../axiosConfig/AxiosConfig";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 const ProductPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const id = location.state?.id;
+
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const Cart = useSelector((state) => state.cart);
 
   const productState = useSelector((state) => state.product);
   const [product, setProduct] = useState(null);
@@ -65,6 +72,38 @@ const ProductPage = () => {
   if (!product || !Array.isArray(products) || products.length === 0) {
     return <p>Product not found</p>;
   }
+
+  const handleAddToCart = async () => {
+    if (!user) return;
+    if (Cart?.items?.tiffins.length > 0) {
+      Toast({
+        message: "Tiffin is already added to cart!",
+        type: "error",
+      });
+      return;
+    }
+
+    try {
+      const res = await AddtoCart({
+        user_id: user.userid,
+        isTiffinCart: false,
+        product_id: product._id,
+        quantity: 1,
+        price: product.price,
+      });
+      dispatch(setCart(res.data.data));
+      Toast({
+        message: "Product added to cart suceessfully",
+        type: "success",
+      });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      Toast({
+        message: "Failed to add product in cart.",
+        type: "error",
+      });
+    }
+  };
 
   return (
     <div>
@@ -157,7 +196,7 @@ const ProductPage = () => {
               </button>
 
               <div className={style.addToCartContainer}>
-                <Button variant="warning" size="sm">
+                <Button onClick={handleAddToCart} variant="warning" size="sm">
                   ADD TO CART
                 </Button>
               </div>

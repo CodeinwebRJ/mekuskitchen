@@ -52,6 +52,10 @@ const ProductCard = ({ product, grid }) => {
       });
     } catch (error) {
       console.error("Error adding to cart:", error);
+      Toast({
+        message: "Failed to add product in cart.",
+        type: "error",
+      })
     }
   };
 

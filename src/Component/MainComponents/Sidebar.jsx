@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       >
         <div className={style.closeBtn}>
           <h5>SHOPPING CART</h5>
-          <FaTimes className={style.closeIcon} onClick={onClose} />
+          <FaTimes size={20} onClick={onClose} />
         </div>
 
         {Cart?.items?.items?.length > 0 && (

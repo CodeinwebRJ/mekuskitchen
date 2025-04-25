@@ -35,10 +35,10 @@ const TiffinCard = ({ item }) => {
       const res = await AddtoCart({
         user_id: user.userid,
         isTiffinCart: true,
-        tiffinMenuId: item._id, // Use actual ID
+        tiffinMenuId: item._id,
         customizedItems: item.items || [],
-        specialInstructions: item.specialInstructions || "", // Ideally from props or user input
-        orderDate: Date.now(), // Make sure it's in valid format
+        specialInstructions: item.specialInstructions || "",
+        orderDate: Date.now(),
         day: item.day,
         quantity: 1,
         price: item.subTotal,

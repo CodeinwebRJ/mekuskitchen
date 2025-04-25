@@ -10,6 +10,8 @@ import Button from "../../Component/Buttons/Button";
 import { RxCross2 } from "react-icons/rx";
 import EmptyCartPage from "./EmptyCartPage";
 import { Link } from "react-router-dom";
+import { FaMinus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
@@ -138,7 +140,7 @@ const ShoppingCart = () => {
                           }
                           disabled={item.quantity <= 1}
                         >
-                          -
+                          <FaMinus size={14} />
                         </button>
                         <span className={style.quantity}>{item.quantity}</span>
                         <button
@@ -146,7 +148,7 @@ const ShoppingCart = () => {
                             updateItemQuantity(item._id, 1, "product")
                           }
                         >
-                          +
+                          <FaPlus size={14} />
                         </button>
                       </div>
                     </td>

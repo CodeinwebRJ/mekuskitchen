@@ -10,6 +10,7 @@
   z-index: 1000;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
   display: flex;
+  border-radius: 8px 0 0 8px;
   flex-direction: column;
 }
 
@@ -51,11 +52,6 @@
   cursor: pointer;
   text-align: right;
   border-bottom: 2px solid var(--gray-border);
-}
-
-.closeIcon {
-  font-size: var(--font-base);
-  transition: color 0.2s ease-in-out;
 }
 
 .closeIcon:hover {

@@ -3,6 +3,7 @@ import style from "../../styles/RelatedProductCard.module.css";
 import AddToCartButton from "../Buttons/AddToCartButton";
 import { Link, useLocation } from "react-router-dom";
 import { formatDate } from "../../Utils/FormateDate";
+import DateChip from "../Buttons/DateChip";
 
 const RelatedProductCard = (props) => {
   const { item } = props;
