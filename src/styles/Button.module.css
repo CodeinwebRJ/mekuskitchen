@@ -50,6 +50,7 @@
 .primary {
   background-color: var(--primary-blue);
   color: var(--white);
+  border-radius: 8px;
 }
 
 .primary:hover {

@@ -10,6 +10,13 @@ import Button from "../../Component/Buttons/Button";
 import { Toast } from "../../Utils/Toast";
 import { AddtoCart } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaPinterest,
+  FaTwitter,
+} from "react-icons/fa";
+import { BiLogoInstagramAlt } from "react-icons/bi";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -207,34 +214,13 @@ const ProductPage = () => {
             </p>
             <div className={style.share}>
               Share:
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Facebook"
-              >
-                f
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Twitter"
-              >
-                t
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Instagram"
-              >
-                i
-              </a>
-              <a
-                href="#"
-                className={style.shareIcon}
-                aria-label="Share on Pinterest"
-              >
-                p
-              </a>
+              <div className={style.shareIcons}>
+                <FaFacebookF className={style.shareIcon} />
+                <FaTwitter className={style.shareIcon} />
+                <BiLogoInstagramAlt className={style.shareIcon} />
+                <FaPinterest className={style.shareIcon} />
+                <FaLinkedinIn className={style.shareIcon} />
+              </div>
             </div>
             <div>
               <h5>description</h5>

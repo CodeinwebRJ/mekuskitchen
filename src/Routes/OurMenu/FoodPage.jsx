@@ -6,7 +6,11 @@ import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setPriceRange, setGrid } from "../../../Store/Slice/ProductSlice.jsx";
+import {
+  setPriceRange,
+  setGrid,
+  setPage,
+} from "../../../Store/Slice/ProductSlice.jsx";
 import Footer from "../../Component/MainComponents/Footer";
 import ProductCard from "../../Component/Cards/ProductCard.jsx";
 import FilterContainer from "../../Component/FilterContainer.jsx";
@@ -14,107 +18,107 @@ import ShowProducts from "../../Component/ShowProducts";
 import { getTopRatedProduct } from "../../axiosConfig/AxiosConfig.js";
 import Header from "../../Component/MainComponents/Header";
 import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
+import Pagination from "../../Component/Pagination.jsx";
+import Loading from "../../Component/UI-Components/Loading.jsx";
 
 const FoodPage = () => {
-  const [toprated, setTopRated] = useState(null);
+  const [topRated, setTopRated] = useState([]);
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { priceRange, grid, loading, error } = useSelector(
+  const { priceRange, grid, loading, error, products } = useSelector(
     (state) => state.product
   );
 
-  const { products } = useSelector((state) => state.product);
-
-  const sortingOption = [
-    {
-      id: 1,
-      label: "Sort by price: low to high",
-      value: "priceLowToHigh",
-    },
-    {
-      id: 2,
-      label: "Sort by price: high to low",
-      value: "priceHighToLow",
-    },
+  const sortingOptions = [
+    { id: 1, label: "Sort by price: low to high", value: "priceLowToHigh" },
+    { id: 2, label: "Sort by price: high to low", value: "priceHighToLow" },
   ];
 
   const handlePriceChange = (e) => {
     dispatch(setPriceRange(parseInt(e.target.value)));
   };
 
-  const fetchTopratedProduct = async () => {
+  const fetchTopRatedProduct = async () => {
     try {
       const res = await getTopRatedProduct();
-      setTopRated(res?.data?.data);
+      setTopRated(res?.data?.data || []);
     } catch (error) {
       console.error("Error fetching top rated product", error);
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    dispatch(setPage(pageNumber));
+  };
+
   useEffect(() => {
-    fetchTopratedProduct();
+    fetchTopRatedProduct();
   }, []);
 
   return (
     <div>
       <Header />
-      <Banner name={id.toUpperCase()} />
+      <Banner name={id?.toUpperCase() || "FOOD"} />
+
       <div className={style.container}>
-        <div className={style.container2}>
-          <FilterContainer
-            priceRange={priceRange}
-            handlePriceChange={handlePriceChange}
-            data={toprated}
-          />
-          <div className={style.mainContent}>
-            <div className={style.sortingBar}>
-              <div className={style.breadcrumb}>
-                <span>Home / Food</span>
-              </div>
-              <div className={style.sortingOptions}>
-                <ShowProducts />
-                <div className={style.gridIcons}>
-                  <span onClick={() => dispatch(setGrid(2))}>
-                    <IoGrid
-                      size={24}
-                      className={
-                        grid === 2 ? style.gridIconActive : style.gridIcon
-                      }
-                    />
-                  </span>
-                  <span
-                    onClick={(e) => {
-                      dispatch(setGrid(3));
-                    }}
-                  >
-                    <BsFillGrid3X3GapFill
-                      size={24}
-                      className={
-                        grid === 3 ? style.gridIconActive : style.gridIcon
-                      }
-                    />
-                  </span>
-                  <span onClick={() => dispatch(setGrid(4))}>
-                    <TfiLayoutGrid4Alt
-                      size={24}
-                      className={
-                        grid === 4 ? style.gridIconActive : style.gridIcon
-                      }
-                    />
-                  </span>
+        {loading ? (
+          <div>
+            <Loading />
+          </div>
+        ) : error ? (
+          <div className={style.error}>Error: {error}</div>
+        ) : (
+          <div className={style.container2}>
+            <FilterContainer
+              priceRange={priceRange}
+              handlePriceChange={handlePriceChange}
+              data={topRated}
+            />
+
+            <div className={style.mainContent}>
+              <div className={style.sortingBar}>
+                <div className={style.breadcrumb}>
+                  <span>Home / Food</span>
                 </div>
-                <FilterAndShorting
-                  options={sortingOption}
-                  placeholder="Default sorting"
-                />
+
+                <div className={style.sortingOptions}>
+                  <ShowProducts />
+
+                  <div className={style.gridIcons}>
+                    <span onClick={() => dispatch(setGrid(2))}>
+                      <IoGrid
+                        size={24}
+                        className={
+                          grid === 2 ? style.gridIconActive : style.gridIcon
+                        }
+                      />
+                    </span>
+                    <span onClick={() => dispatch(setGrid(3))}>
+                      <BsFillGrid3X3GapFill
+                        size={24}
+                        className={
+                          grid === 3 ? style.gridIconActive : style.gridIcon
+                        }
+                      />
+                    </span>
+                    <span onClick={() => dispatch(setGrid(4))}>
+                      <TfiLayoutGrid4Alt
+                        size={24}
+                        className={
+                          grid === 4 ? style.gridIconActive : style.gridIcon
+                        }
+                      />
+                    </span>
+                  </div>
+
+                  <FilterAndShorting
+                    options={sortingOptions}
+                    placeholder="Default sorting"
+                  />
+                </div>
               </div>
-            </div>
-            {loading ? (
-              <p className={style.loading}>Loading...</p>
-            ) : error ? (
-              <p className={style.error}>Error: {error}</p>
-            ) : (
+
               <div
                 className={
                   grid === 2
@@ -126,16 +130,27 @@ const FoodPage = () => {
                     : style.productGrid3
                 }
               >
-                {products?.data?.map((product, index) => (
-                  <ProductCard key={index} product={product} grid={grid} />
-                ))}
+                {products?.data?.length > 0 ? (
+                  products.data.map((product, index) => (
+                    <ProductCard key={index} product={product} grid={grid} />
+                  ))
+                ) : (
+                  <p className={style.noProducts}>No products found.</p>
+                )}
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
+
+        {products?.pages > 1 && (
+          <Pagination
+            currentPage={products?.page || 1}
+            totalPages={products?.pages || 1}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

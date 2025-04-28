@@ -4,7 +4,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const Banner = (props) => {
-  const { name } = props;
+  const { name, path = "/home" } = props;
 
   const foodImages = [
     {
@@ -41,7 +41,7 @@ const Banner = (props) => {
       </div>
 
       <h1 className={style.bannerText}>
-        <Link to={"/home"} className={style.arrow}>
+        <Link to={path} className={style.arrow}>
           <BsArrowLeft />
         </Link>
         {name}

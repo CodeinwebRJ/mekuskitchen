@@ -14,7 +14,7 @@ const CheckoutPage = () => {
   return (
     <div>
       <Header />
-      <Banner name="Checkout" />
+      <Banner name="Checkout" path="/cart" />
 
       <div className={style.checkoutContianer}>
         <div className={style.addressDetailsContainer}>

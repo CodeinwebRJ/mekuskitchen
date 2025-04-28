@@ -75,7 +75,7 @@ const App = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [category]);
+  }, [category, page, limit, search, sortBy]);
 
   const fetchTiffin = async () => {
     try {

@@ -8,10 +8,10 @@ const productSlice = createSlice({
     grid: 3,
     loading: false,
     page: "1",
-    limit: "10",
+    limit: "9",
     search: "",
     sortBy: "sortbylatest",
-    category: "food", 
+    category: "food",
   },
   reducers: {
     setProducts: (state, action) => {
