@@ -71,7 +71,7 @@ export const getUserWishlist = async (id) => {
 };
 
 export const getCount = async (id) => {
-  return axiosInstance.get(`/api/v1/count/${id}`);
+  return axiosInstance.get(`/api/v1/C/${id}`);
 };
 
 export const AddtoWishlist = async (data) => {

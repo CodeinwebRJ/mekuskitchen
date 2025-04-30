@@ -2,9 +2,15 @@ import React from "react";
 import style from "../styles/FilterContainer.module.css";
 import RatingStar from "./RatingStar";
 import Button from "../Component/Buttons/Button";
+import FilterAndShorting from "./UI-Components/FilterAndShorting";
 
 const FilterContainer = (props) => {
   const { priceRange, handlePriceChange, data } = props;
+
+  const sortingOptions = [
+    { id: 1, label: "Sort by price: low to high", value: "priceLowToHigh" },
+    { id: 2, label: "Sort by price: high to low", value: "priceHighToLow" },
+  ];
 
   return (
     <aside className={style.sidebar}>
@@ -31,7 +37,13 @@ const FilterContainer = (props) => {
         </div>
 
         <hr />
-        <div>hello</div>
+        <div>
+          {" "}
+          <FilterAndShorting
+            options={sortingOptions}
+            placeholder="Default sorting"
+          />
+        </div>
         <hr />
         <h3>TOP RATED PRODUCTS</h3>
         <ul>

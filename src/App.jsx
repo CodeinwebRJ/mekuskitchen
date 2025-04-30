@@ -8,22 +8,14 @@ import {
   getCount,
   getProduct,
   getUserAddress,
-  getUserWishlist,
 } from "./axiosConfig/AxiosConfig";
-
 import { setLoading, setProducts } from "../Store/Slice/ProductSlice.jsx";
-
 import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
-
 import {
   setAddresses,
   setDefaultAddress,
 } from "../Store/Slice/AddressSlice.jsx";
-
 import { setCartCount, setWishlistCount } from "../Store/Slice/CountSlice.jsx";
-
-import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
-
 import HomePage from "./Routes/Home/HomePage.jsx";
 import ContactPage from "./Routes/ContactUs/ContactPage";
 import ProductPage from "./Routes/ProductPage/ProductPage.jsx";
@@ -45,6 +37,8 @@ import RefundPolicyPage from "./Routes/RefundPolicy/RefundPolicyPage.jsx";
 import PrivecyPolicyPage from "./Routes/PrivacyPolicy/PrivecyPolicyPage.jsx";
 import CheckoutPage from "./Routes/CheckOut/CheckoutPage.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
+import ForgetPassword from "./Routes/ForgetPassword/ForgetPassword.jsx";
+import VeryfyOtp from "./Routes/VeryfyOtp/VeryfyOtp.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -111,19 +105,9 @@ const App = () => {
     }
   };
 
-  const fetchWishlist = async () => {
-    try {
-      const res = await getUserWishlist(user?.userid);
-      dispatch(setWishlist(res.data.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     fetchTiffin();
     fetchAddresses();
-    fetchWishlist();
   }, []);
 
   useEffect(() => {
@@ -152,6 +136,8 @@ const App = () => {
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/forgotpassword" element={<ForgetPassword />} />
+        <Route path="/veryfy-email" element={<VeryfyOtp />} />
 
         {/* Dashboard routes */}
         <Route path="/my-account" element={<Dashboard />} />

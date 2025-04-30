@@ -135,7 +135,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemImageContainer}>
                   <img
                     src={
-                      item.tiffinMenuDetails?.image_url?.[0] ||
+                      item.tiffinMenuDetails?.image_url?.[0].url ||
                       "/default-image.jpg"
                     }
                     alt={item.day || "Tiffin item"}

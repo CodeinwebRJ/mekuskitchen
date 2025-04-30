@@ -7,9 +7,10 @@ import DateChip from "../Buttons/DateChip";
 
 const RelatedProductCard = (props) => {
   const { item } = props;
-
   const { pathname } = useLocation();
   const category = pathname.split("/").filter((segment) => segment);
+
+  console.log(category);
 
   return (
     <Link
@@ -25,7 +26,11 @@ const RelatedProductCard = (props) => {
       <div className={style.relatedProductCard}>
         <div className={style.relatedProductImgContainer}>
           <img
-            src={item?.image_url[0] || ""}
+            src={
+              category[1] === "tiffin"
+                ? item?.image_url?.[0].url
+                : item?.image_url?.[0] || ""
+            }
             alt={item?.product_name}
             className={style.relatedProductImg}
           />

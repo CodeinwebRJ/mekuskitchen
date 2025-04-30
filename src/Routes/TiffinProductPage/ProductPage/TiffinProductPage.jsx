@@ -42,7 +42,7 @@ const useProductNavigation = (products, currentIndex) => {
 };
 
 const ProductImageGallery = ({
-  images,
+  images = [], // Default to empty array
   selectedImage,
   setSelectedImage,
   productName,
@@ -50,19 +50,19 @@ const ProductImageGallery = ({
   <div className={style.imageContainer}>
     <div className={style.productImageContainer}>
       <img
-        src={selectedImage || "/placeholder.png"}
+        src={selectedImage?.url || "/placeholder.png"}
         alt={productName}
         className={style.productImage}
       />
     </div>
     <div className={style.thumbnailsContainer}>
-      {images?.slice(0, 4).map((image, index) => (
+      {images.slice(0, 4).map((image, index) => (
         <img
-          key={index}
-          src={image}
+          key={image._id || index} // Use unique key
+          src={image.url}
           alt={`${productName} thumbnail ${index + 1}`}
           className={`${style.thumbnail} ${
-            selectedImage === image ? style.selectedThumbnail : ""
+            selectedImage?._id === image._id ? style.selectedThumbnail : ""
           }`}
           onClick={() => setSelectedImage(image)}
         />
@@ -79,7 +79,7 @@ const ItemQuantitySelector = ({
   handleItemInputChange,
   handleItemIncrease,
 }) => (
-  <div className={style.items} key={index}>
+  <div className={style.items} key={item._id}>
     <div className={style.itemNo}>{index + 1}.</div>
     <div className={style.itemName}>{item.name}</div>
     <div className={style.itemPrice}>${item.price}</div>
@@ -88,6 +88,7 @@ const ItemQuantitySelector = ({
         onClick={() => handleItemDecrease(index)}
         className={style.quantityButton}
         aria-label={`Decrease quantity for ${item.name}`}
+        disabled={quantities.items[index]?.quantity <= 0}
       >
         -
       </button>
@@ -112,7 +113,7 @@ const ItemQuantitySelector = ({
     <div className={style.itemQuantityUnit}>
       {(item?.quantityUnit || "").toUpperCase()}
     </div>
-    <div>({item?.weight})</div>
+    <div>{item?.weight ? `(${item.weight})` : ""}</div>
   </div>
 );
 
@@ -122,8 +123,9 @@ const TiffinProductPage = () => {
 
   const { user } = useSelector((state) => state.auth);
   const tiffin = useSelector((state) => state.tiffin);
-  const cart = useSelector((state) => state.cart); // Added cart state
+  const cart = useSelector((state) => state.cart);
   const products = tiffin.tiffins || [];
+
   const loading = tiffin.loading;
 
   const product = useMemo(
@@ -138,9 +140,11 @@ const TiffinProductPage = () => {
   const [reviews, setReviews] = useState([]);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (product) {
-      setSelectedImage(product.image_url?.[0] || null);
+      const firstImage = product.image_url?.[0];
+      setSelectedImage(firstImage || null);
       setQuantities({
         main: 1,
         items:
@@ -164,7 +168,7 @@ const TiffinProductPage = () => {
     const value = parseInt(e.target.value, 10);
     setQuantities((prev) => ({
       ...prev,
-      main: isNaN(value) ? 1 : Math.max(1, value),
+      main: isNaN(value) || value < 1 ? 1 : value,
     }));
   };
 
@@ -199,7 +203,7 @@ const TiffinProductPage = () => {
     }));
   };
 
-  const productItems = quantities.items.filter((item) => item.quantity !== 0);
+  const productItems = quantities.items.filter((item) => item.quantity > 0);
 
   const handleSubmit = async () => {
     if (!user?.userid) {
@@ -210,7 +214,7 @@ const TiffinProductPage = () => {
       return;
     }
 
-    if (cart?.items?.length > 0) {
+    if (cart?.items?.items?.length > 0) {
       Toast({
         message: "Cannot add tiffin - cart already contains items",
         type: "error",
@@ -218,8 +222,15 @@ const TiffinProductPage = () => {
       return;
     }
 
+    if (productItems.length === 0) {
+      Toast({
+        message: "Please select at least one item",
+        type: "warn",
+      });
+      return;
+    }
+
     try {
-      console.log(productItems);
       const data = {
         user_id: user.userid,
         isTiffinCart: true,
@@ -289,7 +300,7 @@ const TiffinProductPage = () => {
 
         <div className={style.productLayout}>
           <ProductImageGallery
-            images={product.image_url}
+            images={product.image_url || []}
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
             productName={product.day}
@@ -315,17 +326,34 @@ const TiffinProductPage = () => {
 
             <p className={style.categoryContainer}>
               Category:{" "}
-              <span className={style.category}>{product.category}</span>
+              <span className={style.category}>
+                {product.category || "N/A"}
+              </span>
             </p>
 
             <div className={style.share}>
               Share:
               <div className={style.shareIcons}>
-                <FaFacebookF className={style.shareIcon} />
-                <FaTwitter className={style.shareIcon} />
-                <BiLogoInstagramAlt className={style.shareIcon} />
-                <FaPinterest className={style.shareIcon} />
-                <FaLinkedinIn className={style.shareIcon} />
+                <FaFacebookF
+                  className={style.shareIcon}
+                  aria-label="Share on Facebook"
+                />
+                <FaTwitter
+                  className={style.shareIcon}
+                  aria-label="Share on Twitter"
+                />
+                <BiLogoInstagramAlt
+                  className={style.shareIcon}
+                  aria-label="Share on Instagram"
+                />
+                <FaPinterest
+                  className={style.shareIcon}
+                  aria-label="Share on Pinterest"
+                />
+                <FaLinkedinIn
+                  className={style.shareIcon}
+                  aria-label="Share on LinkedIn"
+                />
               </div>
             </div>
 
@@ -339,6 +367,7 @@ const TiffinProductPage = () => {
                 }
                 className={style.quantityButton}
                 aria-label="Decrease main quantity"
+                disabled={quantities.main <= 1}
               >
                 -
               </button>

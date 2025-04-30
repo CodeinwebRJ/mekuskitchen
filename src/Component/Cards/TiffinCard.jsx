@@ -65,7 +65,7 @@ const TiffinCard = ({ item }) => {
       >
         <div className={style.tiffinImgContainer}>
           <img
-            src={item?.image_url?.[0] || ""}
+            src={item?.image_url?.[0].url || ""}
             alt={item?.day || "Tiffin"}
             className={style.tiffinImg}
           />
