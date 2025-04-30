@@ -1,14 +1,22 @@
 .sidebar {
-  width: 20%;
-  padding: 20px;
-  border-radius: 5px;
+  width: 100%;
+  max-width: 300px; /* Limit max width for larger screens */
+  padding: 18px;
+  background-color: var(--white); /* Ensure a clean background */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+  height: fit-content;
+}
+
+.category {
+  margin: 8px 0px;
 }
 
 .range {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 12px 0px;
+  font-size: var(--font-sm); /* Slightly smaller for better hierarchy */
 }
 
 .filterBtn {
@@ -18,12 +26,12 @@
 .filterbtn {
   background-color: var(--success);
   color: var(--white);
-  padding: 8px 15px;
+  padding: 10px 20px; /* Slightly larger padding for better click area */
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: var(--font-base);
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
 }
 
 .filterbtn:hover {
@@ -33,42 +41,100 @@
 .topRatedItem {
   display: flex;
   align-items: center;
+  padding: 12px 0; /* Consistent spacing */
 }
 
 .topRatedImg {
-  width: 60px;
-  height: 60px;
-  border-radius: 5px;
-  margin-right: 10px;
+  width: 70px; /* Slightly larger for better visibility */
+  height: 70px;
+  border-radius: 6px;
+  object-fit: cover; /* Ensure images fit nicely */
+  margin-right: 12px;
+}
+
+.topRatedInfo {
+  flex: 1; /* Take remaining space */
 }
 
 .topRatedItem p {
   margin: 0;
+  font-size: var(--font-sm);
+  color: var(--gray-deep);
 }
 
 .rating {
   pointer-events: none;
+  margin: 6px 0; /* Consistent spacing */
 }
+
 .topRatedPrice {
   color: var(--green-light);
+  font-weight: 600; /* Emphasize price */
 }
 
 .filterSection {
   position: sticky;
-  top: 100px;
-  margin-bottom: 20px;
+  top: 120px; /* Adjusted for better spacing */
+  margin-bottom: 24px;
 }
 
 .filterSection h3 {
   font-size: var(--font-md);
-  margin-bottom: 10px;
+  font-weight: 600;
+  margin: 16px 0 8px; /* Improved spacing */
+  color: var(--gray-dark); /* Slightly darker for contrast */
+}
+
+.filterSection input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--gray-light);
+  border-radius: 6px;
+  font-size: var(--font-base);
+  margin-bottom: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.filterSection input[type="text"]:focus {
+  outline: none;
+  border-color: var(--success); /* Highlight on focus */
 }
 
 .filterSection input[type="range"] {
   width: 100%;
-  margin: 10px 0;
+  margin: 12px 0;
+  accent-color: var(--success); /* Match theme color */
 }
 
 .filterSection p {
   color: var(--gray-deep);
+  font-size: var(--font-sm);
+}
+
+.filterSection hr {
+  border: none;
+  border-top: 1px solid var(--gray-light);
+  margin: 16px 0; /* Consistent spacing */
+}
+
+.filterSection label {
+  font-size: var(--font-sm);
+  color: var(--gray-dark);
+  margin-bottom: 8px;
+  display: block; /* Ensure label is on its own line */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-width: none;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  .filterSection {
+    position: static; /* Remove sticky on mobile */
+    top: 0;
+  }
 }

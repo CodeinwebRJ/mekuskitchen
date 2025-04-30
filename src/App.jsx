@@ -47,6 +47,7 @@ const App = () => {
   const { page, limit, search, sortBy, category } = useSelector(
     (state) => state.product
   );
+
   const Cart = useSelector((state) => state.cart);
   const isLiked = useSelector((state) => state.wishlist?.likedMap);
 
@@ -56,10 +57,12 @@ const App = () => {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       dispatch(setLoading(true));
       const data = { page, limit, search, sortBy, category };
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));
+      setLoading(false);
     } catch (err) {
       console.error("Error fetching products:", err);
     } finally {
@@ -112,7 +115,7 @@ const App = () => {
 
   useEffect(() => {
     fetchCount();
-  }, [Cart.items, isLiked]);
+  }, [JSON.stringify(Cart), JSON.stringify(isLiked)]);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../styles/WishlistPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer";
@@ -17,7 +17,7 @@ const WishlistPage = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
-  const fetchWishlist = useCallback(async () => {
+  const fetchWishlist = async () => {
     if (!user?.userid) return;
     try {
       const res = await getUserWishlist(user.userid);
@@ -27,11 +27,11 @@ const WishlistPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [dispatch, user]);
+  };
 
   useEffect(() => {
     fetchWishlist();
-  }, [fetchWishlist]);
+  }, []);
 
   const filterAndShortingOptions = [
     { id: 1, label: "Sort by price: low to high", value: "priceLowToHigh" },

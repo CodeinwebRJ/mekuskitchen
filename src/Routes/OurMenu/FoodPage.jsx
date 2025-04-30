@@ -15,16 +15,21 @@ import Footer from "../../Component/MainComponents/Footer";
 import ProductCard from "../../Component/Cards/ProductCard.jsx";
 import FilterContainer from "../../Component/FilterContainer.jsx";
 import ShowProducts from "../../Component/ShowProducts";
-import { getTopRatedProduct } from "../../axiosConfig/AxiosConfig.js";
+import {
+  getTopRatedProduct,
+  getUserWishlist,
+} from "../../axiosConfig/AxiosConfig.js";
 import Header from "../../Component/MainComponents/Header";
 import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
 import Pagination from "../../Component/Pagination.jsx";
 import Loading from "../../Component/UI-Components/Loading.jsx";
+import { setWishlist } from "../../../Store/Slice/UserWishlistSlice.jsx";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
   const { priceRange, grid, loading, error, products } = useSelector(
     (state) => state.product
@@ -48,12 +53,25 @@ const FoodPage = () => {
     }
   };
 
+  const fetchWishlist = async () => {
+    try {
+      console.log("object");
+      const res = await getUserWishlist(user.userid);
+      console.log(res);
+      dispatch(setWishlist(res.data.data));
+      console.log(res.data.data);
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
+
   const handlePageChange = (pageNumber) => {
     dispatch(setPage(pageNumber));
   };
 
   useEffect(() => {
     fetchTopRatedProduct();
+    fetchWishlist();
   }, []);
 
   return (

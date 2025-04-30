@@ -10,8 +10,6 @@ const RelatedProductCard = (props) => {
   const { pathname } = useLocation();
   const category = pathname.split("/").filter((segment) => segment);
 
-  console.log(category);
-
   return (
     <Link
       to={
