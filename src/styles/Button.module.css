@@ -54,8 +54,7 @@
 }
 
 .primary:hover {
-  /* background-color: var(--primary-blue-dark); */
-  background-color: #3592cd;
+  background-color: var(--primary-blue-dark);
 }
 
 .primary:disabled {

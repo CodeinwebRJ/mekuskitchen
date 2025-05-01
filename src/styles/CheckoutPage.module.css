@@ -16,7 +16,7 @@
   text-transform: uppercase;
   align-items: center;
   margin-bottom: 25px;
-  color: #111827;
+  color: var(--charcoal-navy);
 }
 
 .backButton {
@@ -32,18 +32,18 @@
   flex-direction: column;
   gap: 12px;
   font-size: 1rem;
-  color: #374151;
-  background-color: #f9fafb;
+  color: var(--text-dark);
+  background-color: var(--gray-lighter);
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--light-cool-gray);
 }
 
 .fullname {
   font-size: 1.25rem;
   font-weight: 600;
   text-transform: capitalize;
-  color: #111827;
+  color: var(--charcoal-navy);
 }
 
 .Country {
@@ -56,10 +56,10 @@
 }
 
 .orderCard {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--light-cool-gray);
   border-radius: 12px;
   padding: 25px;
-  background-color: #ffffff;
+  background-color: var(--white);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
   width: 100%;
   max-width: 400px;
@@ -70,7 +70,7 @@
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 20px;
-  color: #111827;
+  color: var(--charcoal-navy);
 }
 
 .orderRow {
@@ -78,7 +78,7 @@
   justify-content: space-between;
   margin-bottom: 12px;
   font-size: 1rem;
-  color: #374151;
+  color: var(--text-dark);
 }
 
 .orderRow.total {
@@ -86,24 +86,24 @@
   font-size: 1.1rem;
   margin-top: 15px;
   padding-top: 15px;
-  border-top: 1px solid #d1d5db;
+  border-top: 1px solid var(--pale-gray-blue);
 }
 
 .paymentMethod {
   margin-top: 25px;
   padding: 15px;
-  background-color: #f3f4f6;
+  background-color: var(--very-light-cool-gra);
   border-radius: 6px;
   text-align: center;
   font-size: 0.95rem;
-  color: #1f2937;
-  border: 1px solid #e5e7eb;
+  color: var(--gummetal);
+  border: 1px solid var(--light-cool-gray);
 }
 
 .privacyText {
   margin-top: 15px;
   font-size: 0.85rem;
-  color: #6b7280;
+  color: var(--gray-placeholder);
   line-height: 1.6;
 }
 

@@ -15,11 +15,6 @@
   user-select: none;
 }
 
-/* .addressCardContainer:hover {
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-} */
 
 .addressCardContainerActive {
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
@@ -39,7 +34,7 @@
 .fullName {
   font-size: var(--font-md);
   font-weight: var(--font-semibold);
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .address,
@@ -48,7 +43,7 @@
 .CountryPostcode,
 .phoneNumber {
   font-size: var(--font-md);
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .defaultLabel {
@@ -57,8 +52,8 @@
   right: 5%;
   font-size: var(--font-base);
   font-style: italic;
-  color: #333;
-  background-color: #f0f0f09b;
+  color: var(--gray-darkest);
+  background-color: var(--semi-transparent-light-gray);
   padding: 5px 10px;
   border-radius: 5px;
 }

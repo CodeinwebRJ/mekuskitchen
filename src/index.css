@@ -39,7 +39,12 @@
   /* Base Colors */
   --black: #000000;
   --white: #ffffff;
+  --light-gray: #f0f0f0;
+  --ultra-light-gray: #f9f9f9;
   --gray-light: #f5f5f5;
+  --cool-light-blue-gray: #e2e8f0;
+  --very-dark-gray: #222222;
+  --dark-gray: #444444;
   --gray-lighter: #f9fafb;
   --gray-lightest: #ffffff26;
   --gray-offwhite: #eee;
@@ -56,6 +61,15 @@
   --gray-solid: #1a1a1a;
   --gray-solid-2: #2c2c2c;
   --gray-shadow: #0000001b;
+  --charcoal-navy: #111827;
+  --almost-white: #f9fafb;
+  --light-cool-gray: #e5e7eb;
+  --gummetal: #1f2937;
+  --very-light-cool-gray: #f3f4f6;
+  --pale-gray-blue: #d1d5db;
+  --vivid-azure-blue: #0070f3;
+  --semi-transparent-light-gray: #f0f0f09b;
+  --semi-transparent-pale-gray: #e4e4e4a5;
 
   /* Primary / Accent Colors */
   --primary-green: #218837;

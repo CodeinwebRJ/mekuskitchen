@@ -175,7 +175,7 @@ const ShoppingCart = () => {
                     <td>
                       <div className={style.productCell}>
                         <img
-                          src={tiffin.tiffinMenuDetails?.image_url?.[0]}
+                          src={tiffin.tiffinMenuDetails?.image_url?.[0]?.url}
                           alt="tiffin"
                           className={style.cartItemImage}
                         />

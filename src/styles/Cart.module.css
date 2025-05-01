@@ -34,8 +34,8 @@
 
 .cartItem th {
   font-weight: var(--font-bold);
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: var(--ultra-light-gray);
+  color: var(--gray-darkest);
 }
 
 .removeIcon {
@@ -81,7 +81,7 @@
 }
 
 .quantityControl button:hover {
-  background: #e2e8f0;
+  background: var(--cool-light-blue-gray);
 }
 
 .quantity {
@@ -97,7 +97,7 @@
 
 .cartTotals {
   width: 30%;
-  background: #ffffff;
+  background: var(--white);
   padding: 30px 25px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -108,9 +108,9 @@
 .cartTotals h3 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #222;
+  color: var(--very-dark-gray);
   margin-bottom: 20px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--gray-offwhite);
   padding-bottom: 10px;
 }
 
@@ -119,35 +119,35 @@
   justify-content: space-between;
   margin: 12px 0;
   font-size: 1rem;
-  color: #444;
+  color: var(--dark-gray);
 }
 
 .cartTotals strong {
-  color: #555;
+  color: var(--gray-steel);
 }
 
 .cartTotals hr {
   border: none;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--gray-offwhite);
   margin: 10px 0;
 }
 
 .taxAmount {
-  color: #28a745;
+  color: var(--success);
   font-weight: 600;
 }
 
 .total {
   font-weight: 700;
   font-size: 1.25rem;
-  color: #000;
+  color: var(--black);
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
 
 .totalAmount {
-  color: #28a745;
+  color: var(--success);
   font-weight: 700;
 }
 

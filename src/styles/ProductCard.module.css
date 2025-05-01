@@ -56,7 +56,7 @@
 .wishlist {
   height: 36px;
   width: 36px;
-  background: #e4e4e475;
+  background: var(--semi-transparent-pale-gray);
   position: absolute;
   top: 3%;
   right: 3%;
@@ -71,11 +71,11 @@
 }
 
 .wishlist:hover {
-  background: #e4e4e4a5;
+  background: var(--semi-transparent-pale-gray);
 }
 
 .wishlist:active {
-  background: #e4e4e475;
+  background: var(--semi-transparent-pale-gray);
 }
 
 .addToCart {

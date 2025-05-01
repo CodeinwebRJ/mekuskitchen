@@ -42,7 +42,7 @@
 .fullName {
   font-size: var(--font-md);
   font-weight: var(--font-semibold);
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .address,
@@ -50,7 +50,7 @@
 .CountryPostcode,
 .phoneNumber {
   font-size: var(--font-base);
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 /* Address Not Found Message */

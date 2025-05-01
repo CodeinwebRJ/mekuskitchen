@@ -3,9 +3,9 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 1rem;
-  border: 1px solid #eee;
+  border: 1px solid var(--gray-offwhite);
   border-radius: 8px;
-  background-color: #fff;
+  background-color: var(--white);
   gap: var(--gap-8);
   transition: box-shadow 0.3s ease;
 }
@@ -43,12 +43,12 @@
 .itemName {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #222;
+  color: var(--very-dark-gray);
 }
 
 .itemDescription {
   font-size: 0.95rem;
-  color: #666;
+  color: var(--gray-deep);
   line-height: 1.4;
 }
 
@@ -84,7 +84,7 @@
   font-size: 1.25rem;
   cursor: pointer;
   margin-left: 0.5rem;
-  color: #444;
+  color: var(--dark-gray);
   transition: color 0.2s ease;
 }
 

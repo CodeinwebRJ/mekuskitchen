@@ -6,14 +6,13 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f7f7f7;
 }
 
 .spinner {
   width: 60px;
   height: 60px;
-  border: 6px solid #ccc;
-  border-top-color: #0070f3;
+  border: 6px solid var(--gray-border-light);
+  border-top-color: var(--vivid-azure-blue);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -21,7 +20,7 @@
 .loadingText {
   margin-top: 16px;
   font-size: 18px;
-  color: #555;
+  color: var(--gray-steel);
   font-weight: 500;
 }
 
