@@ -4,6 +4,6 @@
   padding: 6px 10px !important;
   border-radius: 45px !important;
   outline: none !important;
-  border: 2px solid var(--gray-solid-2) !important;
+  border: 1px solid var(--gray-solid-2) !important;
   cursor: pointer !important;
 }

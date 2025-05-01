@@ -35,11 +35,6 @@ const FoodPage = () => {
     (state) => state.product
   );
 
-  const sortingOptions = [
-    { id: 1, label: "Sort by price: low to high", value: "priceLowToHigh" },
-    { id: 2, label: "Sort by price: high to low", value: "priceHighToLow" },
-  ];
-
   const handlePriceChange = (e) => {
     dispatch(setPriceRange(parseInt(e.target.value)));
   };
@@ -80,20 +75,20 @@ const FoodPage = () => {
       <Banner name={id?.toUpperCase() || "FOOD"} />
 
       <div className={style.container}>
-        {loading ? (
-          <div>
-            <Loading />
-          </div>
-        ) : error ? (
-          <div className={style.error}>Error: {error}</div>
-        ) : (
-          <div className={style.container2}>
-            <FilterContainer
-              priceRange={priceRange}
-              handlePriceChange={handlePriceChange}
-              data={topRated}
-            />
+        <div className={style.container2}>
+          <FilterContainer
+            priceRange={priceRange}
+            handlePriceChange={handlePriceChange}
+            data={topRated}
+          />
 
+          {loading ? (
+            <div className="loadingContainer">
+              <Loading />
+            </div>
+          ) : error ? (
+            <div className={style.error}>Error: {error}</div>
+          ) : (
             <div className={style.mainContent}>
               <div className={style.sortingBar}>
                 <div className={style.breadcrumb}>
@@ -129,11 +124,6 @@ const FoodPage = () => {
                       />
                     </span>
                   </div>
-
-                  <FilterAndShorting
-                    options={sortingOptions}
-                    placeholder="Default sorting"
-                  />
                 </div>
               </div>
 
@@ -157,8 +147,8 @@ const FoodPage = () => {
                 )}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {products?.pages > 1 && (
           <Pagination

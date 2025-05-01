@@ -156,3 +156,8 @@ ul {
   color: var(--success) !important;
   font-weight: var(--font-bold) !important;
 }
+
+.loadingContainer {
+  height: 100%;
+  width: 100%;
+}

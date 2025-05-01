@@ -10,7 +10,7 @@ const productSlice = createSlice({
     page: "1",
     limit: "9",
     search: "",
-    sortBy: "sortbylatest",
+    sortBy: "",
     category: "food",
   },
   reducers: {

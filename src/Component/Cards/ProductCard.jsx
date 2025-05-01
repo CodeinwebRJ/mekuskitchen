@@ -80,7 +80,12 @@ const ProductCard = ({ product, grid }) => {
         />
         <p className={style.productName}>{product?.product_name}</p>
         <div className={style.rating}>
-          <RatingStar rating={3} start={0} stop={5} disabled />
+          <RatingStar
+            rating={product?.averageRating}
+            start={0}
+            stop={5}
+            disabled
+          />
         </div>
         <p className="price">${product.price}</p>
       </Link>

@@ -9,6 +9,7 @@ const FilterAndSorting = ({
   options = [],
   enableNavigation = false,
   onChange,
+  placeholder = "Select a category",
 }) => {
   const { category } = useSelector((state) => state.product);
   const [selectedValue, setSelectedValue] = useState(category || "");
@@ -26,7 +27,8 @@ const FilterAndSorting = ({
       if (enableNavigation) {
         navigate(`/product-category/${value}`);
         dispatch(setCategory(value));
-      } else if (onChange) {
+      }
+      if (onChange) {
         onChange(value);
       }
     }
@@ -39,13 +41,13 @@ const FilterAndSorting = ({
         className={style.filterAndSort}
         value={selectedValue}
         onChange={handleSelectionChange}
-        aria-label="Select a product category"
+        aria-label={placeholder}
       >
         <option value="" disabled>
-          Select a category
+          {placeholder}
         </option>
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.id || option.value} value={option.value}>
             {option.label}
           </option>
         ))}
@@ -54,16 +56,17 @@ const FilterAndSorting = ({
   );
 };
 
-// PropTypes for type checking
 FilterAndSorting.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
     })
   ),
   enableNavigation: PropTypes.bool,
   onChange: PropTypes.func,
+  placeholder: PropTypes.string,
 };
 
 export default FilterAndSorting;

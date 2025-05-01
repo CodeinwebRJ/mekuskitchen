@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import style from "../styles/FilterContainer.module.css";
 import RatingStar from "./RatingStar";
-import FilterAndShorting from "./UI-Components/FilterAndShorting";
-import { useDispatch } from "react-redux";
-import { setSearch } from "../../Store/Slice/ProductSlice";
+import FilterAndSorting from "../Component/UI-Components/FilterAndShorting";
+import { setSearch, setSortBy } from "../../Store/Slice/ProductSlice";
 
-const FilterContainer = (props) => {
-  const { priceRange, handlePriceChange, data } = props;
+const FilterContainer = ({ priceRange, handlePriceChange, data }) => {
   const dispatch = useDispatch();
-
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -19,10 +17,22 @@ const FilterContainer = (props) => {
     return () => clearTimeout(delayDebounce);
   }, [searchTerm, dispatch]);
 
-  const sortingOptions = [
+  const categoryOptions = [
     { id: 1, label: "Food", value: "food" },
     { id: 2, label: "Grocery", value: "grocery" },
   ];
+
+  const sortOptions = [
+    { id: 1, label: "Default", value: "" },
+    { id: 1, label: "High to Low", value: "high-to-low" },
+    { id: 2, label: "Low to High", value: "low-to-high" },
+    { id: 2, label: "Sort by latest", value: "sortbylatest" },
+    { id: 2, label: "Sort by average rating", value: "sortbyaverageratings" },
+  ];
+
+  const handleSortChange = (value) => {
+    dispatch(setSortBy(value));
+  };
 
   return (
     <aside className={style.sidebar}>
@@ -34,11 +44,11 @@ const FilterContainer = (props) => {
         <input
           id="search"
           type="text"
+          value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="form-control mb-3"
           placeholder="Search by name"
         />
-
         <label htmlFor="priceRange" className="form-label">
           Price Range: ${priceRange[0]} - ${priceRange[1]}
         </label>
@@ -48,39 +58,47 @@ const FilterContainer = (props) => {
           max="20"
           value={priceRange[1]}
           onChange={handlePriceChange}
+          id="priceRange"
         />
         <div>
           <label>Filter by category</label>
-          <FilterAndShorting
-            options={sortingOptions}
+          <FilterAndSorting
+            options={categoryOptions}
             placeholder="Category"
             enableNavigation={true}
           />
         </div>
+        <div>
+          <label>Sort by</label>
+          <FilterAndSorting options={sortOptions} onChange={handleSortChange} />
+        </div>
         <hr />
-        <h3>TOP RATED PRODUCTS</h3>
+        <h3>Top Rated Products</h3>
         <ul>
           {data?.map((product, index) => (
-            <div key={index}>
-              <li className={style.topRatedItem}>
-                <img
-                  src={product?.productDetails?.image_url[0]}
-                  alt={product?.productDetails?.product_name}
-                  className={style.topRatedImg}
-                />
-                <div className={style.topRatedInfo}>
-                  <p>{product?.productDetails?.product_name}</p>
-                  <div className={style.rating}>
-                    <RatingStar
-                      rating={product?.averageRating}
-                      start={0}
-                      stop={5}
-                    />
-                  </div>
-                  <p className="price">${product?.productDetails?.price}</p>
+            <li
+              key={product?.productDetails?.id || index}
+              className={style.topRatedItem}
+            >
+              <img
+                src={product?.productDetails?.image_url?.[0] || ""}
+                alt={product?.productDetails?.product_name || "Product"}
+                className={style.topRatedImg}
+              />
+              <div className={style.topRatedInfo}>
+                <p>{product?.productDetails?.product_name || "N/A"}</p>
+                <div className={style.rating}>
+                  <RatingStar
+                    rating={product?.averageRating || 0}
+                    start={0}
+                    stop={5}
+                  />
                 </div>
-              </li>
-            </div>
+                <p className="price">
+                  ${product?.productDetails?.price || "0.00"}
+                </p>
+              </div>
+            </li>
           ))}
         </ul>
       </div>

@@ -230,8 +230,6 @@ const ProductPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Review Component */}
         <ReviewComponent
           reviews={reviews}
           setReviews={setReviews}
@@ -243,11 +241,7 @@ const ProductPage = () => {
           setRating={setRating}
         />
       </div>
-
-      {/* Related Product */}
       <RelatedProduct />
-
-      {/* Footer */}
       <Footer />
     </div>
   );
