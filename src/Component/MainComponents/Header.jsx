@@ -14,7 +14,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const { cartCount, wishlistCount } = useSelector((state) => state.count);
   const Cart = useSelector((state) => state.cart);
-  const totalAmount = Cart?.items?.totalAmount;
 
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategory(categoryName));
@@ -41,7 +40,7 @@ const Header = () => {
   return (
     <header className={style.header}>
       <Link to="/home" className={style.logo}>
-        <img src="/logo2.png" alt="logo" className={style.logoImage} />
+        <img src="/logo.png" alt="logo" className={style.logoImage} />
       </Link>
 
       <nav className={style.navLinks}>
@@ -100,16 +99,10 @@ const Header = () => {
             <Link to="/my-account/orders" className={style.userDropdownItem}>
               Orders
             </Link>
-            <Link
-              to="/my-account/downloads"
-              className={style.userDropdownItem}
-            >
+            <Link to="/my-account/downloads" className={style.userDropdownItem}>
               Downloads
             </Link>
-            <Link
-              to="/my-account/addresses"
-              className={style.userDropdownItem}
-            >
+            <Link to="/my-account/addresses" className={style.userDropdownItem}>
               Address
             </Link>
             <Link

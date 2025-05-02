@@ -42,7 +42,7 @@ const ProductPage = () => {
       const foundProduct = products.find((p) => p._id === id);
       if (foundProduct) {
         setProduct(foundProduct);
-        setSelectedImage(foundProduct.image_url?.[0] || null);
+        setSelectedImage(foundProduct.images?.[0].url || null);
       } else {
         setProduct(null);
       }
@@ -112,6 +112,8 @@ const ProductPage = () => {
     }
   };
 
+  console.log(product);
+
   return (
     <div>
       <Header />
@@ -120,8 +122,7 @@ const ProductPage = () => {
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <a href="/">Home</a> / <a href="/food">Food</a> /{" "}
-            {product.product_name}
+            <a href="/">Home</a> / <a href="/food">Food</a> / {product.name}
           </div>
           <div className={style.navigation}>
             <button
@@ -155,28 +156,28 @@ const ProductPage = () => {
             <div className={style.productImageContainer}>
               <img
                 src={
-                  selectedImage || product.image_url?.[0] || "/placeholder.png"
+                  selectedImage || product.images?.[0].url || "/placeholder.png"
                 }
-                alt={product.product_name}
+                alt={product.name}
                 className={style.productImage}
               />
             </div>
             <div className={style.thumbnailsContainer}>
-              {product.image_url?.slice(0, 4).map((image, index) => (
+              {product.images?.slice(0, 4).map((image, index) => (
                 <img
                   key={index}
-                  src={image}
-                  alt={`${product.product_name} thumbnail ${index + 1}`}
+                  src={image.url}
+                  alt={`${product.name} thumbnail ${index + 1}`}
                   className={style.thumbnail}
                   onClick={() => setSelectedImage(image)}
                   onMouseEnter={() => setSelectedImage(image)}
-                  onMouseLeave={() => setSelectedImage(product.image_url[0])}
+                  onMouseLeave={() => setSelectedImage(product.image?.[0])}
                 />
               ))}
             </div>
           </div>
           <div className={style.productDetails}>
-            <h1>{product.product_name}</h1>
+            <h1>{product.name}</h1>
             <p className={`${style.productPrice} price`}>${product?.price}</p>
             <div className={style.quantity}>
               <button

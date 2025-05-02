@@ -124,11 +124,11 @@ const ShoppingCart = () => {
                     <td>
                       <div className={style.productCell}>
                         <img
-                          src={item?.productDetails?.image_url[0]}
+                          src={item?.productDetails?.images[0].url}
                           alt="product"
                           className={style.cartItemImage}
                         />
-                        <span>{item?.productDetails?.product_name}</span>
+                        <span>{item?.productDetails?.name}</span>
                       </div>
                     </td>
                     <td>${item?.price}</td>

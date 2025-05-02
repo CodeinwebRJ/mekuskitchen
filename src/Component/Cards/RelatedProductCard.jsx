@@ -16,7 +16,7 @@ const RelatedProductCard = (props) => {
         category[1] === "tiffin"
           ? `/product/tiffin/${String(item.day).toLowerCase()}`
           : `/product/${item?.category.toLowerCase()}/${String(
-              item.product_name
+              item.name
             ).toLowerCase()}`
       }
       state={{ id: item._id }}
@@ -27,7 +27,7 @@ const RelatedProductCard = (props) => {
             src={
               category[1] === "tiffin"
                 ? item?.image_url?.[0].url
-                : item?.image_url?.[0] || ""
+                : item?.images?.[0].url || ""
             }
             alt={item?.product_name}
             className={style.relatedProductImg}
@@ -35,7 +35,7 @@ const RelatedProductCard = (props) => {
           {item?.date && <DateChip name={formatDate(item?.date)} />}
         </div>
         <p className={style.relatedProductTitle}>
-          {category[1] === "tiffin" ? item?.day : item?.product_name}
+          {category[1] === "tiffin" ? item?.day : item?.name}
         </p>
         <p className={style.relatedProductPrice}>
           $

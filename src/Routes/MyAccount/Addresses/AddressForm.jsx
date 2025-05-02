@@ -1,18 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "../../../styles/Addresses.module.css";
 import FormField from "./FormField";
 import Button from "../../../Component/Buttons/Button";
 import CheckboxFeild from "../../../Component/UI-Components/CheckboxFeild";
 import { useDispatch, useSelector } from "react-redux";
 import { GoArrowLeft } from "react-icons/go";
-import {
-  setAddresses,
-  setDefaultAddress,
-  setShowAddressForm,
-} from "../../../../Store/Slice/AddressSlice";
+import { setShowAddressForm } from "../../../../Store/Slice/AddressSlice";
 import {
   addUserAddress,
-  getUserAddress,
   UpdateUserAddress,
 } from "../../../axiosConfig/AxiosConfig";
 
@@ -55,8 +50,6 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
 
   const countries = [{ value: "United States", label: "United States" }];
   const states = [{ value: "California", label: "California" }];
-
-  const { showAddressForm } = useSelector((state) => state.address);
 
   const validateAddressForm = (data) => {
     const validationErrors = {};

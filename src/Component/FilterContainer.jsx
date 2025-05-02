@@ -20,6 +20,8 @@ const FilterContainer = ({ priceRange, handlePriceChange, data }) => {
   const categoryOptions = [
     { id: 1, label: "Food", value: "food" },
     { id: 2, label: "Grocery", value: "grocery" },
+    { id: 2, label: "Clothing", value: "Clothing" },
+    { id: 2, label: "Grocery", value: "grocery" },
   ];
 
   const sortOptions = [
@@ -81,12 +83,12 @@ const FilterContainer = ({ priceRange, handlePriceChange, data }) => {
               className={style.topRatedItem}
             >
               <img
-                src={product?.productDetails?.image_url?.[0] || ""}
-                alt={product?.productDetails?.product_name || "Product"}
+                src={product?.productDetails?.images?.[0].url || ""}
+                alt={product?.productDetails?.name || "Product"}
                 className={style.topRatedImg}
               />
               <div className={style.topRatedInfo}>
-                <p>{product?.productDetails?.product_name || "N/A"}</p>
+                <p>{product?.productDetails?.name || "N/A"}</p>
                 <div className={style.rating}>
                   <RatingStar
                     rating={product?.averageRating || 0}

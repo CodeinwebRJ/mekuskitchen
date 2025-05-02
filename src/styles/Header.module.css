@@ -13,14 +13,11 @@
 }
 
 .logoImage {
-  width: 60px;
   height: 60px;
 }
 
 .logo {
-  font-size: 34px;
   font-weight: var(--font-bold);
-  background-color: var(--white);
   border-radius: 6px;
 }
 

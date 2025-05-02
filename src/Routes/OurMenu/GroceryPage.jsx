@@ -137,14 +137,14 @@ const GroceryPage = () => {
               >
                 {products?.data?.map((product, index) => (
                   <Link
-                    to={`/product/${product?.category.toLowerCase()}/${product.product_name.toLowerCase()}`}
+                    to={`/product/${product?.category.toLowerCase()}/${product.name.toLowerCase()}`}
                     state={{ id: product._id }}
                     key={index}
                   >
                     <div className={style.productCard}>
                       <img
-                        src={product.image_url?.[0] || ""}
-                        alt={product.product_name}
+                        src={product.images?.[0] || ""}
+                        alt={product.name}
                         className={
                           grid === 2
                             ? style.productImg2
@@ -155,7 +155,7 @@ const GroceryPage = () => {
                             : style.productImg3
                         }
                       />
-                      <h3>{product.product_name}</h3>
+                      <h3>{product.name}</h3>
                       <div className={style.rating}>
                         <span>★</span>
                       </div>

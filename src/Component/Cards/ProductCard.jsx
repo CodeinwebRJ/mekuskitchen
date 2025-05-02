@@ -62,12 +62,12 @@ const ProductCard = ({ product, grid }) => {
   return (
     <div className={style.productCard}>
       <Link
-        to={`/product/${product?.category.toLowerCase()}/${product.product_name.toLowerCase()}`}
+        to={`/product/${product?.category.toLowerCase()}/${product.name.toLowerCase()}`}
         state={{ id: product._id }}
       >
         <img
-          src={product.image_url?.[0] || ""}
-          alt={product.product_name}
+          src={product.images?.[0].url || ""}
+          alt={product.name}
           className={
             grid === 2
               ? style.productImg2
@@ -78,7 +78,7 @@ const ProductCard = ({ product, grid }) => {
               : style.productImg3
           }
         />
-        <p className={style.productName}>{product?.product_name}</p>
+        <p className={style.productName}>{product?.name}</p>
         <div className={style.rating}>
           <RatingStar
             rating={product?.averageRating}

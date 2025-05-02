@@ -35,8 +35,6 @@ const TiffinRelatedProduct = () => {
   return (
     <div className={style.relatedProductContainer}>
       <Heading title="RELATED PRODUCTS" size="xs" />
-
-      {/* Slider */}
       <div className={style.sliderWrapper}>
         <div className={`${style.customArrow} ${style.prevArrow}`}>
           <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />

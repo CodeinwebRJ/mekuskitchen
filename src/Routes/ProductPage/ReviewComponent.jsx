@@ -84,9 +84,7 @@ const ReviewComponent = ({
       )}
 
       <div className={style.reviewForm}>
-        <h3 className={style.formTitle}>
-          Write a Review for "{product.product_name}"
-        </h3>
+        <h3 className={style.formTitle}>Write a Review for "{product.name}"</h3>
 
         <form onSubmit={handleSubmitReview}>
           <div className={style.rating}>

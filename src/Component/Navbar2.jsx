@@ -12,9 +12,14 @@ function Navbar2() {
             style={{ height: "auto" }}
           >
             <img
-              src="/logo2.png"
+              src="/logo.png"
               alt="Et World Logo"
-              style={{ height: "50px", width: "auto" }}
+              style={{
+                height: "50px",
+                width: "auto",
+                backgroundColor: "black",
+                padding:"4px"
+              }}
             />
           </NavLink>
         </div>

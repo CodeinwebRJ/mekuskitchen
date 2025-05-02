@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemImageContainer}>
                   <img
                     src={
-                      item?.productDetails?.image_url?.[0] ||
+                      item?.productDetails?.images?.[0].url ||
                       "/default-image.jpg"
                     }
                     alt={item.day || "Tiffin item"}
@@ -106,7 +106,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemDetails}>
                   <div>
                     <p className={style.cartItemName}>
-                      {item?.productDetails?.product_name?.toUpperCase()}
+                      {item?.productDetails?.name?.toUpperCase()}
                     </p>
                     <p className={style.cartItemCalculation}>
                       <span className={style.quantity}>{item.quantity}</span>

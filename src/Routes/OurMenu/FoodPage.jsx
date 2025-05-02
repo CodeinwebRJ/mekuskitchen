@@ -20,7 +20,6 @@ import {
   getUserWishlist,
 } from "../../axiosConfig/AxiosConfig.js";
 import Header from "../../Component/MainComponents/Header";
-import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
 import Pagination from "../../Component/Pagination.jsx";
 import Loading from "../../Component/UI-Components/Loading.jsx";
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice.jsx";

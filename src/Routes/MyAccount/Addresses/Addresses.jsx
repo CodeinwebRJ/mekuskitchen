@@ -37,13 +37,11 @@ const Addresses = () => {
     }
   };
 
-  // Update Address
   const handleUpdateAddress = (addressId) => {
     setIsEdit(true);
     dispatch(setShowAddressForm(true));
   };
 
-  // Delete Address
   const handleDeleteAddress = async (addressId) => {
     try {
       const data = {
@@ -59,7 +57,6 @@ const Addresses = () => {
     }
   };
 
-  // Set as Default Address
   const handleSetAsDefaultAddress = async (addressId) => {
     try {
       const data = {
@@ -94,7 +91,8 @@ const Addresses = () => {
                 <AddAddressCard
                   onClick={() => {
                     dispatch(setShowAddressForm(true));
-                    setIsEdit(false);a
+                    setIsEdit(false);
+                    a;
                   }}
                 />
               ) : null}

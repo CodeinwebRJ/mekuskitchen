@@ -15,7 +15,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
   const { user } = useSelector((state) => state.auth);
 
   const productData = product?.productId || {};
-  const { _id, product_name, price, image_url, description } = productData;
+  const { _id, name, price, images, description } = productData;
 
   const handleAddToCart = async () => {
     if (!user) return;
@@ -58,10 +58,10 @@ const WishlistItem = ({ product, fetchWishlist }) => {
     <div className={style.item}>
       <div className={style.itemLeftSide}>
         <div className={style.itemImage}>
-          <img src={image_url?.[0]} alt={product_name || "wishlist item"} />
+          <img src={images?.[0].url} alt={name || "wishlist item"} />
         </div>
         <div className={style.itemContent}>
-          <span className={style.itemName}>{product_name?.toUpperCase()}</span>
+          <span className={style.itemName}>{name?.toUpperCase()}</span>
           <span className={style.itemPrice}>${price}</span>
           <span className={style.itemDescription}>{description}</span>
         </div>
