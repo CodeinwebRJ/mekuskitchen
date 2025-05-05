@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "../../styles/Cart.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
@@ -10,14 +10,19 @@ import Button from "../../Component/Buttons/Button";
 import { RxCross2 } from "react-icons/rx";
 import EmptyCartPage from "./EmptyCartPage";
 import { Link } from "react-router-dom";
-import { FaMinus } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";
+import { FaMinus, FaPlus, FaEye } from "react-icons/fa";
+import DialogBox from "../../Component/DialogBox";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
+  const [showProduct, setShowProduct] = useState(false);
   const User = useSelector((state) => state.auth.user);
   const Cart = useSelector((state) => state.cart);
   const taxRate = 0.05;
+
+  const handleShowProduct = () => {
+    setShowProduct(!showProduct);
+  };
 
   const updateItemQuantity = async (id, delta, type, dayName = null) => {
     try {
@@ -95,172 +100,189 @@ const ShoppingCart = () => {
   const total = subtotal + tax;
 
   return (
-    <div>
-      <Header />
-      <Banner name={"CART"} />
+    <>
+      <div>
+        <Header />
+        <Banner name={"CART"} />
 
-      {Cart?.items?.items?.length > 0 || Cart?.items?.tiffins?.length > 0 ? (
-        <div className={style.cartContainer}>
-          <div className={style.cartItems}>
-            <table className={style.cartTable}>
-              <thead>
-                <tr className={style.cartItem}>
-                  <th />
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Total Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Cart?.items?.items?.map((item, index) => (
-                  <tr key={index} className={style.cartItem}>
-                    <td>
-                      <RxCross2
-                        className={style.removeIcon}
-                        onClick={() => handleDelete(item.product_id, "product")}
-                      />
-                    </td>
-                    <td>
-                      <div className={style.productCell}>
-                        <img
-                          src={item?.productDetails?.images[0].url}
-                          alt="product"
-                          className={style.cartItemImage}
-                        />
-                        <span>{item?.productDetails?.name}</span>
-                      </div>
-                    </td>
-                    <td>${item?.price}</td>
-                    <td>
-                      <div className={style.quantityControl}>
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(item._id, -1, "product")
-                          }
-                          disabled={item.quantity <= 1}
-                        >
-                          <FaMinus size={14} />
-                        </button>
-                        <span className={style.quantity}>{item.quantity}</span>
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(item._id, 1, "product")
-                          }
-                        >
-                          <FaPlus size={14} />
-                        </button>
-                      </div>
-                    </td>
-                    <td className={style.totalPrice}>
-                      ${item.price * item.quantity}
-                    </td>
+        {Cart?.items?.items?.length > 0 || Cart?.items?.tiffins?.length > 0 ? (
+          <div className={style.cartContainer}>
+            <div className={style.cartItems}>
+              <table className={style.cartTable}>
+                <thead>
+                  <tr className={style.cartItem}>
+                    <th />
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
                   </tr>
-                ))}
-
-                {Cart?.items?.tiffins?.map((tiffin, index) => (
-                  <tr key={index} className={style.cartItem}>
-                    <td>
-                      <RxCross2
-                        className={style.removeIcon}
-                        onClick={() =>
-                          handleDelete(
-                            tiffin.tiffinMenuId,
-                            "tiffin",
-                            tiffin.day
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <div className={style.productCell}>
-                        <img
-                          src={tiffin.tiffinMenuDetails?.image_url?.[0]?.url}
-                          alt="tiffin"
-                          className={style.cartItemImage}
-                        />
-                        <span>{tiffin?.day}</span>
-                      </div>
-                    </td>
-                    <td>${tiffin.tiffinMenuDetails?.totalAmount}</td>
-                    <td>
-                      <div className={style.quantityControl}>
-                        <button
+                </thead>
+                <tbody>
+                  {Cart?.items?.items?.map((item, index) => (
+                    <tr key={index} className={style.cartItem}>
+                      <td>
+                        <RxCross2
+                          className={style.removeIcon}
                           onClick={() =>
-                            updateItemQuantity(
-                              tiffin._id,
-                              -1,
+                            handleDelete(item.product_id, "product")
+                          }
+                        />
+                        <FaEye onClick={handleShowProduct} />
+                      </td>
+                      <td>
+                        <div className={style.productCell}>
+                          <img
+                            src={item?.productDetails?.images[0].url}
+                            alt="product"
+                            className={style.cartItemImage}
+                          />
+                          <span>{item?.productDetails?.name}</span>
+                        </div>
+                      </td>
+                      <td>${item?.price}</td>
+                      <td>
+                        <div className={style.quantityControl}>
+                          <button
+                            onClick={() =>
+                              updateItemQuantity(item._id, -1, "product")
+                            }
+                            disabled={item.quantity <= 1}
+                          >
+                            <FaMinus size={14} />
+                          </button>
+                          <span className={style.quantity}>
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() =>
+                              updateItemQuantity(item._id, 1, "product")
+                            }
+                          >
+                            <FaPlus size={14} />
+                          </button>
+                        </div>
+                      </td>
+                      <td className={style.totalPrice}>
+                        ${item.price * item.quantity}
+                      </td>
+                    </tr>
+                  ))}
+
+                  {Cart?.items?.tiffins?.map((tiffin, index) => (
+                    <tr key={index} className={style.cartItem}>
+                      <td>
+                        <RxCross2
+                          className={style.removeIcon}
+                          onClick={() =>
+                            handleDelete(
+                              tiffin.tiffinMenuId,
                               "tiffin",
                               tiffin.day
                             )
                           }
-                          disabled={tiffin.quantity <= 1}
-                        >
-                          -
-                        </button>
-                        <span className={style.quantity}>
-                          {tiffin.quantity}
-                        </span>
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(
-                              tiffin._id,
-                              1,
-                              "tiffin",
-                              tiffin.day
-                            )
-                          }
-                        >
-                          +
-                        </button>
-                      </div>
-                    </td>
-                    <td className={style.totalPrice}>
-                      ${tiffin.tiffinMenuDetails?.totalAmount * tiffin.quantity}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                        />
+                      </td>
+                      <td>
+                        <div className={style.productCell}>
+                          <img
+                            src={tiffin.tiffinMenuDetails?.image_url?.[0]?.url}
+                            alt="tiffin"
+                            className={style.cartItemImage}
+                          />
+                          <span>{tiffin?.day}</span>
+                        </div>
+                      </td>
+                      <td>${tiffin.tiffinMenuDetails?.totalAmount}</td>
+                      <td>
+                        <div className={style.quantityControl}>
+                          <button
+                            onClick={() =>
+                              updateItemQuantity(
+                                tiffin._id,
+                                -1,
+                                "tiffin",
+                                tiffin.day
+                              )
+                            }
+                            disabled={tiffin.quantity <= 1}
+                          >
+                            -
+                          </button>
+                          <span className={style.quantity}>
+                            {tiffin.quantity}
+                          </span>
+                          <button
+                            onClick={() =>
+                              updateItemQuantity(
+                                tiffin._id,
+                                1,
+                                "tiffin",
+                                tiffin.day
+                              )
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      <td className={style.totalPrice}>
+                        $
+                        {tiffin.tiffinMenuDetails?.totalAmount *
+                          tiffin.quantity}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-          <div className={style.cartTotals}>
-            <h3>Cart Totals</h3>
-            <p>
-              Subtotal: <span>${subtotal.toFixed(2)}</span>
-            </p>
-            <hr />
-            <p>
-              Shipping: <span>Self Pickup</span>
-            </p>
-            <hr />
-            <p>
-              Shipping to: <strong>Calgary, AB</strong>
-            </p>
-            <hr />
-            <p>
-              Tax: <span className={style.taxAmount}>${tax.toFixed(2)}</span>
-            </p>
-            <hr />
-            <p className={style.total}>
-              Total:{" "}
-              <span className={style.totalAmount}>${total.toFixed(2)}</span>
-            </p>
+            <div className={style.cartTotals}>
+              <h3>Cart Totals</h3>
+              <p>
+                Subtotal: <span>${subtotal.toFixed(2)}</span>
+              </p>
+              <hr />
+              <p>
+                Shipping: <span>Self Pickup</span>
+              </p>
+              <hr />
+              <p>
+                Shipping to: <strong>Calgary, AB</strong>
+              </p>
+              <hr />
+              <p>
+                Tax: <span className={style.taxAmount}>${tax.toFixed(2)}</span>
+              </p>
+              <hr />
+              <p className={style.total}>
+                Total:{" "}
+                <span className={style.totalAmount}>${total.toFixed(2)}</span>
+              </p>
 
-            <Link to="/checkout" state={{ id: "123" }}>
-              <div className={style.checkoutButton}>
-                <Button variant="success" size="md">
-                  Proceed to Checkout
-                </Button>
-              </div>
-            </Link>
+              <Link to="/checkout" state={{ id: "123" }}>
+                <div className={style.checkoutButton}>
+                  <Button variant="success" size="md">
+                    Proceed to Checkout
+                  </Button>
+                </div>
+              </Link>
+            </div>
           </div>
-        </div>
-      ) : (
-        <EmptyCartPage />
-      )}
-      <Footer />
-    </div>
+        ) : (
+          <EmptyCartPage />
+        )}
+        <Footer />
+      </div>
+
+      <DialogBox
+        isOpen={showProduct}
+        title="Product Detail"
+        onClose={() => setShowProduct(false)}
+      >
+        <span>Hello</span>
+      </DialogBox>
+    </>
   );
 };
 

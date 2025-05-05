@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "../../styles/CheckoutPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
-import { Link } from "react-router-dom";
 import { GoArrowLeft } from "react-icons/go";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Button from "../../Component/Buttons/Button";
 import FormField from "../MyAccount/Addresses/FormField";
 import CheckboxFeild from "../../Component/UI-Components/CheckboxFeild";
@@ -17,8 +16,13 @@ import { setShowAddressForm } from "../../../Store/Slice/AddressSlice";
 
 const CheckoutPage = () => {
   const { defaultAddress } = useSelector((state) => state.address);
-
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const [errors, setErrors] = useState({
+    billingErrors: {},
+    shippingErrors: {},
+  });
 
   const [formData, setFormData] = useState({
     userId: user.userid,
@@ -47,6 +51,42 @@ const CheckoutPage = () => {
     isDifferent: false,
     isActive: true,
   });
+
+  const [isEdit, setIsEdit] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+
+  useEffect(() => {
+    if (defaultAddress) {
+      setIsEdit(true);
+      setFormData((prev) => ({
+        ...prev,
+        billingData: {
+          firstName: defaultAddress.billing?.firstName || "",
+          lastName: defaultAddress.billing?.lastName || "",
+          country: defaultAddress.billing?.country || "",
+          state: defaultAddress.billing?.state || "",
+          city: defaultAddress.billing?.city || "",
+          address: defaultAddress.billing?.address || "",
+          postCode: defaultAddress.billing?.postcode || "",
+          phone: defaultAddress.billing?.phone || "",
+          email: defaultAddress.billing?.email || "",
+        },
+        shippingData: {
+          firstName: defaultAddress.shipping?.firstName || "",
+          lastName: defaultAddress.shipping?.lastName || "",
+          country: defaultAddress.shipping?.country || "",
+          state: defaultAddress.shipping?.state || "",
+          city: defaultAddress.shipping?.city || "",
+          address: defaultAddress.shipping?.address || "",
+          postCode: defaultAddress.shipping?.postcode || "",
+          phone: defaultAddress.shipping?.phone || "",
+          email: defaultAddress.shipping?.email || "",
+        },
+        isDifferent: !!defaultAddress.shipping,
+      }));
+    }
+  }, [defaultAddress]);
 
   const validateAddressForm = (data) => {
     const validationErrors = {};
@@ -106,6 +146,7 @@ const CheckoutPage = () => {
         [name]: "",
       },
     }));
+    setApiError("");
   };
 
   const handleCheckboxChange = () => {
@@ -117,6 +158,9 @@ const CheckoutPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setApiError("");
+    setIsLoading(true);
+
     const billingErrors = validateAddressForm(formData.billingData);
     const shippingErrors = formData.isDifferent
       ? validateAddressForm(formData.shippingData)
@@ -131,6 +175,7 @@ const CheckoutPage = () => {
     const hasShippingErrors = Object.keys(shippingErrors).length > 0;
 
     if (hasBillingErrors || hasShippingErrors) {
+      setIsLoading(false);
       return;
     }
 
@@ -165,23 +210,51 @@ const CheckoutPage = () => {
               },
             }),
           });
-      if (res?.status === 201) {
+
+      if (res?.status === 200 || res?.status === 201) {
         dispatch(setShowAddressForm(false));
+        setFormData({
+          userId: user.userid,
+          billingData: {
+            firstName: "",
+            lastName: "",
+            country: "",
+            state: "",
+            city: "",
+            address: "",
+            postCode: "",
+            phone: "",
+            email: "",
+          },
+          shippingData: {
+            firstName: "",
+            lastName: "",
+            country: "",
+            state: "",
+            city: "",
+            address: "",
+            postCode: "",
+            phone: "",
+            email: "",
+          },
+          isDifferent: false,
+          isActive: true,
+        });
       } else {
-        console.error("Failed to submit address:", res);
+        setApiError("Failed to submit address. Please try again.");
       }
     } catch (error) {
-      console.error("Error submitting address:", error);
+      setApiError(
+        error.response?.data?.message ||
+          "An error occurred while submitting the address."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const countries = [{ value: "United States", label: "United States" }];
   const states = [{ value: "California", label: "California" }];
-
-  const [errors, setErrors] = useState({
-    billingErrors: {},
-    shippingErrors: {},
-  });
 
   return (
     <div>
@@ -189,75 +262,75 @@ const CheckoutPage = () => {
       <Banner name="Checkout" path="/cart" />
 
       <div className={style.checkoutContianer}>
-        <div className={style.addressDetailsContainer}>
-          <div className={style.billingTitle}>
-            <Link to="/cart">
-              <GoArrowLeft size={24} className={style.backButton} />
-            </Link>
-            Billing Details
+        {defaultAddress ? (
+          <div className={style.addressDetails}>
+            <p className={style.fullname}>
+              {defaultAddress?.billing?.firstName}{" "}
+              {defaultAddress?.billing?.lastName}
+            </p>
+            <p>{defaultAddress?.billing?.address}</p>
+            <p>{defaultAddress?.billing?.city}</p>
+            <p>
+              {defaultAddress?.billing?.state}
+              {defaultAddress?.billing?.postcode}
+            </p>
+            <p>{defaultAddress?.billing?.country}</p>
+            <p>Phone - {defaultAddress?.billing?.phone}</p>
           </div>
-
-          {defaultAddress && (
-            <div className={style.addressDetails}>
-              <p className={style.fullname}>
-                {defaultAddress?.billing?.firstName}{" "}
-                {defaultAddress?.billing?.lastName}
-              </p>
-              <p>{defaultAddress?.billing?.address}</p>
-              <p>{defaultAddress?.billing?.city}</p>
-              <p>
-                {defaultAddress?.billing?.state} -{" "}
-                {defaultAddress?.billing?.postcode}
-              </p>
-              <p>{defaultAddress?.billing?.country}</p>
-              <p>Phone - {defaultAddress?.billing?.phone}</p>
-            </div>
-          )}
-
+        ) : (
           <div>
-            <FormField
-              formData={formData.billingData}
-              handleChange={(e) => handleChange(e, "billing")}
-              countries={countries}
-              states={states}
-              formErrors={errors.billingErrors}
-            />
-
-            <div
-              className={`${style.billingFormColumn1} ${style.shippingAddress}`}
-            >
-              <div className={style.checkboxContainer}>
-                <CheckboxFeild
-                  checked={formData.isDifferent}
-                  onChange={handleCheckboxChange}
-                  id="different-shipping"
-                />
-                <label
-                  htmlFor="different-shipping"
-                  className={style.checkboxLabel}
-                >
-                  Shipping address is different from billing address!
-                </label>
+            <div className={style.billingTitle}>
+              <div onClick={() => dispatch(setShowAddressForm(false))}>
+                <GoArrowLeft size={24} className={style.backButton} />
               </div>
+              Billing Address
             </div>
 
-            {formData.isDifferent && (
-              <div className={style.billingContainer}>
-                <div className={style.billingTitle}>Shipping Address</div>
-                <div className={style.billingForm}>
-                  <FormField
-                    formData={formData.shippingData}
-                    handleChange={(e) => handleChange(e, "shipping")}
-                    countries={countries}
-                    states={states}
-                    formErrors={errors.shippingErrors}
+            <form className={style.billingForm} onSubmit={handleSubmit}>
+              {apiError && <p className={style.errorMessage}>{apiError}</p>}
+              <FormField
+                formData={formData.billingData}
+                handleChange={(e) => handleChange(e, "billing")}
+                countries={countries}
+                states={states}
+                formErrors={errors.billingErrors}
+              />
+
+              <div
+                className={`${style.billingFormColumn1} ${style.shippingAddress}`}
+              >
+                <div className={style.checkboxContainer}>
+                  <CheckboxFeild
+                    checked={formData.isDifferent}
+                    onChange={handleCheckboxChange}
+                    id="different-shipping"
                   />
+                  <label
+                    htmlFor="different-shipping"
+                    className={style.checkboxLabel}
+                  >
+                    Shipping address is different from billing address!
+                  </label>
                 </div>
               </div>
-            )}
-          </div>
-        </div>
 
+              {formData.isDifferent && (
+                <div className={style.billingContainer}>
+                  <div className={style.billingTitle}>Shipping Address</div>
+                  <div className={style.billingForm}>
+                    <FormField
+                      formData={formData.shippingData}
+                      handleChange={(e) => handleChange(e, "shipping")}
+                      countries={countries}
+                      states={states}
+                      formErrors={errors.shippingErrors}
+                    />
+                  </div>
+                </div>
+              )}
+            </form>
+          </div>
+        )}
         <div className={style.orderSummaryContainer}>
           <div className={style.orderCard}>
             <h2 className={style.orderTitle}>Your Order</h2>
@@ -290,14 +363,17 @@ const CheckoutPage = () => {
               <p>You will be redirected to Moneris</p>
             </div>
             <div>
-              <Button onCllick={handleSubmit} className={style.placeOrder}>
-                Place Order
+              <Button
+                type="submit"
+                className={style.placeOrder}
+                disabled={isLoading}
+              >
+                {isLoading ? "Processing..." : "Place Order"}
               </Button>
             </div>
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

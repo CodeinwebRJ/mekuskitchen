@@ -8,6 +8,13 @@
   align-items: start;
 }
 
+.billingForm {
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-9);
+}
+
 .billingTitle {
   display: flex;
   gap: 12px;
@@ -23,6 +30,7 @@
   cursor: pointer;
   transition: transform 0.2s ease;
 }
+
 .backButton:hover {
   transform: translateX(-3px);
 }
@@ -110,6 +118,12 @@
 .placeOrder {
   margin: 8px 0;
   border-radius: 8px;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-5);
 }
 
 @media (max-width: 768px) {
