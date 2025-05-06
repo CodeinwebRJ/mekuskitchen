@@ -12,6 +12,7 @@ const productSlice = createSlice({
     search: "",
     sortBy: "",
     category: "food",
+    subCategory: "",
   },
   reducers: {
     setProducts: (state, action) => {
@@ -39,7 +40,10 @@ const productSlice = createSlice({
       state.sortBy = action.payload;
     },
     setCategory: (state, action) => {
-      state.category = action.payload.toLowerCase(); // standardizing
+      state.category = action.payload.toLowerCase();
+    },
+    setSubCategory: (state, action) => {
+      state.subCategory = action.payload.toLowerCase();
     },
   },
 });

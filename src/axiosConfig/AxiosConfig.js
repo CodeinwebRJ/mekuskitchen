@@ -81,3 +81,11 @@ export const AddtoWishlist = async (data) => {
 export const RemoveWishlist = async (data) => {
   return axiosInstance.put("/api/v1/wishlist/remove", data);
 };
+
+export const getCategory = async () => {
+  return axiosInstance.get("/api/v1/C/get/category");
+};
+
+export const getSubCategory = async (data) => {
+  return axiosInstance.get("/api/v1/C/get/subCategory");
+};

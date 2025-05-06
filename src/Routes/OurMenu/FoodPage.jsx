@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from "react";
-import style from "../../styles/Food.module.css";
-import Banner from "../../Component/MainComponents/Banner";
-import { IoGrid } from "react-icons/io5";
-import { BsFillGrid3X3GapFill } from "react-icons/bs";
-import { TfiLayoutGrid4Alt } from "react-icons/tfi";
+import React, { useEffect, useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,138 +7,197 @@ import {
   setGrid,
   setPage,
 } from "../../../Store/Slice/ProductSlice.jsx";
-import Footer from "../../Component/MainComponents/Footer";
-import ProductCard from "../../Component/Cards/ProductCard.jsx";
-import FilterContainer from "../../Component/FilterContainer.jsx";
-import ShowProducts from "../../Component/ShowProducts";
+import { setWishlist } from "../../../Store/Slice/UserWishlistSlice.jsx";
 import {
+  getCategory,
+  getSubCategory,
   getTopRatedProduct,
   getUserWishlist,
 } from "../../axiosConfig/AxiosConfig.js";
 import Header from "../../Component/MainComponents/Header";
+import Banner from "../../Component/MainComponents/Banner";
+import Footer from "../../Component/MainComponents/Footer";
+import ProductCard from "../../Component/Cards/ProductCard.jsx";
+import FilterContainer from "../../Component/FilterContainer.jsx";
+import ShowProducts from "../../Component/ShowProducts";
 import Pagination from "../../Component/Pagination.jsx";
 import Loading from "../../Component/UI-Components/Loading.jsx";
-import { setWishlist } from "../../../Store/Slice/UserWishlistSlice.jsx";
+import { IoGrid } from "react-icons/io5";
+import { BsFillGrid3X3GapFill } from "react-icons/bs";
+import { TfiLayoutGrid4Alt } from "react-icons/tfi";
+import styles from "../../styles/Food.module.css";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
   const { id } = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
   const { priceRange, grid, loading, error, products } = useSelector(
     (state) => state.product
   );
 
-  const handlePriceChange = (e) => {
-    dispatch(setPriceRange(parseInt(e.target.value)));
-  };
+  const handlePriceChange = useCallback(
+    (e) => {
+      dispatch(setPriceRange(parseInt(e.target.value)));
+    },
+    [dispatch]
+  );
 
-  const fetchTopRatedProduct = async () => {
+  const handlePageChange = useCallback(
+    (pageNumber) => {
+      dispatch(setPage(pageNumber));
+    },
+    [dispatch]
+  );
+
+  const fetchTopRatedProduct = useCallback(async () => {
     try {
       const res = await getTopRatedProduct();
       setTopRated(res?.data?.data || []);
     } catch (error) {
-      console.error("Error fetching top rated product", error);
+      setFetchError("Failed to fetch top-rated products.");
+      console.error("Error fetching top-rated product:", error);
     }
-  };
-
-  const fetchWishlist = async () => {
-    try {
-      console.log("object");
-      const res = await getUserWishlist(user.userid);
-      console.log(res);
-      dispatch(setWishlist(res.data.data));
-      console.log(res.data.data);
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-    }
-  };
-
-  const handlePageChange = (pageNumber) => {
-    dispatch(setPage(pageNumber));
-  };
-
-  useEffect(() => {
-    fetchTopRatedProduct();
-    fetchWishlist();
   }, []);
 
+  const fetchWishlist = useCallback(async () => {
+    if (!user?.userid) return;
+    try {
+      const res = await getUserWishlist(user.userid);
+      dispatch(setWishlist(res.data.data || []));
+    } catch (error) {
+      setFetchError("Failed to fetch wishlist.");
+      console.error("Error fetching wishlist:", error);
+    }
+  }, [dispatch, user?.userid]);
+
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const [categoryRes, subCategoryRes] = await Promise.all([
+        getCategory(),
+        getSubCategory(),
+      ]);
+      console.log("Categories:", categoryRes.data.data);
+      console.log("Subcategories:", subCategoryRes.data.data);
+    } catch (error) {
+      setFetchError("Failed to fetch categories.");
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsFetching(true);
+      setFetchError(null);
+      await Promise.all([
+        fetchTopRatedProduct(),
+        fetchWishlist(),
+        fetchCategories(),
+      ]);
+      setIsFetching(false);
+    };
+
+    fetchData();
+  }, [fetchTopRatedProduct, fetchWishlist, fetchCategories]);
+
+
+  const getGridClass = () => {
+    switch (grid) {
+      case 2:
+        return styles.productGrid2;
+      case 4:
+        return styles.productGrid4;
+      case 3:
+      default:
+        return styles.productGrid3;
+    }
+  };
+
   return (
-    <div>
+    <div className={styles.pageWrapper}>
       <Header />
       <Banner name={id?.toUpperCase() || "FOOD"} />
 
-      <div className={style.container}>
-        <div className={style.container2}>
+      <div className={styles.container}>
+        <div className={styles.container2}>
           <FilterContainer
             priceRange={priceRange}
             handlePriceChange={handlePriceChange}
             data={topRated}
           />
 
-          {loading ? (
-            <div className="loadingContainer">
+          {isFetching || loading ? (
+            <div className={styles.loadingContainer}>
               <Loading />
             </div>
-          ) : error ? (
-            <div className={style.error}>Error: {error}</div>
+          ) : fetchError || error ? (
+            <div className={styles.error}>
+              {fetchError || `Error: ${error}`}
+            </div>
           ) : (
-            <div className={style.mainContent}>
-              <div className={style.sortingBar}>
-                <div className={style.breadcrumb}>
-                  <span>Home / Food</span>
+            <div className={styles.mainContent}>
+              <div className={styles.sortingBar}>
+                <div className={styles.breadcrumb}>
+                  <span aria-label="Breadcrumb">Home / Food</span>
                 </div>
 
-                <div className={style.sortingOptions}>
+                <div className={styles.sortingOptions}>
                   <ShowProducts />
-
-                  <div className={style.gridIcons}>
-                    <span onClick={() => dispatch(setGrid(2))}>
-                      <IoGrid
-                        size={24}
-                        className={
-                          grid === 2 ? style.gridIconActive : style.gridIcon
-                        }
-                      />
-                    </span>
-                    <span onClick={() => dispatch(setGrid(3))}>
-                      <BsFillGrid3X3GapFill
-                        size={24}
-                        className={
-                          grid === 3 ? style.gridIconActive : style.gridIcon
-                        }
-                      />
-                    </span>
-                    <span onClick={() => dispatch(setGrid(4))}>
-                      <TfiLayoutGrid4Alt
-                        size={24}
-                        className={
-                          grid === 4 ? style.gridIconActive : style.gridIcon
-                        }
-                      />
-                    </span>
+                  <div
+                    className={styles.gridIcons}
+                    role="group"
+                    aria-label="Grid layout options"
+                  >
+                    <button
+                      type="button"
+                      aria-label="Two-column grid"
+                      onClick={() => dispatch(setGrid(2))}
+                      className={
+                        grid === 2 ? styles.gridIconActive : styles.gridIcon
+                      }
+                    >
+                      <IoGrid size={24} />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Three-column grid"
+                      onClick={() => dispatch(setGrid(3))}
+                      className={
+                        grid === 3 ? styles.gridIconActive : styles.gridIcon
+                      }
+                    >
+                      <BsFillGrid3X3GapFill size={24} />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Four-column grid"
+                      onClick={() => dispatch(setGrid(4))}
+                      className={
+                        grid === 4 ? styles.gridIconActive : styles.gridIcon
+                      }
+                    >
+                      <TfiLayoutGrid4Alt size={24} />
+                    </button>
                   </div>
                 </div>
               </div>
 
-              <div
-                className={
-                  grid === 2
-                    ? style.productGrid2
-                    : grid === 3
-                    ? style.productGrid3
-                    : grid === 4
-                    ? style.productGrid4
-                    : style.productGrid3
-                }
-              >
+              <div className={getGridClass()}>
                 {products?.data?.length > 0 ? (
-                  products.data.map((product, index) => (
-                    <ProductCard key={index} product={product} grid={grid} />
+                  products.data.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      grid={grid}
+                    />
                   ))
                 ) : (
-                  <p className={style.noProducts}>No products found.</p>
+                  <p className={styles.noProducts}>
+                    No products found. Try adjusting your filters.
+                  </p>
                 )}
               </div>
             </div>

@@ -21,6 +21,7 @@ const FilterContainer = ({ priceRange, handlePriceChange, data }) => {
     { id: 1, label: "Food", value: "food" },
     { id: 2, label: "Grocery", value: "grocery" },
     { id: 2, label: "Clothing", value: "Clothing" },
+    { id: 2, label: "electronics", value: "electronics" },
     { id: 2, label: "Grocery", value: "grocery" },
   ];
 
