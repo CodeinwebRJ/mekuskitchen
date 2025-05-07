@@ -26,10 +26,10 @@ const RelatedProductCard = (props) => {
           <img
             src={
               category[1] === "tiffin"
-                ? item?.image_url?.[0].url
-                : item?.images?.[0].url || ""
+                ? item?.image_url?.[0]?.url || "/defultImage.png"
+                : item?.images?.[0]?.url || "/defultImage.png"
             }
-            alt={item?.product_name}
+            alt={item?.name}
             className={style.relatedProductImg}
           />
           {item?.date && <DateChip name={formatDate(item?.date)} />}

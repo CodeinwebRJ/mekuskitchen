@@ -72,8 +72,8 @@
 }
 
 .productImageContainer {
-  width: 400px;
-  height: 400px;
+  width: 35vw;
+  height: 60vh;
 }
 
 .productImage {
@@ -107,7 +107,7 @@
 }
 
 .productPrice {
-  font-size : var(--font-2xl)(--font-2xl);
+  font-size: var(--font-2xl) (--font-2xl);
   margin: 10px 0;
 }
 
@@ -191,7 +191,7 @@
 
 .items {
   display: grid;
-  grid-template-columns:  0.5fr 2fr 0.5fr 1.5fr 1fr 1fr;
+  grid-template-columns: 0.5fr 2fr 0.5fr 1.5fr 1fr 1fr;
   align-items: center;
   gap: var(--gap-5);
   padding: 10px 0;

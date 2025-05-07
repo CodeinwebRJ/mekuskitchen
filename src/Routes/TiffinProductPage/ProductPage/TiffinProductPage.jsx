@@ -50,7 +50,7 @@ const ProductImageGallery = ({
   <div className={style.imageContainer}>
     <div className={style.productImageContainer}>
       <img
-        src={selectedImage?.url || "/placeholder.png"}
+        src={selectedImage?.url || "/defultImage.png"}
         alt={productName}
         className={style.productImage}
       />

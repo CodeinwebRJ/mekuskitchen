@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -73,7 +72,6 @@ const FoodPage = () => {
     }
   }, [dispatch, user?.userid]);
 
-
   const fetchCategories = useCallback(async () => {
     try {
       const [categoryRes, subCategoryRes] = await Promise.all([
@@ -102,7 +100,6 @@ const FoodPage = () => {
 
     fetchData();
   }, [fetchTopRatedProduct, fetchWishlist, fetchCategories]);
-
 
   const getGridClass = () => {
     switch (grid) {
@@ -151,48 +148,38 @@ const FoodPage = () => {
                     role="group"
                     aria-label="Grid layout options"
                   >
-                    <button
-                      type="button"
-                      aria-label="Two-column grid"
+                    <span
                       onClick={() => dispatch(setGrid(2))}
                       className={
                         grid === 2 ? styles.gridIconActive : styles.gridIcon
                       }
                     >
                       <IoGrid size={24} />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Three-column grid"
+                    </span>
+                    <span
                       onClick={() => dispatch(setGrid(3))}
                       className={
                         grid === 3 ? styles.gridIconActive : styles.gridIcon
                       }
                     >
                       <BsFillGrid3X3GapFill size={24} />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Four-column grid"
+                    </span>
+                    <span
                       onClick={() => dispatch(setGrid(4))}
                       className={
                         grid === 4 ? styles.gridIconActive : styles.gridIcon
                       }
                     >
                       <TfiLayoutGrid4Alt size={24} />
-                    </button>
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className={getGridClass()}>
                 {products?.data?.length > 0 ? (
-                  products.data.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      grid={grid}
-                    />
+                  products.data.map((product, index) => (
+                    <ProductCard key={index} product={product} grid={grid} />
                   ))
                 ) : (
                   <p className={styles.noProducts}>

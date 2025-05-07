@@ -59,6 +59,8 @@ const ProductCard = ({ product, grid }) => {
     }
   };
 
+  console.log(product);
+
   return (
     <div className={style.productCard}>
       <Link
@@ -66,8 +68,8 @@ const ProductCard = ({ product, grid }) => {
         state={{ id: product._id }}
       >
         <img
-          src={product.images?.[0].url || ""}
-          alt={product.name}
+          src={product?.images?.[0]?.url || "/defultImage.png"}
+          alt={product?.name}
           className={
             grid === 2
               ? style.productImg2
@@ -87,7 +89,7 @@ const ProductCard = ({ product, grid }) => {
             disabled
           />
         </div>
-        <p className="price">${product.price}</p>
+        <p className="price">${product?.price}</p>
       </Link>
 
       <div className={style.wishlist} onClick={handleWishlistToggle}>

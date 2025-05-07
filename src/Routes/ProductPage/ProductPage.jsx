@@ -42,7 +42,7 @@ const ProductPage = () => {
       const foundProduct = products.find((p) => p._id === id);
       if (foundProduct) {
         setProduct(foundProduct);
-        setSelectedImage(foundProduct.images?.[0].url || null);
+        setSelectedImage(foundProduct.images?.[0]?.url || "/defultImage.png");
       } else {
         setProduct(null);
       }
@@ -112,8 +112,6 @@ const ProductPage = () => {
     }
   };
 
-  console.log(product);
-
   return (
     <div>
       <Header />
@@ -156,7 +154,7 @@ const ProductPage = () => {
             <div className={style.productImageContainer}>
               <img
                 src={
-                  selectedImage || product.images?.[0].url || "/placeholder.png"
+                  selectedImage || product.images?.[0].url || "/defultImage.png"
                 }
                 alt={product.name}
                 className={style.productImage}
@@ -166,7 +164,7 @@ const ProductPage = () => {
               {product.images?.slice(0, 4).map((image, index) => (
                 <img
                   key={index}
-                  src={image.url}
+                  src={image.url || "/defultImage.png"}
                   alt={`${product.name} thumbnail ${index + 1}`}
                   className={style.thumbnail}
                   onClick={() => setSelectedImage(image)}
