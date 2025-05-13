@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import style from "../../styles/ReviewComponent.module.css";
 import RatingStar from "../../Component/RatingStar";
 import {
@@ -6,6 +6,7 @@ import {
   getAllProductReview,
 } from "../../axiosConfig/AxiosConfig";
 import Button from "../../Component/Buttons/Button";
+import { useSelector } from "react-redux";
 
 const ReviewComponent = ({
   reviews,
@@ -26,13 +27,15 @@ const ReviewComponent = ({
     }
   };
 
+  const { user } = useSelector((state) => state.auth);
+
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!rating || !review.trim()) return;
 
     try {
       const data = {
-        user_id: "123435", // TODO: Replace with real user ID
+        user_id: user,
         rating,
         comment: review,
         product_id: id,
@@ -57,6 +60,7 @@ const ReviewComponent = ({
           Customer Reviews ({reviews.length})
         </h2>
       </div>
+
       {reviews.length === 0 ? (
         <p className={style.noReviews}>
           No reviews yet. Be the first to share your thoughts!
@@ -66,15 +70,20 @@ const ReviewComponent = ({
           {reviews.map((rev, index) => (
             <div key={index} className={style.reviewItem}>
               <div className={style.reviewHeader}>
-                <span className={style.reviewUser}>User: {rev.user_id}</span>
-                <div className={style.reviewRating}>
-                  <RatingStar
-                    rating={rev.rating}
-                    start={0}
-                    stop={5}
-                    fractions={2}
-                    disabled={true}
-                  />
+                <div className={style.reviewAvatar}>
+                  {rev.user_id?.[0]?.toUpperCase() || "U"}
+                </div>
+                <div>
+                  <div className={style.reviewUser}>User: {rev.user_id}</div>
+                  <div className={style.reviewRating}>
+                    <RatingStar
+                      rating={rev.rating}
+                      start={0}
+                      stop={5}
+                      fractions={2}
+                      disabled={true}
+                    />
+                  </div>
                 </div>
               </div>
               <p className={style.reviewComment}>{rev.comment}</p>
@@ -84,22 +93,25 @@ const ReviewComponent = ({
       )}
 
       <div className={style.reviewForm}>
-        <h3 className={style.formTitle}>Write a Review for "{product.name}"</h3>
+        <h3 className={style.formTitle}>
+          Write a Review for{" "}
+          <span className={style.productName}>"{product.name}"</span>
+        </h3>
 
-        <form onSubmit={handleSubmitReview}>
-          <div className={style.rating}>
-            <label className={style.formLabel}>
+        <form onSubmit={handleSubmitReview} className={style.form}>
+          <div className={style.formGroup}>
+            <label htmlFor="rating" className={style.label}>
               Your Rating <span className={style.required}>*</span>
             </label>
             <RatingStar rating={rating} onChange={setRating} maxRating={5} />
           </div>
 
-          <div className={style.reviewInput}>
-            <label className={style.formLabel}>
+          <div className={style.formGroup}>
+            <label htmlFor="review" className={style.label}>
               Your Review <span className={style.required}>*</span>
             </label>
-
             <textarea
+              id="review"
               value={review}
               onChange={(e) => setReview(e.target.value)}
               placeholder="Share your experience with this product..."
@@ -108,7 +120,7 @@ const ReviewComponent = ({
             />
           </div>
 
-          <div className={style.submitButtonContainer}>
+          <div>
             <Button variant="success" type="submit" size="sm">
               Submit Review
             </Button>

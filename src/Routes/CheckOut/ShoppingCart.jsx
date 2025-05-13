@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "../../styles/Cart.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
@@ -12,16 +12,20 @@ import EmptyCartPage from "./EmptyCartPage";
 import { Link } from "react-router-dom";
 import { FaMinus, FaPlus, FaEye } from "react-icons/fa";
 import DialogBox from "../../Component/DialogBox";
+import Chip from "../../Component/Buttons/Chip";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
   const [showProduct, setShowProduct] = useState(false);
+  const [productData, setProductData] = useState(null);
   const User = useSelector((state) => state.auth.user);
   const Cart = useSelector((state) => state.cart);
   const taxRate = 0.05;
 
-  const handleShowProduct = () => {
-    setShowProduct(!showProduct);
+  const handleShowProduct = (id) => {
+    const product = Cart?.items?.items?.find((item) => item._id === id);
+    setProductData(product);
+    setShowProduct(true);
   };
 
   const updateItemQuantity = async (id, delta, type, dayName = null) => {
@@ -99,6 +103,8 @@ const ShoppingCart = () => {
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
+  console.log(productData);
+
   return (
     <>
       <div>
@@ -122,13 +128,15 @@ const ShoppingCart = () => {
                   {Cart?.items?.items?.map((item, index) => (
                     <tr key={index} className={style.cartItem}>
                       <td>
-                        <RxCross2
-                          className={style.removeIcon}
-                          onClick={() =>
-                            handleDelete(item.product_id, "product")
-                          }
-                        />
-                        <FaEye onClick={handleShowProduct} />
+                        <div className={style.removeCell}>
+                          <RxCross2
+                            className={style.removeIcon}
+                            onClick={() =>
+                              handleDelete(item.product_id, "product")
+                            }
+                          />
+                          <FaEye onClick={() => handleShowProduct(item._id)} />
+                        </div>
                       </td>
                       <td>
                         <div className={style.productCell}>
@@ -283,7 +291,42 @@ const ShoppingCart = () => {
         title="Product Detail"
         onClose={() => setShowProduct(false)}
       >
-        <span>Hello</span>
+        <div className={style.productDetail}>
+          <div className={style.productImage}>
+            <img src={productData?.productDetails?.images[0]?.url} />
+          </div>
+          <div className={style.productInfo}>
+            <h2>{productData?.productDetails?.name}</h2>
+
+            <div className={style.productPricing}>
+              <span className={style.originalPrice}>
+                ${productData?.productDetails?.price}
+              </span>
+              <span className={style.sellingPrice}>
+                ${productData?.productDetails?.sellingPrice}
+              </span>
+            </div>
+            <p className={style.productDescription}>
+              Category : {productData?.productDetails?.category}
+            </p>
+            {productData?.productDetails?.subCategory && (
+              <p className={style.productDescription}>
+                Product : {productData?.productDetails?.subCategory}
+              </p>
+            )}
+            {productData?.productDetails?.subSubCategory && (
+              <p className={style.productDescription}>
+                Product : {productData?.productDetails?.subSubCategory}
+              </p>
+            )}
+            <div>
+              <Chip name={"AddCart"} />
+            </div>
+            <p className={style.productDescription}>
+              {productData?.productDetails?.shortDescription}
+            </p>
+          </div>
+        </div>
       </DialogBox>
     </>
   );

@@ -32,6 +32,7 @@
   height: 100%;
   width: 100%;
   font-weight: var(--font-light);
+  object-position: top;
   object-fit: cover;
   transition: color 0.3s ease-in-out;
 }

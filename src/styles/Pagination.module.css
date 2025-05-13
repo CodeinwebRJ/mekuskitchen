@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-4);
   margin: 24px 0;
   flex-wrap: wrap;
 }
@@ -65,10 +65,6 @@
 }
 
 @media (max-width: 480px) {
-  .pagination {
-    gap: 8px;
-  }
-
   .pageButton {
     min-width: 32px;
     height: 32px;

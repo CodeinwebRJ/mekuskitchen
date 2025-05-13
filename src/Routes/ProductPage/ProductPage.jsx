@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/ProductPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../../Component/MainComponents/Header";
 import ReviewComponent from "./ReviewComponent";
 import RelatedProduct from "./RelatedProduct";
@@ -17,6 +17,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { BiLogoInstagramAlt } from "react-icons/bi";
+import Tabs from "../../Component/UI-Components/Tabs";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -42,7 +43,12 @@ const ProductPage = () => {
       const foundProduct = products.find((p) => p._id === id);
       if (foundProduct) {
         setProduct(foundProduct);
-        setSelectedImage(foundProduct.images?.[0]?.url || "/defultImage.png");
+        console.log(foundProduct.sku.length);
+        setSelectedImage(
+          foundProduct.sku && foundProduct.sku.length > 1
+            ? foundProduct?.sku[0]?.details?.SKUImages[0]?.url
+            : foundProduct.images?.[0]?.url || "/defultImage.png"
+        );
       } else {
         setProduct(null);
       }
@@ -112,15 +118,41 @@ const ProductPage = () => {
     }
   };
 
+  const tabData = [
+    {
+      label: "Functionality",
+      content: <div>This is the Details content.</div>,
+    },
+    {
+      label: "Description",
+      content: <div>This is the Details content.</div>,
+    },
+    {
+      label: "Reviews",
+      content: (
+        <ReviewComponent
+          reviews={reviews}
+          setReviews={setReviews}
+          product={product}
+          rating={rating}
+          review={review}
+          id={id}
+          setReview={setReview}
+          setRating={setRating}
+        />
+      ),
+    },
+  ];
+
   return (
     <div>
       <Header />
 
-      {/* Product Page Container */}
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <a href="/">Home</a> / <a href="/food">Food</a> / {product.name}
+            <Link to="/home">Home</Link> / <Link to="">Food</Link> /{" "}
+            {product.name}
           </div>
           <div className={style.navigation}>
             <button
@@ -167,16 +199,35 @@ const ProductPage = () => {
                   src={image.url || "/defultImage.png"}
                   alt={`${product.name} thumbnail ${index + 1}`}
                   className={style.thumbnail}
-                  onClick={() => setSelectedImage(image)}
-                  onMouseEnter={() => setSelectedImage(image)}
-                  onMouseLeave={() => setSelectedImage(product.image?.[0])}
+                  onClick={() => {
+                    setSelectedImage(image.url || "/defultImage.png");
+                  }}
+                  onMouseEnter={() => {
+                    if (selectedImage !== image.url) {
+                      setSelectedImage(image.url || "/defultImage.png");
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (selectedImage !== image.url) {
+                      setSelectedImage(
+                        product.images?.[0]?.url || "/defultImage.png"
+                      );
+                    }
+                  }}
                 />
               ))}
             </div>
           </div>
           <div className={style.productDetails}>
             <h1>{product.name}</h1>
-            <p className={`${style.productPrice} price`}>${product?.price}</p>
+            <div className={style.priceContainer}>
+              <p className="originalPrice">${product?.price}</p>
+              <p className="price">${product?.sellingPrice}</p>
+            </div>
+            <p className={style.categoryContaine}>
+              Category:{" "}
+              <span className={style.category}>{product.category}</span>
+            </p>
             <div className={style.quantity}>
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -207,10 +258,12 @@ const ProductPage = () => {
                 </Button>
               </div>
             </div>
-            <p className={style.categoryContaine}>
-              Category:{" "}
-              <span className={style.category}>{product.category}</span>
-            </p>
+            <div>
+              <h5>Description : </h5>
+              <div>
+                {product.description && <span>{product.description}</span>}
+              </div>
+            </div>
             <div className={style.share}>
               Share:
               <div className={style.shareIcons}>
@@ -221,24 +274,10 @@ const ProductPage = () => {
                 <FaLinkedinIn className={style.shareIcon} />
               </div>
             </div>
-            <div>
-              <h5>description</h5>
-              <div>
-                {product.description && <span>{product.description}</span>}
-              </div>
-            </div>
           </div>
         </div>
-        <ReviewComponent
-          reviews={reviews}
-          setReviews={setReviews}
-          product={product}
-          rating={rating}
-          review={review}
-          id={id}
-          setReview={setReview}
-          setRating={setRating}
-        />
+
+        <Tabs tabs={tabData} />
       </div>
       <RelatedProduct />
       <Footer />

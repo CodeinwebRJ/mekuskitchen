@@ -157,6 +157,13 @@ ul {
   font-weight: var(--font-bold) !important;
 }
 
+.originalPrice {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
 .loadingContainer {
   height: 100%;
   width: 100%;

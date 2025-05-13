@@ -16,7 +16,7 @@
   padding: 18px;
   border-radius: 8px;
   width: 90%;
-  max-width: 400px;
+  max-width: 900px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -50,7 +50,7 @@
 .dialogactions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--gap-4);
 }
 
 .dialogbutton {

@@ -17,6 +17,7 @@
 .productImg2 {
   width: 100%;
   height: 350px;
+  object-position: top;
   object-fit: cover;
   border-radius: 5px;
 }
@@ -24,6 +25,7 @@
 .productImg3 {
   width: 100%;
   height: 260px;
+  object-position: top;
   object-fit: cover;
   border-radius: 5px;
 }
@@ -31,6 +33,7 @@
 .productImg4 {
   width: 100%;
   height: 190px;
+  object-position: top;
   object-fit: cover;
   border-radius: 5px;
 }

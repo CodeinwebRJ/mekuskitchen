@@ -24,7 +24,7 @@
 .sortingOptions {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: var(--gap-11);
 }
 
 .sortingBar select {

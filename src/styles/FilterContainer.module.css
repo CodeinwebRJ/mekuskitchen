@@ -49,6 +49,7 @@
   height: 70px;
   border-radius: 6px;
   object-fit: cover; /* Ensure images fit nicely */
+  object-position: top;
   margin-right: 12px;
 }
 

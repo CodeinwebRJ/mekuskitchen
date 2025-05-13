@@ -1,168 +1,153 @@
-/* Reviews Section */
-.reviewsSection {
-  margin-top: 50px;
-  padding: 4px;
-  background-color: var(--gray-lighter);
-  border-radius: 8px;
+.reviewForm {
+  padding: 24px 0px;
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #1e1e1e;
+}
+
+.productName {
+  color: #4a90e2;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 600;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  resize: vertical;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  min-height: 120px;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
 }
 
 .sectionTitleContainer {
-  margin-bottom: 30px;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 99%;
-  border-bottom: 2px solid var(--gray-shadow);
+  margin-bottom: 24px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
 }
 
 .sectionTitle {
-  width: fit-content;
-  padding-bottom: 15px;
-  font-size : var(--font-2xl);
-  font-weight: var(--font-bold);
-  margin-bottom: -2px;
-  border-bottom: 2px solid var(--primary-blue);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .noReviews {
-  font-size: var(--font-md);
-  color: var(--gray-placeholder);
-  font-style: italic;
-  margin-bottom: 24px;
+  font-size: 1rem;
+  color: #777;
+  padding: 4px 0;
 }
 
 .reviewList {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-8);
+  gap: 20px;
 }
 
 .reviewItem {
   background-color: var(--white);
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-in-out;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #eee;
 }
 
 .reviewItem:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 .reviewHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.reviewAvatar {
+  width: 48px;
+  height: 48px;
+  color: var(--white);
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .reviewUser {
-  font-size: var(--font-base);
-  font-weight: var(--font-medium);
-  color: var(--text-dark);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .reviewRating {
   display: flex;
-  gap: var(--gap-1);
-}
-
-.star {
-  font-size: var(--font-md);
-  color: var(--text-light);
-}
-
-.star.filled {
-  color: var(--primary-orange-alt);
+  gap: 4px;
 }
 
 .reviewComment {
-  font-size: var(--font-base);
-  color: var(--text-muted);
-  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
 }
 
-.reviewForm {
-  margin-top: 32px;
-  padding: 24px;
-  background-color: var(--white);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.formTitle {
-  font-size: var(--font-lg);
-  font-weight: var(--font-semibold);
-  color: var(--gray-solid);
-  margin-bottom: 16px;
-}
-
-.formLabel {
-  display: block;
-  font-size: var(--font-base);
-  font-weight: var(--font-medium);
-  color: var(--text-dark);
-  margin-bottom: 8px;
-}
-
-.required {
-  color: var(--error-alt);
-  font-size: var(--font-base);
-}
-
-.rating {
-  margin-bottom: 24px;
-}
-
-.textarea {
-  width: 100%;
-  min-height: 120px;
-  padding: 12px;
-  border: 1px solid var(--text-light);
-  border-radius: 6px;
-  font-size: var(--font-base);
-  color: var(--gray-solid);
-  resize: vertical;
-  transition: border-color 0.1s ease-in-out;
-}
-
-.textarea:focus {
-  outline: none;
-  border-color: var(--info);
-}
-
-.submitButtonContainer {
-  width: fit-content;
-  margin-top: 20px;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
   .reviewsSection {
-    padding: 16px;
-  }
-
-  .sectionTitle {
-    font-size: var(--font-xl);
+    padding: 20px;
   }
 
   .reviewItem {
-    padding: 12px;
-  }
-
-  .reviewForm {
     padding: 16px;
   }
 
+  .reviewForm {
+    padding: 20px;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
   .formTitle {
-    font-size: var(--font-md);
+    font-size: 1.25rem;
   }
 
-  .submitButton {
-    width: 100%;
-    padding: 12px;
-  }
-
-  .submitButtonContainer {
-    width: 100%;
+  .textarea {
+    min-height: 100px;
   }
 }

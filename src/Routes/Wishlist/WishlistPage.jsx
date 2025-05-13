@@ -38,8 +38,6 @@ const WishlistPage = () => {
     { id: 2, label: "Sort by price: high to low", value: "priceHighToLow" },
   ];
 
-  console.log(items);
-
   return (
     <div>
       <Header />

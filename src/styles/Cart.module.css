@@ -1,11 +1,17 @@
 .cartContainer {
-  padding: 50px 30px;
-  max-width: 1250px;
+  padding: 60px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  gap: 43px;
+  gap: 42px;
   flex-wrap: wrap;
+}
+
+.removeCell {
+  display: flex;
+  gap: var(--gap-4);
+  align-items: center;
+  justify-content: center;
 }
 
 .cartItems {
@@ -52,7 +58,9 @@
 .cartItemImage {
   height: 70px;
   width: 70px;
+  object-position: top;
   object-fit: cover;
+  object-position: top;
   border-radius: 8px;
   margin-right: 10px;
 }
@@ -165,6 +173,103 @@
   font-size: 1rem;
   font-weight: 600;
   transition: background 0.3s ease;
+}
+
+.productDetail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-9);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+  .productDetail {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--gap-11);
+  }
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  max-height: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.productImage img {
+  width: 100%;
+  object-position: top;
+  object-fit: cover;
+}
+
+.productInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap-2);
+}
+
+.productInfo h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.productPricing {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-6);
+}
+
+.originalPrice {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.sellingPrice {
+  color: #e53935;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.productDescription {
+  margin-top: 0.5rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.productDescription span {
+  font-weight: bold;
+}
+
+.chipContainer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.addCartButton {
+  padding: 10px 20px;
+  background-color: #e53935;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addCartButton:hover {
+  background-color: #d32f2f;
 }
 
 @media (max-width: 1250px) {
