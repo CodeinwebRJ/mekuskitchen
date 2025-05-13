@@ -9,7 +9,6 @@ import {
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice.jsx";
 import {
   getCategory,
-  getSubCategory,
   getTopRatedProduct,
   getUserWishlist,
 } from "../../axiosConfig/AxiosConfig.js";
@@ -25,11 +24,14 @@ import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import styles from "../../styles/Food.module.css";
+import { setCategory } from "../../../Store/Slice/FilterDataSlice.jsx";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [fetchError, setFetchError] = useState(null);
+  const [categoryList, setCategoryList] = useState([]);
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -74,12 +76,8 @@ const FoodPage = () => {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const [categoryRes, subCategoryRes] = await Promise.all([
-        getCategory(),
-        getSubCategory(),
-      ]);
-      console.log("Categories:", categoryRes.data.data);
-      console.log("Subcategories:", subCategoryRes.data.data);
+      const categoryRes = await getCategory();
+      setCategoryList(categoryRes.data.data);
     } catch (error) {
       setFetchError("Failed to fetch categories.");
       console.error("Error fetching categories:", error);
@@ -124,6 +122,7 @@ const FoodPage = () => {
             priceRange={priceRange}
             handlePriceChange={handlePriceChange}
             data={topRated}
+            categoryList={categoryList}
           />
 
           {isFetching || loading ? (

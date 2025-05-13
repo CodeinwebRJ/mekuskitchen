@@ -3,47 +3,88 @@ import { useDispatch } from "react-redux";
 import style from "../styles/FilterContainer.module.css";
 import RatingStar from "./RatingStar";
 import FilterAndSorting from "../Component/UI-Components/FilterAndShorting";
-import { setSearch, setSortBy } from "../../Store/Slice/ProductSlice";
+import {
+  setSearch,
+  setSortBy,
+  setCategory,
+  setSubCategory,
+  setProductCategory,
+} from "../../Store/Slice/ProductSlice";
 
-const FilterContainer = ({ priceRange, handlePriceChange, data }) => {
+const FilterContainer = ({
+  priceRange,
+  handlePriceChange,
+  data,
+  categoryList = [],
+}) => {
   const dispatch = useDispatch();
+
+  const [subCategoryList, setSubCategoryList] = useState([]);
+  const [productCategoryList, setProductCategoryList] = useState([]);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+  const [selectedProductCategory, setSelectedProductCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Debounced search
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       dispatch(setSearch(searchTerm));
-    }, 1000);
-
+    }, 500);
     return () => clearTimeout(delayDebounce);
   }, [searchTerm, dispatch]);
 
-  const categoryOptions = [
-    { id: 1, label: "Food", value: "food" },
-    { id: 2, label: "Grocery", value: "grocery" },
-    { id: 2, label: "Clothing", value: "Clothing" },
-    { id: 2, label: "electronics", value: "electronics" },
-    { id: 2, label: "Grocery", value: "grocery" },
-  ];
+  const categoryOptions = categoryList.map((item) => ({
+    label: item?.name,
+    value: item?.name,
+  }));
 
-  const sortOptions = [
-    { id: 1, label: "Default", value: "" },
-    { id: 1, label: "High to Low", value: "high-to-low" },
-    { id: 2, label: "Low to High", value: "low-to-high" },
-    { id: 2, label: "Sort by latest", value: "sortbylatest" },
-    { id: 2, label: "Sort by average rating", value: "sortbyaverageratings" },
-  ];
+  const subCategoryOptions = subCategoryList.map((sub) => ({
+    label: sub?.name,
+    value: sub?.name,
+  }));
 
-  const handleSortChange = (value) => {
-    dispatch(setSortBy(value));
+  const productCategoryOptions = productCategoryList.map((item) => ({
+    label: item?.name,
+    value: item?.name,
+  }));
+
+  const handleSelectCategory = (value) => {
+    setSelectedCategory(value);
+    dispatch(setCategory(value));
+
+    const selected = categoryList.find((cat) => cat.name === value);
+    const subCategories = selected?.subCategories || [];
+
+    setSubCategoryList(subCategories);
+    setSelectedSubCategory("");
+    setProductCategoryList([]);
+    setSelectedProductCategory("");
+  };
+
+  const handleSelectSubCategory = (value) => {
+    setSelectedSubCategory(value);
+    dispatch(setSubCategory(value));
+
+    const selectedSub = subCategoryList.find((sub) => sub.name === value);
+    const productCats = selectedSub?.subSubCategories || [];
+
+    setProductCategoryList(productCats);
+    setSelectedProductCategory("");
+  };
+
+  const handleSelectProductCategory = (value) => {
+    setSelectedProductCategory(value);
+    dispatch(setProductCategory(value));
   };
 
   return (
     <aside className={style.sidebar}>
       <div className={style.filterSection}>
         <h3>Filters</h3>
-        <label htmlFor="search" className="form-label">
-          Search
-        </label>
+
+        <label htmlFor="search">Search</label>
         <input
           id="search"
           type="text"
@@ -52,7 +93,8 @@ const FilterContainer = ({ priceRange, handlePriceChange, data }) => {
           className="form-control mb-3"
           placeholder="Search by name"
         />
-        <label htmlFor="priceRange" className="form-label">
+
+        <label htmlFor="priceRange">
           Price Range: ${priceRange[0]} - ${priceRange[1]}
         </label>
         <input
@@ -63,46 +105,69 @@ const FilterContainer = ({ priceRange, handlePriceChange, data }) => {
           onChange={handlePriceChange}
           id="priceRange"
         />
+
         <div>
-          <label>Filter by category</label>
+          <label>Filter by Category</label>
           <FilterAndSorting
             options={categoryOptions}
             placeholder="Category"
-            enableNavigation={true}
+            selectedValue={selectedCategory}
+            onChange={handleSelectCategory}
           />
         </div>
+
         <div>
-          <label>Sort by</label>
-          <FilterAndSorting options={sortOptions} onChange={handleSortChange} />
+          <label>Filter by SubCategory</label>
+          <FilterAndSorting
+            options={subCategoryOptions}
+            placeholder="SubCategory"
+            selectedValue={selectedSubCategory}
+            onChange={handleSelectSubCategory}
+          />
         </div>
+
+        <div>
+          <label>Filter by Product</label>
+          <FilterAndSorting
+            options={productCategoryOptions}
+            placeholder="Product"
+            selectedValue={selectedProductCategory}
+            onChange={handleSelectProductCategory}
+          />
+        </div>
+
         <hr />
         <h3>Top Rated Products</h3>
         <ul>
-          {data?.map((product, index) => (
-            <li
-              key={product?.productDetails?.id || index}
-              className={style.topRatedItem}
-            >
-              <img
-                src={product?.productDetails?.images?.[0].url || ""}
-                alt={product?.productDetails?.name || "Product"}
-                className={style.topRatedImg}
-              />
-              <div className={style.topRatedInfo}>
-                <p>{product?.productDetails?.name || "N/A"}</p>
-                <div className={style.rating}>
-                  <RatingStar
-                    rating={product?.averageRating || 0}
-                    start={0}
-                    stop={5}
-                  />
+          {Array.isArray(data) && data.length > 0 ? (
+            data.map((product, index) => (
+              <li
+                key={product?.productDetails?.id || index}
+                className={style.topRatedItem}
+              >
+                <img
+                  src={product?.productDetails?.images?.[0]?.url || ""}
+                  alt={product?.productDetails?.name || "Product"}
+                  className={style.topRatedImg}
+                />
+                <div className={style.topRatedInfo}>
+                  <p>{product?.productDetails?.name || "N/A"}</p>
+                  <div className={style.rating}>
+                    <RatingStar
+                      rating={product?.averageRating || 0}
+                      start={0}
+                      stop={5}
+                    />
+                  </div>
+                  <p className="price">
+                    ${product?.productDetails?.price || "0.00"}
+                  </p>
                 </div>
-                <p className="price">
-                  ${product?.productDetails?.price || "0.00"}
-                </p>
-              </div>
-            </li>
-          ))}
+              </li>
+            ))
+          ) : (
+            <p>No top-rated products available.</p>
+          )}
         </ul>
       </div>
     </aside>

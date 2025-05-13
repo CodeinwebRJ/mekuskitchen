@@ -1,35 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import style from "../../styles/FilterAndShorting.module.css";
-import { setCategory } from "../../../Store/Slice/ProductSlice";
 
 const FilterAndSorting = ({
   options = [],
   enableNavigation = false,
   onChange,
   placeholder = "Select a category",
+  selectedValue = "",
 }) => {
-  const { category } = useSelector((state) => state.product);
-  const [selectedValue, setSelectedValue] = useState(category || "");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [value, setValue] = useState(selectedValue);
 
+  // Sync local state with prop changes
   useEffect(() => {
-    setSelectedValue(category || "");
-  }, [category]);
+    setValue(selectedValue);
+  }, [selectedValue]);
 
   const handleSelectionChange = (event) => {
-    const value = event.target.value;
-    setSelectedValue(value);
-    if (value) {
+    const newValue = event.target.value;
+    setValue(newValue);
+    if (newValue) {
       if (enableNavigation) {
-        navigate(`/product-category/${value}`);
-        dispatch(setCategory(value));
+        navigate(`/product-category/${newValue}`);
       }
       if (onChange) {
-        onChange(value);
+        onChange(newValue);
       }
     }
   };
@@ -39,7 +36,7 @@ const FilterAndSorting = ({
       <select
         id="filter-select"
         className={style.filterAndSort}
-        value={selectedValue}
+        value={value}
         onChange={handleSelectionChange}
         aria-label={placeholder}
       >
@@ -59,7 +56,6 @@ const FilterAndSorting = ({
 FilterAndSorting.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
     })
@@ -67,6 +63,7 @@ FilterAndSorting.propTypes = {
   enableNavigation: PropTypes.bool,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
+  selectedValue: PropTypes.string,
 };
 
 export default FilterAndSorting;

@@ -86,6 +86,4 @@ export const getCategory = async () => {
   return axiosInstance.get("/api/v1/C/get/category");
 };
 
-export const getSubCategory = async (data) => {
-  return axiosInstance.get("/api/v1/C/get/subCategory");
-};
+
