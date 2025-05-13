@@ -61,6 +61,48 @@ const ReviewComponent = ({
         </h2>
       </div>
 
+      <div className={style.reviewForm}>
+        <h3 className={style.formTitle}>
+          Write a Review for{" "}
+          <span className={style.productName}>"{product.name}"</span>
+        </h3>
+
+        <form onSubmit={handleSubmitReview} className={style.form}>
+          <div className={style.formGroup}>
+            <label htmlFor="rating" className={style.label}>
+              Your Rating <span className={style.required}>*</span>
+            </label>
+            <RatingStar rating={rating} onChange={setRating} maxRating={5} />
+          </div>
+
+          <div className={style.formGroup}>
+            <label htmlFor="review" className={style.label}>
+              Your Review <span className={style.required}>*</span>
+            </label>
+            <input
+              type="text"
+              id="review"
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+              placeholder="Share your experience with this product..."
+              required
+              className={style.textarea}
+            />
+          </div>
+
+          <div>
+            <Button
+              className={style.submitButton}
+              variant="success"
+              type="submit"
+              size="sm"
+            >
+              Submit Review
+            </Button>
+          </div>
+        </form>
+      </div>
+
       {reviews.length === 0 ? (
         <p className={style.noReviews}>
           No reviews yet. Be the first to share your thoughts!
@@ -91,42 +133,6 @@ const ReviewComponent = ({
           ))}
         </div>
       )}
-
-      <div className={style.reviewForm}>
-        <h3 className={style.formTitle}>
-          Write a Review for{" "}
-          <span className={style.productName}>"{product.name}"</span>
-        </h3>
-
-        <form onSubmit={handleSubmitReview} className={style.form}>
-          <div className={style.formGroup}>
-            <label htmlFor="rating" className={style.label}>
-              Your Rating <span className={style.required}>*</span>
-            </label>
-            <RatingStar rating={rating} onChange={setRating} maxRating={5} />
-          </div>
-
-          <div className={style.formGroup}>
-            <label htmlFor="review" className={style.label}>
-              Your Review <span className={style.required}>*</span>
-            </label>
-            <textarea
-              id="review"
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
-              placeholder="Share your experience with this product..."
-              required
-              className={style.textarea}
-            />
-          </div>
-
-          <div>
-            <Button variant="success" type="submit" size="sm">
-              Submit Review
-            </Button>
-          </div>
-        </form>
-      </div>
     </div>
   );
 };

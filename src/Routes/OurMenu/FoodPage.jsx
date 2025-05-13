@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,7 +24,6 @@ import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import styles from "../../styles/Food.module.css";
-import { setCategory } from "../../../Store/Slice/FilterDataSlice.jsx";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
@@ -126,7 +125,7 @@ const FoodPage = () => {
           />
 
           {isFetching || loading ? (
-            <div className={styles.loadingContainer}>
+            <div className="loadingContainer">
               <Loading />
             </div>
           ) : fetchError || error ? (

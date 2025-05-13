@@ -6,7 +6,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
-import "swiper/css/bundle";
 import RelatedProductCard from "../../Component/Cards/RelatedProductCard";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useLocation } from "react-router-dom";
@@ -17,63 +16,93 @@ const RelatedProduct = () => {
   const { pathname } = useLocation();
   const category = pathname.split("/").filter((segment) => segment);
 
-  const [relatedProduct, setRelatedProduct] = useState(null);
+  const [relatedProduct, setRelatedProduct] = useState([]);
 
   const fetchProduct = async () => {
     try {
-      const data = {
-        category: category[1],
-      };
+      const data = { category: category[1] };
       const res = await getRelatedProduct(data);
-      setRelatedProduct(res.data.data);
-    } catch (error) {}
+      setRelatedProduct(res.data.data || []);
+    } catch (error) {
+      console.error("Error fetching related products:", error);
+    }
   };
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [category[1]]); // Added dependency to refetch when category changes
+
+  const productCount = relatedProduct.length;
+  const showSlider = productCount > 0;
+  const showArrows = productCount > 3;
+  const enableLoop = productCount > 3;
+  const enableAutoplay = productCount > 3;
+
+  const getSlidesPerView = () => {
+    return Math.min(productCount, 4); // Simplified logic
+  };
 
   return (
     <div className={style.relatedProductContainer}>
       <Heading title="RELATED PRODUCTS" size="xs" />
-      <div className={style.sliderWrapper}>
-        <div className={`${style.customArrow} ${style.prevArrow}`}>
-          <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />
+      {showSlider && (
+        <div className={style.sliderWrapper}>
+          {showArrows && (
+            <div
+              className={`${style.customArrow} ${style.prevArrow}`}
+              aria-label="Previous slide"
+            >
+              <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />
+            </div>
+          )}
+
+          <Swiper
+            navigation={
+              showArrows && {
+                prevEl: `.${style.prevArrow}`,
+                nextEl: `.${style.nextArrow}`,
+              }
+            }
+            loop={enableLoop}
+            autoplay={
+              enableAutoplay
+                ? {
+                    delay: 15000,
+                    disableOnInteraction: false,
+                  }
+                : false
+            }
+            pagination={false}
+            freeMode={true}
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={20}
+            slidesPerView={getSlidesPerView()}
+            breakpoints={{
+              640: { slidesPerView: Math.min(1, productCount) },
+              768: { slidesPerView: Math.min(2, productCount) },
+              800: { slidesPerView: Math.min(3, productCount) },
+              1110: { slidesPerView: Math.min(4, productCount) },
+            }}
+          >
+            {relatedProduct.map((card, index) => (
+              <SwiperSlide key={index}>
+                <div className={style.relatedProductCard}>
+                  <RelatedProductCard item={card} />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {showArrows && (
+            <div
+              className={`${style.customArrow} ${style.nextArrow}`}
+              aria-label="Next slide"
+            >
+              <MdKeyboardDoubleArrowLeft className={style.nextArrowIcon} />
+            </div>
+          )}
         </div>
-        <Swiper
-          navigation={{
-            prevEl: `.${style.prevArrow}`,
-            nextEl: `.${style.nextArrow}`,
-          }}
-          loop={true}
-          autoplay={{
-            delay: 1500,
-            disableOnInteraction: false,
-          }}
-          pagination={false}
-          freeMode={true}
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            800: { slidesPerView: 3 },
-            1110: { slidesPerView: 4 },
-          }}
-        >
-          {relatedProduct?.map((card, index) => (
-            <SwiperSlide key={index}>
-              <div className={style.relatedProductCard}>
-                <RelatedProductCard item={card} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <div className={`${style.customArrow} ${style.nextArrow}`}>
-          <MdKeyboardDoubleArrowLeft className={style.nextArrowIcon} />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

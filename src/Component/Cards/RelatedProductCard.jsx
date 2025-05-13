@@ -5,45 +5,48 @@ import { Link, useLocation } from "react-router-dom";
 import { formatDate } from "../../Utils/FormateDate";
 import DateChip from "../Buttons/DateChip";
 
-const RelatedProductCard = (props) => {
-  const { item } = props;
+const RelatedProductCard = ({ item = {} }) => {
   const { pathname } = useLocation();
-  const category = pathname.split("/").filter((segment) => segment);
+  const category = pathname.split("/").filter(Boolean);
+
+  const isTiffin = category[1] === "tiffin";
+  const linkPath = isTiffin
+    ? `/product/tiffin/${String(item.day || "").toLowerCase()}`
+    : `/product/${(item?.category || "").toLowerCase()}/${String(
+        item?.name || ""
+      ).toLowerCase()}`;
+
+  const imageUrl = isTiffin
+    ? item?.image_url?.[0]?.url
+    : item?.images?.[0]?.url;
+
+  const displayTitle = isTiffin ? item?.day : item?.name;
+  const displayPrice = isTiffin
+    ? Number(item?.subTotal || 0).toFixed(2)
+    : Number(item?.price || 0).toFixed(2);
 
   return (
-    <Link
-      to={
-        category[1] === "tiffin"
-          ? `/product/tiffin/${String(item.day).toLowerCase()}`
-          : `/product/${item?.category.toLowerCase()}/${String(
-              item.name
-            ).toLowerCase()}`
-      }
-      state={{ id: item._id }}
-    >
+    <Link to={linkPath} state={{ id: item?._id }}>
       <div className={style.relatedProductCard}>
-        <div className={style.relatedProductImgContainer}>
+        <div className={style.relatedProductImgWrapper}>
           <img
-            src={
-              category[1] === "tiffin"
-                ? item?.image_url?.[0]?.url || "/defultImage.png"
-                : item?.images?.[0]?.url || "/defultImage.png"
-            }
-            alt={item?.name}
+            src={imageUrl || "/defaultImage.png"}
+            alt={displayTitle || "Product Image"}
             className={style.relatedProductImg}
           />
-          {item?.date && <DateChip name={formatDate(item?.date)} />}
+          {item?.date && (
+            <div className={style.dateChipWrapper}>
+              <DateChip name={formatDate(item.date)} />
+            </div>
+          )}
         </div>
-        <p className={style.relatedProductTitle}>
-          {category[1] === "tiffin" ? item?.day : item?.name}
-        </p>
-        <p className={style.relatedProductPrice}>
-          $
-          {category[1] === "tiffin"
-            ? Number(item.subTotal)
-            : Number(item?.price).toFixed(2)}
-        </p>
-        <AddToCartButton onclick={() => {}} />
+        <div className={style.contentWrapper}>
+          <p className={style.relatedProductTitle}>
+            {displayTitle || "Unnamed Product"}
+          </p>
+          <p className={style.relatedProductPrice}>${displayPrice}</p>
+          <AddToCartButton onClick={() => {}} />
+        </div>
       </div>
     </Link>
   );

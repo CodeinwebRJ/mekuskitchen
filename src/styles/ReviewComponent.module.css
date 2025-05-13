@@ -1,5 +1,17 @@
+.sectionTitleContainer {
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.sectionTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
 .reviewForm {
   padding: 24px 0px;
+  border-radius: 12px;
 }
 
 .formTitle {
@@ -15,11 +27,12 @@
 
 .form {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
 .formGroup {
+  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -38,15 +51,11 @@
 
 .textarea {
   width: 100%;
-  padding: 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  border-radius: 10px;
-  resize: vertical;
   font-size: 1rem;
-  color: #333;
-  background-color: #f9f9f9;
-  transition: all 0.3s ease;
-  min-height: 120px;
+  transition: border 0.3s ease;
 }
 
 .textarea:focus {
@@ -54,16 +63,10 @@
   border-color: #4a90e2;
 }
 
-.sectionTitleContainer {
-  margin-bottom: 24px;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 8px;
-}
-
-.sectionTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1a1a1a;
+.submitButton {
+  display: block;
+  border-radius: 8px;
+  
 }
 
 .noReviews {
@@ -79,11 +82,10 @@
 }
 
 .reviewItem {
-  background-color: var(--white);
   border-radius: 12px;
   padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease-in-out;
-  border: 1px solid #eee;
 }
 
 .reviewItem:hover {
@@ -100,7 +102,7 @@
 .reviewAvatar {
   width: 48px;
   height: 48px;
-  color: var(--white);
+  background-color: #4a90e2;
   font-weight: bold;
   font-size: 1.2rem;
   border-radius: 50%;
@@ -118,6 +120,7 @@
 .reviewRating {
   display: flex;
   gap: 4px;
+  margin-top: 4px;
 }
 
 .reviewComment {
@@ -126,13 +129,10 @@
   line-height: 1.6;
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
   .reviewsSection {
     padding: 20px;
-  }
-
-  .reviewItem {
-    padding: 16px;
   }
 
   .reviewForm {

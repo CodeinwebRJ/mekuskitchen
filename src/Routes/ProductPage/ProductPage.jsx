@@ -23,11 +23,9 @@ const ProductPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const id = location.state?.id;
-
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
-
   const productState = useSelector((state) => state.product);
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -121,11 +119,21 @@ const ProductPage = () => {
   const tabData = [
     {
       label: "Functionality",
-      content: <div>This is the Details content.</div>,
+      content: (
+        <div>
+          {product?.specifications &&
+            Object.entries(product.specifications).map(([key, value]) => (
+              <div key={key}>
+                <strong>{key} : </strong>
+                {value}
+              </div>
+            ))}
+        </div>
+      ),
     },
     {
       label: "Description",
-      content: <div>This is the Details content.</div>,
+      content: <div>{product?.description}</div>,
     },
     {
       label: "Reviews",
@@ -143,6 +151,8 @@ const ProductPage = () => {
       ),
     },
   ];
+
+  console.log(product);
 
   return (
     <div>
@@ -224,10 +234,17 @@ const ProductPage = () => {
               <p className="originalPrice">${product?.price}</p>
               <p className="price">${product?.sellingPrice}</p>
             </div>
-            <p className={style.categoryContaine}>
-              Category:{" "}
-              <span className={style.category}>{product.category}</span>
-            </p>
+            {product.category && (
+              <p className={style.categoryContaine}>
+                Category:{" "}
+                <span className={style.category}>{product.category}</span>
+              </p>
+            )}
+            {product.brand && (
+              <p className={style.categoryContaine}>
+                Brand: <span className={style.category}>{product.brand}</span>
+              </p>
+            )}
             <div className={style.quantity}>
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -261,7 +278,7 @@ const ProductPage = () => {
             <div>
               <h5>Description : </h5>
               <div>
-                {product.description && <span>{product.description}</span>}
+                {product.description && <span>{product.shortDescription}</span>}
               </div>
             </div>
             <div className={style.share}>
