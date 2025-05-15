@@ -4,6 +4,9 @@ import axios from "axios";
 import Navbar2 from "../../Component/Navbar2";
 import Banner2 from "../../Component/MainComponents/Banner2";
 import { useEffect } from "react";
+import Loading from "../../Component/UI-Components/Loading";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../Store/Slice/UserSlice";
 
 function LoginPage() {
   const [credentials, setCredentials] = useState({
@@ -11,9 +14,12 @@ function LoginPage() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,10 +40,10 @@ function LoginPage() {
       setError("Please enter both Unique ID and Password.");
       return;
     }
-
     setError("");
 
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://eyemesto.com/mapp_dev/signin.php",
         new URLSearchParams({
@@ -46,15 +52,13 @@ function LoginPage() {
           password: credentials.password,
         })
       );
-
       if (response.data.response === "1") {
-        if (rememberMe) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          localStorage.setItem("api_token", response.data.api_token);
-        }
-        console.log("Login successful:", response.data);
-        console.log("Login successful, navigating to home...");
+        console.log(response.data);
+        dispatch(setUser(response.data));
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("api_token", response.data.api_token);
         navigate("/home");
+        setLoading(false);
       } else if (response.data.response === "0") {
         setError("Invalid Unique ID or password");
       } else {
@@ -62,6 +66,7 @@ function LoginPage() {
       }
     } catch (err) {
       console.error(err);
+      setLoading(false);
       setError("An error occurred. Please try again later.");
     }
   };
@@ -79,6 +84,11 @@ function LoginPage() {
 
   return (
     <>
+      {loading && (
+        <div>
+          <Loading />
+        </div>
+      )}
       <Navbar2 />
       <Banner2 title="Login" secondtitle="Login" />
 

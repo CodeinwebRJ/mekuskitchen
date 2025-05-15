@@ -1,4 +1,3 @@
-import React from "react";
 import Carousel from "../../Component/MainComponents/Carousel";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
@@ -8,7 +7,7 @@ const HomePage = () => {
     <div>
       <Header />
       <Carousel />
-      <Footer/>
+      <Footer />
     </div>
   );
 };

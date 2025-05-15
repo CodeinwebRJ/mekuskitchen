@@ -59,9 +59,6 @@ const ProductCard = ({ product, grid }) => {
     }
   };
 
-  console.log(product)
-
-
   return (
     <div className={style.productCard}>
       <Link

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "../../styles/Header.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar";
 import { setCategory } from "../../../Store/Slice/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart } from "react-icons/fa6";
+import { logout } from "../../../Store/Slice/UserSlice";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -17,6 +18,19 @@ const Header = () => {
 
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategory(categoryName));
+  };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    try {
+      dispatch(logout());
+      localStorage.removeItem("api_token");
+      localStorage.removeItem("user");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const data = [
@@ -111,7 +125,9 @@ const Header = () => {
             >
               Account Details
             </Link>
-            <span className={style.userDropdownItem}>Logout</span>
+            <span onClick={handleLogout} className={style.userDropdownItem}>
+              Logout
+            </span>
           </div>
         </div>
 

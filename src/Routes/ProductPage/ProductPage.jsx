@@ -41,7 +41,6 @@ const ProductPage = () => {
       const foundProduct = products.find((p) => p._id === id);
       if (foundProduct) {
         setProduct(foundProduct);
-        console.log(foundProduct.sku.length);
         setSelectedImage(
           foundProduct.sku && foundProduct.sku.length > 1
             ? foundProduct?.sku[0]?.details?.SKUImages[0]?.url
@@ -151,8 +150,6 @@ const ProductPage = () => {
       ),
     },
   ];
-
-  console.log(product);
 
   return (
     <div>

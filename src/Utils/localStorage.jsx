@@ -1,5 +1,5 @@
-const getUserDetails = localStorage.getItem("user");
 let userDetail = null;
+const getUserDetails = localStorage.getItem("user");
 
 if (getUserDetails) {
   try {

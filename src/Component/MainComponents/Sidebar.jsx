@@ -9,17 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const User = useSelector((state) => state.auth.user);
+  const { user } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const sidebarRef = useRef(null);
 
   const fetchUserCart = async () => {
     try {
-      const user_id = User?.userid;
-      const res = await getUserCart(user_id);
+      const res = await getUserCart(user.userid);
       dispatch(setCart(res.data.data));
-    } catch (error) {
+    } catch (error) { 
       console.error("Error fetching user cart", error);
     }
   };

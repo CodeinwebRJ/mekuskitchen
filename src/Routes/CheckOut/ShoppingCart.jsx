@@ -103,8 +103,6 @@ const ShoppingCart = () => {
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
-  console.log(productData);
-
   return (
     <>
       <div>
