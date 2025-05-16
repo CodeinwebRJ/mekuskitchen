@@ -11,7 +11,7 @@ const productSlice = createSlice({
     limit: "9",
     search: "",
     sortBy: "",
-    category: "food",
+    category: "",
     subCategory: "",
     ProductCategory: "",
   },
