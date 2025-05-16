@@ -38,7 +38,6 @@
 }
 
 .cardIconText {
-  font-size: var(--font-base);
   font-weight: var(--font-semibold);
   text-transform: uppercase;
 }

@@ -56,7 +56,6 @@
 }
 
 .reviewUser {
-  font-size: var(--font-base);
   font-weight: var(--font-medium);
   color: var(--text-dark);
 }
@@ -76,7 +75,6 @@
 }
 
 .reviewComment {
-  font-size: var(--font-base);
   color: var(--text-muted);
   line-height: 1.5;
 }
@@ -98,7 +96,6 @@
 
 .formLabel {
   display: block;
-  font-size: var(--font-base);
   font-weight: var(--font-medium);
   color: var(--text-dark);
   margin-bottom: 8px;
@@ -106,7 +103,6 @@
 
 .required {
   color: var(--error-alt);
-  font-size: var(--font-base);
 }
 
 .rating {
@@ -119,7 +115,6 @@
   padding: 12px;
   border: 1px solid var(--text-light);
   border-radius: 6px;
-  font-size: var(--font-base);
   color: var(--gray-solid);
   resize: vertical;
   transition: border-color 0.1s ease-in-out;

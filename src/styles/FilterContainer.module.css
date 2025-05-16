@@ -1,141 +1,112 @@
 .sidebar {
-  width: 100%;
-  max-width: 300px; /* Limit max width for larger screens */
-  padding: 18px;
-  background-color: var(--white); /* Ensure a clean background */
+  padding: 24px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
-  height: fit-content;
-}
-
-.category {
-  margin: 8px 0px;
-}
-
-.range {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: var(--white);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--font-sm); /* Slightly smaller for better hierarchy */
-}
-
-.filterBtn {
-  width: fit-content;
-}
-
-.filterbtn {
-  background-color: var(--success);
-  color: var(--white);
-  padding: 10px 20px; /* Slightly larger padding for better click area */
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: var(--font-base);
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-}
-
-.filterbtn:hover {
-  background-color: var(--primary-green-dark);
-}
-
-.topRatedItem {
-  display: flex;
-  align-items: center;
-  padding: 12px 0; /* Consistent spacing */
-}
-
-.topRatedImg {
-  width: 70px; /* Slightly larger for better visibility */
-  height: 70px;
-  border-radius: 6px;
-  object-fit: cover; /* Ensure images fit nicely */
-  object-position: top;
-  margin-right: 12px;
-}
-
-.topRatedInfo {
-  flex: 1; /* Take remaining space */
-}
-
-.topRatedItem p {
-  margin: 0;
-  font-size: var(--font-sm);
-  color: var(--gray-deep);
-}
-
-.rating {
-  pointer-events: none;
-  margin: 6px 0; /* Consistent spacing */
-}
-
-.topRatedPrice {
-  color: var(--green-light);
-  font-weight: 600; /* Emphasize price */
+  flex-direction: column;
+  gap: 24px;
 }
 
 .filterSection {
   position: sticky;
-  top: 120px; /* Adjusted for better spacing */
-  margin-bottom: 24px;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .filterSection h3 {
-  font-size: var(--font-md);
   font-weight: 600;
-  margin: 16px 0 8px; /* Improved spacing */
-  color: var(--gray-dark); /* Slightly darker for contrast */
+  color: var(--gray-dark);
+}
+
+.filterSection h6 {
+  font-weight: 500;
+  color: var(--gray-dark);
 }
 
 .filterSection input[type="text"] {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid var(--gray-light);
   border-radius: 6px;
-  font-size: var(--font-base);
-  margin-bottom: 16px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .filterSection input[type="text"]:focus {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
   outline: none;
-  border-color: var(--success); /* Highlight on focus */
 }
 
 .filterSection input[type="range"] {
   width: 100%;
-  margin: 12px 0;
-  accent-color: var(--success); /* Match theme color */
-}
-
-.filterSection p {
-  color: var(--gray-deep);
-  font-size: var(--font-sm);
+  cursor: pointer;
 }
 
 .filterSection hr {
   border: none;
   border-top: 1px solid var(--gray-light);
-  margin: 16px 0; /* Consistent spacing */
+  width: 100%;
 }
 
-.filterSection label {
-  font-size: var(--font-sm);
-  color: var(--gray-dark);
-  margin-bottom: 8px;
-  display: block; /* Ensure label is on its own line */
+.topRatedItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  gap: 12px;
+  transition: background-color 0.2s ease;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    max-width: none;
-    padding: 16px;
-    margin-bottom: 24px;
-  }
+.topRatedItem:hover {
+  background-color: var(--gray-lightest);
+  border-radius: 6px;
+}
 
-  .filterSection {
-    position: static; /* Remove sticky on mobile */
-    top: 0;
-  }
+.topRatedImg {
+  width: 72px;
+  height: 72px;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.topRatedInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.topRatedInfo p {
+  color: var(--gray-deep);
+}
+
+.topRatedInfo .price {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.rating {
+  pointer-events: none;
+}
+
+.filterBtn {
+  background-color: var(--success);
+  color: var(--white);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.filterBtn:hover {
+  background-color: var(--primary-green-dark, #218838);
+  transform: translateY(-1px);
+}
+
+.filterBtn:active {
+  transform: translateY(0);
 }

@@ -58,7 +58,10 @@ const WishlistItem = ({ product, fetchWishlist }) => {
     <div className={style.item}>
       <div className={style.itemLeftSide}>
         <div className={style.itemImage}>
-          <img src={images?.[0].url} alt={name || "wishlist item"} />
+          <img
+            src={images?.[0]?.url || "defultImage.png"}
+            alt={name || "wishlist item"}
+          />
         </div>
         <div className={style.itemContent}>
           <span className={style.itemName}>{name?.toUpperCase()}</span>

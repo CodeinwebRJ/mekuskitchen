@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/ReviewComponent.module.css";
 import RatingStar from "../../Component/RatingStar";
 import {
@@ -7,6 +7,7 @@ import {
 } from "../../axiosConfig/AxiosConfig";
 import Button from "../../Component/Buttons/Button";
 import { useSelector } from "react-redux";
+import NoData from "../../Component/UI-Components/NoData";
 
 const ReviewComponent = ({
   reviews,
@@ -18,6 +19,8 @@ const ReviewComponent = ({
   id,
   setRating,
 }) => {
+  const [showForm, setShowForm] = useState(false);
+
   const fetchReviews = async () => {
     try {
       const res = await getAllProductReview(id);
@@ -35,7 +38,7 @@ const ReviewComponent = ({
 
     try {
       const data = {
-        user_id: user,
+        user_id: user.userid,
         rating,
         comment: review,
         product_id: id,
@@ -44,6 +47,7 @@ const ReviewComponent = ({
       await fetchReviews();
       setRating(0);
       setReview("");
+      setShowForm(false);
     } catch (error) {
       console.error("Failed to submit review:", error);
     }
@@ -59,54 +63,64 @@ const ReviewComponent = ({
         <h2 className={style.sectionTitle}>
           Customer Reviews ({reviews.length})
         </h2>
+        <div>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => setShowForm(!showForm)}
+          >
+            {showForm ? "Cancel" : "Add Review"}
+          </Button>
+        </div>
       </div>
 
-      <div className={style.reviewForm}>
-        <h3 className={style.formTitle}>
-          Write a Review for{" "}
-          <span className={style.productName}>"{product.name}"</span>
-        </h3>
+      {showForm && (
+        <div className={style.reviewForm}>
+          <h3 className={style.formTitle}>
+            Write a Review for{" "}
+            <span className={style.productName}>"{product.name}"</span>
+          </h3>
 
-        <form onSubmit={handleSubmitReview} className={style.form}>
-          <div className={style.formGroup}>
-            <label htmlFor="rating" className={style.label}>
-              Your Rating <span className={style.required}>*</span>
-            </label>
-            <RatingStar rating={rating} onChange={setRating} maxRating={5} />
-          </div>
+          <form onSubmit={handleSubmitReview} className={style.form}>
+            <div className={style.formGroup}>
+              <label htmlFor="rating" className={style.label}>
+                Your Rating <span className={style.required}>*</span>
+              </label>
+              <RatingStar rating={rating} onChange={setRating} maxRating={5} />
+            </div>
 
-          <div className={style.formGroup}>
-            <label htmlFor="review" className={style.label}>
-              Your Review <span className={style.required}>*</span>
-            </label>
-            <input
-              type="text"
-              id="review"
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
-              placeholder="Share your experience with this product..."
-              required
-              className={style.textarea}
-            />
-          </div>
+            <div className={style.formGroup}>
+              <label htmlFor="review" className={style.label}>
+                Your Review <span className={style.required}>*</span>
+              </label>
+              <input
+                id="review"
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                placeholder="Share your experience with this product..."
+                required
+                className={style.textarea}
+              />
+            </div>
 
-          <div>
-            <Button
-              className={style.submitButton}
-              variant="success"
-              type="submit"
-              size="sm"
-            >
-              Submit Review
-            </Button>
-          </div>
-        </form>
-      </div>
+            <div className={`${style.formGroup} ${style.submitContainer}`}>
+              <Button
+                className={style.submitButton}
+                variant="success"
+                type="submit"
+                size="sm"
+              >
+                Submit Review
+              </Button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {reviews.length === 0 ? (
-        <p className={style.noReviews}>
-          No reviews yet. Be the first to share your thoughts!
-        </p>
+        <div className={style.noReviews}>
+          <NoData />
+        </div>
       ) : (
         <div className={style.reviewList}>
           {reviews.map((rev, index) => (
@@ -116,7 +130,7 @@ const ReviewComponent = ({
                   {rev.user_id?.[0]?.toUpperCase() || "U"}
                 </div>
                 <div>
-                  <div className={style.reviewUser}>User: {rev.user_id}</div>
+                  <div className={style.reviewUser}>{rev.user_id}</div>
                   <div className={style.reviewRating}>
                     <RatingStar
                       rating={rev.rating}

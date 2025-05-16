@@ -1,4 +1,6 @@
 :root {
+  --font-default: sans-serif;
+
   /* Font Sizes */
   --font-xs: 10px;
   --font-sm: 12px;
@@ -115,6 +117,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: var(--font-default);
 }
 
 button {
@@ -153,15 +156,12 @@ ul {
 }
 
 .price {
-  color: var(--success) !important;
   font-weight: var(--font-bold) !important;
 }
 
 .originalPrice {
   text-decoration: line-through;
   color: #888;
-  font-size: 1.1rem;
-  font-weight: 500;
 }
 
 .loadingContainer {

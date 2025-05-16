@@ -1,6 +1,7 @@
 .sectionTitleContainer {
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .sectionTitle {
@@ -11,11 +12,9 @@
 
 .reviewForm {
   padding: 24px 0px;
-  border-radius: 12px;
 }
 
 .formTitle {
-  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 16px;
   color: #1e1e1e;
@@ -27,15 +26,22 @@
 
 .form {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .formGroup {
-  flex: 1 1 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.submitContainer {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  margin: 0 0 4px 0;
 }
 
 .label {
@@ -51,11 +57,10 @@
 
 .textarea {
   width: 100%;
-  padding: 10px 14px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  transition: border 0.3s ease;
+  padding: 8px;
 }
 
 .textarea:focus {
@@ -64,26 +69,29 @@
 }
 
 .submitButton {
-  display: block;
+  padding: 8px 24px;
+  white-space: nowrap;
   border-radius: 8px;
-  
 }
 
 .noReviews {
-  font-size: 1rem;
   color: #777;
-  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .reviewList {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
+  margin: 8px 0px;
 }
 
 .reviewItem {
   border-radius: 12px;
-  padding: 20px;
+  padding: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease-in-out;
 }
@@ -145,6 +153,15 @@
 
   .formTitle {
     font-size: 1.25rem;
+  }
+
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .submitContainer {
+    align-self: flex-start;
   }
 
   .textarea {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import "./index.css";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import {
   getCount,
   getProduct,
   getUserAddress,
+  getUserWishlist,
 } from "./axiosConfig/AxiosConfig";
 import { setLoading, setProducts } from "../Store/Slice/ProductSlice.jsx";
 import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
@@ -39,14 +40,21 @@ import CheckoutPage from "./Routes/CheckOut/CheckoutPage.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import ForgetPassword from "./Routes/ForgetPassword/ForgetPassword.jsx";
 import VeryfyOtp from "./Routes/VeryfyOtp/VeryfyOtp.jsx";
+import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { user } = useSelector((state) => state.auth);
-  const { page, limit, search, sortBy, category } = useSelector(
-    (state) => state.product
-  );
+  const {
+    page,
+    limit,
+    search,
+    sortBy,
+    category,
+    subCategory,
+    ProductCategory,
+  } = useSelector((state) => state.product);
 
   const Cart = useSelector((state) => state.cart);
   const isLiked = useSelector((state) => state.wishlist?.likedMap);
@@ -59,7 +67,16 @@ const App = () => {
     try {
       setLoading(true);
       dispatch(setLoading(true));
-      const data = { page, limit, search, sortBy, category };
+      const data = {
+        page,
+        limit,
+        search,
+        sortBy,
+        category,
+        subCategory,
+        ProductCategory,
+      };
+      console.log(data);
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));
       setLoading(false);
@@ -72,7 +89,7 @@ const App = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [category, page, limit, search, sortBy]);
+  }, [category, page, limit, search, sortBy, subCategory, ProductCategory]);
 
   const fetchTiffin = async () => {
     try {
@@ -108,9 +125,21 @@ const App = () => {
     }
   };
 
+  const fetchWishlist = useCallback(async () => {
+    if (!user?.userid) return;
+    try {
+      const res = await getUserWishlist(user.userid);
+      dispatch(setWishlist(res.data.data || []));
+    } catch (error) {
+      setFetchError("Failed to fetch wishlist.");
+      console.error("Error fetching wishlist:", error);
+    }
+  }, [dispatch, user?.userid]);
+
   useEffect(() => {
     fetchTiffin();
     fetchAddresses();
+    fetchWishlist();
   }, []);
 
   useEffect(() => {

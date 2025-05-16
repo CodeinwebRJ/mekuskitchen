@@ -49,7 +49,6 @@
 .cityState,
 .CountryPostcode,
 .phoneNumber {
-  font-size: var(--font-base);
   color: var(--gray-darkest);
 }
 

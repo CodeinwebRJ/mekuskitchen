@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import Tabs from "../../Component/UI-Components/Tabs";
+import Chip from "../../Component/Buttons/Chip";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -98,7 +99,7 @@ const ProductPage = () => {
         user_id: user.userid,
         isTiffinCart: false,
         product_id: product._id,
-        quantity: 1,
+        quantity: quantity,
         price: product.price,
       });
       dispatch(setCart(res.data.data));
@@ -115,9 +116,11 @@ const ProductPage = () => {
     }
   };
 
-  const tabData = [
-    {
-      label: "Functionality",
+  const tabData = [];
+
+  if (product.sku && product.sku.length > 1) {
+    tabData.push({
+      label: "Specifications",
       content: (
         <div>
           {product?.specifications &&
@@ -129,7 +132,10 @@ const ProductPage = () => {
             ))}
         </div>
       ),
-    },
+    });
+  }
+
+  tabData.push(
     {
       label: "Description",
       content: <div>{product?.description}</div>,
@@ -148,13 +154,12 @@ const ProductPage = () => {
           setRating={setRating}
         />
       ),
-    },
-  ];
+    }
+  );
 
   return (
     <div>
       <Header />
-
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
@@ -203,30 +208,18 @@ const ProductPage = () => {
               {product.images?.slice(0, 4).map((image, index) => (
                 <img
                   key={index}
-                  src={image.url || "/defultImage.png"}
+                  src={image.url || "/defaultImage.png"}
                   alt={`${product.name} thumbnail ${index + 1}`}
                   className={style.thumbnail}
                   onClick={() => {
-                    setSelectedImage(image.url || "/defultImage.png");
-                  }}
-                  onMouseEnter={() => {
-                    if (selectedImage !== image.url) {
-                      setSelectedImage(image.url || "/defultImage.png");
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    if (selectedImage !== image.url) {
-                      setSelectedImage(
-                        product.images?.[0]?.url || "/defultImage.png"
-                      );
-                    }
+                    setSelectedImage(image.url || "/defaultImage.png");
                   }}
                 />
               ))}
             </div>
           </div>
           <div className={style.productDetails}>
-            <h1>{product.name}</h1>
+            <h1>{product.name.toUpperCase()}</h1>
             <div className={style.priceContainer}>
               <p className="originalPrice">${product?.price}</p>
               <p className="price">${product?.sellingPrice}</p>
@@ -272,8 +265,18 @@ const ProductPage = () => {
                 </Button>
               </div>
             </div>
+            {product.tags && (
+              <>
+                <div className={style.Chip}>
+                  <h6>Tags:</h6>
+                  {product.tags?.map((tag) => (
+                    <Chip name={tag} />
+                  ))}
+                </div>
+              </>
+            )}
             <div>
-              <h5>Description : </h5>
+              <h6>Description : </h6>
               <div>
                 {product.description && <span>{product.shortDescription}</span>}
               </div>
@@ -281,11 +284,11 @@ const ProductPage = () => {
             <div className={style.share}>
               Share:
               <div className={style.shareIcons}>
-                <FaFacebookF className={style.shareIcon} />
-                <FaTwitter className={style.shareIcon} />
-                <BiLogoInstagramAlt className={style.shareIcon} />
-                <FaPinterest className={style.shareIcon} />
-                <FaLinkedinIn className={style.shareIcon} />
+                <FaFacebookF size={16} />
+                <FaTwitter size={16} />
+                <BiLogoInstagramAlt size={16} />
+                <FaPinterest size={16} />
+                <FaLinkedinIn size={16} />
               </div>
             </div>
           </div>

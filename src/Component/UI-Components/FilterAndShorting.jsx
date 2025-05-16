@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import style from "../../styles/FilterAndShorting.module.css";
 
 const FilterAndSorting = ({
@@ -13,7 +12,6 @@ const FilterAndSorting = ({
   const navigate = useNavigate();
   const [value, setValue] = useState(selectedValue);
 
-  // Sync local state with prop changes
   useEffect(() => {
     setValue(selectedValue);
   }, [selectedValue]);
@@ -35,7 +33,7 @@ const FilterAndSorting = ({
     <div className={style.filterContainer}>
       <select
         id="filter-select"
-        className={style.filterAndSort}
+        className={`form-select ${style.filterAndSort}`}
         value={value}
         onChange={handleSelectionChange}
         aria-label={placeholder}
@@ -51,19 +49,6 @@ const FilterAndSorting = ({
       </select>
     </div>
   );
-};
-
-FilterAndSorting.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ),
-  enableNavigation: PropTypes.bool,
-  onChange: PropTypes.func,
-  placeholder: PropTypes.string,
-  selectedValue: PropTypes.string,
 };
 
 export default FilterAndSorting;

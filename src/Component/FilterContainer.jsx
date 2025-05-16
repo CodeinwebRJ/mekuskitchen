@@ -5,7 +5,6 @@ import RatingStar from "./RatingStar";
 import FilterAndSorting from "../Component/UI-Components/FilterAndShorting";
 import {
   setSearch,
-  setSortBy,
   setCategory,
   setSubCategory,
   setProductCategory,
@@ -21,13 +20,11 @@ const FilterContainer = ({
 
   const [subCategoryList, setSubCategoryList] = useState([]);
   const [productCategoryList, setProductCategoryList] = useState([]);
-
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedProductCategory, setSelectedProductCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Debounced search
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       dispatch(setSearch(searchTerm));
@@ -61,6 +58,8 @@ const FilterContainer = ({
     setSelectedSubCategory("");
     setProductCategoryList([]);
     setSelectedProductCategory("");
+    dispatch(setSubCategory(""));
+    dispatch(setProductCategory(""));
   };
 
   const handleSelectSubCategory = (value) => {
@@ -72,6 +71,7 @@ const FilterContainer = ({
 
     setProductCategoryList(productCats);
     setSelectedProductCategory("");
+    dispatch(setProductCategory(""));
   };
 
   const handleSelectProductCategory = (value) => {
@@ -79,24 +79,26 @@ const FilterContainer = ({
     dispatch(setProductCategory(value));
   };
 
+  console.log(data)
+
   return (
     <aside className={style.sidebar}>
       <div className={style.filterSection}>
         <h3>Filters</h3>
 
-        <label htmlFor="search">Search</label>
+        <h6 htmlFor="search">Search</h6>
         <input
           id="search"
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="form-control mb-3"
+          className="form-control"
           placeholder="Search by name"
         />
 
-        <label htmlFor="priceRange">
+        <h6 htmlFor="priceRange">
           Price Range: ${priceRange[0]} - ${priceRange[1]}
-        </label>
+        </h6>
         <input
           type="range"
           min="0"
@@ -107,7 +109,7 @@ const FilterContainer = ({
         />
 
         <div>
-          <label>Filter by Category</label>
+          <h6>Filter by Category</h6>
           <FilterAndSorting
             options={categoryOptions}
             placeholder="Category"
@@ -117,7 +119,7 @@ const FilterContainer = ({
         </div>
 
         <div>
-          <label>Filter by SubCategory</label>
+          <h6>Filter by SubCategory</h6>
           <FilterAndSorting
             options={subCategoryOptions}
             placeholder="SubCategory"
@@ -127,7 +129,7 @@ const FilterContainer = ({
         </div>
 
         <div>
-          <label>Filter by Product</label>
+          <h6>Filter by Product</h6>
           <FilterAndSorting
             options={productCategoryOptions}
             placeholder="Product"
@@ -135,9 +137,7 @@ const FilterContainer = ({
             onChange={handleSelectProductCategory}
           />
         </div>
-
-        <hr />
-        <h3>Top Rated Products</h3>
+        <h5>Top Rated Products</h5>
         <ul>
           {Array.isArray(data) && data.length > 0 ? (
             data.map((product, index) => (
@@ -146,7 +146,7 @@ const FilterContainer = ({
                 className={style.topRatedItem}
               >
                 <img
-                  src={product?.productDetails?.images?.[0]?.url || ""}
+                  src={product?.productDetails?.image_url|| ""}
                   alt={product?.productDetails?.name || "Product"}
                   className={style.topRatedImg}
                 />

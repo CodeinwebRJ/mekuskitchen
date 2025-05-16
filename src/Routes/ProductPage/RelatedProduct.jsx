@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/RelatedProduct.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -30,7 +30,7 @@ const RelatedProduct = () => {
 
   useEffect(() => {
     fetchProduct();
-  }, [category[1]]); // Added dependency to refetch when category changes
+  }, [category[1]]);
 
   const productCount = relatedProduct.length;
   const showSlider = productCount > 0;
@@ -39,7 +39,7 @@ const RelatedProduct = () => {
   const enableAutoplay = productCount > 3;
 
   const getSlidesPerView = () => {
-    return Math.min(productCount, 4); // Simplified logic
+    return Math.min(productCount, 4); 
   };
 
   return (

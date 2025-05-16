@@ -3,7 +3,7 @@ import style from "../../styles/Sidebar.module.css";
 import { FaTimes } from "react-icons/fa";
 import Button from "../Buttons/Button";
 import { BsTrash } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
@@ -14,11 +14,13 @@ const Sidebar = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const sidebarRef = useRef(null);
 
+  const navigate = useNavigate();
+
   const fetchUserCart = async () => {
     try {
       const res = await getUserCart(user.userid);
       dispatch(setCart(res.data.data));
-    } catch (error) { 
+    } catch (error) {
       console.error("Error fetching user cart", error);
     }
   };
@@ -30,7 +32,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const handleDelete = async (id, type, dayName = null) => {
     try {
       const data = {
-        user_id: User?.userid,
+        user_id: user?.userid,
         type: type,
         quantity: 0,
         product_id: type === "product" ? id : undefined,
@@ -178,24 +180,26 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
-            <h5 className={`${style.subtotalPrice} price`}>
-              ${calculateSubtotal()}
-            </h5>
+            <h5 className="price">${calculateSubtotal()}</h5>
           </div>
 
           <div className={style.subtotalButtons}>
             <div className={style.viewCart}>
-              <Link to={"/cart"}>
-                <Button variant="light" size="sm">
-                  VIEW CART
-                </Button>
-              </Link>
-            </div>
-            <Link to="/checkout">
-              <Button variant="primary" size="sm">
-                CHECKOUT
+              <Button
+                onClick={() => navigate("/cart")}
+                variant="light"
+                size="sm"
+              >
+                VIEW CART
               </Button>
-            </Link>
+            </div>
+            <Button
+              onClick={() => navigate("/checkout")}
+              variant="primary"
+              size="sm"
+            >
+              CHECKOUT
+            </Button>
           </div>
         </div>
       </div>

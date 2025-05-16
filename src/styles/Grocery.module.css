@@ -36,7 +36,6 @@
 }
 
 .filterSection p {
-  font-size: var(--font-base);
   color: var(--gray-deep);
   margin-bottom: 10px;
 }
@@ -47,8 +46,7 @@
   padding: 8px;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
-  font-size: var(--font-base);
+  border-radius: 4px;
 }
 
 .topRatedItem {

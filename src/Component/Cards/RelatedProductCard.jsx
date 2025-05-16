@@ -1,13 +1,27 @@
-import React from "react";
 import style from "../../styles/RelatedProductCard.module.css";
 import AddToCartButton from "../Buttons/AddToCartButton";
 import { Link, useLocation } from "react-router-dom";
 import { formatDate } from "../../Utils/FormateDate";
 import DateChip from "../Buttons/DateChip";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  RemoveWishlist,
+  AddtoWishlist,
+  AddtoCart,
+} from "../../axiosConfig/AxiosConfig";
+import { toggleLiked } from "../../../Store/Slice/UserWishlistSlice";
+import { Toast } from "../../Utils/Toast";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
 
-const RelatedProductCard = ({ item = {} }) => {
+const RelatedProductCard = ({ item }) => {
   const { pathname } = useLocation();
   const category = pathname.split("/").filter(Boolean);
+  const isLiked = useSelector((state) => state.wishlist?.likedMap?.[item._id]);
+  const { user } = useSelector((state) => state.auth);
+  const Cart = useSelector((state) => state.cart);
+
+  const dispatch = useDispatch();
 
   const isTiffin = category[1] === "tiffin";
   const linkPath = isTiffin
@@ -25,6 +39,50 @@ const RelatedProductCard = ({ item = {} }) => {
     ? Number(item?.subTotal || 0).toFixed(2)
     : Number(item?.price || 0).toFixed(2);
 
+  const displayOrignalPrice = isTiffin
+    ? ""
+    : Number(item?.sellingPrice || 0).toFixed(2);
+
+  const handleWishlistToggle = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) return;
+    try {
+      if (isLiked) {
+        await RemoveWishlist({ userid: user.userid, product_id: item._id });
+      } else {
+        await AddtoWishlist({ userid: user.userid, product_id: item._id });
+      }
+      dispatch(toggleLiked(item._id));
+    } catch (error) {
+      console.error("Wishlist operation failed:", error);
+    }
+  };
+
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) return;
+    if (Cart?.items?.tiffins?.length > 0) {
+      Toast({ message: "Tiffin is already added to cart!", type: "error" });
+      return;
+    }
+    try {
+      const res = await AddtoCart({
+        user_id: user.userid,
+        isTiffinCart: false,
+        product_id: item._id,
+        quantity: 1,
+        price: item.sellingPrice,
+      });
+      dispatch(setCart(res.data.data));
+      Toast({ message: "Product added to cart successfully", type: "success" });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      Toast({ message: "Failed to add product in cart.", type: "error" });
+    }
+  };
+
   return (
     <Link to={linkPath} state={{ id: item?._id }}>
       <div className={style.relatedProductCard}>
@@ -34,18 +92,24 @@ const RelatedProductCard = ({ item = {} }) => {
             alt={displayTitle || "Product Image"}
             className={style.relatedProductImg}
           />
-          {item?.date && (
+          {/* {item?.date && (
             <div className={style.dateChipWrapper}>
               <DateChip name={formatDate(item.date)} />
             </div>
-          )}
+          )} */}
+        </div>
+        <div className={style.wishlist} onClick={handleWishlistToggle}>
+          {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
         </div>
         <div className={style.contentWrapper}>
           <p className={style.relatedProductTitle}>
             {displayTitle || "Unnamed Product"}
           </p>
-          <p className={style.relatedProductPrice}>${displayPrice}</p>
-          <AddToCartButton onClick={() => {}} />
+          <div className={style.PriceContainer}>
+            <p className="originalPrice">${displayPrice}</p>
+            <p className="price">${displayOrignalPrice}</p>
+          </div>
+          <AddToCartButton onclick={handleAddToCart} />
         </div>
       </div>
     </Link>

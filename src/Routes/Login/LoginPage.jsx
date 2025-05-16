@@ -53,7 +53,6 @@ function LoginPage() {
         })
       );
       if (response.data.response === "1") {
-        console.log(response.data);
         dispatch(setUser(response.data));
         localStorage.setItem("user", JSON.stringify(response.data));
         localStorage.setItem("api_token", response.data.api_token);

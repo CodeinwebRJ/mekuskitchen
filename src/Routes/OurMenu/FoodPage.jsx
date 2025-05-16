@@ -62,17 +62,6 @@ const FoodPage = () => {
     }
   }, []);
 
-  const fetchWishlist = useCallback(async () => {
-    if (!user?.userid) return;
-    try {
-      const res = await getUserWishlist(user.userid);
-      dispatch(setWishlist(res.data.data || []));
-    } catch (error) {
-      setFetchError("Failed to fetch wishlist.");
-      console.error("Error fetching wishlist:", error);
-    }
-  }, [dispatch, user?.userid]);
-
   const fetchCategories = useCallback(async () => {
     try {
       const categoryRes = await getCategory();
@@ -87,16 +76,12 @@ const FoodPage = () => {
     const fetchData = async () => {
       setIsFetching(true);
       setFetchError(null);
-      await Promise.all([
-        fetchTopRatedProduct(),
-        fetchWishlist(),
-        fetchCategories(),
-      ]);
+      await Promise.all([fetchTopRatedProduct(), fetchCategories()]);
       setIsFetching(false);
     };
 
     fetchData();
-  }, [fetchTopRatedProduct, fetchWishlist, fetchCategories]);
+  }, [fetchTopRatedProduct, fetchCategories]);
 
   const getGridClass = () => {
     switch (grid) {

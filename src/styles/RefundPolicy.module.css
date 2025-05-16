@@ -43,7 +43,6 @@
 }
 
 .sidebar ul li {
-  font-size: var(--font-base);
   color: var(--gray-deep);
   margin-bottom: 10px;
 }

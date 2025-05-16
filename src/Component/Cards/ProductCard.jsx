@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/ProductCard.module.css";
 import { Link } from "react-router-dom";
 import RatingStar from "../RatingStar";
@@ -87,7 +86,10 @@ const ProductCard = ({ product, grid }) => {
             disabled
           />
         </div>
-        <p className="price">${product?.price}</p>
+        <div className={style.PriceContainer}>
+          <p className="originalPrice">${product?.price}</p>
+          <p className="price">${product?.sellingPrice}</p>
+        </div>
       </Link>
 
       <div className={style.wishlist} onClick={handleWishlistToggle}>
