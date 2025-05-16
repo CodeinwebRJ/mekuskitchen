@@ -98,11 +98,6 @@
   font-weight: var(--font-medium);
 }
 
-.totalPrice {
-  color: var(--success);
-  font-weight: var(--font-medium);
-}
-
 .cartTotals {
   width: 30%;
   background: var(--white);

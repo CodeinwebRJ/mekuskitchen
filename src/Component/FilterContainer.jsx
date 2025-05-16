@@ -147,11 +147,11 @@ const FilterContainer = ({
               >
                 <img
                   src={product?.productDetails?.image_url|| ""}
-                  alt={product?.productDetails?.name || "Product"}
+                  alt={product?.productDetails?.product_name || "Product"}
                   className={style.topRatedImg}
                 />
                 <div className={style.topRatedInfo}>
-                  <p>{product?.productDetails?.name || "N/A"}</p>
+                  <p>{product?.productDetails?.product_name || "N/A"}</p>
                   <div className={style.rating}>
                     <RatingStar
                       rating={product?.averageRating || 0}

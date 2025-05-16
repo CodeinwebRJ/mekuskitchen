@@ -235,7 +235,7 @@ const ShoppingCart = () => {
                           </button>
                         </div>
                       </td>
-                      <td className={style.totalPrice}>
+                      <td className="price">
                         $
                         {tiffin.tiffinMenuDetails?.totalAmount *
                           tiffin.quantity}
