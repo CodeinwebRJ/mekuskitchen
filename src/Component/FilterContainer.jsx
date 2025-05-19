@@ -79,8 +79,6 @@ const FilterContainer = ({
     dispatch(setProductCategory(value));
   };
 
-  console.log(data)
-
   return (
     <aside className={style.sidebar}>
       <div className={style.filterSection}>
@@ -145,11 +143,15 @@ const FilterContainer = ({
                 key={product?.productDetails?.id || index}
                 className={style.topRatedItem}
               >
-                <img
-                  src={product?.productDetails?.image_url|| ""}
-                  alt={product?.productDetails?.product_name || "Product"}
-                  className={style.topRatedImg}
-                />
+                <div className={style.imageContainer}>
+                  <img
+                    src={
+                      product?.productDetails?.image_url || "/defultImage.png"
+                    }
+                    alt={product?.productDetails?.product_name || "Product"}
+                    className={style.topRatedImg}
+                  />
+                </div>
                 <div className={style.topRatedInfo}>
                   <p>{product?.productDetails?.product_name || "N/A"}</p>
                   <div className={style.rating}>

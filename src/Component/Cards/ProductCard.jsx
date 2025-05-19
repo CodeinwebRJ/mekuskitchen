@@ -64,9 +64,7 @@ const ProductCard = ({ product, grid }) => {
         to={`/product/${product?.category.toLowerCase()}/${product.name.toLowerCase()}`}
         state={{ id: product._id }}
       >
-        <img
-          src={product?.images?.[0]?.url || "/defultImage.png"}
-          alt={product?.name}
+        <div
           className={
             grid === 2
               ? style.productImg2
@@ -76,19 +74,27 @@ const ProductCard = ({ product, grid }) => {
               ? style.productImg4
               : style.productImg3
           }
-        />
-        <p className={style.productName}>{product?.name}</p>
-        <div className={style.rating}>
-          <RatingStar
-            rating={product?.averageRating}
-            start={0}
-            stop={5}
-            disabled
+        >
+          <img
+            src={product?.images?.[0]?.url || "/defultImage.png"}
+            alt={product?.name}
+            className={style.images}
           />
         </div>
-        <div className={style.PriceContainer}>
-          <p className="originalPrice">${product?.price}</p>
-          <p className="price">${product?.sellingPrice}</p>
+        <div className={style.productDetails}>
+          <p className={style.productName}>{product?.name}</p>
+          <div className={style.rating}>
+            <RatingStar
+              rating={product?.averageRating}
+              start={0}
+              stop={5}
+              disabled
+            />
+          </div>
+          <div className={style.PriceContainer}>
+            <p className="originalPrice">${product?.price}</p>
+            <p className="price">${product?.sellingPrice}</p>
+          </div>
         </div>
       </Link>
 

@@ -38,9 +38,10 @@ const ProductPage = () => {
       if (foundProduct) {
         setProduct(foundProduct);
         setSelectedImage(
-          foundProduct.sku && foundProduct.sku.length > 1
-            ? foundProduct?.sku[0]?.details?.SKUImages[0]?.url
-            : foundProduct.images?.[0]?.url || "/defultImage.png"
+          foundProduct.images
+            ? foundProduct.images?.[0]?.url || "/defultImage.png"
+            : foundProduct?.sku[0]?.details?.SKUImages[0]?.url ||
+                "/defultImage.png"
         );
       } else {
         setProduct(null);
@@ -152,6 +153,8 @@ const ProductPage = () => {
     }
   );
 
+  console.log(product);
+
   return (
     <div>
       <Header />
@@ -261,6 +264,40 @@ const ProductPage = () => {
                 </Button>
               </div>
             </div>
+            {product.sku && product.sku.length > 1 && (
+              <div className={style.colorContainer}>
+                <h6>Color : </h6>
+                <div className={style.thumbnailsContainer}>
+                  {product.sku.map((item, i) => {
+                    const firstImage = item.details.SKUImages[0];
+                    return (
+                      <img
+                        key={i}
+                        src={firstImage?.url || "/defaultImage.png"}
+                        alt={`${product.name} thumbnail ${i + 1}`}
+                        className={style.thumbnail}
+                        onClick={() => {
+                          setSelectedImage(
+                            firstImage?.url || "/defaultImage.png"
+                          );
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            {product.sku && product.sku.length > 1 && (
+              <div className={style.colorContainer}>
+                <h6>Storage : </h6>
+                <div className={style.thumbnailsContainer}>
+                  <div>
+                    {product?.sku?.map((item, i) => item?.details?.Storge)}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {product.tags && (
               <>
                 <div className={style.Chip}>

@@ -40,7 +40,6 @@
   transform: rotate(180deg);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .customArrow {
     width: 2rem;

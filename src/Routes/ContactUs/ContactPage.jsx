@@ -80,7 +80,7 @@ const ContactPage = () => {
                 <img src="/telephone.png" alt="phone icon" />
               </button>
               <span className={style.leftContainerContactNumber}>
-                +91-6723774949
+                +1(672)-377-4949
               </span>
             </div>
 
@@ -90,7 +90,7 @@ const ContactPage = () => {
               </button>
 
               <span className={style.leftContainerMailNumber}>
-                et.world@gmail.com
+                mekuskitchen@gmail.com
               </span>
             </div>
 

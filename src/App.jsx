@@ -76,7 +76,6 @@ const App = () => {
         subCategory,
         ProductCategory,
       };
-      console.log(data);
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));
       setLoading(false);

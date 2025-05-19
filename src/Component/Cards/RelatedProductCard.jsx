@@ -88,7 +88,7 @@ const RelatedProductCard = ({ item }) => {
       <div className={style.relatedProductCard}>
         <div className={style.relatedProductImgWrapper}>
           <img
-            src={imageUrl || "/defaultImage.png"}
+            src={imageUrl || "/defultImage.png"}
             alt={displayTitle || "Product Image"}
             className={style.relatedProductImg}
           />
