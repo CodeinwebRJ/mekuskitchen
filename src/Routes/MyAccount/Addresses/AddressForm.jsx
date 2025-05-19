@@ -228,8 +228,8 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
         <div className={style.billingFormButtons}>
           <div className={style.submitButtonContainer}>
             <Button
-              variant="warning"
               size="sm"
+              variant="primary"
               type="button"
               onClick={() => {
                 dispatch(setShowAddressForm(false));
@@ -239,7 +239,7 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
             </Button>
           </div>
           <div className={style.submitButtonContainer}>
-            <Button type="submit" variant="success" size="sm">
+            <Button type="submit" variant="primary" size="sm">
               Save Address
             </Button>
           </div>

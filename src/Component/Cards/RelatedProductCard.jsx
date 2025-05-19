@@ -106,8 +106,8 @@ const RelatedProductCard = ({ item }) => {
             {displayTitle || "Unnamed Product"}
           </p>
           <div className={style.PriceContainer}>
-            <p className="originalPrice">${displayPrice}</p>
-            <p className="price">${displayOrignalPrice}</p>
+            {/* <p className="originalPrice">${displayPrice}</p> */}
+            <p className="price">${displayPrice}</p>
           </div>
           <AddToCartButton onclick={handleAddToCart} />
         </div>

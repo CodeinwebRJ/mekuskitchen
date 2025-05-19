@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import style from "../../../styles/ProductPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaFacebookF,
   FaTwitter,
@@ -14,6 +14,8 @@ import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
 import Button from "../../../Component/Buttons/Button";
 import Header from "../../../Component/MainComponents/Header";
+import Tabs from "../../../Component/UI-Components/Tabs";
+import Chip from "../../../Component/Buttons/Chip";
 import { AddtoCart } from "../../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../../Store/Slice/UserCartSlice";
 import { Toast } from "../../../Utils/Toast";
@@ -42,7 +44,7 @@ const useProductNavigation = (products, currentIndex) => {
 };
 
 const ProductImageGallery = ({
-  images = [], // Default to empty array
+  images = [],
   selectedImage,
   setSelectedImage,
   productName,
@@ -58,7 +60,7 @@ const ProductImageGallery = ({
     <div className={style.thumbnailsContainer}>
       {images.slice(0, 4).map((image, index) => (
         <img
-          key={image._id || index} // Use unique key
+          key={image._id || index}
           src={image.url}
           alt={`${productName} thumbnail ${index + 1}`}
           className={`${style.thumbnail} ${
@@ -262,13 +264,53 @@ const TiffinProductPage = () => {
   if (!product || !Array.isArray(products) || products.length === 0)
     return <p>Product not found</p>;
 
+  const tabData = [
+    {
+      label: "Description",
+      content: <div>{product?.description || "No description available."}</div>,
+    },
+    {
+      label: "Reviews",
+      content: (
+        <TiffinReviewComponent
+          reviews={reviews}
+          setReviews={setReviews}
+          product={product}
+          rating={rating}
+          review={review}
+          id={id}
+          setReview={setReview}
+          setRating={setRating}
+        />
+      ),
+    },
+  ];
+
+  // Add Specifications tab if product.specifications exists
+  if (product.specifications) {
+    tabData.unshift({
+      label: "Specifications",
+      content: (
+        <div>
+          {Object.entries(product.specifications).map(([key, value]) => (
+            <div key={key}>
+              <strong>{key}: </strong>
+              {value}
+            </div>
+          ))}
+        </div>
+      ),
+    });
+  }
+
   return (
     <div>
       <Header />
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <a href="/">Home</a> / <a href="/food">Tiffin</a> / {product.day}
+            <Link to="/home">Home</Link> / <Link to="/food">Tiffin</Link> /{" "}
+            {product.day}
           </div>
           <div className={style.navigation}>
             <button
@@ -307,8 +349,22 @@ const TiffinProductPage = () => {
           />
 
           <div className={style.productDetails}>
-            <h1>{product.day}</h1>
-            <p className={`${style.productPrice} price`}>${product.subTotal}</p>
+            <h1>{product.day.toUpperCase()}</h1>
+            <div className={style.priceContainer}>
+              <p className="price">${product.subTotal}</p>
+            </div>
+
+            {product.category && (
+              <p className={style.categoryContaine}>
+                Category:{" "}
+                <span className={style.category}>{product.category}</span>
+              </p>
+            )}
+            {product.brand && (
+              <p className={style.categoryContaine}>
+                Brand: <span className={style.category}>{product.brand}</span>
+              </p>
+            )}
 
             <div className={style.itemsContainer}>
               {product.items?.map((item, index) => (
@@ -322,39 +378,6 @@ const TiffinProductPage = () => {
                   handleItemIncrease={handleItemIncrease}
                 />
               ))}
-            </div>
-
-            <p className={style.categoryContainer}>
-              Category:{" "}
-              <span className={style.category}>
-                {product.category || "N/A"}
-              </span>
-            </p>
-
-            <div className={style.share}>
-              Share:
-              <div className={style.shareIcons}>
-                <FaFacebookF
-                  className={style.shareIcon}
-                  aria-label="Share on Facebook"
-                />
-                <FaTwitter
-                  className={style.shareIcon}
-                  aria-label="Share on Twitter"
-                />
-                <BiLogoInstagramAlt
-                  className={style.shareIcon}
-                  aria-label="Share on Instagram"
-                />
-                <FaPinterest
-                  className={style.shareIcon}
-                  aria-label="Share on Pinterest"
-                />
-                <FaLinkedinIn
-                  className={style.shareIcon}
-                  aria-label="Share on LinkedIn"
-                />
-              </div>
             </div>
 
             <div className={style.quantity}>
@@ -389,24 +412,44 @@ const TiffinProductPage = () => {
                 +
               </button>
               <div className={style.addToCartContainer}>
-                <Button onClick={handleSubmit} variant="warning" size="sm">
+                <Button variant="primary" onClick={handleSubmit} size="sm">
                   ADD TO CART
                 </Button>
+              </div>
+            </div>
+
+            {product.tags && (
+              <div className={style.Chip}>
+                <h6>Tags:</h6>
+                {product.tags.map((tag) => (
+                  <Chip key={tag} name={tag} />
+                ))}
+              </div>
+            )}
+
+            {product.shortDescription && (
+              <div>
+                <h6>Description:</h6>
+                <div>
+                  <span>{product.shortDescription}</span>
+                </div>
+              </div>
+            )}
+
+            <div className={style.share}>
+              Share:
+              <div className={style.shareIcons}>
+                <FaFacebookF />
+                <FaTwitter />
+                <BiLogoInstagramAlt />
+                <FaPinterest />
+                <FaLinkedinIn />
               </div>
             </div>
           </div>
         </div>
 
-        <TiffinReviewComponent
-          reviews={reviews}
-          setReviews={setReviews}
-          product={product}
-          rating={rating}
-          review={review}
-          id={id}
-          setReview={setReview}
-          setRating={setRating}
-        />
+        <Tabs tabs={tabData} />
       </div>
 
       <TiffinRelatedProduct />

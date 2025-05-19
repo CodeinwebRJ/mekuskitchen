@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/AddressCard.module.css";
 
 const AddressCard = ({
@@ -12,27 +11,24 @@ const AddressCard = ({
       className={`${style.addressCardContainer} ${
         address?.isActive ? style.addressCardContainerActive : ""
       }`}
-      onClick={() => {
-        handleSetAsDefaultAddress(address?._id);
-      }}
     >
-      <div className={style.addressCard}>
+      <div
+        onClick={() => {
+          handleSetAsDefaultAddress(address?._id);
+        }}
+        className={style.addressCard}
+      >
         <h1 className={style.fullName}>
           {address?.billing?.firstName} {address?.billing?.lastName}
         </h1>
-
         <p className={style.address}>{address?.address}</p>
-
         <p className={style.city}>
           {address?.billing?.city}, {address?.billing?.state}
         </p>
-
         <p className={style.state}>
           {address?.billing?.state} - {address?.billing?.postcode}
         </p>
-
         <p className={style.CountryPostcode}>{address?.billing?.country}</p>
-
         <p className={style.phoneNumber}>Phone: {address?.billing?.phone}</p>
       </div>
 

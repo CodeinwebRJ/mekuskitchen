@@ -10,12 +10,7 @@ import Button from "../../Component/Buttons/Button";
 import { Toast } from "../../Utils/Toast";
 import { AddtoCart } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
-import {
-  FaFacebookF,
-  FaLinkedinIn,
-  FaPinterest,
-  FaTwitter,
-} from "react-icons/fa";
+import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import Tabs from "../../Component/UI-Components/Tabs";
 import Chip from "../../Component/Buttons/Chip";
@@ -137,7 +132,7 @@ const ProductPage = () => {
 
   tabData.push(
     {
-      label: "Description",
+      label: "Product Detail",
       content: <div>{product?.description}</div>,
     },
     {
@@ -203,6 +198,7 @@ const ProductPage = () => {
                 alt={product.name}
                 className={style.productImage}
               />
+              <div></div>
             </div>
             <div className={style.thumbnailsContainer}>
               {product.images?.slice(0, 4).map((image, index) => (
@@ -260,7 +256,7 @@ const ProductPage = () => {
               </button>
 
               <div className={style.addToCartContainer}>
-                <Button onClick={handleAddToCart} variant="warning" size="sm">
+                <Button onClick={handleAddToCart} variant="primary" size="sm">
                   ADD TO CART
                 </Button>
               </div>
@@ -287,7 +283,6 @@ const ProductPage = () => {
                 <FaFacebookF size={16} />
                 <FaTwitter size={16} />
                 <BiLogoInstagramAlt size={16} />
-                <FaPinterest size={16} />
                 <FaLinkedinIn size={16} />
               </div>
             </div>

@@ -39,7 +39,7 @@ const RelatedProduct = () => {
   const enableAutoplay = productCount > 3;
 
   const getSlidesPerView = () => {
-    return Math.min(productCount, 4); 
+    return Math.min(productCount, 4);
   };
 
   return (

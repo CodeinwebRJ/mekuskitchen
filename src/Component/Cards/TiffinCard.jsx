@@ -6,7 +6,7 @@ import { formatDate } from "../../Utils/FormateDate";
 import DateChip from "../Buttons/DateChip";
 import { useSelector, useDispatch } from "react-redux";
 import { AddtoCart } from "../../axiosConfig/AxiosConfig";
-import { Toast } from "../../Utils/Toast"; // Update this import path based on your setup
+import { Toast } from "../../Utils/Toast"; 
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 const TiffinCard = ({ item }) => {
