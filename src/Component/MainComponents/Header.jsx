@@ -27,7 +27,7 @@ const Header = () => {
       dispatch(logout());
       localStorage.removeItem("api_token");
       localStorage.removeItem("user");
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -53,14 +53,14 @@ const Header = () => {
 
   return (
     <header className={style.header}>
-      <Link to="/home" className={style.logo}>
+      <Link to="/" className={style.logo}>
         <img src="/logo.png" alt="logo" className={style.logoImage} />
       </Link>
 
       <nav className={style.navLinks}>
         <Link
-          to="/home"
-          className={`${style.link} ${handleLinkActive("/home")}`}
+          to="/"
+          className={`${style.link} ${handleLinkActive("/")}`}
         >
           HOME
         </Link>

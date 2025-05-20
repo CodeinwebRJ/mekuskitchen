@@ -148,15 +148,8 @@ const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/product-category/:id" element={<FoodPage />} />
         <Route path="/daily-tiffin" element={<DailyTiffinPage />} />

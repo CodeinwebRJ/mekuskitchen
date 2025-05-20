@@ -309,7 +309,7 @@ const TiffinProductPage = () => {
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <Link to="/home">Home</Link> / <Link to="/food">Tiffin</Link> /{" "}
+            <Link to="/">Home</Link> / <Link to="/food">Tiffin</Link> /{" "}
             {product.day}
           </div>
           <div className={style.navigation}>

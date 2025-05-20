@@ -4,7 +4,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const Banner = (props) => {
-  const { name, path = "/home" } = props;
+  const { name, path = "/" } = props;
 
   const foodImages = [
     {
@@ -49,7 +49,7 @@ const Banner = (props) => {
 
       {name !== "FOOD" || name !== "GROCERY" ? (
         <div className={style.bannerBreadcrumb}>
-          <Link to={"/home"} className={style.link}>
+          <Link to={"/"} className={style.link}>
             Home
           </Link>
           /<span className={style.currentPage}>{name}</span>

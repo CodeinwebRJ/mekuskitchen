@@ -56,7 +56,7 @@ function LoginPage() {
         dispatch(setUser(response.data));
         localStorage.setItem("user", JSON.stringify(response.data));
         localStorage.setItem("api_token", response.data.api_token);
-        navigate("/home");
+        navigate("/");
         setLoading(false);
       } else if (response.data.response === "0") {
         setError("Invalid Unique ID or password");
@@ -77,7 +77,7 @@ function LoginPage() {
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
-      navigate("/home");
+      navigate("/");
     }
   }, []);
 

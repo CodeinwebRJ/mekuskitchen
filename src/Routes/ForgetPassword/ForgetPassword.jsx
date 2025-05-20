@@ -59,7 +59,7 @@ function ForgetPassword() {
         console.log("Password changed successfully. Navigating to login.");
 
         // Redirect to login page or another relevant page
-        navigate("/");
+        navigate("/login");
       } else {
         setMessage("Failed to update password: " + response.data.message);
       }

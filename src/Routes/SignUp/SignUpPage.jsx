@@ -79,7 +79,7 @@ function SignUpPage() {
           confirmPassword: "",
           refcode: "",
         });
-        navigate("/");
+        navigate("/login");
       } else {
         setError(
           response.data.message || "Something went wrong. Please try again."
@@ -341,7 +341,7 @@ function SignUpPage() {
                 <hr className="my-4" />
                 <div className="text-center">
                   <p className="mb-0">
-                    Already have an account? <Link to="/">LOGIN</Link>
+                    Already have an account? <Link to="/login">LOGIN</Link>
                   </p>
                 </div>
               </div>

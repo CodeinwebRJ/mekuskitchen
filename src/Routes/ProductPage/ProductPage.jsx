@@ -141,7 +141,7 @@ const ProductPage = () => {
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <Link to="/home">Home</Link> / <Link to="">Food</Link> /{" "}
+            <Link to="/">Home</Link> / <Link to="">Food</Link> /{" "}
             {product.name}
           </div>
           <div className={style.navigation}>
