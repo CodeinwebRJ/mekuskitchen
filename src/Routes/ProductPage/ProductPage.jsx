@@ -18,43 +18,44 @@ import Chip from "../../Component/Buttons/Chip";
 const ProductPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const id = location.state?.id;
   const dispatch = useDispatch();
+
+  const id = location.state?.id;
   const { user } = useSelector((state) => state.auth);
+  const { products, loading } = useSelector((state) => state.product);
   const Cart = useSelector((state) => state.cart);
-  const productState = useSelector((state) => state.product);
+
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedSKUs, setSelectedSKUs] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const products = productState.products?.data || [];
-  const loading = productState.loading;
+
+  const defaultImage = "/defaultImage.png";
 
   useEffect(() => {
-    if (Array.isArray(products) && products.length > 0) {
-      const foundProduct = products.find((p) => p._id === id);
-      if (foundProduct) {
-        setProduct(foundProduct);
-        setSelectedImage(
-          foundProduct.images
-            ? foundProduct.images?.[0]?.url || "/defultImage.png"
-            : foundProduct?.sku[0]?.details?.SKUImages[0]?.url ||
-                "/defultImage.png"
-        );
-      } else {
-        setProduct(null);
-      }
+    const foundProduct = products?.data?.find((p) => p._id === id);
+    if (foundProduct) {
+      setProduct(foundProduct);
+      const firstImage =
+        foundProduct.images?.[0]?.url ||
+        foundProduct?.sku?.[0]?.details?.SKUImages?.[0] ||
+        defaultImage;
+      setSelectedImage(firstImage);
+      setSelectedSKUs(foundProduct?.sku?.[0]?.details?.SKUImages || []);
+    } else {
+      setProduct(null);
+      setSelectedSKUs([]);
     }
   }, [id, products]);
 
-  const currentIndex = products.findIndex((p) => p._id === id);
+  const currentIndex = products?.data?.findIndex((p) => p._id === id);
 
   const handleNext = () => {
-    if (currentIndex !== -1 && currentIndex < products.length - 1) {
+    if (currentIndex < products.length - 1) {
       const nextProduct = products[currentIndex + 1];
-      setProduct(nextProduct);
       navigate(location.pathname, { state: { id: nextProduct._id } });
     }
   };
@@ -62,7 +63,6 @@ const ProductPage = () => {
   const handlePrev = () => {
     if (currentIndex > 0) {
       const prevProduct = products[currentIndex - 1];
-      setProduct(prevProduct);
       navigate(location.pathname, { state: { id: prevProduct._id } });
     }
   };
@@ -72,21 +72,10 @@ const ProductPage = () => {
     setQuantity(isNaN(value) ? 1 : Math.max(1, value));
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!product || !Array.isArray(products) || products.length === 0) {
-    return <p>Product not found</p>;
-  }
-
   const handleAddToCart = async () => {
     if (!user) return;
-    if (Cart?.items?.tiffins.length > 0) {
-      Toast({
-        message: "Tiffin is already added to cart!",
-        type: "error",
-      });
+    if (Cart?.items?.tiffins?.length > 0) {
+      Toast({ message: "Tiffin is already added to cart!", type: "error" });
       return;
     }
 
@@ -95,43 +84,21 @@ const ProductPage = () => {
         user_id: user.userid,
         isTiffinCart: false,
         product_id: product._id,
-        quantity: quantity,
+        quantity,
         price: product.price,
       });
       dispatch(setCart(res.data.data));
-      Toast({
-        message: "Product added to cart suceessfully",
-        type: "success",
-      });
+      Toast({ message: "Product added to cart successfully", type: "success" });
     } catch (error) {
       console.error("Error adding to cart:", error);
-      Toast({
-        message: "Failed to add product in cart.",
-        type: "error",
-      });
+      Toast({ message: "Failed to add product to cart.", type: "error" });
     }
   };
 
-  const tabData = [];
+  if (loading) return <p>Loading...</p>;
+  if (!product) return <p>Product not found</p>;
 
-  if (product.sku && product.sku.length > 1) {
-    tabData.push({
-      label: "Specifications",
-      content: (
-        <div>
-          {product?.specifications &&
-            Object.entries(product.specifications).map(([key, value]) => (
-              <div key={key}>
-                <strong>{key} : </strong>
-                {value}
-              </div>
-            ))}
-        </div>
-      ),
-    });
-  }
-
-  tabData.push(
+  const tabData = [
     {
       label: "Product Detail",
       content: <div>{product?.description}</div>,
@@ -150,10 +117,23 @@ const ProductPage = () => {
           setRating={setRating}
         />
       ),
-    }
-  );
+    },
+  ];
 
-  console.log(product);
+  if (product.sku?.length > 1 && product.specifications) {
+    tabData.unshift({
+      label: "Specifications",
+      content: (
+        <div>
+          {Object.entries(product.specifications).map(([key, value]) => (
+            <div key={key}>
+              <strong>{key}:</strong> {value}
+            </div>
+          ))}
+        </div>
+      ),
+    });
+  }
 
   return (
     <div>
@@ -169,7 +149,6 @@ const ProductPage = () => {
               onClick={handlePrev}
               disabled={currentIndex <= 0}
               className={style.navButton}
-              aria-label="Previous product"
             >
               <img
                 src="/nextArrow.png"
@@ -181,7 +160,6 @@ const ProductPage = () => {
               onClick={handleNext}
               disabled={currentIndex >= products.length - 1}
               className={style.navButton}
-              aria-label="Next product"
             >
               <img
                 src="/nextArrow.png"
@@ -191,54 +169,60 @@ const ProductPage = () => {
             </button>
           </div>
         </div>
+
         <div className={style.productLayout}>
           <div className={style.imageContainer}>
             <div className={style.productImageContainer}>
               <img
-                src={
-                  selectedImage || product.images?.[0].url || "/defultImage.png"
-                }
+                src={selectedImage || defaultImage}
                 alt={product.name}
                 className={style.productImage}
               />
-              <div></div>
             </div>
             <div className={style.thumbnailsContainer}>
-              {product.images?.slice(0, 4).map((image, index) => (
-                <img
-                  key={index}
-                  src={image.url || "/defaultImage.png"}
-                  alt={`${product.name} thumbnail ${index + 1}`}
-                  className={style.thumbnail}
-                  onClick={() => {
-                    setSelectedImage(image.url || "/defaultImage.png");
-                  }}
-                />
-              ))}
+              {(product.sku?.length > 1
+                ? selectedSKUs.SKUImages[0]
+                : product.images
+              )
+                ?.slice(0, 4)
+                .map((img, idx) => {
+                  const url =
+                    typeof img === "string" ? img : img?.url || defaultImage;
+                  return (
+                    <img
+                      key={idx}
+                      src={url}
+                      alt={`Thumbnail ${idx}`}
+                      className={style.thumbnail}
+                      onClick={() => setSelectedImage(url)}
+                    />
+                  );
+                })}
             </div>
           </div>
+
           <div className={style.productDetails}>
             <h1>{product.name.toUpperCase()}</h1>
             <div className={style.priceContainer}>
               <p className="originalPrice">${product?.price}</p>
               <p className="price">${product?.sellingPrice}</p>
             </div>
+
             {product.category && (
-              <p className={style.categoryContaine}>
-                Category:{" "}
-                <span className={style.category}>{product.category}</span>
+              <p>
+                Category: <span>{product.category}</span>
               </p>
             )}
             {product.brand && (
-              <p className={style.categoryContaine}>
-                Brand: <span className={style.category}>{product.brand}</span>
+              <p>
+                Brand: <span>{product.brand}</span>
               </p>
             )}
+
             <div className={style.quantity}>
               <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 className={style.quantityButton}
-                aria-label="Decrease quantity"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
               >
                 -
               </button>
@@ -246,74 +230,85 @@ const ProductPage = () => {
                 type="number"
                 value={quantity}
                 onChange={handleQuantityChange}
-                min="1"
                 className={style.quantityInput}
-                aria-label="Quantity"
+                min="1"
               />
               <button
-                onClick={() => setQuantity(quantity + 1)}
                 className={style.quantityButton}
-                aria-label="Increase quantity"
+                onClick={() => setQuantity(quantity + 1)}
               >
                 +
               </button>
-
               <div className={style.addToCartContainer}>
                 <Button onClick={handleAddToCart} variant="primary" size="sm">
                   ADD TO CART
                 </Button>
               </div>
             </div>
-            {product.sku && product.sku.length > 1 && (
-              <div className={style.colorContainer}>
-                <h6>Color : </h6>
-                <div className={style.thumbnailsContainer}>
+            {product.sku?.length > 1 && (
+              <>
+                <div className={style.colorContainer}>
+                  <h6>Color:</h6>
                   {product.sku.map((item, i) => {
-                    const firstImage = item.details.SKUImages[0];
+                    const firstImg =
+                      item.details?.SKUImages?.[0] || defaultImage;
                     return (
                       <img
                         key={i}
-                        src={firstImage?.url || "/defaultImage.png"}
-                        alt={`${product.name} thumbnail ${i + 1}`}
+                        src={firstImg}
                         className={style.thumbnail}
                         onClick={() => {
-                          setSelectedImage(
-                            firstImage?.url || "/defaultImage.png"
-                          );
+                          setSelectedImage(firstImg);
+                          setSelectedSKUs(item.details || []);
                         }}
                       />
                     );
                   })}
                 </div>
-              </div>
-            )}
-            {product.sku && product.sku.length > 1 && (
-              <div className={style.colorContainer}>
-                <h6>Storage : </h6>
-                <div className={style.thumbnailsContainer}>
-                  <div>
-                    {product?.sku?.map((item, i) => item?.details?.Storge)}
-                  </div>
+                <div>
+                  <h6 className="">
+                    Storage:
+                    {[
+                      ...new Set(
+                        product.sku.flatMap((s) =>
+                          s.details?.combinations.map((c) => c.Storage)
+                        )
+                      ),
+                    ].map((storage, idx) => (
+                      <span key={idx}>{storage}</span>
+                    ))}
+                  </h6>
                 </div>
-              </div>
-            )}
-
-            {product.tags && (
-              <>
-                <div className={style.Chip}>
-                  <h6>Tags:</h6>
-                  {product.tags?.map((tag) => (
-                    <Chip name={tag} />
-                  ))}
+                <div>
+                  <h6>
+                    RAM:
+                    {[
+                      ...new Set(
+                        product.sku.flatMap((s) =>
+                          s.details?.combinations.map((c) => c.RAM)
+                        )
+                      ),
+                    ].map((ram, idx) => (
+                      <span key={idx}>{ram}</span>
+                    ))}
+                  </h6>
                 </div>
               </>
             )}
-            <div>
-              <h6>Description : </h6>
-              <div>
-                {product.description && <span>{product.shortDescription}</span>}
+            {product.tags?.length > 0 && (
+              <div className={style.Chip}>
+                <h6>Tags:</h6>
+                {product.tags.map((tag) => (
+                  <Chip key={tag} name={tag} />
+                ))}
               </div>
+            )}
+            <div>
+              <h6>Description:</h6>
+              <span>{product.shortDescription}</span>
             </div>
+
+            {/* Social Icons */}
             <div className={style.share}>
               Share:
               <div className={style.shareIcons}>
