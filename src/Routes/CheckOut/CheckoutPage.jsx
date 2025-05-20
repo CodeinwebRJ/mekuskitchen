@@ -367,6 +367,7 @@ const CheckoutPage = () => {
                 type="submit"
                 className={style.placeOrder}
                 disabled={isLoading}
+                onClick={handleSubmit}
               >
                 {isLoading ? "Processing..." : "Place Order"}
               </Button>

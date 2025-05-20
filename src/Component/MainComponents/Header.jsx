@@ -14,7 +14,7 @@ const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const { cartCount, wishlistCount } = useSelector((state) => state.count);
-  const Cart = useSelector((state) => state.cart);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategory(categoryName));
@@ -58,10 +58,7 @@ const Header = () => {
       </Link>
 
       <nav className={style.navLinks}>
-        <Link
-          to="/"
-          className={`${style.link} ${handleLinkActive("/")}`}
-        >
+        <Link to="/" className={`${style.link} ${handleLinkActive("/")}`}>
           HOME
         </Link>
 
@@ -125,9 +122,11 @@ const Header = () => {
             >
               Account Details
             </Link>
-            <span onClick={handleLogout} className={style.userDropdownItem}>
-              Logout
-            </span>
+            {isAuthenticated && (
+              <span onClick={handleLogout} className={style.userDropdownItem}>
+                Logout
+              </span>
+            )}
           </div>
         </div>
 

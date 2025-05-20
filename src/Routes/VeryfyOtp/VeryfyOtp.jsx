@@ -69,7 +69,6 @@ function VeryfyOtp() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

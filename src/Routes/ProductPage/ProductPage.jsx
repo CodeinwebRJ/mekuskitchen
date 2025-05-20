@@ -32,6 +32,8 @@ const ProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedSKUs, setSelectedSKUs] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [selectedStorage, setSelectedStorage] = useState(null); // Single value
+  const [selectedRAM, setSelectedRAM] = useState(null); // Single value
 
   const defaultImage = "/defaultImage.png";
 
@@ -44,10 +46,14 @@ const ProductPage = () => {
         foundProduct?.sku?.[0]?.details?.SKUImages?.[0] ||
         defaultImage;
       setSelectedImage(firstImage);
-      setSelectedSKUs(foundProduct?.sku?.[0]?.details?.SKUImages || []);
+      setSelectedSKUs(foundProduct?.sku?.[0]?.details || []);
+      setSelectedStorage(null);
+      setSelectedRAM(null);
     } else {
       setProduct(null);
       setSelectedSKUs([]);
+      setSelectedStorage(null);
+      setSelectedRAM(null);
     }
   }, [id, products]);
 
@@ -72,6 +78,14 @@ const ProductPage = () => {
     setQuantity(isNaN(value) ? 1 : Math.max(1, value));
   };
 
+  const handleStorageSelect = (storage) => {
+    setSelectedStorage(selectedStorage === storage ? null : storage); // Toggle selection
+  };
+
+  const handleRAMSelect = (ram) => {
+    setSelectedRAM(selectedRAM === ram ? null : ram); // Toggle selection
+  };
+
   const handleAddToCart = async () => {
     if (!user) return;
     if (Cart?.items?.tiffins?.length > 0) {
@@ -79,13 +93,32 @@ const ProductPage = () => {
       return;
     }
 
+    if (!selectedStorage || !selectedRAM) {
+      Toast({
+        message: "Please select one storage and one RAM option",
+        type: "error",
+      });
+      return;
+    }
+
     try {
+      const selectedCombination = selectedSKUs?.combinations?.find(
+        (c) => c.Storage === selectedStorage && c.RAM === selectedRAM
+      );
+      if (!selectedCombination) {
+        Toast({ message: "Invalid combination selected", type: "error" });
+        return;
+      }
+
+      const price = selectedCombination?.Price || product.price;
       const res = await AddtoCart({
         user_id: user.userid,
         isTiffinCart: false,
         product_id: product._id,
         quantity,
-        price: product.price,
+        price,
+        storage: selectedStorage,
+        ram: selectedRAM,
       });
       dispatch(setCart(res.data.data));
       Toast({ message: "Product added to cart successfully", type: "success" });
@@ -135,14 +168,37 @@ const ProductPage = () => {
     });
   }
 
+  // Get all available storage and RAM options
+  const availableStorage = [
+    ...new Set(selectedSKUs?.combinations?.map((c) => c.Storage)),
+  ];
+  const availableRAM = [
+    ...new Set(selectedSKUs?.combinations?.map((c) => c.RAM)),
+  ];
+
+  // Determine which storage options are compatible with the selected RAM
+  const isStorageCompatible = (storage) => {
+    if (!selectedRAM) return true; // All storage options are compatible if no RAM is selected
+    return selectedSKUs?.combinations?.some(
+      (c) => c.Storage === storage && c.RAM === selectedRAM
+    );
+  };
+
+  // Determine which RAM options are compatible with the selected storage
+  const isRAMCompatible = (ram) => {
+    if (!selectedStorage) return true; // All RAM options are compatible if no storage is selected
+    return selectedSKUs?.combinations?.some(
+      (c) => c.RAM === ram && c.Storage === selectedStorage
+    );
+  };
+
   return (
     <div>
       <Header />
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <Link to="/">Home</Link> / <Link to="">Food</Link> /{" "}
-            {product.name}
+            <Link to="/">Home</Link> / <Link to="">Food</Link> / {product.name}
           </div>
           <div className={style.navigation}>
             <button
@@ -180,24 +236,19 @@ const ProductPage = () => {
               />
             </div>
             <div className={style.thumbnailsContainer}>
-              {(product.sku?.length > 1
-                ? selectedSKUs.SKUImages[0]
-                : product.images
-              )
-                ?.slice(0, 4)
-                .map((img, idx) => {
-                  const url =
-                    typeof img === "string" ? img : img?.url || defaultImage;
-                  return (
-                    <img
-                      key={idx}
-                      src={url}
-                      alt={`Thumbnail ${idx}`}
-                      className={style.thumbnail}
-                      onClick={() => setSelectedImage(url)}
-                    />
-                  );
-                })}
+              {(selectedSKUs?.SKUImages || [])?.slice(0, 4).map((img, idx) => {
+                const url =
+                  typeof img === "string" ? img : img?.url || defaultImage;
+                return (
+                  <img
+                    key={idx}
+                    src={url}
+                    alt={`Thumbnail ${idx}`}
+                    className={style.thumbnail}
+                    onClick={() => setSelectedImage(url)}
+                  />
+                );
+              })}
             </div>
           </div>
 
@@ -205,7 +256,14 @@ const ProductPage = () => {
             <h1>{product.name.toUpperCase()}</h1>
             <div className={style.priceContainer}>
               <p className="originalPrice">${product?.price}</p>
-              <p className="price">${product?.sellingPrice}</p>
+              <p className="price">
+                $
+                {selectedSKUs?.combinations?.find(
+                  (c) => c.Storage === selectedStorage && c.RAM === selectedRAM
+                )?.Price ??
+                  product?.sellingPrice ??
+                  product?.price}
+              </p>
             </div>
 
             {product.category && (
@@ -240,11 +298,17 @@ const ProductPage = () => {
                 +
               </button>
               <div className={style.addToCartContainer}>
-                <Button onClick={handleAddToCart} variant="primary" size="sm">
+                <Button
+                  onClick={handleAddToCart}
+                  variant="primary"
+                  size="sm"
+                  disabled={!selectedStorage || !selectedRAM}
+                >
                   ADD TO CART
                 </Button>
               </div>
             </div>
+
             {product.sku?.length > 1 && (
               <>
                 <div className={style.colorContainer}>
@@ -260,41 +324,52 @@ const ProductPage = () => {
                         onClick={() => {
                           setSelectedImage(firstImg);
                           setSelectedSKUs(item.details || []);
+                          setSelectedStorage(null);
+                          setSelectedRAM(null);
                         }}
                       />
                     );
                   })}
                 </div>
-                <div>
-                  <h6 className="">
-                    Storage:
-                    {[
-                      ...new Set(
-                        product.sku.flatMap((s) =>
-                          s.details?.combinations.map((c) => c.Storage)
-                        )
-                      ),
-                    ].map((storage, idx) => (
-                      <span key={idx}>{storage}</span>
-                    ))}
-                  </h6>
-                </div>
-                <div>
-                  <h6>
-                    RAM:
-                    {[
-                      ...new Set(
-                        product.sku.flatMap((s) =>
-                          s.details?.combinations.map((c) => c.RAM)
-                        )
-                      ),
-                    ].map((ram, idx) => (
-                      <span key={idx}>{ram}</span>
-                    ))}
-                  </h6>
-                </div>
+                {selectedSKUs && (
+                  <>
+                    <div className={style.storageContainer}>
+                      <h6>Storage:</h6>
+                      {availableStorage.map((storage, idx) => (
+                        <button
+                          key={idx}
+                          className={`${style.storage} ${
+                            selectedStorage === storage ? style.selected : ""
+                          }`}
+                          onClick={() => handleStorageSelect(storage)}
+                          disabled={!isStorageCompatible(storage)}
+                          aria-label={`Select ${storage} GB storage`}
+                        >
+                          {storage} GB
+                        </button>
+                      ))}
+                    </div>
+                    <div className={style.storageContainer}>
+                      <h6>RAM:</h6>
+                      {availableRAM.map((ram, idx) => (
+                        <button
+                          key={idx}
+                          className={`${style.storage} ${
+                            selectedRAM === ram ? style.selected : ""
+                          }`}
+                          onClick={() => handleRAMSelect(ram)}
+                          disabled={!isRAMCompatible(ram)}
+                          aria-label={`Select ${ram} GB RAM`}
+                        >
+                          {ram} GB
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
               </>
             )}
+
             {product.tags?.length > 0 && (
               <div className={style.Chip}>
                 <h6>Tags:</h6>
@@ -303,12 +378,7 @@ const ProductPage = () => {
                 ))}
               </div>
             )}
-            <div>
-              <h6>Description:</h6>
-              <span>{product.shortDescription}</span>
-            </div>
 
-            {/* Social Icons */}
             <div className={style.share}>
               Share:
               <div className={style.shareIcons}>
