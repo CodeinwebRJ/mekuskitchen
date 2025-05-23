@@ -137,12 +137,16 @@ const App = () => {
 
   useEffect(() => {
     fetchTiffin();
-    fetchAddresses();
-    fetchWishlist();
+    if (user?.userid) {
+      fetchAddresses();
+      fetchWishlist();
+    }
   }, []);
 
   useEffect(() => {
-    fetchCount();
+    if (user?.userid) {
+      fetchCount();
+    }
   }, [JSON.stringify(Cart), JSON.stringify(isLiked)]);
 
   return (
@@ -155,7 +159,7 @@ const App = () => {
         <Route path="/daily-tiffin" element={<DailyTiffinPage />} />
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
-        <Route path="/product/:category/:id" element={<ProductPage />} />
+        <Route path="/product/:category/:page/:id" element={<ProductPage />} />
         <Route path="/product/tiffin/:id" element={<TiffinProductPage />} />
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<CheckoutPage />} />

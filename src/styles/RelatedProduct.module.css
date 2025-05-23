@@ -13,6 +13,14 @@
   width: 100%;
 }
 
+.simpleGridWrapper {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
 .relatedProductCard {
   display: flex;
   justify-content: center;

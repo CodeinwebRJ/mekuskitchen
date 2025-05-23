@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
@@ -9,20 +9,30 @@ import { setCategory } from "../../../Store/Slice/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart } from "react-icons/fa6";
 import { logout } from "../../../Store/Slice/UserSlice";
+import {
+  setCartCount,
+  setWishlistCount,
+} from "../../../Store/Slice/CountSlice";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
+import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const { cartCount, wishlistCount } = useSelector((state) => state.count);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const cart = useSelector((state) => state.cart);
+  const navigate = useNavigate();
 
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategory(categoryName));
   };
 
-  const navigate = useNavigate();
-
   const handleLogout = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
     try {
       dispatch(logout());
       localStorage.removeItem("api_token");
@@ -45,11 +55,33 @@ const Header = () => {
   ];
 
   const handleLinkActive = (link) => {
-    if (link === window.location.pathname) {
-      return style.linkActive;
-    }
-    return style.link;
+    return link === window.location.pathname ? style.linkActive : style.link;
   };
+
+  useEffect(() => {
+    try {
+      const wishlist = localStorage.getItem("whislist");
+      const parsedWishlist = wishlist ? JSON.parse(wishlist) : [];
+      dispatch(setWishlist(parsedWishlist || 0));
+      dispatch(setWishlistCount(parsedWishlist?.length || 0));
+
+      const cartData = localStorage.getItem("cart");
+      const parsedCart = cartData ? JSON.parse(cartData) : [];
+      dispatch(setCart(parsedCart));
+    } catch (error) {
+      console.error("Error parsing localStorage data:", error);
+      dispatch(setWishlistCount(0));
+      dispatch(setCart([]));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const productItemsCount =
+      cart?.items?.length > 0
+        ? cart.items.reduce((acc, item) => acc + (item?.quantity || 0), 0)
+        : 0;
+    dispatch(setCartCount(productItemsCount));
+  }, [cart, dispatch]);
 
   return (
     <header className={style.header}>
@@ -122,11 +154,9 @@ const Header = () => {
             >
               Account Details
             </Link>
-            {isAuthenticated && (
-              <span onClick={handleLogout} className={style.userDropdownItem}>
-                Logout
-              </span>
-            )}
+            <span onClick={handleLogout} className={style.userDropdownItem}>
+              {isAuthenticated ? "Logout" : "Login"}
+            </span>
           </div>
         </div>
 

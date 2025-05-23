@@ -13,9 +13,10 @@ const WishlistItem = ({ product, fetchWishlist }) => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-
   const productData = product?.productId || {};
   const { _id, name, price, images, description } = productData;
+
+  console.log(product)
 
   const handleAddToCart = async () => {
     if (!user) return;

@@ -11,44 +11,27 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-align: center;
-  min-width: 80px; /* Ensures consistent button width */
 }
 
-/* Selected state */
 .storage.selected {
-  background: var(--primary-blue-dark); /* Darker shade for selected state */
+  background: var(--primary-blue-dark);
   border: 1px solid var(--primary-blue);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15); /* Subtle shadow for emphasis */
-  transform: scale(1.05); /* Slightly enlarge selected button */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15); 
 }
 
-/* Hover state for non-selected, enabled buttons */
 .storage:hover:not(:disabled):not(.selected) {
   background: var(--primary-blue);
-  transform: scale(1.02); /* Subtle zoom on hover */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Focus state for accessibility */
 .storage:focus {
   outline: 2px solid var(--primary-blue);
   outline-offset: 2px;
 }
 
-/* Disabled state */
-.storage:disabled {
-  background: var(--gray-border-light);
-  color: var(--gray-muted);
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Container for storage buttons to ensure proper layout */
 .storageContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
 }
 
 /* Responsive adjustments */
@@ -87,7 +70,6 @@
 }
 .storage {
   padding: 8px 16px;
-  margin: 8px;
   border-radius: 8px;
   background: var(--primary-blue-light);
   color: var(--white);

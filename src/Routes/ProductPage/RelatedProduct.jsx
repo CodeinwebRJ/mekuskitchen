@@ -45,7 +45,8 @@ const RelatedProduct = () => {
   return (
     <div className={style.relatedProductContainer}>
       <Heading title="RELATED PRODUCTS" size="xs" />
-      {showSlider && (
+
+      {productCount > 4 ? (
         <div className={style.sliderWrapper}>
           {showArrows && (
             <div
@@ -101,6 +102,14 @@ const RelatedProduct = () => {
               <MdKeyboardDoubleArrowLeft className={style.nextArrowIcon} />
             </div>
           )}
+        </div>
+      ) : (
+        <div className={style.simpleGridWrapper}>
+          {relatedProduct.map((card, index) => (
+            <div key={index} className={style.relatedProductCard}>
+              <RelatedProductCard item={card} />
+            </div>
+          ))}
         </div>
       )}
     </div>

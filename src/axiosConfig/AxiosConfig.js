@@ -15,6 +15,10 @@ export const getTopRatedProduct = async () => {
   return axiosInstance.get("/api/v1/review/product/top-rated");
 };
 
+export const getProductById = async (id) => {
+  return axiosInstance.get(`/api/v1/product/${id}`);
+};
+
 export const addProductReview = async (data) => {
   return axiosInstance.post("/api/v1/review/addreview", data);
 };
@@ -85,5 +89,3 @@ export const RemoveWishlist = async (data) => {
 export const getCategory = async () => {
   return axiosInstance.get("/api/v1/C/get/category");
 };
-
-

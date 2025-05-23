@@ -13,6 +13,7 @@ import {
 import { toggleLiked } from "../../../Store/Slice/UserWishlistSlice";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
+import RatingStar from "../RatingStar";
 
 const RelatedProductCard = ({ item }) => {
   const { pathname } = useLocation();
@@ -20,13 +21,14 @@ const RelatedProductCard = ({ item }) => {
   const isLiked = useSelector((state) => state.wishlist?.likedMap?.[item._id]);
   const { user } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
+  const { page } = useSelector((state) => state.product);
 
   const dispatch = useDispatch();
 
   const isTiffin = category[1] === "tiffin";
   const linkPath = isTiffin
     ? `/product/tiffin/${String(item.day || "").toLowerCase()}`
-    : `/product/${(item?.category || "").toLowerCase()}/${String(
+    : `/product/${(item?.category || "").toLowerCase()}/${page}/${String(
         item?.name || ""
       ).toLowerCase()}`;
 
@@ -105,6 +107,14 @@ const RelatedProductCard = ({ item }) => {
           <p className={style.relatedProductTitle}>
             {displayTitle || "Unnamed Product"}
           </p>
+          <div className={style.rating}>
+            <RatingStar
+              rating={item?.averageRating}
+              start={0}
+              stop={5}
+              disabled
+            />
+          </div>
           <div className={style.PriceContainer}>
             {/* <p className="originalPrice">${displayPrice}</p> */}
             <p className="price">${displayPrice}</p>

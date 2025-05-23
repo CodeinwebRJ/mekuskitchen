@@ -26,7 +26,9 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   useEffect(() => {
-    fetchUserCart();
+    if (user?.userid) {
+      fetchUserCart();
+    }
   }, [isOpen]);
 
   const handleDelete = async (id, type, dayName = null) => {

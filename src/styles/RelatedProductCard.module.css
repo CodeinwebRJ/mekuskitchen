@@ -14,7 +14,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 8px 0;
+  padding: 8px 0px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
 }
 
 .wishlist {
@@ -62,7 +67,6 @@
 .contentWrapper {
   display: flex;
   flex-direction: column;
-  gap: 8px;
   flex: 1;
   justify-content: space-between;
 }

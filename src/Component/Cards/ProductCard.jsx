@@ -9,24 +9,66 @@ import {
   RemoveWishlist,
 } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
-import { toggleLiked } from "../../../Store/Slice/UserWishlistSlice";
+import {
+  setWishlist,
+  toggleLiked,
+} from "../../../Store/Slice/UserWishlistSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Toast } from "../../Utils/Toast";
+import { useState, useEffect } from "react";
+import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 
 const ProductCard = ({ product, grid }) => {
   const user = useSelector((state) => state.auth.user);
-  const isLiked = useSelector(
+  const isLikedFromStore = useSelector(
     (state) => state.wishlist?.likedMap?.[product._id]
   );
   const Cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const [isLikedLocal, setIsLikedLocal] = useState(false);
+
+  const { page } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    if (!user?.userid) {
+      const localWishlist = JSON.parse(localStorage.getItem("whislist")) || [];
+      const exists = localWishlist.some((item) => item._id === product._id);
+      setIsLikedLocal(exists);
+    }
+  }, [product._id, user]);
 
   const handleAddToCart = async () => {
-    if (!user) return;
+    if (!user.userid) {
+      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const exists = localCart.find((item) => item._id === product._id);
+
+      if (exists) {
+        const updatedCart = localCart.map((item) => {
+          if (item._id === product._id) {
+            return { ...item, quantity: item.quantity + 1 };
+          }
+          return item;
+        });
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        Toast({ message: "Product added to cart!", type: "success" });
+        dispatch(setCart(updatedCart));
+      } else {
+        localCart.push({
+          ...product,
+          quantity: 1,
+          price: product.price,
+        });
+        localStorage.setItem("cart", JSON.stringify(localCart));
+        Toast({ message: "Product added to cart!", type: "success" });
+        dispatch(setCart(localCart));
+      }
+      return;
+    }
     if (Cart?.items?.tiffins?.length > 0) {
       Toast({ message: "Tiffin is already added to cart!", type: "error" });
       return;
     }
+
     try {
       const res = await AddtoCart({
         user_id: user.userid,
@@ -44,24 +86,52 @@ const ProductCard = ({ product, grid }) => {
   };
 
   const handleWishlistToggle = async () => {
-    if (!user) return;
+    if (!user?.userid) {
+      const localWishlist = JSON.parse(localStorage.getItem("whislist")) || [];
+      const exists = localWishlist.some((item) => item._id === product._id);
+
+      if (exists) {
+        const updatedWishlist = localWishlist.filter(
+          (item) => item._id !== product._id
+        );
+        localStorage.setItem("whislist", JSON.stringify(updatedWishlist));
+        setIsLikedLocal(false);
+        Toast({ message: "Removed from wishlist!", type: "success" });
+        dispatch(setWishlist(updatedWishlist));
+        dispatch(setWishlistCount(updatedWishlist.length));
+      } else {
+        localWishlist.push(product);
+        localStorage.setItem("whislist", JSON.stringify(localWishlist));
+        setIsLikedLocal(true);
+        Toast({ message: "Added to wishlist!", type: "success" });
+        dispatch(setWishlist(localWishlist));
+        dispatch(setWishlistCount(localWishlist.length));
+      }
+      console.log(localWishlist);
+      return;
+    }
 
     try {
-      if (isLiked) {
+      if (isLikedFromStore) {
         await RemoveWishlist({ userid: user.userid, product_id: product._id });
+        Toast({ message: "Removed from wishlist!", type: "success" });
       } else {
         await AddtoWishlist({ userid: user.userid, product_id: product._id });
+        Toast({ message: "Added to wishlist!", type: "success" });
       }
       dispatch(toggleLiked(product._id));
     } catch (error) {
       console.error("Wishlist operation failed:", error);
+      Toast({ message: "Failed to update wishlist.", type: "error" });
     }
   };
+
+  const isLiked = user?.userid ? isLikedFromStore : isLikedLocal;
 
   return (
     <div className={style.productCard}>
       <Link
-        to={`/product/${product?.category.toLowerCase()}/${product.name.toLowerCase()}`}
+        to={`/product/${product?.category.toLowerCase()}/${page}/${product.name.toLowerCase()}`}
         state={{ id: product._id }}
       >
         <div
