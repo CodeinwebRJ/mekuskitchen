@@ -9,10 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const sidebarRef = useRef(null);
+
+  console.log(Cart)
 
   const navigate = useNavigate();
 
@@ -41,7 +43,6 @@ const Sidebar = ({ isOpen, onClose }) => {
         tiffinMenuId: type === "tiffin" ? id : undefined,
         day: type === "tiffin" ? dayName : undefined,
       };
-
       const res = await UpdateUserCart(data);
       dispatch(setCart(res.data.data));
     } catch (error) {
@@ -129,7 +130,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             ))}
           </div>
-        )}
+        )}  
 
         {Cart?.items?.tiffins?.length > 0 && (
           <div className={style.cartContainer}>

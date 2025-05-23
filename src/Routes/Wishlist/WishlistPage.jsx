@@ -41,8 +41,6 @@ const WishlistPage = () => {
     { id: 2, label: "Sort by price: high to low", value: "priceHighToLow" },
   ];
 
-  console.log(items);
-
   return (
     <div>
       <Header />
@@ -68,18 +66,6 @@ const WishlistPage = () => {
           <div>
             <Loading />
           </div>
-        ) : isAuthenticated ? (
-          items?.items?.length > 0 ? (
-            items.items?.map((product, index) => (
-              <WishlistItem
-                key={product._id || index}
-                product={product}
-                fetchWishlist={fetchWishlist}
-              />
-            ))
-          ) : (
-            <p>No items in wishlist.</p>
-          )
         ) : items?.length > 0 ? (
           items?.map((product, index) => (
             <WishlistItem

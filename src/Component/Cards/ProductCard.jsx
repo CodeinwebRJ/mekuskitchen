@@ -19,15 +19,15 @@ import { useState, useEffect } from "react";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 
 const ProductCard = ({ product, grid }) => {
-  const user = useSelector((state) => state.auth.user);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const isLikedFromStore = useSelector(
     (state) => state.wishlist?.likedMap?.[product._id]
   );
+
   const Cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [isLikedLocal, setIsLikedLocal] = useState(false);
-
-  const { page } = useSelector((state) => state.product);
+  const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
   useEffect(() => {
     if (!user?.userid) {
@@ -107,16 +107,15 @@ const ProductCard = ({ product, grid }) => {
         dispatch(setWishlist(localWishlist));
         dispatch(setWishlistCount(localWishlist.length));
       }
-      console.log(localWishlist);
       return;
     }
 
     try {
       if (isLikedFromStore) {
-        await RemoveWishlist({ userid: user.userid, product_id: product._id });
+        await RemoveWishlist({ userid: user.userid, productId: product._id });
         Toast({ message: "Removed from wishlist!", type: "success" });
       } else {
-        await AddtoWishlist({ userid: user.userid, product_id: product._id });
+        await AddtoWishlist({ userid: user.userid, productId: product._id });
         Toast({ message: "Added to wishlist!", type: "success" });
       }
       dispatch(toggleLiked(product._id));
@@ -126,12 +125,10 @@ const ProductCard = ({ product, grid }) => {
     }
   };
 
-  const isLiked = user?.userid ? isLikedFromStore : isLikedLocal;
-
   return (
     <div className={style.productCard}>
       <Link
-        to={`/product/${product?.category.toLowerCase()}/${page}/${product.name.toLowerCase()}`}
+        to={`/product/${product?.category.toLowerCase()}/${product.name.toLowerCase()}`}
         state={{ id: product._id }}
       >
         <div

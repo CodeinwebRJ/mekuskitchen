@@ -6,11 +6,9 @@ import {
   setGrid,
   setPage,
 } from "../../../Store/Slice/ProductSlice.jsx";
-import { setWishlist } from "../../../Store/Slice/UserWishlistSlice.jsx";
 import {
   getCategory,
   getTopRatedProduct,
-  getUserWishlist,
 } from "../../axiosConfig/AxiosConfig.js";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
@@ -33,7 +31,6 @@ const FoodPage = () => {
 
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
   const { priceRange, grid, loading, error, products } = useSelector(
     (state) => state.product
   );

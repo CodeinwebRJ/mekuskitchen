@@ -37,7 +37,6 @@ import WishlistPage from "./Routes/Wishlist/WishlistPage.jsx";
 import RefundPolicyPage from "./Routes/RefundPolicy/RefundPolicyPage.jsx";
 import PrivecyPolicyPage from "./Routes/PrivacyPolicy/PrivecyPolicyPage.jsx";
 import CheckoutPage from "./Routes/CheckOut/CheckoutPage.jsx";
-import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import ForgetPassword from "./Routes/ForgetPassword/ForgetPassword.jsx";
 import VeryfyOtp from "./Routes/VeryfyOtp/VeryfyOtp.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
@@ -159,7 +158,7 @@ const App = () => {
         <Route path="/daily-tiffin" element={<DailyTiffinPage />} />
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
-        <Route path="/product/:category/:page/:id" element={<ProductPage />} />
+        <Route path="/product/:category/:id" element={<ProductPage />} />
         <Route path="/product/tiffin/:id" element={<TiffinProductPage />} />
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<CheckoutPage />} />

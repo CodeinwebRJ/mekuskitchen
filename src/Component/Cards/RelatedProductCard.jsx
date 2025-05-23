@@ -21,14 +21,13 @@ const RelatedProductCard = ({ item }) => {
   const isLiked = useSelector((state) => state.wishlist?.likedMap?.[item._id]);
   const { user } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
-  const { page } = useSelector((state) => state.product);
 
   const dispatch = useDispatch();
 
   const isTiffin = category[1] === "tiffin";
   const linkPath = isTiffin
     ? `/product/tiffin/${String(item.day || "").toLowerCase()}`
-    : `/product/${(item?.category || "").toLowerCase()}/${page}/${String(
+    : `/product/${(item?.category || "").toLowerCase()}/${String(
         item?.name || ""
       ).toLowerCase()}`;
 
