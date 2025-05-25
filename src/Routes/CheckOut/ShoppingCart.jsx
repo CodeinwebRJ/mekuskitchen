@@ -18,7 +18,7 @@ const ShoppingCart = () => {
   const dispatch = useDispatch();
   const [showProduct, setShowProduct] = useState(false);
   const [productData, setProductData] = useState(null);
-  const User = useSelector((state) => state.auth.user);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
   const taxRate = 0.05;
 
@@ -42,7 +42,7 @@ const ShoppingCart = () => {
         if (newQuantity < 1) return;
 
         data = {
-          user_id: User?.userid,
+          user_id: user?.userid,
           type: "product",
           product_id: currentItem.product_id,
           quantity: newQuantity,
@@ -55,7 +55,7 @@ const ShoppingCart = () => {
         if (newQuantity < 1) return;
 
         data = {
-          user_id: User?.userid,
+          user_id: user?.userid,
           type: "tiffin",
           tiffinMenuId: currentItem.tiffinMenuId,
           quantity: newQuantity,
@@ -75,7 +75,7 @@ const ShoppingCart = () => {
   const handleDelete = async (id, type, dayName = null) => {
     try {
       const data = {
-        user_id: User?.userid,
+        user_id: user?.userid,
         type: type,
         quantity: 0,
         product_id: type === "product" ? id : undefined,
@@ -109,7 +109,9 @@ const ShoppingCart = () => {
         <Header />
         <Banner name={"CART"} />
 
-        {Cart?.items?.items?.length > 0 || Cart?.items?.tiffins?.length > 0 ? (
+        {isAuthenticated ? (
+          Cart?.items?.items?.length > 0
+        ) : Cart?.items.length > 0 || Cart?.items?.tiffins?.length > 0 ? (
           <div className={style.cartContainer}>
             <div className={style.cartItems}>
               <table className={style.cartTable}>
@@ -123,57 +125,61 @@ const ShoppingCart = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {Cart?.items?.items?.map((item, index) => (
-                    <tr key={index} className={style.cartItem}>
-                      <td>
-                        <div className={style.removeCell}>
-                          <RxCross2
-                            className={style.removeIcon}
-                            onClick={() =>
-                              handleDelete(item.product_id, "product")
-                            }
-                          />
-                          <FaEye onClick={() => handleShowProduct(item._id)} />
-                        </div>
-                      </td>
-                      <td>
-                        <div className={style.productCell}>
-                          <img
-                            src={item?.productDetails?.images[0].url}
-                            alt="product"
-                            className={style.cartItemImage}
-                          />
-                          <span>{item?.productDetails?.name}</span>
-                        </div>
-                      </td>
-                      <td>${item?.price}</td>
-                      <td>
-                        <div className={style.quantityControl}>
-                          <button
-                            onClick={() =>
-                              updateItemQuantity(item._id, -1, "product")
-                            }
-                            disabled={item.quantity <= 1}
-                          >
-                            <FaMinus size={14} />
-                          </button>
-                          <span className={style.quantity}>
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              updateItemQuantity(item._id, 1, "product")
-                            }
-                          >
-                            <FaPlus size={14} />
-                          </button>
-                        </div>
-                      </td>
-                      <td className={style.totalPrice}>
-                        ${item.price * item.quantity}
-                      </td>
-                    </tr>
-                  ))}
+                  {(isAuthenticated ? Cart?.items?.items : Cart?.items)?.map(
+                    (item, index) => (
+                      <tr key={index} className={style.cartItem}>
+                        <td>
+                          <div className={style.removeCell}>
+                            <RxCross2
+                              className={style.removeIcon}
+                              onClick={() =>
+                                handleDelete(item.product_id, "product")
+                              }
+                            />
+                            <FaEye
+                              onClick={() => handleShowProduct(item._id)}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className={style.productCell}>
+                            <img
+                              src={item?.productDetails?.images?.[0]?.url}
+                              alt="product"
+                              className={style.cartItemImage}
+                            />
+                            <span>{item?.productDetails?.name}</span>
+                          </div>
+                        </td>
+                        <td>${item?.price}</td>
+                        <td>
+                          <div className={style.quantityControl}>
+                            <button
+                              onClick={() =>
+                                updateItemQuantity(item._id, -1, "product")
+                              }
+                              disabled={item.quantity <= 1}
+                            >
+                              <FaMinus size={14} />
+                            </button>
+                            <span className={style.quantity}>
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                updateItemQuantity(item._id, 1, "product")
+                              }
+                            >
+                              <FaPlus size={14} />
+                            </button>
+                          </div>
+                        </td>
+                        <td className={style.totalPrice}>
+                          ${item.price * item.quantity}
+                        </td>
+                      </tr>
+                    )
+                  )}
 
                   {Cart?.items?.tiffins?.map((tiffin, index) => (
                     <tr key={index} className={style.cartItem}>
@@ -235,7 +241,7 @@ const ShoppingCart = () => {
                           </button>
                         </div>
                       </td>
-                      <td className="price">
+                      <td className={style.totalPrice}>
                         $
                         {tiffin.tiffinMenuDetails?.totalAmount *
                           tiffin.quantity}

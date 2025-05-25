@@ -10,7 +10,13 @@ import Button from "../../Component/Buttons/Button";
 import { Toast } from "../../Utils/Toast";
 import { AddtoCart, getProductById } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaHeart,
+  FaLinkedinIn,
+  FaRegHeart,
+  FaTwitter,
+} from "react-icons/fa";
 import { BiLogoInstagramAlt } from "react-icons/bi";
 import Tabs from "../../Component/UI-Components/Tabs";
 import Chip from "../../Component/Buttons/Chip";
@@ -63,6 +69,7 @@ const ProductPage = () => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const isLiked = useSelector((state) => state.wishlist?.likedMap?.[id]);
 
   const defaultImage = "/defaultImage.png";
 
@@ -119,7 +126,7 @@ const ProductPage = () => {
     };
 
     fetchProduct();
-  }, [id, navigate]);
+  }, [id]);
 
   useEffect(() => {
     if (
@@ -243,6 +250,14 @@ const ProductPage = () => {
     ) {
       Toast({
         message: "Please select all required options",
+        type: "error",
+      });
+      return;
+    }
+
+    if (!selectedCombination) {
+      Toast({
+        message: "Selected configuration is unavailable",
         type: "error",
       });
       return;
@@ -384,7 +399,12 @@ const ProductPage = () => {
           </div>
 
           <div className={style.productDetails}>
-            <h1>{product.name.toUpperCase()}</h1>
+            <div>
+              <h1>{product.name.toUpperCase()}</h1>
+              <div className={style.wishlist}>
+                {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
+              </div>
+            </div>
             <div className={style.priceContainer}>
               <p className="originalPrice">${product?.price}</p>
               <p className="price">
@@ -394,6 +414,12 @@ const ProductPage = () => {
                   product?.price}
               </p>
             </div>
+
+            {/* Display unavailability message */}
+            {!selectedCombination &&
+              Object.keys(selectedOptions).length > 0 && (
+                <p className={style.unavailableMessage}>Unavailable</p>
+              )}
 
             {product.category && (
               <p>
@@ -439,7 +465,12 @@ const ProductPage = () => {
                 +
               </button>
               <div className={style.addToCartContainer}>
-                <Button onClick={handleAddToCart} variant="primary" size="sm">
+                <Button
+                  onClick={handleAddToCart}
+                  variant="primary"
+                  size="sm"
+                  disabled={isAddingToCart || !selectedCombination}
+                >
                   {isAddingToCart ? "Adding..." : "ADD TO CART"}
                 </Button>
               </div>

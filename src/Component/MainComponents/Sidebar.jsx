@@ -13,9 +13,6 @@ const Sidebar = ({ isOpen, onClose }) => {
   const Cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const sidebarRef = useRef(null);
-
-  console.log(Cart)
-
   const navigate = useNavigate();
 
   const fetchUserCart = async () => {
@@ -51,9 +48,11 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   const calculateSubtotal = () => {
-    const subtotal = Cart?.items?.items
-      ?.reduce((acc, item) => acc + item?.price * item?.quantity, 0)
-      .toFixed(2);
+    const subtotal = isAuthenticated
+      ? Cart?.items?.items
+      : Cart.items
+          ?.reduce((acc, item) => acc + item?.price * item?.quantity, 0)
+          .toFixed(2);
     return subtotal;
   };
 
@@ -130,7 +129,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             ))}
           </div>
-        )}  
+        )}
 
         {Cart?.items?.tiffins?.length > 0 && (
           <div className={style.cartContainer}>
@@ -179,6 +178,41 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
+
+        {Cart?.items?.length > 0 && (
+          <div className={style.cartContainer}>
+            {Cart.items.map((item, index) => (
+              <div className={style.cartItem} key={item._id || index}>
+                <div className={style.cartItemImageContainer}>
+                  <img
+                    src={item?.images?.[0].url || "/default-image.jpg"}
+                    alt={item.day || "Tiffin item"}
+                    className={style.cartItemImage}
+                  />
+                </div>
+
+                <div className={style.cartItemDetails}>
+                  <div>
+                    <p className={style.cartItemName}>
+                      {item?.name?.toUpperCase()}
+                    </p>
+                    <p className={style.cartItemCalculation}>
+                      <span className={style.quantity}>{item.quantity}</span>
+                      <span className={style.multiply}>×</span>
+                      <span className={style.price}>${item?.sellingPrice}</span>
+                    </p>
+                  </div>
+                  <div
+                    className={style.deleteButton}
+                    onClick={() => handleDelete(item.product_id, "product")}
+                  >
+                    <BsTrash className={style.deleteIcon} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
