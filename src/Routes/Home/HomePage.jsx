@@ -65,8 +65,6 @@ const HomePage = () => {
     <div>
       <Header />
       <Carousel />
-
-      {/* Categories Section */}
       <div className={style.section}>
         <div className={style.container}>
           <h2 className={style.sectionTitle}>Explore Categories</h2>
@@ -90,7 +88,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* New Arrivals Section */}
       <div className={style.sectionAlt}>
         <div className={style.container}>
           <h2 className={style.sectionTitle}>New Arrivals</h2>
@@ -111,7 +108,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Our Products Section */}
       <div className={style.section}>
         <div className={style.container}>
           <h2 className={style.sectionTitle}>Our Products</h2>
