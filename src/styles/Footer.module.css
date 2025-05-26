@@ -47,7 +47,7 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-4);
   border-radius: 4px;
   transition: all 0.3s ease;
 }
@@ -81,7 +81,7 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-5);
   transition: color 0.3s ease;
 }
 
@@ -121,7 +121,7 @@
 @media (max-width: 768px) {
   .footerContainer {
     flex-direction: column;
-    gap: 30px;
+    gap: var(--gap-11);
   }
 
   .footerColumn {
@@ -130,6 +130,6 @@
 
   .footerBottom {
     flex-direction: column;
-    gap: 20px;
+    gap: var(--gap-9);
   }
 }

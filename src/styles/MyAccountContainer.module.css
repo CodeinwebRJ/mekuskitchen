@@ -37,13 +37,13 @@
 }
 
 .sideTitle {
-  padding: 7px 15px;
+  padding: 8px 16px;
   cursor: pointer;
 }
 
 .sideTitleActive {
   width: 100%;
-  padding: 7px 15px;
+  padding: 8px 16px;
   cursor: pointer;
   background-color: var(--blue-soft-overlay);
 }

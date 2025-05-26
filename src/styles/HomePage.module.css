@@ -1,15 +1,15 @@
 .section {
-  padding: 4rem 0;
+  padding: 64px 0;
 }
 
 .sectionAlt {
-  padding: 4rem 0;
+  padding: 64px 0;
   background-color: #f3f4f6;
 }
 
 .container {
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 16px;
 }
 
 .sectionTitle {
@@ -24,8 +24,8 @@
 .categoryGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+  gap: var(--gap-12);
+  padding: 32px;
 }
 
 .categoryItem {
@@ -48,13 +48,14 @@
 .productGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+  gap: var(--gap-12);
+  padding: 32px;
 }
+
 .productItem {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--gap-2);
 }
 
 .productItemImg {
@@ -71,14 +72,14 @@
 
 .price {
   color: #16a34a;
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 600;
 }
 
 .addToCart {
   background: #3b82f6;
   color: white;
-  padding: 0.5rem 2rem;
+  padding: 8px 32px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -96,11 +97,11 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero {
-    padding: 4rem 1rem;
+    padding: 64px 16px;
   }
 
   .sectionTitle {
-    font-size: 2rem;
+    font-size: 32px;
   }
 
   .categoryItemImg,
@@ -111,7 +112,7 @@
   .categoryGrid,
   .productGrid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
+    gap: var(--gap-8);
+    padding: 16px;
   }
 }

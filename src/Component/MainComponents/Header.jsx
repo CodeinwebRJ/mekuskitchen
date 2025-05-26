@@ -59,15 +59,13 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!isAuthenticated) {
       try {
-        // Retrieve and parse wishlist from localStorage
         const wishlist = localStorage.getItem("wishlist");
         const parsedWishlist = wishlist ? JSON.parse(wishlist) : [];
         dispatch(setWishlist(parsedWishlist));
         dispatch(setWishlistCount(parsedWishlist.length));
 
-        // Retrieve and parse cart from localStorage
         const cartData = localStorage.getItem("cart");
         const parsedCart = cartData ? JSON.parse(cartData) : [];
         dispatch(setCart(parsedCart));
@@ -78,15 +76,20 @@ const Header = () => {
         dispatch(setCart([]));
       }
     }
-  }, [isAuthenticated, dispatch]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    const productItemsCount =
-      cart?.items?.length > 0
-        ? cart.items.reduce((acc, item) => acc + (item?.quantity || 0), 0)
-        : 0;
-    dispatch(setCartCount(productItemsCount));
-  }, [cart, dispatch]);
+    if (!isAuthenticated) {
+      const productItemsCount =
+        cart?.items?.length > 0
+          ? cart.items.reduce((acc, item) => acc + (item?.quantity || 0), 0)
+          : 0;
+      dispatch(setCartCount(productItemsCount));
+    }
+  }, [isAuthenticated, cart]);
+
+  console.log("Cart Count:", cartCount);
+  console.log("Wishlist Count:", wishlistCount);
 
   return (
     <header className={style.header}>

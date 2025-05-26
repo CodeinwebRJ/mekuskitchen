@@ -1,5 +1,5 @@
 .aboutContainer {
-  padding: 50px 15px;
+  padding: 48px 16px;
   max-width: 1250px;
   margin: 0 auto;
 }
@@ -123,7 +123,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--gap-1);
-  padding: 25px 0;
+  padding: 24px 0;
   width: 100%;
 }
 
@@ -137,7 +137,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--gap-1);
-  padding: 25px 0;
+  padding: 24px 0;
   width: 100%;
   border-top: 1px solid var(--gray-medium-transparent);
 }

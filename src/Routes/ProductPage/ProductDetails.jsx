@@ -89,9 +89,9 @@ const ProductDetails = ({
         <h1>{product?.name?.toUpperCase() || "Product Name"}</h1>
         <div className={style.wishlist} onClick={handleWishlistToggle}>
           {isLiked ? (
-            <FaHeart color="red" size={18} aria-label="Remove from wishlist" />
+            <FaHeart color="red" size={20} aria-label="Remove from wishlist" />
           ) : (
-            <FaRegHeart size={18} aria-label="Add to wishlist" />
+            <FaRegHeart size={20} aria-label="Add to wishlist" />
           )}
         </div>
       </div>

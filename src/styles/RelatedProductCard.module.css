@@ -4,7 +4,7 @@
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--gap-4);
   cursor: pointer;
   transition: transform 0.2s ease;
   border: 1px solid var(--gray-border);
@@ -13,7 +13,7 @@
 .PriceContainer {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap-4);
   padding: 8px 0px;
 }
 
@@ -47,7 +47,7 @@
   justify-content: center;
   background-color: var(--white);
   overflow: hidden;
-  gap: 8px;
+  gap: var(--gap-4);
 }
 
 .relatedProductImg {

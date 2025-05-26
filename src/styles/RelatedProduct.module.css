@@ -8,8 +8,8 @@
 .sliderWrapper {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.5rem 0;
+  gap: var(--gap-8);
+  padding: 8px 0;
   width: 100%;
 }
 
@@ -17,7 +17,7 @@
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--gap-9);
   justify-content: flex-start;
 }
 
@@ -60,7 +60,7 @@
   }
 
   .relatedProductCard {
-    padding: 0.25rem;
+    padding: 4px;
   }
 }
 
@@ -70,7 +70,7 @@
   }
 
   .sliderWrapper {
-    gap: 0.5rem;
-    padding: 0.25rem 0;
+    gap: var(--gap-4);
+    padding: 4px 0;
   }
 }

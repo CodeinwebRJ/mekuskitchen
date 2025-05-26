@@ -33,7 +33,7 @@
   font-size: var(--font-lg);
   font-weight: var(--font-semibold);
   position: relative;
-  padding: 3px 8px;
+  padding: 4px 8px;
 }
 
 .link::before {

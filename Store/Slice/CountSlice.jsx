@@ -13,7 +13,6 @@ const countSlice = createSlice({
       state.cartCount = action.payload;
     },
     setWishlistCount(state, action) {
-      console.log(action.payload)
       state.wishlistCount = action.payload;
     },
   },

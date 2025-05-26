@@ -12,10 +12,15 @@
   text-align: center;
 }
 
-.LikeContainer{
+.LikeContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.wishlist {
+  cursor: pointer;
+  padding: 4px;
 }
 
 .unavailableMessage {
@@ -27,12 +32,12 @@
   background: var(--primary-blue-dark);
   color: var(--white);
   border: 1px solid var(--primary-blue);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15); 
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .storage:hover:not(:disabled):not(.selected) {
   background: var(--primary-blue);
-  color: var(--white)
+  color: var(--white);
 }
 
 .storage:focus {
@@ -43,7 +48,7 @@
 .storageContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--gap-4);
 }
 
 /* Responsive adjustments */
@@ -72,12 +77,12 @@
 .Chip {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--gap-4);
   padding: 8px 0px;
 }
 .colorContainer {
   display: flex;
-  gap: 12px;
+  gap: var(--gap-6);
   align-items: center;
 }
 .storage {
@@ -90,7 +95,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: var(--gap-9);
 }
 
 .breadcrumb {
@@ -193,7 +198,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--gap-8);
 }
 
 .priceContainer {

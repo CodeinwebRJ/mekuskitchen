@@ -66,7 +66,7 @@
 .orderCard {
   border: 1px solid var(--light-cool-gray);
   border-radius: 12px;
-  padding: 25px;
+  padding: 24px;
   background-color: var(--white);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
   width: 100%;
@@ -99,7 +99,7 @@
 
 .paymentMethod {
   margin-top: 25px;
-  padding: 15px;
+  padding: 14px;
   background-color: var(--very-light-cool-gra);
   border-radius: 6px;
   text-align: center;
@@ -129,7 +129,7 @@
 @media (max-width: 768px) {
   .checkoutContianer {
     grid-template-columns: 1fr;
-    padding: 30px 15px;
+    padding: 30px 16px;
   }
 
   .orderCard {

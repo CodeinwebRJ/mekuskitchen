@@ -44,7 +44,7 @@ import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 const App = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const {
     page,
     limit,
@@ -132,21 +132,24 @@ const App = () => {
       setFetchError("Failed to fetch wishlist.");
       console.error("Error fetching wishlist:", error);
     }
-  }, [dispatch, user?.userid]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetchTiffin();
-    if (user?.userid) {
-      fetchAddresses();
-      fetchWishlist();
-    }
   }, []);
 
   useEffect(() => {
-    if (user?.userid) {
+    if (isAuthenticated) {
+      fetchAddresses();
+      fetchWishlist();
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
       fetchCount();
     }
-  }, [JSON.stringify(Cart), JSON.stringify(isLiked)]);
+  }, [isAuthenticated, JSON.stringify(Cart), JSON.stringify(isLiked)]);
 
   return (
     <div>

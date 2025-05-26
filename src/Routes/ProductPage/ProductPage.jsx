@@ -97,6 +97,8 @@ const ProductPage = () => {
   if (loading) return <Loading />;
   if (!product) return <p>Product not found</p>;
 
+  
+
   return (
     <div>
       <Header />

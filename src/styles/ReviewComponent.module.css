@@ -28,14 +28,14 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 16px;
+  gap: var(--gap-8);
 }
 
 .formGroup {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--gap-4);
 }
 
 .submitContainer {
@@ -85,7 +85,7 @@
 .reviewList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--gap-6);
   margin: 8px 0px;
 }
 
@@ -103,7 +103,7 @@
 .reviewHeader {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--gap-8);
   margin-bottom: 12px;
 }
 
@@ -127,7 +127,7 @@
 
 .reviewRating {
   display: flex;
-  gap: 4px;
+  gap: var(--gap-4);
   margin-top: 4px;
 }
 
