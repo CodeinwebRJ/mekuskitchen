@@ -88,9 +88,6 @@ const Header = () => {
     }
   }, [isAuthenticated, cart]);
 
-  console.log("Cart Count:", cartCount);
-  console.log("Wishlist Count:", wishlistCount);
-
   return (
     <header className={style.header}>
       <Link to="/" className={style.logo}>

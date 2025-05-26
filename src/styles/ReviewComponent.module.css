@@ -46,7 +46,7 @@
 
 .label {
   font-weight: 600;
-  color: #444;
+  color: var(--dark-gray);
   font-size: 0.95rem;
 }
 
@@ -58,7 +58,7 @@
 .textarea {
   width: 100%;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray-border-light);
   font-size: 1rem;
   padding: 8px;
 }
@@ -75,7 +75,7 @@
 }
 
 .noReviews {
-  color: #777;
+  color: var(--gray-darker);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +122,7 @@
 .reviewUser {
   font-size: 1rem;
   font-weight: 600;
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .reviewRating {
@@ -133,7 +133,7 @@
 
 .reviewComment {
   font-size: 0.95rem;
-  color: #555;
+  color: var(--gray-steel);
   line-height: 1.6;
 }
 

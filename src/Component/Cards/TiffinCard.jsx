@@ -6,7 +6,7 @@ import { formatDate } from "../../Utils/FormateDate";
 import DateChip from "../Buttons/DateChip";
 import { useSelector, useDispatch } from "react-redux";
 import { AddtoCart } from "../../axiosConfig/AxiosConfig";
-import { Toast } from "../../Utils/Toast"; 
+import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 const TiffinCard = ({ item }) => {
@@ -16,13 +16,6 @@ const TiffinCard = ({ item }) => {
   const Cart = useSelector((state) => state.cart);
 
   const handleAddToCart = async () => {
-    if (!user) {
-      Toast({
-        message: "Please log in to add items to your cart.",
-        type: "error",
-      });
-      return;
-    }
     if (Cart?.items?.items.length > 0) {
       Toast({
         message: "Tiffin is already added to cart!",

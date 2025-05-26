@@ -12,7 +12,7 @@
 }
 
 .dialogbox {
-  background: #fff;
+  background: var(--white);
   padding: 18px;
   border-radius: 8px;
   width: 90%;
@@ -44,7 +44,7 @@
 .dialogmessage {
   margin: 16px 0;
   font-size: 16px;
-  color: #333;
+  color: var(--gray-darkest);
 }
 
 .dialogactions {
@@ -60,12 +60,12 @@
   font-size: 14px;
   cursor: pointer;
   background-color: #e0e0e0;
-  color: #333;
+  color: var(--gray-darkest);
   transition: background-color 0.2s ease;
 }
 
 .dialogbutton:hover {
-  background-color: #ccc;
+  background-color: var(--gray-border-light);
 }
 
 .confirmbutton {

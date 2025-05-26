@@ -208,14 +208,7 @@ const TiffinProductPage = () => {
   const productItems = quantities.items.filter((item) => item.quantity > 0);
 
   const handleSubmit = async () => {
-    if (!user?.userid) {
-      Toast({
-        message: "Please log in to add items to cart",
-        type: "warn",
-      });
-      return;
-    }
-
+    
     if (cart?.items?.items?.length > 0) {
       Toast({
         message: "Cannot add tiffin - cart already contains items",

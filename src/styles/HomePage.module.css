@@ -4,7 +4,7 @@
 
 .sectionAlt {
   padding: 64px 0;
-  background-color: #f3f4f6;
+  background-color: var(--very-light-cool-gray);
 }
 
 .container {

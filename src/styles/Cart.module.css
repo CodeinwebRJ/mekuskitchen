@@ -212,7 +212,7 @@
 .productInfo h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #333;
+  color: var(--gray-darkest);
   margin-bottom: 1rem;
 }
 
@@ -238,7 +238,7 @@
 .productDescription {
   margin-top: 0.5rem;
   line-height: 1.6;
-  color: #555;
+  color: var(--gray-steel);
 }
 
 .productDescription span {

@@ -111,7 +111,7 @@
 }
 
 .filterBtn:hover {
-  background-color: var(--primary-green-dark, #218838);
+  background-color: var(--primary-green-dark);
   transform: translateY(-1px);
 }
 

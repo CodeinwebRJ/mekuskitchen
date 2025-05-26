@@ -1,13 +1,13 @@
 .tabsContainer {
   width: 100%;
   margin: 24px 0px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-border);
   border-radius: 8px;
 }
 
 .tabButtons {
   display: flex;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .tabButton {
@@ -22,7 +22,7 @@
 .active {
   border-bottom: 3px solid #007bff;
   color: #007bff;
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 .tabContent {
