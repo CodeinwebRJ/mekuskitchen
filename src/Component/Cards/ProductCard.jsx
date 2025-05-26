@@ -30,8 +30,8 @@ const ProductCard = ({ product, grid }) => {
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
   useEffect(() => {
-    if (!user?.userid) {
-      const localWishlist = JSON.parse(localStorage.getItem("whislist")) || [];
+    if (!isAuthenticated) {
+      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
       const exists = localWishlist.some((item) => item._id === product._id);
       setIsLikedLocal(exists);
     }
@@ -86,22 +86,22 @@ const ProductCard = ({ product, grid }) => {
   };
 
   const handleWishlistToggle = async () => {
-    if (!user?.userid) {
-      const localWishlist = JSON.parse(localStorage.getItem("whislist")) || [];
+    if (!isAuthenticated) {
+      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
       const exists = localWishlist.some((item) => item._id === product._id);
 
       if (exists) {
         const updatedWishlist = localWishlist.filter(
           (item) => item._id !== product._id
         );
-        localStorage.setItem("whislist", JSON.stringify(updatedWishlist));
+        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
         setIsLikedLocal(false);
         Toast({ message: "Removed from wishlist!", type: "success" });
         dispatch(setWishlist(updatedWishlist));
         dispatch(setWishlistCount(updatedWishlist.length));
       } else {
         localWishlist.push(product);
-        localStorage.setItem("whislist", JSON.stringify(localWishlist));
+        localStorage.setItem("wishlist", JSON.stringify(localWishlist));
         setIsLikedLocal(true);
         Toast({ message: "Added to wishlist!", type: "success" });
         dispatch(setWishlist(localWishlist));

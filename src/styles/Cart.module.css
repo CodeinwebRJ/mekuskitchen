@@ -100,11 +100,11 @@
 
 .cartTotals {
   width: 30%;
+  height: 100%;
   background: var(--white);
   padding: 30px 25px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   transition: all 0.3s ease;
 }
 

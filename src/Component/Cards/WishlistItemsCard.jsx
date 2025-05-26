@@ -42,7 +42,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
 
   const handleDelete = async () => {
     try {
-      await RemoveWishlist({ userid: user.userid, product_id: _id });
+      await RemoveWishlist({ userid: user.userid, productId: product._id });
       Toast({ message: "Item removed from wishlist.", type: "success" });
       fetchWishlist();
     } catch (error) {

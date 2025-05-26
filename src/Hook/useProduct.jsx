@@ -1,9 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getProductById, AddtoCart } from "../axiosConfig/AxiosConfig";
+import {
+  getProductById,
+  AddtoCart,
+  AddtoWishlist,
+  RemoveWishlist,
+} from "../axiosConfig/AxiosConfig";
 import { setCart } from "../../Store/Slice/UserCartSlice";
 import { Toast } from "../Utils/Toast";
+import { setWishlist, toggleLiked } from "../../Store/Slice/UserWishlistSlice";
+import { setWishlistCount } from "../../Store/Slice/CountSlice";
 
 const useProduct = (id) => {
   const navigate = useNavigate();
@@ -16,7 +23,7 @@ const useProduct = (id) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedSKUs, setSelectedSKUs] = useState([]);
+  const [selectedSKUs, setSelectedSKUs] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -28,10 +35,15 @@ const useProduct = (id) => {
     Toast({ message: defaultMessage, type: "error" });
   };
 
-  const getDefaultImage = (product) =>
-    product?.images?.[0]?.url ||
-    product?.sku?.[0]?.details?.SKUImages?.[0] ||
-    defaultImage;
+  const getDefaultImage = (product, sku) => {
+    if (sku?.details?.SKUImages?.length > 0) {
+      return sku.details.SKUImages[0];
+    }
+    if (product?.images?.length > 0) {
+      return product.images[0].url;
+    }
+    return defaultImage;
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,10 +61,10 @@ const useProduct = (id) => {
         setSelectedImage(firstImage);
 
         if (productData?.sku?.length > 1) {
-          const firstSKU = productData.sku[0]?.details || [];
+          const firstSKU = productData.sku[0] || [];
           setSelectedSKUs(firstSKU);
-          if (firstSKU?.combinations?.length > 0) {
-            const firstCombination = firstSKU.combinations[0];
+          if (firstSKU?.details?.combinations?.length > 0) {
+            const firstCombination = firstSKU?.details?.combinations[0];
             const initialOptions = {};
             Object.keys(firstCombination).forEach((key) => {
               if (key !== "Price" && key !== "Stock") {
@@ -79,18 +91,19 @@ const useProduct = (id) => {
   }, [id]);
 
   useEffect(() => {
-    if (
-      selectedSKUs?.combinations?.length === 0 &&
-      Object.keys(selectedOptions).length > 0
-    ) {
-      Toast({ message: "No valid configurations available", type: "error" });
+    if (selectedSKUs?.details?.SKUImages?.length > 0) {
+      setSelectedImage(selectedSKUs.details.SKUImages[0]);
+    } else if (product?.images?.length > 0) {
+      setSelectedImage(product.images[0].url);
+    } else {
+      setSelectedImage(defaultImage);
     }
-  }, [selectedSKUs, selectedOptions]);
+  }, [selectedSKUs, product]);
 
   const availableOptions = useMemo(() => {
-    if (!selectedSKUs?.combinations?.length) return {};
+    if (!selectedSKUs?.details?.combinations?.length) return {};
     const options = {};
-    selectedSKUs.combinations.forEach((combo) => {
+    selectedSKUs?.details?.combinations.forEach((combo) => {
       Object.keys(combo).forEach((key) => {
         if (key !== "Price" && key !== "Stock") {
           if (!options[key]) options[key] = new Set();
@@ -104,8 +117,8 @@ const useProduct = (id) => {
   }, [selectedSKUs]);
 
   const selectedCombination = useMemo(() => {
-    if (!product || !selectedSKUs?.combinations?.length) return null;
-    return selectedSKUs.combinations.find((combo) =>
+    if (!product || !selectedSKUs?.details?.combinations?.length) return null;
+    return selectedSKUs?.details?.combinations.find((combo) =>
       Object.entries(selectedOptions).every(
         ([key, value]) => combo[key] === value
       )
@@ -147,36 +160,29 @@ const useProduct = (id) => {
       return;
     }
 
-    if (
-      Object.keys(availableOptions).length > 0 &&
-      Object.keys(selectedOptions).length !==
-        Object.keys(availableOptions).length
-    ) {
-      Toast({
-        message: "Please select all required options",
-        type: "error",
-      });
-      return;
-    }
-
-    if (!selectedCombination) {
+    if (product.sku.length > 1 && !selectedCombination) {
       Toast({
         message: "Selected configuration is unavailable",
         type: "error",
       });
       return;
     }
-
     setIsAddingToCart(true);
     try {
       const price = selectedCombination?.Price || product.price;
+
       const cartData = {
         user_id: user.userid,
         isTiffinCart: false,
         product_id: product._id,
         quantity,
         price,
-        ...selectedOptions,
+        ...(product.sku?.length > 1 && selectedSKUs?._id
+          ? { skuId: selectedSKUs._id }
+          : {}),
+        ...(product.sku?.length > 1 && selectedCombination
+          ? { combination: { ...selectedCombination } }
+          : {}),
       };
 
       const res = await AddtoCart(cartData);
@@ -189,26 +195,71 @@ const useProduct = (id) => {
     }
   };
 
+  const isLikedFromStore = useSelector(
+    (state) => state.wishlist?.likedMap?.[id]
+  );
+
+  const handleWishlistToggle = async () => {
+    if (!user?.userid) {
+      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const exists = localWishlist.some((item) => item._id === product._id);
+
+      if (exists) {
+        const updatedWishlist = localWishlist.filter(
+          (item) => item._id !== product._id
+        );
+        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+        setIsLikedLocal(false);
+        Toast({ message: "Removed from wishlist!", type: "success" });
+        dispatch(setWishlist(updatedWishlist));
+        dispatch(setWishlistCount(updatedWishlist.length));
+      } else {
+        localWishlist.push(product);
+        localStorage.setItem("wishlist", JSON.stringify(localWishlist));
+        setIsLikedLocal(true);
+        Toast({ message: "Added to wishlist!", type: "success" });
+        dispatch(setWishlist(localWishlist));
+        dispatch(setWishlistCount(localWishlist.length));
+      }
+      return;
+    }
+
+    try {
+      if (isLikedFromStore) {
+        await RemoveWishlist({ userid: user.userid, productId: product._id });
+        Toast({ message: "Removed from wishlist!", type: "success" });
+      } else {
+        await AddtoWishlist({ userid: user.userid, productId: product._id });
+        Toast({ message: "Added to wishlist!", type: "success" });
+      }
+      dispatch(toggleLiked(product._id));
+    } catch (error) {
+      console.error("Wishlist operation failed:", error);
+      Toast({ message: "Failed to update wishlist.", type: "error" });
+    }
+  };
+
   return {
     product,
     selectedImage,
-    setSelectedImage,
     selectedSKUs,
-    setSelectedSKUs,
-    selectedOptions,
-    setSelectedOptions,
     quantity,
-    setQuantity,
+    selectedOptions,
     reviews,
-    setReviews,
     rating,
-    setRating,
     review,
-    setReview,
     selectedCombination,
     availableOptions,
-    handleAddToCart,
     isAddingToCart,
+    setSelectedImage,
+    setSelectedSKUs,
+    setQuantity,
+    setSelectedOptions,
+    setReviews,
+    setRating,
+    setReview,
+    handleAddToCart,
+    handleWishlistToggle,
   };
 };
 

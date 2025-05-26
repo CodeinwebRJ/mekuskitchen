@@ -3,8 +3,8 @@ import style from "../../styles/ProductPage.module.css";
 const ImageGallery = ({ product, selectedImage, setSelectedImage, selectedSKUs }) => {
   const defaultImage = "/defaultImage.png";
   const thumbnailImages =
-    selectedSKUs?.SKUImages?.length > 1
-      ? selectedSKUs.SKUImages.slice(0, 4)
+    selectedSKUs?.details?.SKUImages?.length > 1
+      ? selectedSKUs.details?.SKUImages.slice(0, 4)
       : product?.images?.slice(0, 4);
 
   return (

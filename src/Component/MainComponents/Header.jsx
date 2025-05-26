@@ -59,21 +59,26 @@ const Header = () => {
   };
 
   useEffect(() => {
-    try {
-      const wishlist = localStorage.getItem("whislist");
-      const parsedWishlist = wishlist ? JSON.parse(wishlist) : [];
-      dispatch(setWishlist(parsedWishlist || 0));
-      dispatch(setWishlistCount(parsedWishlist?.length || 0));
+    if (isAuthenticated) {
+      try {
+        // Retrieve and parse wishlist from localStorage
+        const wishlist = localStorage.getItem("wishlist");
+        const parsedWishlist = wishlist ? JSON.parse(wishlist) : [];
+        dispatch(setWishlist(parsedWishlist));
+        dispatch(setWishlistCount(parsedWishlist.length));
 
-      const cartData = localStorage.getItem("cart");
-      const parsedCart = cartData ? JSON.parse(cartData) : [];
-      dispatch(setCart(parsedCart));
-    } catch (error) {
-      console.error("Error parsing localStorage data:", error);
-      dispatch(setWishlistCount(0));
-      dispatch(setCart([]));
+        // Retrieve and parse cart from localStorage
+        const cartData = localStorage.getItem("cart");
+        const parsedCart = cartData ? JSON.parse(cartData) : [];
+        dispatch(setCart(parsedCart));
+      } catch (error) {
+        console.error("Error parsing localStorage data:", error);
+        dispatch(setWishlist([]));
+        dispatch(setWishlistCount(0));
+        dispatch(setCart([]));
+      }
     }
-  }, [dispatch]);
+  }, [isAuthenticated, dispatch]);
 
   useEffect(() => {
     const productItemsCount =

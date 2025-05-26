@@ -12,6 +12,12 @@
   text-align: center;
 }
 
+.LikeContainer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .unavailableMessage {
   color: var(--error-dark);
   font-weight: bold;
@@ -184,6 +190,7 @@
 }
 
 .productDetails {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;

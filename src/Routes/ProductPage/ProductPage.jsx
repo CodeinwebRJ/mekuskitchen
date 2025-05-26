@@ -37,6 +37,7 @@ const ProductPage = () => {
     availableOptions,
     handleAddToCart,
     isAddingToCart,
+    handleWishlistToggle,
   } = useProduct(id);
 
   const currentIndex = products?.data?.findIndex((p) => p._id === id);
@@ -144,6 +145,7 @@ const ProductPage = () => {
             availableOptions={availableOptions}
             handleAddToCart={handleAddToCart}
             isAddingToCart={isAddingToCart}
+            handleWishlistToggle={handleWishlistToggle}
           />
         </div>
 

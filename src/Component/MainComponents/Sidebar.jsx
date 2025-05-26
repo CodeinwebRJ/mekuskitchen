@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
+import { de } from "date-fns/locale";
+import { Toast } from "../../Utils/Toast";
+import { setCartCount } from "../../../Store/Slice/CountSlice";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -25,35 +28,54 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   useEffect(() => {
-    if (user?.userid) {
+    if (isAuthenticated && user?.userid && isOpen) {
       fetchUserCart();
     }
-  }, [isOpen]);
+  }, [isAuthenticated, user?.userid, isOpen]);
 
   const handleDelete = async (id, type, dayName = null) => {
-    try {
-      const data = {
-        user_id: user?.userid,
-        type: type,
-        quantity: 0,
-        product_id: type === "product" ? id : undefined,
-        tiffinMenuId: type === "tiffin" ? id : undefined,
-        day: type === "tiffin" ? dayName : undefined,
-      };
-      const res = await UpdateUserCart(data);
-      dispatch(setCart(res.data.data));
-    } catch (error) {
-      console.error("Error deleting item from cart", error);
+    if (!user?.userid) {
+      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const updatedCart = localCart.filter((item) => item._id !== id);
+
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      Toast({ message: "Removed from cart!", type: "success" });
+      dispatch(setCart(updatedCart));
+      dispatch(setCartCount(updatedCart.length));
+      return;
+    } else {
+      try {
+        const data = {
+          user_id: user?.userid,
+          type,
+          quantity: 0,
+          product_id: type === "product" ? id : undefined,
+          tiffinMenuId: type === "tiffin" ? id : undefined,
+          day: type === "tiffin" ? dayName : undefined,
+        };
+        const res = await UpdateUserCart(data);
+        dispatch(setCart(res.data.data));
+      } catch (error) {
+        console.error("Error deleting item from cart", error);
+      }
     }
   };
 
   const calculateSubtotal = () => {
-    const subtotal = isAuthenticated
-      ? Cart?.items?.items
-      : Cart.items
-          ?.reduce((acc, item) => acc + item?.price * item?.quantity, 0)
-          .toFixed(2);
-    return subtotal;
+    if (!Cart?.items) return 0;
+    const productTotal =
+      Cart.items.items?.reduce(
+        (acc, item) =>
+          acc +
+          (item?.price || item?.productDetails?.price || 0) * item.quantity,
+        0
+      ) || 0;
+    const tiffinTotal =
+      Cart.items.tiffins?.reduce(
+        (acc, item) => acc + (item?.totalAmount || 0) * item.quantity,
+        0
+      ) || 0;
+    return (productTotal + tiffinTotal).toFixed(2);
   };
 
   useEffect(() => {
@@ -66,14 +88,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [onClose]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -98,24 +116,32 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemImageContainer}>
                   <img
                     src={
-                      item?.productDetails?.images?.[0].url ||
+                      item?.sku?.images?.[0] ||
+                      item?.productDetails?.images?.[0]?.url ||
                       "/default-image.jpg"
                     }
-                    alt={item.day || "Tiffin item"}
+                    alt={
+                      item?.sku?.name ||
+                      item?.productDetails?.name ||
+                      "Cart item"
+                    }
                     className={style.cartItemImage}
                   />
                 </div>
-
                 <div className={style.cartItemDetails}>
                   <div>
                     <p className={style.cartItemName}>
-                      {item?.productDetails?.name?.toUpperCase()}
+                      {(
+                        item?.sku?.name ||
+                        item?.productDetails?.name ||
+                        "Unnamed Item"
+                      ).toUpperCase()}
                     </p>
                     <p className={style.cartItemCalculation}>
                       <span className={style.quantity}>{item.quantity}</span>
                       <span className={style.multiply}>×</span>
                       <span className={style.price}>
-                        ${item?.productDetails?.price}
+                        ${item.price || item?.productDetails?.price || 0}
                       </span>
                     </p>
                   </div>
@@ -138,24 +164,26 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemImageContainer}>
                   <img
                     src={
-                      item.tiffinMenuDetails?.image_url?.[0].url ||
+                      item.tiffinMenuDetails?.image_url?.[0]?.url ||
                       "/default-image.jpg"
                     }
                     alt={item.day || "Tiffin item"}
                     className={style.cartItemImage}
                   />
                 </div>
-
                 <div className={style.cartItemDetails}>
                   <div>
-                    <p className={style.cartItemName}>{item?.day}</p>
+                    <p className={style.cartItemName}>
+                      {(item?.day || "Tiffin Item").toUpperCase()}
+                    </p>
                     <p className={style.cartItemCalculation}>
-                      <span className={style.quantity}>{item?.quantity}</span>
+                      <span className={style.quantity}>{item.quantity}</span>
                       <span className={style.multiply}>×</span>
-                      <span className={style.price}>${item?.totalAmount}</span>
+                      <span className={style.price}>
+                        ${item.totalAmount || 0}
+                      </span>
                     </p>
                   </div>
-
                   <div
                     className={style.deleteButton}
                     onClick={() =>
@@ -170,14 +198,21 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         )}
 
-        {Cart?.items?.items?.length === 0 &&
-          Cart?.items?.tiffins?.length === 0 && (
+        {isAuthenticated ? (
+          !Cart.items?.items?.length && !Cart?.items?.tiffins?.length ? (
             <div className={style.cartContainer}>
               <div className={style.emptyCartText}>
                 <h5>Your Cart Is Empty</h5>
               </div>
             </div>
-          )}
+          ) : null
+        ) : Cart?.items?.length === 0 ? (
+          <div className={style.cartContainer}>
+            <div className={style.emptyCartText}>
+              <h5>Your Cart Is Empty</h5>
+            </div>
+          </div>
+        ) : null}
 
         {Cart?.items?.length > 0 && (
           <div className={style.cartContainer}>
@@ -204,7 +239,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                   <div
                     className={style.deleteButton}
-                    onClick={() => handleDelete(item.product_id, "product")}
+                    onClick={() => handleDelete(item._id, "product")}
                   >
                     <BsTrash className={style.deleteIcon} />
                   </div>
@@ -219,7 +254,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
             <h5 className="price">${calculateSubtotal()}</h5>
           </div>
-
           <div className={style.subtotalButtons}>
             <div className={style.viewCart}>
               <Button
