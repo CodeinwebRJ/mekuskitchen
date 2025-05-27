@@ -8,11 +8,13 @@ import { AddtoCart, RemoveWishlist } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Toast } from "../../Utils/Toast";
+import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
+import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 
 const WishlistItem = ({ product, fetchWishlist }) => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cart);
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   const handleAddToCart = async () => {
     if (!user) return;
@@ -41,6 +43,21 @@ const WishlistItem = ({ product, fetchWishlist }) => {
   };
 
   const handleDelete = async () => {
+    if (!isAuthenticated) {
+      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const exists = localWishlist.some((item) => item._id === product._id);
+
+      if (exists) {
+        const updatedWishlist = localWishlist.filter(
+          (item) => item._id !== product._id
+        );
+        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+        dispatch(setWishlist(updatedWishlist));
+        dispatch(setWishlistCount(updatedWishlist.length));
+        Toast({ message: "Removed from wishlist!", type: "success" });
+      }
+      return;
+    }
     try {
       await RemoveWishlist({ userid: user.userid, productId: product._id });
       Toast({ message: "Item removed from wishlist.", type: "success" });
@@ -63,7 +80,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
         <div className={style.itemContent}>
           <span className={style.itemName}>{product.name?.toUpperCase()}</span>
           <span className="price">${product.sellingPrice}</span>
-          <span className={style.itemDescription}>{product.description}</span>  
+          <span className={style.itemDescription}>{product.description}</span>
         </div>
       </div>
 

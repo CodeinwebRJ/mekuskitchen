@@ -38,6 +38,7 @@ const ProductPage = () => {
     handleAddToCart,
     isAddingToCart,
     handleWishlistToggle,
+    isLikedLocal,
   } = useProduct(id);
 
   const currentIndex = products?.data?.findIndex((p) => p._id === id);
@@ -97,8 +98,6 @@ const ProductPage = () => {
   if (loading) return <Loading />;
   if (!product) return <p>Product not found</p>;
 
-  
-
   return (
     <div>
       <Header />
@@ -148,6 +147,7 @@ const ProductPage = () => {
             handleAddToCart={handleAddToCart}
             isAddingToCart={isAddingToCart}
             handleWishlistToggle={handleWishlistToggle}
+            isLikedLocal={isLikedLocal}
           />
         </div>
 

@@ -48,6 +48,13 @@ import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 const App = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  };
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const {
     page,
@@ -97,8 +104,21 @@ const App = () => {
     }
   };
 
+  const debouncedFetchProducts = useCallback(debounce(fetchProducts, 500), [
+    page,
+    limit,
+    search,
+    sortBy,
+    category,
+    filterData,
+  ]);
+
   useEffect(() => {
-    fetchProducts();
+    if (filterData?.prices) {
+      debouncedFetchProducts();
+    } else {
+      fetchProducts();
+    }
   }, [page, limit, search, sortBy, category, filterData]);
 
   const fetchTiffin = async () => {

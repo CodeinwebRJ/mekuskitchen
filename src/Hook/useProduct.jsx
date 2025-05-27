@@ -15,7 +15,7 @@ import { setWishlistCount } from "../../Store/Slice/CountSlice";
 const useProduct = (id) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
 
   const [product, setProduct] = useState(null);
@@ -27,6 +27,15 @@ const useProduct = (id) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [isLikedLocal, setIsLikedLocal] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const exists = localWishlist.some((item) => item._id === product?._id);
+      setIsLikedLocal(exists);
+    }
+  }, [product?._id, user]);
 
   const defaultImage = "/defaultImage.png";
 
@@ -200,7 +209,7 @@ const useProduct = (id) => {
   );
 
   const handleWishlistToggle = async () => {
-    if (!user?.userid) {
+    if (!isAuthenticated) {
       const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
       const exists = localWishlist.some((item) => item._id === product._id);
 
@@ -260,6 +269,7 @@ const useProduct = (id) => {
     setReview,
     handleAddToCart,
     handleWishlistToggle,
+    isLikedLocal,
   };
 };
 

@@ -24,12 +24,17 @@ const ProductDetails = ({
   availableOptions,
   handleAddToCart,
   isAddingToCart,
-  handleWishlistToggle
+  handleWishlistToggle,
+  isLikedLocal,
 }) => {
-
-  const isLiked = useSelector(
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const isLikedFromStore = useSelector(
     (state) => state.wishlist?.likedMap?.[product?._id] || false
   );
+
+  const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
+
+  
 
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);

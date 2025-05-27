@@ -102,8 +102,6 @@ const FilterContainer = ({
   const { combinations, products } = useSelector((state) => state.product);
   const filterData = useSelector((state) => state.filterData);
 
-  console.log(filterData);
-
   // Initialize states with fallback to empty arrays
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBrand, setSearchBrand] = useState("");
