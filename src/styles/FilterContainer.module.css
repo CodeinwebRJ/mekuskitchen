@@ -1,5 +1,5 @@
 .sidebar {
-  padding: 24px;
+  padding: 16px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   background: var(--white);
@@ -9,8 +9,6 @@
 }
 
 .filterSection {
-  position: sticky;
-  top: 96px;
   display: flex;
   flex-direction: column;
   gap: var(--gap-8);
@@ -18,19 +16,26 @@
 
 .filterSection h3 {
   font-weight: 600;
+  font-size: 20px;
   color: var(--gray-dark);
 }
 
+.filterSection h5,
 .filterSection h6 {
   font-weight: 500;
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 8px;
   color: var(--gray-dark);
 }
 
-.filterSection input[type="text"] {
+.filterSection input[type="text"],
+.filterSection input[type="range"] {
   width: 100%;
-  padding: 12px;
+  padding: 10px 12px;
   border: 1px solid var(--gray-light);
   border-radius: 6px;
+  font-size: 14px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -40,15 +45,33 @@
   outline: none;
 }
 
-.filterSection input[type="range"] {
-  width: 100%;
-  cursor: pointer;
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 4px;
 }
 
-.filterSection hr {
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--gray-deep);
+}
+
+.linkButton {
+  background: none;
   border: none;
-  border-top: 1px solid var(--gray-light);
-  width: 100%;
+  color: var(--primary);
+  font-size: 13px;
+  padding: 4px 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
 }
 
 .topRatedItem {
@@ -72,6 +95,7 @@
   flex-shrink: 0;
   border: 1px solid var(--gray-border);
   padding: 4px;
+  background: #fff;
 }
 
 .topRatedImg {
@@ -84,20 +108,25 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--gap-2);
+  gap: 4px;
 }
 
 .topRatedInfo p {
+  margin: 0;
+  font-size: 14px;
   color: var(--gray-deep);
 }
 
 .topRatedInfo .price {
   color: var(--success);
   font-weight: 600;
+  font-size: 15px;
 }
 
 .rating {
   pointer-events: none;
+  font-size: 14px;
+  color: var(--star-color);
 }
 
 .filterBtn {
@@ -107,7 +136,10 @@
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 16px;
 }
 
 .filterBtn:hover {

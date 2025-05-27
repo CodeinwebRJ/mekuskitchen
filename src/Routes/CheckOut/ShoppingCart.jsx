@@ -79,14 +79,6 @@ const CartItem = ({
   );
 };
 
-CartItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  type: PropTypes.oneOf(["product", "tiffin"]).isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onUpdateQuantity: PropTypes.func.isRequired,
-  onShowProduct: PropTypes.func.isRequired,
-};
-
 // CartTotals Component
 const CartTotals = ({ subtotal, tax, total }) => (
   <div className={style.cartTotals}>
@@ -115,12 +107,6 @@ const CartTotals = ({ subtotal, tax, total }) => (
     </Link>
   </div>
 );
-
-CartTotals.propTypes = {
-  subtotal: PropTypes.number.isRequired,
-  tax: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
-};
 
 // Main ShoppingCart Component
 const ShoppingCart = () => {
@@ -168,10 +154,10 @@ const ShoppingCart = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated && user?.userid) {
+    if (isAuthenticated) {
       fetchUserCart();
     }
-  }, [isAuthenticated, user?.userid]);
+  }, [isAuthenticated]);
 
   // Handle showing product details in dialog
   const handleShowProduct = (id) => {
@@ -183,7 +169,6 @@ const ShoppingCart = () => {
     }
   };
 
-  // Handle quantity updates
   const updateItemQuantity = async (id, delta, type, dayName = null) => {
     try {
       if (!isAuthenticated) {
@@ -279,7 +264,6 @@ const ShoppingCart = () => {
     }
   };
 
-  // Handle item deletion
   const handleDelete = async (id, type, dayName = null) => {
     try {
       if (!isAuthenticated) {
@@ -314,10 +298,13 @@ const ShoppingCart = () => {
     }
   };
 
-  // Render empty cart if no items
+  console.log(cart.items);
+
   if (
-    !cart?.items ||
-    (!cart.items.items?.length && !cart.items.tiffins?.length)
+    (isAuthenticated &&
+      !cart?.items?.items?.length &&
+      !cart?.items?.tiffins?.length) ||
+    (!isAuthenticated && (!cart?.items || !cart.items.length))
   ) {
     return (
       <div>
@@ -346,16 +333,17 @@ const ShoppingCart = () => {
               </tr>
             </thead>
             <tbody>
-              {cart?.items?.items?.map((item) => (
-                <CartItem
-                  key={item._id}
-                  item={item}
-                  type="product"
-                  onDelete={handleDelete}
-                  onUpdateQuantity={updateItemQuantity}
-                  onShowProduct={handleShowProduct}
-                />
-              ))}
+              {isAuthenticated &&
+                cart?.items?.items?.map((item) => (
+                  <CartItem
+                    key={item._id}
+                    item={item}
+                    type="product"
+                    onDelete={handleDelete}
+                    onUpdateQuantity={updateItemQuantity}
+                    onShowProduct={handleShowProduct}
+                  />
+                ))}
               {cart?.items?.tiffins?.map((tiffin) => (
                 <CartItem
                   key={tiffin._id}
@@ -366,6 +354,54 @@ const ShoppingCart = () => {
                   onShowProduct={handleShowProduct}
                 />
               ))}
+              {!isAuthenticated &&
+                cart?.items?.map((item) => (
+                  <tr className={style.cartItem}>
+                    <td>
+                      <div className={style.removeCell}>
+                        <RxCross2
+                          className={style.removeIcon}
+                          onClick={() => handleDelete(item._id, "product")}
+                        />
+                        <FaEye onClick={() => onShowProduct(item._id)} />
+                      </div>
+                    </td>
+                    <td>
+                      <div className={style.productCell}>
+                        <img
+                          src={item?.images?.[0]?.url || "/defaultImage.png"}
+                          alt={item.name}
+                          className={style.cartItemImage}
+                        />
+                        <span>{item.name}</span>
+                      </div>
+                    </td>
+                    <td>${item.sellingPrice?.toFixed(2)}</td>
+                    <td>
+                      <div className={style.quantityControl}>
+                        <button
+                          onClick={() =>
+                            updateItemQuantity(item._id, -1, "product")
+                          }
+                          disabled={item.quantity <= 1}
+                        >
+                          <FaMinus size={14} />
+                        </button>
+                        <span className={style.quantity}>{item.quantity}</span>
+                        <button
+                          onClick={() =>
+                            updateItemQuantity(item._id, 1, "product")
+                          }
+                        >
+                          <FaPlus size={14} />
+                        </button>
+                      </div>
+                    </td>
+                    <td className={style.totalPrice}>
+                      ${(item.sellingPrice * item.quantity).toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

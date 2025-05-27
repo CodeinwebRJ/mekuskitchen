@@ -1,8 +1,13 @@
-import React from "react";
 import style from "../../styles/CheckboxFeild.module.css";
 
-const CheckboxFeild = (props) => {
-  const { checked, defaultChecked = false, onChange, onClick } = props;
+const CheckboxField = (props) => {
+  const {
+    checked,
+    defaultChecked = false,
+    onChange,
+    onClick,
+    size = "medium",
+  } = props;
 
   const handleChange = (e) => {
     if (onChange) {
@@ -14,7 +19,7 @@ const CheckboxFeild = (props) => {
   };
 
   return (
-    <div className={style.checkboxContainer}>
+    <div className={`${style.checkboxContainer} ${style[size]}`}>
       <input
         type="checkbox"
         checked={checked}
@@ -26,4 +31,4 @@ const CheckboxFeild = (props) => {
   );
 };
 
-export default CheckboxFeild;
+export default CheckboxField;

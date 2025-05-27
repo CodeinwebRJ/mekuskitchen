@@ -1,13 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = {
+  Categorys: [],
+  subCategory: [],
+  ProductCategory: [],
+  brand: [],
+};
 
 const FilterDataSlice = createSlice({
   name: "FilterData",
   initialState,
   reducers: {
-    setCategory: (state, action) => {
-      state.Category = action.payload;
+    setCategorys: (state, action) => {
+      state.Categorys = action.payload;
     },
     setSubCategory: (state, action) => {
       state.subCategory = action.payload;
@@ -18,7 +23,7 @@ const FilterDataSlice = createSlice({
   },
 });
 
-export const { setCategory, setSubCategory, setProductCategory } =
+export const { setCategorys, setSubCategory, setProductCategory } =
   FilterDataSlice.actions;
 
 // Export reducer to configure store

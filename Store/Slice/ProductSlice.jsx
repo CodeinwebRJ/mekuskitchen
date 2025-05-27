@@ -11,9 +11,10 @@ const productSlice = createSlice({
     limit: "9",
     search: "",
     sortBy: "",
-    category: "",
+    category: "electronics",
     subCategory: "",
     ProductCategory: "",
+    combinations: [],
   },
   reducers: {
     setProducts: (state, action) => {
@@ -49,6 +50,17 @@ const productSlice = createSlice({
     setProductCategory: (state, action) => {
       state.ProductCategory = action.payload.toLowerCase();
     },
+    setCombinations: (state, action) => {
+      state.combinations = [];
+      action.payload.forEach((product) => {
+        product.sku.forEach((sku) => {
+          const combinations = sku.details?.combinations;
+          combinations?.forEach((combination) => {
+            state.combinations.push(combination);
+          });
+        });
+      });
+    },
   },
 });
 
@@ -64,6 +76,7 @@ export const {
   setCategory,
   setSubCategory,
   setProductCategory,
+  setCombinations,
 } = productSlice.actions;
 
 export default productSlice.reducer;

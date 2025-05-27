@@ -10,7 +10,11 @@ import {
   getUserAddress,
   getUserWishlist,
 } from "./axiosConfig/AxiosConfig";
-import { setLoading, setProducts } from "../Store/Slice/ProductSlice.jsx";
+import {
+  setCombinations,
+  setLoading,
+  setProducts,
+} from "../Store/Slice/ProductSlice.jsx";
 import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
 import {
   setAddresses,
@@ -77,6 +81,7 @@ const App = () => {
       };
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));
+      dispatch(setCombinations(response.data.data.data || []));
       setLoading(false);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -87,7 +92,7 @@ const App = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [category, page, limit, search, sortBy, subCategory, ProductCategory]);
+  }, [category, page, limit, search, sortBy, subCategory, ProductCategory, ]);
 
   const fetchTiffin = async () => {
     try {

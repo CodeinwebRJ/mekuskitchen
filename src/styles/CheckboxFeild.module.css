@@ -7,7 +7,22 @@
 }
 
 .checkboxContainer input {
-  width: 18px;
-  height: 18px;
   cursor: pointer;
+}
+
+.small {
+  --checkbox-size: 14px;
+}
+
+.medium {
+  --checkbox-size: 18px;
+}
+
+.large {
+  --checkbox-size: 24px;
+}
+
+.checkboxContainer input {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
 }
