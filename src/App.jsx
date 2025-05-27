@@ -66,6 +66,8 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
 
+  const filterData = useSelector((state) => state.filterData);
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -73,12 +75,17 @@ const App = () => {
       const data = {
         page,
         limit,
-        search,
-        sortBy,
-        category,
-        subCategory,
-        ProductCategory,
+        search: filterData?.search,
+        sortBy: filterData?.sortBy,
+        category: filterData?.categories,
+        subCategory: filterData?.subCategories,
+        ProductCategory: filterData?.productCategories,
+        brands: filterData?.Brands,
+        ratings: filterData?.ratings,
+        prices: filterData?.prices,
+        attributes: filterData?.attributes,
       };
+
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));
       dispatch(setCombinations(response.data.data.data || []));
@@ -92,7 +99,7 @@ const App = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [category, page, limit, search, sortBy, subCategory, ProductCategory, ]);
+  }, [page, limit, search, sortBy, category, filterData]);
 
   const fetchTiffin = async () => {
     try {
@@ -162,7 +169,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/product-category/:id" element={<FoodPage />} />
+        <Route path="/product-category" element={<FoodPage />} />
         <Route path="/daily-tiffin" element={<DailyTiffinPage />} />
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />

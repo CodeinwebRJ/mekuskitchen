@@ -14,7 +14,7 @@ const EmptyCartPage = () => {
 
       <span className={style.emptyCartText}>Your cart is empty</span>
 
-      <Link to="/product-category/food" className={style.emptyCartButton}>
+      <Link to="/product-category" className={style.emptyCartButton}>
         <Button text="Continue Shopping" variant="success" size="md">
           Continue Shopping
         </Button>

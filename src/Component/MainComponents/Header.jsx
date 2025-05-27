@@ -43,17 +43,6 @@ const Header = () => {
     }
   };
 
-  const data = [
-    {
-      name: "Food",
-      value: "food",
-    },
-    {
-      name: "Grocery",
-      value: "grocery",
-    },
-  ];
-
   const handleLinkActive = (link) => {
     return link === window.location.pathname ? style.linkActive : style.link;
   };
@@ -99,21 +88,12 @@ const Header = () => {
           HOME
         </Link>
 
-        <div className={style.ourMenuDropdown}>
-          <span className={style.ourMenuDropdownLink}>OUR MENU</span>
-          <div className={style.ourMenuDropdownMenu}>
-            {data?.map((item, index) => (
-              <Link
-                key={index}
-                to={`/product-category/${item.value}`}
-                className={style.ourMenuDropdownItem}
-                onClick={() => handleCategoryClick(item.value)}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
-        </div>
+        <Link
+          to="/product-category"
+          className={`${style.link} ${handleLinkActive("/product-category")}`}
+        >
+          OUR MENU
+        </Link>
 
         <Link
           to="/daily-tiffin"

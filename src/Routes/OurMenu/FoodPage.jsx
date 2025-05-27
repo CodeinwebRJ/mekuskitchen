@@ -30,7 +30,7 @@ const FoodPage = () => {
   const [categoryList, setCategoryList] = useState([]);
 
   const { id } = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch();   
   const { priceRange, grid, loading, error, products } = useSelector(
     (state) => state.product
   );

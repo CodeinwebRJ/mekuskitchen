@@ -13,7 +13,7 @@ function Navbar2() {
           >
             <img
               src="/logo.png"
-              alt="Et World Logo"
+              alt="mekuskitchen Logo"
               style={{
                 height: "50px",
                 width: "auto",

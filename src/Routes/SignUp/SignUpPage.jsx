@@ -301,13 +301,14 @@ function SignUpPage() {
                   </div>
                   <div className="mb-3">
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
+                      style={{
+                        border: "1px solid red",
+                        borderRadius: "6px",
+                        width: "100%",
+                        padding: "5px 12px",
+                      }}
                       type="text"
-                      className="form-control"
+                      className=""
                       id="refcode"
                       value={formData.refcode}
                       onChange={handleInputChange}

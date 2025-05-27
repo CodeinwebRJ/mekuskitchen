@@ -1,30 +1,69 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  Categorys: [],
-  subCategory: [],
-  ProductCategory: [],
-  brand: [],
+  categories: [],
+  subCategories: [],
+  productCategories: [],
+  Brands: [],
+  ratings: [],
+  prices: [],
+  attributes: {},
+  search: "",
+  sortBy: "",
 };
 
-const FilterDataSlice = createSlice({
-  name: "FilterData",
+const filterDataSlice = createSlice({
+  name: "filterData",
   initialState,
   reducers: {
-    setCategorys: (state, action) => {
-      state.Categorys = action.payload;
+    setCategories: (state, action) => {
+      state.categories = action.payload;
     },
-    setSubCategory: (state, action) => {
-      state.subCategory = action.payload;
+    setSubCategories: (state, action) => {
+      state.subCategories = action.payload;
     },
-    setProductCategory: (state, action) => {
-      state.ProductCategory = action.payload;
+    setProductCategories: (state, action) => {
+      state.productCategories = action.payload;
+    },
+    setBrands: (state, action) => {
+      state.Brands = action.payload;
+    },
+    setRatings: (state, action) => {
+      state.ratings = action.payload;
+    },
+    setPrices: (state, action) => {
+      state.prices = action.payload;
+    },
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
+    setSortBy: (state, action) => {
+      state.sortBy = action.payload;
+    },
+    setAttributes: (state, action) => {
+      state.attributes = action.payload;
+    },
+    resetFilters: (state) => {
+      state.categories = [];
+      state.subCategories = [];
+      state.productCategories = [];
+      state.Brands = [];
+      state.ratings = [];
+      state.prices = [];
+      state.attributes = {};
     },
   },
 });
 
-export const { setCategorys, setSubCategory, setProductCategory } =
-  FilterDataSlice.actions;
+export const {
+  setCategories,
+  setSubCategories,
+  setProductCategories,
+  setBrands,
+  setRatings,
+  setPrices,
+  setAttributes,
+  resetFilters,
+} = filterDataSlice.actions;
 
-// Export reducer to configure store
-export default FilterDataSlice.reducer;
+export default filterDataSlice.reducer;

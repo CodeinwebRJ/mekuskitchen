@@ -21,7 +21,7 @@ const FilterAndSorting = ({
     setValue(newValue);
     if (newValue) {
       if (enableNavigation) {
-        navigate(`/product-category/${newValue}`);
+        navigate(`/product-category`);
       }
       if (onChange) {
         onChange(newValue);
