@@ -1,165 +1,141 @@
-import AddToCartButton from "../../Component/Buttons/AddToCartButton";
+import { useState } from "react";
+import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 import Carousel from "../../Component/MainComponents/Carousel";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
 import style from "../../styles/HomePage.module.css";
 
-const categories = [
+const dishes = [
   {
-    id: 1,
-    name: "Electronics",
-    image: "https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93",
+    title: "Thepla",
+    imageUrl:
+      "https://t3.ftcdn.net/jpg/01/89/21/44/360_F_189214466_yxceW8ye3qWFUcJnjteC4wVCQaNoVfdJ.jpg",
+    id: "thepla-1",
   },
   {
-    id: 2,
-    name: "Fashion",
-    image: "https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93",
+    title: "Thepla",
+    imageUrl:
+      "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
+    id: "thepla-2",
   },
   {
-    id: 3,
-    name: "Home & Decor",
-    image: "https://images.unsplash.com/photo-1616046229478-9901c5536a45",
+    title: "Thepla",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD6R8r3eqTZ2SF-VvCYAXPOTCcNiNkc62PtMlOfOmQglsm79SuMh7yXSaWWWHQCXP6kgo&usqp=CAU",
+    id: "thepla-3",
   },
   {
-    id: 4,
-    name: "Accessories",
-    image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2",
+    title: "Thepla",
+    imageUrl:
+      "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
+    id: "thepla-4",
+  },
+  {
+    title: "Thepla",
+    imageUrl:
+      "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
+    id: "thepla-5",
+  },
+  {
+    title: "Thepla",
+    imageUrl:
+      "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
+    id: "thepla-6",
+  },
+  {
+    title: "Thepla",
+    imageUrl:
+      "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
+    id: "thepla-7",
+  },
+  {
+    title: "Thepla",
+    imageUrl:
+      "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
+    id: "thepla-8",
   },
 ];
 
-const products = [
-  {
-    id: 1,
-    name: "Smartphone X",
-    price: 599,
-    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3",
-  },
-  {
-    id: 2,
-    name: "Wireless Headphones",
-    price: 199,
-    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3",
-  },
-  {
-    id: 3,
-    name: "Designer Jacket",
-    price: 129,
-    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3",
-  },
-  {
-    id: 4,
-    name: "Smart Watch",
-    price: 249,
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-  },
-  {
-    id: 5,
-    name: "Laptop Pro",
-    price: 999,
-    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3",
-  },
-];
+const VISIBLE_CARDS = 4;
 
 const HomePage = () => {
+  const [startIndex, setStartIndex] = useState(0);
+
+  const handlePrev = () => {
+    setStartIndex((prevIndex) =>
+      prevIndex === 0 ? dishes.length - VISIBLE_CARDS : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setStartIndex((prevIndex) =>
+      prevIndex + VISIBLE_CARDS >= dishes.length ? 0 : prevIndex + 1
+    );
+  };
+
+  const visibleDishes =
+    dishes.slice(startIndex, startIndex + VISIBLE_CARDS).length < VISIBLE_CARDS
+      ? [
+          ...dishes.slice(startIndex),
+          ...dishes.slice(0, VISIBLE_CARDS - dishes.slice(startIndex).length),
+        ]
+      : dishes.slice(startIndex, startIndex + VISIBLE_CARDS);
+
   return (
-    <div>
+    <div className={style.pageContainer}>
       <Header />
       <Carousel />
-      <div className={style.section}>
-        <div className={style.container}>
-          <h2 className={style.sectionTitle}>Explore Categories</h2>
-          <div className={style.categoryGrid}>
-            {categories.map((category) => (
-              <div key={category.id} className={style.categoryItem}>
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className={style.categoryItemImg}
-                />
-                <div>
-                  <h5 className={style.productTitle}>{category.name}</h5>
-                  <p>
-                    Browse our curated {category.name.toLowerCase()} collection
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
-      <div className={style.sectionAlt}>
-        <div className={style.container}>
-          <h2 className={style.sectionTitle}>New Arrivals</h2>
-          <div className={style.productGrid}>
-            {products.slice(0, 4).map((product) => (
-              <div key={product.id} className={style.productItem}>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className={style.productItemImg}
-                />
-                <h5 className={style.productTitle}>{product.name}</h5>
-                <p className="price">${product.price}</p>
-                <AddToCartButton onClick={() => addToCart(product)} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <section className={style.wrapper} aria-labelledby="dishes-heading">
+        <div className={style.headingContainer}>
+          <h2 id="dishes-heading" className={style.heading}>
+            <span>Crave-Worthy </span>
+            <span className={style.blueText}>Gujarati Dishes</span>
+            <span> You’ll Keep </span>
+            <span className={style.blueText}>Coming Back To</span>
+          </h2>
 
-      <div className={style.section}>
-        <div className={style.container}>
-          <h2 className={style.sectionTitle}>Our Products</h2>
-          <div className={style.productGrid}>
-            {products.slice(0, 4).map((product) => (
-              <div key={product.id} className={style.productItem}>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className={style.productItemImg}
-                />
-                <h5 className={style.productTitle}>{product.name}</h5>
-                <p className="price">${product.price}</p>
-                <AddToCartButton onClick={() => addToCart(product)} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className={style.sectionAlt}>
-        <div className={style.container}>
-          <h2 className={style.sectionTitle}>Best Sellers</h2>
-          <div className={style.sectionTitleAfter}></div>
-          <div className={style.productGrid}>
-            {products.slice(0, 4).map((product) => (
-              <div
-                key={product.id}
-                className={style.productItem}
-                onMouseOver={(e) =>
-                  Object.assign(e.currentTarget.style, style.productItemHover)
-                }
-                onMouseOut={(e) =>
-                  Object.assign(e.currentTarget.style, {
-                    transform: "scale(1)",
-                    opacity: "1",
-                  })
-                }
+          <div className={style.des}>
+            <p>
+              Authentic meals made fresh with homely flavors — always
+              satisfying, just the way you like it.
+            </p>
+            <div className={style.arrowButton}>
+              <button
+                className={style.circularButton}
+                onClick={handlePrev}
+                aria-label="Previous dish"
               >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className={style.productItemImg}
-                />
-                <h5 className={style.productTitle}>{product.name}</h5>
-                <p className="price">${product.price}</p>
-                <AddToCartButton onClick={() => addToCart(product)} />
-              </div>
-            ))}
+                <LuArrowLeft size={22} />
+              </button>
+              <button
+                className={style.circularButton}
+                onClick={handleNext}
+                aria-label="Next dish"
+              >
+                <LuArrowRight size={22} />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+
+        <div className={style.dishGrid} role="list">
+          {visibleDishes.map((dish) => (
+            <div className={style.card} key={dish.id} role="listitem">
+              <img
+                src={dish.imageUrl}
+                alt={`Image of ${dish.title}`}
+                className={style.image}
+                loading="lazy"
+              />
+              <div className={style.overlay}>
+                <h3>{dish.title}</h3>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

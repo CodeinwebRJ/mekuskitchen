@@ -73,8 +73,13 @@ const FoodPage = () => {
     const fetchData = async () => {
       setIsFetching(true);
       setFetchError(null);
-      await Promise.all([fetchTopRatedProduct(), fetchCategories()]);
-      setIsFetching(false);
+      try {
+        await Promise.all([fetchTopRatedProduct(), fetchCategories()]);
+      } catch (error) {
+        console.error("Error during data fetch", error);
+      } finally {
+        setIsFetching(false);
+      }
     };
 
     fetchData();
@@ -92,6 +97,21 @@ const FoodPage = () => {
     }
   };
 
+  const isDataReady =
+    !loading &&
+    !isFetching &&
+    !fetchError &&
+    !error &&
+    products?.data &&
+    Array.isArray(topRated) &&
+    Array.isArray(categoryList);
+
+  if (fetchError || error) {
+    return (
+      <div className={styles.error}>{fetchError || `Error: ${error}`}</div>
+    );
+  }
+
   return (
     <div className={styles.pageWrapper}>
       <Header />
@@ -106,13 +126,9 @@ const FoodPage = () => {
             categoryList={categoryList}
           />
 
-          {isFetching || loading ? (
+          {!isDataReady ? (
             <div className="loadingContainer">
               <Loading />
-            </div>
-          ) : fetchError || error ? (
-            <div className={styles.error}>
-              {fetchError || `Error: ${error}`}
             </div>
           ) : (
             <div className={styles.mainContent}>

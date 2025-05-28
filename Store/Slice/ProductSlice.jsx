@@ -9,11 +9,7 @@ const productSlice = createSlice({
     loading: false,
     page: "1",
     limit: "9",
-    search: "",
     sortBy: "",
-    category: "",
-    subCategory: "",
-    ProductCategory: "",
     combinations: [],
   },
   reducers: {
@@ -34,21 +30,6 @@ const productSlice = createSlice({
     },
     setLimit: (state, action) => {
       state.limit = action.payload;
-    },
-    setSearch: (state, action) => {
-      state.search = action.payload;
-    },
-    setSortBy: (state, action) => {
-      state.sortBy = action.payload;
-    },
-    setCategory: (state, action) => {
-      state.category = action.payload.toLowerCase();
-    },
-    setSubCategory: (state, action) => {
-      state.subCategory = action.payload.toLowerCase();
-    },
-    setProductCategory: (state, action) => {
-      state.ProductCategory = action.payload.toLowerCase();
     },
     setCombinations: (state, action) => {
       state.combinations = [];
@@ -71,7 +52,6 @@ export const {
   setLoading,
   setPage,
   setLimit,
-  setSearch,
   setSortBy,
   setCategory,
   setSubCategory,

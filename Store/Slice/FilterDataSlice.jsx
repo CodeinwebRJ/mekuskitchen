@@ -6,7 +6,7 @@ const initialState = {
   productCategories: [],
   Brands: [],
   ratings: [],
-  prices: [],
+  prices: [0, 2000],
   attributes: {},
   search: "",
   sortBy: "",
@@ -63,6 +63,7 @@ export const {
   setRatings,
   setPrices,
   setAttributes,
+  setSearch,
   resetFilters,
 } = filterDataSlice.actions;
 

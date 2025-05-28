@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import style from "../styles/FilterContainer.module.css";
 import RatingStar from "./RatingStar";
-import { setSearch } from "../../Store/Slice/ProductSlice";
 import {
   resetFilters,
   setCategories,
@@ -12,8 +11,10 @@ import {
   setRatings,
   setBrands,
   setAttributes,
+  setSearch,
 } from "../../Store/Slice/FilterDataSlice";
 import CheckboxField from "./UI-Components/CheckboxFeild";
+import { setPage } from "../../Store/Slice/ProductSlice";
 
 // Custom debounce hook
 const useDebounce = (value, delay, callback) => {
@@ -360,6 +361,7 @@ const FilterContainer = ({
 
   const handleClearFilters = useCallback(() => {
     dispatch(resetFilters());
+    dispatch(setPage(1));
     setSelectedBrands([]);
     setSelectedRatings([]);
     setSelectedFilters({});

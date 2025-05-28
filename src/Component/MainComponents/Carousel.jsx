@@ -7,26 +7,47 @@ import styles from "../../styles/Carousel.module.css";
 
 const Carousel = () => {
   return (
-    <div className={styles.carouselContainer}>
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={30}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-        loop={true}
-      >
-        <SwiperSlide className={styles.slide}>
-          <img src="/banner1.jpg" alt="Slide 1" />
-        </SwiperSlide>
-        <SwiperSlide className={styles.slide}>
-          <img src="/banner2.jpg" alt="Slide 2" />
-        </SwiperSlide>
-        <SwiperSlide className={styles.slide}>
-          <img src="/banner3.jpg" alt="Slide 3" />
-        </SwiperSlide>
-      </Swiper>
+    <div className={styles.carousel}>
+      <div className={styles.carouselContainer}>
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={30}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          loop={true}
+        >
+          <SwiperSlide>
+            <img
+              className={styles.slideImage}
+              src="/banner1.jpg"
+              alt="Slide 1"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className={styles.slideImage}
+              src="/banner2.jpg"
+              alt="Slide 2"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className={styles.slideImage}
+              src="/banner3.jpg"
+              alt="Slide 3"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className={styles.slideImage}
+              src="/HerosectionImage.png"
+              alt="Slide 3"
+            />
+          </SwiperSlide>
+        </Swiper>
+      </div>
     </div>
   );
 };
