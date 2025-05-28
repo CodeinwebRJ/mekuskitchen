@@ -41,7 +41,7 @@
 
 .prevArrowIcon,
 .nextArrowIcon {
-  font-size: 1.5rem;
+  font-size: 20px;
 }
 
 .nextArrowIcon {
@@ -56,7 +56,7 @@
 
   .prevArrowIcon,
   .nextArrowIcon {
-    font-size: 1.25rem;
+    font-size: 18px;
   }
 
   .relatedProductCard {

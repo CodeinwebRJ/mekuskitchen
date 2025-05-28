@@ -15,7 +15,7 @@ import {
   setShowAddressForm,
 } from "../../../../Store/Slice/AddressSlice";
 import AddressForm from "./AddressForm";
-import AddAddressCard from "../../../Component/UI-Components/AddAddressCard"; 
+import AddAddressCard from "../../../Component/UI-Components/AddAddressCard";
 
 const Addresses = () => {
   const dispatch = useDispatch();
@@ -92,7 +92,6 @@ const Addresses = () => {
                   onClick={() => {
                     dispatch(setShowAddressForm(true));
                     setIsEdit(false);
-                    a;
                   }}
                 />
               ) : null}

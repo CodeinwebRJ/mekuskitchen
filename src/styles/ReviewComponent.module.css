@@ -59,7 +59,7 @@
   width: 100%;
   border-radius: 8px;
   border: 1px solid var(--gray-border-light);
-  font-size: 1rem;
+  font-size: 16px;
   padding: 8px;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .reviewUser {
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
   color: var(--gray-darkest);
 }
@@ -148,11 +148,11 @@
   }
 
   .sectionTitle {
-    font-size: 1.5rem;
+    font-size: 20px;
   }
 
   .formTitle {
-    font-size: 1.25rem;
+    font-size: 18px;
   }
 
   .form {

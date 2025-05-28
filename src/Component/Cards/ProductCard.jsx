@@ -23,13 +23,11 @@ const ProductCard = ({ product, grid }) => {
   const isLikedFromStore = useSelector(
     (state) => state.wishlist?.likedMap?.[product._id]
   );
-
   const Cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [isLikedLocal, setIsLikedLocal] = useState(false);
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
-  console.log(isLiked)
   useEffect(() => {
     if (!isAuthenticated) {
       const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];

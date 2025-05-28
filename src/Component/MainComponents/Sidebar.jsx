@@ -33,8 +33,8 @@ const Sidebar = ({ isOpen, onClose }) => {
     }
   }, [isAuthenticated, user?.userid, isOpen]);
 
-  const handleDelete = async (id, type, dayName = null) => {
-    if (!user?.userid) {
+  const handleDelete = async (id, type, dayName = null, skuId) => {
+    if (!isAuthenticated) {
       const localCart = JSON.parse(localStorage.getItem("cart")) || [];
       const updatedCart = localCart.filter((item) => item._id !== id);
 
@@ -49,6 +49,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           user_id: user?.userid,
           type,
           quantity: 0,
+          skuId: skuId ? skuId : undefined,
           product_id: type === "product" ? id : undefined,
           tiffinMenuId: type === "tiffin" ? id : undefined,
           day: type === "tiffin" ? dayName : undefined,
@@ -147,7 +148,14 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                   <div
                     className={style.deleteButton}
-                    onClick={() => handleDelete(item.product_id, "product")}
+                    onClick={() =>
+                      handleDelete(
+                        item.product_id,
+                        "product",
+                        null,
+                        item?.sku?.skuId
+                      )
+                    }
                   >
                     <BsTrash className={style.deleteIcon} />
                   </div>
@@ -252,7 +260,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
-            <h5 className="price">${calculateSubtotal()}</h5>
+            <h5 className="price">${Cart.items.totalAmount}</h5>
           </div>
           <div className={style.subtotalButtons}>
             <div className={style.viewCart}>

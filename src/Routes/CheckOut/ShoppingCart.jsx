@@ -17,7 +17,6 @@ import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 
-// CartItem Component
 const CartItem = ({
   item,
   type,
@@ -27,7 +26,7 @@ const CartItem = ({
 }) => {
   const isProduct = type === "product";
   const imageUrl = isProduct
-    ? item?.productDetails?.images?.[0]?.url
+    ? item?.sku?.images?.[0] || item?.productDetails?.images?.[0]?.url
     : item?.tiffinMenuDetails?.image_url?.[0]?.url || "/defaultImage.png";
   const name = isProduct
     ? item?.productDetails?.name?.toUpperCase()
@@ -79,7 +78,6 @@ const CartItem = ({
   );
 };
 
-// CartTotals Component
 const CartTotals = ({ subtotal, tax, total }) => (
   <div className={style.cartTotals}>
     <h3>Cart Totals</h3>
@@ -98,7 +96,7 @@ const CartTotals = ({ subtotal, tax, total }) => (
     <p className={style.total}>
       Total: <span className={style.totalAmount}>${total.toFixed(2)}</span>
     </p>
-    <Link to="/checkout" state={{ id: "123" }}>
+    <Link to="/checkout">
       <div className={style.checkoutButton}>
         <Button variant="success" size="md">
           Proceed to Checkout
@@ -108,15 +106,12 @@ const CartTotals = ({ subtotal, tax, total }) => (
   </div>
 );
 
-// Main ShoppingCart Component
 const ShoppingCart = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const [dialog, setDialog] = useState({ isOpen: false, product: null });
-  const taxRate = 0.05;
 
-  // Memoized calculations for subtotal, tax, and total
   const subtotal = useMemo(
     () =>
       (cart?.items?.items?.reduce(
@@ -131,21 +126,12 @@ const ShoppingCart = () => {
     [cart]
   );
 
-  const tax = useMemo(() => subtotal * taxRate, [subtotal]);
-  const total = useMemo(() => subtotal + tax, [subtotal, tax]);
-
   // Fetch user cart for authenticated users
   const fetchUserCart = async () => {
     try {
       if (user?.userid) {
         const res = await getUserCart(user.userid);
         dispatch(setCart(res.data.data));
-        dispatch(
-          setCartCount(
-            (res.data.data.items?.items?.length || 0) +
-              (res.data.data.items?.tiffins?.length || 0)
-          )
-        );
       }
     } catch (error) {
       console.error("Error fetching user cart:", error);
@@ -159,7 +145,6 @@ const ShoppingCart = () => {
     }
   }, [isAuthenticated]);
 
-  // Handle showing product details in dialog
   const handleShowProduct = (id) => {
     const product = cart?.items?.items?.find((item) => item._id === id);
     if (product) {
@@ -298,8 +283,6 @@ const ShoppingCart = () => {
     }
   };
 
-  console.log(cart.items);
-
   if (
     (isAuthenticated &&
       !cart?.items?.items?.length &&
@@ -405,7 +388,7 @@ const ShoppingCart = () => {
             </tbody>
           </table>
         </div>
-        <CartTotals subtotal={subtotal} tax={tax} total={total} />
+        <CartTotals subtotal={subtotal} total={subtotal} />
       </div>
       <Footer />
 
@@ -425,10 +408,10 @@ const ShoppingCart = () => {
             <div className={style.productInfo}>
               <h2>{dialog.product?.productDetails?.name}</h2>
               <div className={style.productPricing}>
-                <span className={style.originalPrice}>
+                <span className="originalPrice">
                   ${dialog.product?.productDetails?.price}
                 </span>
-                <span className={style.sellingPrice}>
+                <span className="Price">
                   ${dialog.product?.productDetails?.sellingPrice}
                 </span>
               </div>
@@ -442,7 +425,7 @@ const ShoppingCart = () => {
               )}
               {dialog.product?.productDetails?.subSubCategory && (
                 <p className={style.productDescription}>
-                  Product: {dialog.product?.productDetails?.subSubCategory}
+                  Product: {dialog.product?.productDetails?.ProductCategory}
                 </p>
               )}
               <div>

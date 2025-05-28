@@ -155,7 +155,7 @@
 }
 
 .deleteIcon {
-  font-size: 1.1rem;
+  font-size: 1.16px;
   color: var(--gray-soft);
   transition: color 0.2s ease-in-out;
 }

@@ -35,7 +35,7 @@
 .cartItem td {
   padding: 16px;
   text-align: center;
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 .cartItem th {
@@ -45,7 +45,7 @@
 }
 
 .removeIcon {
-  font-size: 1.1rem;
+  font-size: 16px;
   cursor: pointer;
   color: var(--error-dark);
   transition: transform 0.2s ease-in-out;
@@ -83,7 +83,7 @@
   background: var(--gray-offwhite);
   border: none;
   padding: 4px 12px;
-  font-size: 1rem;
+  font-size: 16px;
   cursor: pointer;
   transition: background 0.2s ease;
 }
@@ -109,7 +109,7 @@
 }
 
 .cartTotals h3 {
-  font-size: 1.5rem;
+  font-size: 20px;
   font-weight: 600;
   color: var(--very-dark-gray);
   margin-bottom: 20px;
@@ -121,7 +121,7 @@
   display: flex;
   justify-content: space-between;
   margin: 12px 0;
-  font-size: 1rem;
+  font-size: 16px;
   color: var(--dark-gray);
 }
 
@@ -142,7 +142,7 @@
 
 .total {
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 18px;
   color: var(--black);
   display: flex;
   justify-content: space-between;
@@ -165,7 +165,7 @@
   width: 100%;
   padding: 12px 0;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
   transition: background 0.3s ease;
 }
@@ -210,10 +210,10 @@
 }
 
 .productInfo h2 {
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 700;
   color: var(--gray-darkest);
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .productPricing {
@@ -225,18 +225,18 @@
 .originalPrice {
   text-decoration: line-through;
   color: #888;
-  font-size: 1.1rem;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .sellingPrice {
   color: #e53935;
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 18px;
 }
 
 .productDescription {
-  margin-top: 0.5rem;
+  margin-top: 8px;
   line-height: 1.6;
   color: var(--gray-steel);
 }
@@ -246,7 +246,7 @@
 }
 
 .chipContainer {
-  margin-top: 1.5rem;
+  margin-top: 20px;
   display: flex;
   justify-content: flex-start;
 }
@@ -255,7 +255,7 @@
   padding: 10px 20px;
   background-color: #e53935;
   color: white;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: bold;
   border-radius: 5px;
   border: none;
@@ -287,7 +287,7 @@
 
   .cartItem th,
   .cartItem td {
-    font-size: 0.95rem;
+    font-size: 16px;
     padding: 12px;
   }
 

@@ -158,13 +158,18 @@ ul {
 }
 
 .price {
-  font-weight: var(--font-bold) !important;
+  margin-top: 0.4rem;
+  font-weight: 600;
+  color: #111827;
+  font-size: 1rem;
 }
 
 .originalPrice {
+  margin-top: 0.4rem;
   text-decoration: line-through;
-  color: #888;
+  color: #111827;
 }
+ 
 
 .loadingContainer {
   height: 100%;
