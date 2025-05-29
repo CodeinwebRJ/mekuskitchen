@@ -4,32 +4,15 @@ const productSlice = createSlice({
   name: "product",
   initialState: {
     products: null,
-    priceRange: [0, 20],
-    grid: 3,
     loading: false,
-    page: "1",
-    limit: "9",
-    sortBy: "",
     combinations: [],
   },
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
     },
-    setPriceRange: (state, action) => {
-      state.priceRange = [0, action.payload];
-    },
-    setGrid: (state, action) => {
-      state.grid = action.payload;
-    },
     setLoading: (state, action) => {
       state.loading = action.payload;
-    },
-    setPage: (state, action) => {
-      state.page = action.payload;
-    },
-    setLimit: (state, action) => {
-      state.limit = action.payload;
     },
     setCombinations: (state, action) => {
       state.combinations = [];
@@ -47,15 +30,7 @@ const productSlice = createSlice({
 
 export const {
   setProducts,
-  setPriceRange,
-  setGrid,
   setLoading,
-  setPage,
-  setLimit,
-  setSortBy,
-  setCategory,
-  setSubCategory,
-  setProductCategory,
   setCombinations,
 } = productSlice.actions;
 

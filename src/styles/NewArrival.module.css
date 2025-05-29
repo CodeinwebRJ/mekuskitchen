@@ -1,6 +1,7 @@
 .container {
   padding: 2rem 0;
 }
+
 .newArrival {
   font-size: 40px;
   font-weight: 700;
@@ -13,8 +14,9 @@
   color: var(--primary-blue);
 }
 
-.productGrid {
+.swiperContainer :global(.swiper-slide) {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }

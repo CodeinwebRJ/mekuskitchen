@@ -6,10 +6,13 @@ const initialState = {
   productCategories: [],
   Brands: [],
   ratings: [],
-  prices: [0, 2000],
+  price: [0, 2000],
   attributes: {},
   search: "",
   sortBy: "",
+  page: "1",
+  limit: "9",
+  grid: 3,
 };
 
 const filterDataSlice = createSlice({
@@ -32,7 +35,7 @@ const filterDataSlice = createSlice({
       state.ratings = action.payload;
     },
     setPrices: (state, action) => {
-      state.prices = action.payload;
+      state.price = action.payload;
     },
     setSearch: (state, action) => {
       state.search = action.payload;
@@ -42,6 +45,15 @@ const filterDataSlice = createSlice({
     },
     setAttributes: (state, action) => {
       state.attributes = action.payload;
+    },
+    setGrid: (state, action) => {
+      state.grid = action.payload;
+    },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+    setLimit: (state, action) => {
+      state.limit = action.payload;
     },
     resetFilters: (state) => {
       state.categories = [];
@@ -64,6 +76,9 @@ export const {
   setPrices,
   setAttributes,
   setSearch,
+  setGrid,
+  setPage,
+  setLimit,
   resetFilters,
 } = filterDataSlice.actions;
 

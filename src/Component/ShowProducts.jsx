@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "../styles/ShowProducts.module.css";
-import { setLimit } from "../../Store/Slice/ProductSlice";
+import { setLimit } from "../../Store/Slice/FilterDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const ShowProducts = () => {

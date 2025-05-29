@@ -4,72 +4,10 @@ import "swiper/css";
 import { HomeProductCard } from "../../Component/Cards/HomeProductCard";
 import style from "../../styles/NewArrival.module.css";
 
-const NewArrivals = () => {
-  const PRODUCTS = [
-    {
-      id: "product-1",
-      image:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-      title: "Cheese Vada Pav Special",
-      subtitle: "Meku’s",
-      price: "15.00",
-      alt: "Cheese Vada Pav Special from Meku’s",
-    },
-    {
-      id: "product-2",
-      image:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-      title: "Cheese Vada Pav Special",
-      subtitle: "Meku’s",
-      price: "15.00",
-      alt: "Cheese Vada Pav Special from Meku’s",
-    },
-    {
-      id: "product-3",
-      image:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-      title: "Cheese Vada Pav Special",
-      subtitle: "Meku’s",
-      price: "15.00",
-      alt: "Cheese Vada Pav Special from Meku’s",
-    },
-    {
-      id: "product-4",
-      image:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-      title: "Cheese Vada Pav Special",
-      subtitle: "Meku’s",
-      price: "15.00",
-      alt: "Cheese Vada Pav Special from Meku’s",
-    },
-    {
-      id: "product-4",
-      image:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-      title: "Cheese Vada Pav Special",
-      subtitle: "Meku’s",
-      price: "15.00",
-      alt: "Cheese Vada Pav Special from Meku’s",
-    },
-    {
-      id: "product-4",
-      image:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-      title: "Cheese Vada Pav Special",
-      subtitle: "Meku’s",
-      price: "15.00",
-      alt: "Cheese Vada Pav Special from Meku’s",
-    },
-    {
-      id: "product-4",
-      image:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-      title: "Cheese Vada Pav Special",
-      subtitle: "Meku’s",
-      price: "15.00",
-      alt: "Cheese Vada Pav Special from Meku’s",
-    },
-  ];
+const NewArrivals = ({ data }) => {
+  const products = Array.isArray(data?.NewProducts) ? data.NewProducts : [];
+  const enableLoop = products.length >= 4; 
+  const enableAutoplay = products.length >= 4; 
 
   return (
     <div className={style.container}>
@@ -77,35 +15,43 @@ const NewArrivals = () => {
         <span className={style.blueText}>New </span>
         <span>Arrival</span>
       </h2>
-      <Swiper
-        modules={[Autoplay]}
-        spaceBetween={20}
-        slidesPerView={1}
-        loop={PRODUCTS.length > 1}
-        freeMode={true}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false,
-        }}
-        breakpoints={{
-          640: { slidesPerView: Math.min(1, PRODUCTS.length) },
-          768: { slidesPerView: Math.min(2, PRODUCTS.length) },
-          800: { slidesPerView: Math.min(3, PRODUCTS.length) },
-          1110: { slidesPerView: Math.min(4, PRODUCTS.length) },
-        }}
-      >
-        {PRODUCTS.map((product) => (
-          <SwiperSlide className={style.container} key={product.id}>
-            <HomeProductCard
-              image={product.image}
-              title={product.title}
-              subtitle={product.subtitle}
-              price={product.price}
-              alt={product.alt}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+
+      {products.length === 0 ? (
+        <p>No new products available.</p>
+      ) : (
+        <Swiper
+          modules={[Autoplay]}
+          spaceBetween={20}
+          loop={enableLoop}
+          autoplay={
+            enableAutoplay
+              ? { delay: 2000, disableOnInteraction: false }
+              : false
+          }
+          slidesPerView={4} 
+          breakpoints={{
+            0: { slidesPerView: Math.min(products.length, 1) },
+            480: { slidesPerView: Math.min(products.length, 2) }, 
+            768: { slidesPerView: Math.min(products.length, 3) }, 
+            1024: { slidesPerView: 4 },
+            1280: { slidesPerView: 4 },
+            1536: { slidesPerView: 4 }, 
+          }}
+          className={style.swiperContainer} 
+        >
+          {products.map((product) => (
+            <SwiperSlide className={style.container} key={product.id}>
+              <HomeProductCard
+                image={product.images}
+                name={product.name}
+                subtitle={product?.subtitle || ""}
+                price={product.sellingPrice}
+                alt={`Image of ${product.name || "product"}`}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </div>
   );
 };

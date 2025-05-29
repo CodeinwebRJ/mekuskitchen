@@ -5,7 +5,6 @@ import { IoSearch } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import Sidebar from "./Sidebar";
-import { setCategory } from "../../../Store/Slice/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart } from "react-icons/fa6";
 import { logout } from "../../../Store/Slice/UserSlice";
@@ -15,6 +14,7 @@ import {
 } from "../../../Store/Slice/CountSlice";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
+import { setCategories } from "../../../Store/Slice/FilterDataSlice";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -25,7 +25,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleCategoryClick = (categoryName) => {
-    dispatch(setCategory(categoryName));
+    dispatch(setCategories(categoryName));
   };
 
   const handleLogout = () => {

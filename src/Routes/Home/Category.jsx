@@ -1,9 +1,7 @@
-// Import Swiper core and required modules
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-
 import { useRef, useState, useEffect } from "react";
 import style from "../../styles/Category.module.css";
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
@@ -16,7 +14,7 @@ const Category = () => {
     {
       title: "Thepla",
       imageUrl:
-        "https://t3.ftcdn.net/jpg/01/89/21/44/360_F_189214466_yxceW8ye3qWFUcJnjteC4wVCQaNoVfdJ.jpg",
+        "https://rrtravelscabs.com/wp-content/uploads/2023/11/pexels-aditya-mara-17433337-1024x819.jpg",
       id: "thepla-1",
       alt: "Freshly made Gujarati Thepla with spices",
     },
@@ -30,7 +28,7 @@ const Category = () => {
     {
       title: "Thepla",
       imageUrl:
-        "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
+        "https://uk.ooni.com/cdn/shop/articles/20220211142645-margherita-9920_e41233d5-dcec-461c-b07e-03245f031dfe.jpg?v=1737105431&width=1080",
       id: "thepla-2",
       alt: "Traditional Gujarati Methi Thepla",
     },

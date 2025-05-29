@@ -2,11 +2,6 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setPriceRange,
-  setGrid,
-  setPage,
-} from "../../../Store/Slice/ProductSlice.jsx";
-import {
   getCategory,
   getTopRatedProduct,
 } from "../../axiosConfig/AxiosConfig.js";
@@ -22,6 +17,7 @@ import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import styles from "../../styles/Food.module.css";
+import { setGrid, setPage, setPrices } from "../../../Store/Slice/FilterDataSlice.jsx";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
@@ -31,13 +27,13 @@ const FoodPage = () => {
 
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { priceRange, grid, loading, error, products } = useSelector(
-    (state) => state.product
-  );
+  const { loading, error, products } = useSelector((state) => state.product);
+
+  const { price, grid } = useSelector((state) => state.filterData);
 
   const handlePriceChange = useCallback(
     (e) => {
-      dispatch(setPriceRange(parseInt(e.target.value)));
+      dispatch(setPrices(parseInt(e.target.value)));
     },
     [dispatch]
   );
@@ -120,7 +116,7 @@ const FoodPage = () => {
       <div className={styles.container}>
         <div className={styles.container2}>
           <FilterContainer
-            priceRange={priceRange}
+            priceRange={price}
             handlePriceChange={handlePriceChange}
             data={topRated}
             categoryList={categoryList}

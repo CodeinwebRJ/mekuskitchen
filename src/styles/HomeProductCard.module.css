@@ -17,7 +17,7 @@
 .image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
@@ -34,10 +34,7 @@
 }
 
 .title {
-  font-size: 1.16px;
-  font-weight: 700;
-  margin: 0;
-  color: #111827;
+  font-size: 18px;
 }
 
 .subtitle {
@@ -64,8 +61,8 @@
   color: var(--white);
   border: none;
   border-radius: 50%;
-  width: 42px;
-  height: 42px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
   cursor: pointer;

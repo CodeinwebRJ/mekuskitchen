@@ -14,9 +14,8 @@ import {
   setSearch,
 } from "../../Store/Slice/FilterDataSlice";
 import CheckboxField from "./UI-Components/CheckboxFeild";
-import { setPage } from "../../Store/Slice/ProductSlice";
+import { setPage } from "../../Store/Slice/FilterDataSlice";
 
-// Custom debounce hook
 const useDebounce = (value, delay, callback) => {
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -103,11 +102,10 @@ const FilterContainer = ({
   const { combinations, products } = useSelector((state) => state.product);
   const filterData = useSelector((state) => state.filterData);
 
-  // Initialize states with fallback to empty arrays
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBrand, setSearchBrand] = useState("");
   const [selectedBrands, setSelectedBrands] = useState(
-    Array.isArray(filterData.brands) ? filterData.brands : [] // Fallback to empty array
+    Array.isArray(filterData.brands) ? filterData.brands : []
   );
   const [showAllBrands, setShowAllBrands] = useState(false);
   const [selectedRatings, setSelectedRatings] = useState(
@@ -135,12 +133,10 @@ const FilterContainer = ({
     useState(false);
   const [searchProductCategory, setSearchProductCategory] = useState("");
 
-  // Sync priceRange with Redux store
   useEffect(() => {
     dispatch(setPrices(priceRange));
   }, [priceRange, dispatch]);
 
-  // Debug filterData.brands (temporary, remove in production)
   useEffect(() => {
     if (!Array.isArray(filterData.brands)) {
       console.warn(
@@ -151,7 +147,6 @@ const FilterContainer = ({
     }
   }, [filterData.brands]);
 
-  // Memoized unique attributes
   const uniqueAttributes = useMemo(() => {
     if (!combinations?.length) return {};
     return combinations.reduce((acc, item) => {
@@ -175,7 +170,6 @@ const FilterContainer = ({
     }, {});
   }, [uniqueAttributes]);
 
-  // Memoized derived lists
   const brands = useMemo(() => {
     const uniqueBrands = new Set(
       products?.data?.map((product) => product?.brand).filter(Boolean)
@@ -230,6 +224,7 @@ const FilterContainer = ({
         : [...selectedBrands, brand];
       setSelectedBrands(newBrands);
       dispatch(setBrands(newBrands));
+      dispatch(setPage(1));
     },
     [selectedBrands, dispatch]
   );
@@ -241,6 +236,7 @@ const FilterContainer = ({
         : [...selectedRatings, value];
       setSelectedRatings(newRatings);
       dispatch(setRatings(newRatings));
+      dispatch(setPage(1));
     },
     [selectedRatings, dispatch]
   );
@@ -255,6 +251,7 @@ const FilterContainer = ({
           : [...currentValues, value],
       };
       dispatch(setAttributes(newAttributes));
+      dispatch(setPage(1));
       return newAttributes;
     });
   }, []);
@@ -300,6 +297,7 @@ const FilterContainer = ({
       );
       setSelectedProductCategories(filteredProductCategories);
       dispatch(setProductCategories(filteredProductCategories));
+      dispatch(setPage(1));
     },
     [
       selectedCategories,
@@ -335,6 +333,7 @@ const FilterContainer = ({
         validProductCategories.includes(pc)
       );
       setSelectedProductCategories(filteredProductCategories);
+      dispatch(setPage(1));
       dispatch(setProductCategories(filteredProductCategories));
     },
     [
@@ -354,6 +353,7 @@ const FilterContainer = ({
         ? selectedProductCategories.filter((p) => p !== productCategory)
         : [...selectedProductCategories, productCategory];
       setSelectedProductCategories(newProductCategories);
+      dispatch(setPage(1));
       dispatch(setProductCategories(newProductCategories));
     },
     [selectedProductCategories, dispatch]

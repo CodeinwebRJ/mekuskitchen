@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllTiffin,
   getCount,
+  getHomePageData,
   getProduct,
   getUserAddress,
   getUserCart,
@@ -46,6 +47,7 @@ import ForgetPassword from "./Routes/ForgetPassword/ForgetPassword.jsx";
 import VeryfyOtp from "./Routes/VeryfyOtp/VeryfyOtp.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 import { setCart } from "../Store/Slice/UserCartSlice.jsx";
+import { setData } from "../Store/Slice/HomePageSlice.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -58,15 +60,6 @@ const App = () => {
     };
   };
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const {
-    page,
-    limit,
-    search,
-    sortBy,
-    category,
-    subCategory,
-    ProductCategory,
-  } = useSelector((state) => state.product);
 
   const Cart = useSelector((state) => state.cart);
   const isLiked = useSelector((state) => state.wishlist?.likedMap);
@@ -82,8 +75,8 @@ const App = () => {
       setLoading(true);
       dispatch(setLoading(true));
       const data = {
-        page,
-        limit,
+        page: filterData?.page,
+        limit: filterData?.limit,
         search: filterData?.search,
         sortBy: filterData?.sortBy,
         category: filterData?.categories,
@@ -94,7 +87,6 @@ const App = () => {
         prices: filterData?.prices,
         attributes: filterData?.attributes,
       };
-
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));
       dispatch(setCombinations(response.data.data.data || []));
@@ -107,21 +99,16 @@ const App = () => {
   };
 
   const debouncedFetchProducts = useCallback(debounce(fetchProducts, 500), [
-    page,
-    limit,
-    search,
-    sortBy,
-    category,
     filterData,
   ]);
 
   useEffect(() => {
-    if (filterData?.prices) {
+    if (filterData?.price) {
       debouncedFetchProducts();
     } else {
       fetchProducts();
     }
-  }, [page, limit, search, sortBy, category, filterData]);
+  }, [filterData]);
 
   const fetchTiffin = async () => {
     try {
@@ -168,8 +155,18 @@ const App = () => {
     }
   }, [isAuthenticated]);
 
+  const fetchHomeData = async () => {
+    try {
+      const res = await getHomePageData();
+      dispatch(setData(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchTiffin();
+    fetchHomeData();
   }, []);
 
   const fetchUserCart = async () => {
@@ -180,7 +177,7 @@ const App = () => {
       console.error("Error fetching user cart", error);
     }
   };
-  
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchAddresses();

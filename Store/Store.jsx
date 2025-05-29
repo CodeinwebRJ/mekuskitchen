@@ -7,6 +7,7 @@ import addressSlice from "../Store/Slice/AddressSlice";
 import CountSlice from "../Store/Slice/CountSlice";
 import UserWishlistSlice from "../Store/Slice/UserWishlistSlice";
 import FilterDataSlice from "../Store/Slice/FilterDataSlice";
+import HomePageSlice from "../Store/Slice/HomePageSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     count: CountSlice,
     wishlist: UserWishlistSlice,
     filterData: FilterDataSlice,
+    home: HomePageSlice,
   },
 });
 

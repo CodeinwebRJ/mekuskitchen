@@ -176,7 +176,6 @@ const CheckoutPage = () => {
           // notes: user.userid,
           // deliveryTime: user.userid,
         };
-        console.log(data);
         const res = await sendOrder(data);
         const response = await getUserCart(user.userid);
         dispatch(setCart(response.data.data));
