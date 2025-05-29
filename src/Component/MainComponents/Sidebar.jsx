@@ -18,21 +18,6 @@ const Sidebar = ({ isOpen, onClose }) => {
   const sidebarRef = useRef(null);
   const navigate = useNavigate();
 
-  const fetchUserCart = async () => {
-    try {
-      const res = await getUserCart(user.userid);
-      dispatch(setCart(res.data.data));
-    } catch (error) {
-      console.error("Error fetching user cart", error);
-    }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated && user?.userid && isOpen) {
-      fetchUserCart();
-    }
-  }, [isAuthenticated, user?.userid, isOpen]);
-
   const handleDelete = async (id, type, dayName = null, skuId) => {
     if (!isAuthenticated) {
       const localCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -60,23 +45,6 @@ const Sidebar = ({ isOpen, onClose }) => {
         console.error("Error deleting item from cart", error);
       }
     }
-  };
-
-  const calculateSubtotal = () => {
-    if (!Cart?.items) return 0;
-    const productTotal =
-      Cart.items.items?.reduce(
-        (acc, item) =>
-          acc +
-          (item?.price || item?.productDetails?.price || 0) * item.quantity,
-        0
-      ) || 0;
-    const tiffinTotal =
-      Cart.items.tiffins?.reduce(
-        (acc, item) => acc + (item?.totalAmount || 0) * item.quantity,
-        0
-      ) || 0;
-    return (productTotal + tiffinTotal).toFixed(2);
   };
 
   useEffect(() => {

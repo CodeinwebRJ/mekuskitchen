@@ -8,6 +8,7 @@ import {
   getCount,
   getProduct,
   getUserAddress,
+  getUserCart,
   getUserWishlist,
 } from "./axiosConfig/AxiosConfig";
 import {
@@ -44,6 +45,7 @@ import CheckoutPage from "./Routes/CheckOut/CheckoutPage.jsx";
 import ForgetPassword from "./Routes/ForgetPassword/ForgetPassword.jsx";
 import VeryfyOtp from "./Routes/VeryfyOtp/VeryfyOtp.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
+import { setCart } from "../Store/Slice/UserCartSlice.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -170,10 +172,20 @@ const App = () => {
     fetchTiffin();
   }, []);
 
+  const fetchUserCart = async () => {
+    try {
+      const res = await getUserCart(user.userid);
+      dispatch(setCart(res.data.data));
+    } catch (error) {
+      console.error("Error fetching user cart", error);
+    }
+  };
+  
   useEffect(() => {
     if (isAuthenticated) {
       fetchAddresses();
       fetchWishlist();
+      fetchUserCart();
     }
   }, [isAuthenticated]);
 

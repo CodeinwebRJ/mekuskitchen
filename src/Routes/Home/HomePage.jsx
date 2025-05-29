@@ -1,120 +1,20 @@
-import { useState, useCallback, useMemo } from "react";
-import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 import Carousel from "../../Component/MainComponents/Carousel";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
 import style from "../../styles/HomePage.module.css";
-import { HomeProductCard } from "../../Component/Cards/HomeProductCard";
-
-// Constants for better maintainability
-const VISIBLE_CARDS = 4;
-const DISHES = [
-  {
-    title: "Thepla",
-    imageUrl:
-      "https://t3.ftcdn.net/jpg/01/89/21/44/360_F_189214466_yxceW8ye3qWFUcJnjteC4wVCQaNoVfdJ.jpg",
-    id: "thepla-1",
-    alt: "Freshly made Gujarati Thepla with spices",
-  },
-  {
-    title: "Thepla",
-    imageUrl:
-      "https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg",
-    id: "thepla-2",
-    alt: "Traditional Gujarati Methi Thepla",
-  },
-];
-
-const dishes = [...new Map(DISHES.map((dish) => [dish.id, dish])).values()];
+import BestSellerProduct from "./BestSellerProduct";
+import Category from "./Category";
+import NewArrivals from "./NewArrivals";
+import OurProduct from "./OurProducts";
 
 const HomePage = () => {
-  const [startIndex, setStartIndex] = useState(0);
-
-  // Memoize handlers to prevent re-creation
-  const handlePrev = useCallback(() => {
-    setStartIndex((prevIndex) =>
-      prevIndex === 0 ? dishes.length - VISIBLE_CARDS : prevIndex - 1
-    );
-  }, []);
-
-  const handleNext = useCallback(() => {
-    setStartIndex((prevIndex) =>
-      prevIndex + VISIBLE_CARDS >= dishes.length ? 0 : prevIndex + 1
-    );
-  }, []);
-
-  // Memoize visible dishes to avoid unnecessary recalculations
-  const visibleDishes = useMemo(() => {
-    if (dishes.length === 0) return [];
-    const endIndex = startIndex + VISIBLE_CARDS;
-    return endIndex > dishes.length
-      ? [
-          ...dishes.slice(startIndex),
-          ...dishes.slice(0, endIndex - dishes.length),
-        ]
-      : dishes.slice(startIndex, endIndex);
-  }, [startIndex]);
-
   return (
     <div className={style.pageContainer}>
       <Header />
       <Carousel />
 
       <div className={style.container}>
-        <section className={style.dishesSection}>
-          <div className={style.headingContainer}>
-            <h2 id="gujarati-dishes-heading" className={style.heading}>
-              <span>Crave-Worthy </span>
-              <span className={style.blueText}>Gujarati Dishes</span>
-              <span> You’ll Keep </span>
-              <span className={style.blueText}>Coming Back To</span>
-            </h2>
-
-            <div className={style.description}>
-              <p>
-                Authentic meals made fresh with homely flavors — always
-                satisfying, just the way you like it.
-              </p>
-              <div className={style.arrowButton}>
-                <button
-                  className={style.circularButton}
-                  onClick={handlePrev}
-                  aria-label="Previous set of dishes"
-                >
-                  <LuArrowLeft size={22} />
-                </button>
-                <button
-                  className={style.circularButton}
-                  onClick={handleNext}
-                  aria-label="Next set of dishes"
-                >
-                  <LuArrowRight size={22} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className={style.dishGrid}
-            role="list"
-            aria-label="Featured dishes"
-          >
-            {visibleDishes.map((dish) => (
-              <div className={style.card} key={dish.id} role="listitem">
-                <img
-                  src={dish.imageUrl}
-                  alt={dish.alt || `Image of ${dish.title}`}
-                  className={style.image}
-                  loading="lazy"
-                />
-                <div className={style.overlay}>
-                  <h3>{dish.title}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
+        <Category />
         <section className={style.dishesSection}>
           <div className={style.headingContainer}>
             <h2 className={style.heading}>
@@ -150,7 +50,6 @@ const HomePage = () => {
             </div>
           </div>
         </section>
-
         <section className={style.thaliSection} aria-labelledby="thali-heading">
           <div className={style.contentBox}>
             <h2 className={style.experience}>
@@ -184,7 +83,7 @@ const HomePage = () => {
             </div>
           </div>
         </section>
-
+        <NewArrivals />
         <section className={style.hero}>
           <div className={style.container}>
             <h1 className={style.title}>
@@ -200,39 +99,8 @@ const HomePage = () => {
             </button>
           </div>
         </section>
-
-        <div>
-          <h2 className={style.newArrival}>
-            <span className={style.blueText}>New </span>
-            <span>Arrival</span>
-          </h2>
-          <div className={style.productGrid}>
-            <HomeProductCard
-              image="https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg"
-              title="Cheese Vada Pav Special"
-              subtitle="Meku’s"
-              price="15.00"
-            />
-            <HomeProductCard
-              image="https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg"
-              title="Cheese Vada Pav Special"
-              subtitle="Meku’s"
-              price="15.00"
-            />
-            <HomeProductCard
-              image="https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg"
-              title="Cheese Vada Pav Special"
-              subtitle="Meku’s"
-              price="15.00"
-            />
-            <HomeProductCard
-              image="https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg"
-              title="Cheese Vada Pav Special"
-              subtitle="Meku’s"
-              price="15.00"
-            />
-          </div>
-        </div>
+        <BestSellerProduct />
+        <OurProduct />
       </div>
 
       <Footer />

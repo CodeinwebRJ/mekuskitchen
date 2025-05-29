@@ -10,10 +10,12 @@ import FormField from "../MyAccount/Addresses/FormField";
 import CheckboxFeild from "../../Component/UI-Components/CheckboxFeild";
 import {
   addUserAddress,
+  getUserCart,
   sendOrder,
   UpdateUserAddress,
 } from "../../axiosConfig/AxiosConfig";
 import { setShowAddressForm } from "../../../Store/Slice/AddressSlice";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 const CheckoutPage = () => {
   const { defaultAddress } = useSelector((state) => state.address);
@@ -155,107 +157,123 @@ const CheckoutPage = () => {
     }));
   };
 
+  const Cart = useSelector((state) => state.cart);
+  const address = useSelector((state) => state.address);
+
   const handleSubmit = async (e) => {
+    e.preventDefault();
     if (defaultAddress) {
       try {
-        const res = await sendOrder({})
-        console.log()
+        const data = {
+          userId: user.userid,
+          cartId: Cart.items._id,
+          addressId: address.addresses[0]._id,
+          paymentMethod: "COD",
+          totalAmount: Cart?.items?.totalAmount,
+          // discount: user.userid,
+          // deliveryFee: user.userid,
+          // taxAmount: user.userid,
+          // notes: user.userid,
+          // deliveryTime: user.userid,
+        };
+        console.log(data);
+        const res = await sendOrder(data);
+        const response = await getUserCart(user.userid);
+        dispatch(setCart(response.data.data));
       } catch (error) {
         console.log(error);
       }
-    }
+    } else {
+      setApiError("");
+      setIsLoading(true);
 
-    e.preventDefault();
-    setApiError("");
-    setIsLoading(true);
+      const billingErrors = validateAddressForm(formData.billingData);
+      const shippingErrors = formData.isDifferent
+        ? validateAddressForm(formData.shippingData)
+        : {};
+      const combinedErrors = {
+        billingErrors,
+        shippingErrors,
+      };
+      setErrors(combinedErrors);
 
-    const billingErrors = validateAddressForm(formData.billingData);
-    const shippingErrors = formData.isDifferent
-      ? validateAddressForm(formData.shippingData)
-      : {};
-    const combinedErrors = {
-      billingErrors,
-      shippingErrors,
-    };
-    setErrors(combinedErrors);
+      const hasBillingErrors = Object.keys(billingErrors).length > 0;
+      const hasShippingErrors = Object.keys(shippingErrors).length > 0;
 
-    const hasBillingErrors = Object.keys(billingErrors).length > 0;
-    const hasShippingErrors = Object.keys(shippingErrors).length > 0;
-
-    if (hasBillingErrors || hasShippingErrors) {
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const res = await addUserAddress({
-        userId: user.userid,
-        isDifferent: formData.isDifferent,
-        billing: {
-          firstName: formData.billingData.firstName,
-          lastName: formData.billingData.lastName,
-          country: formData.billingData.country,
-          state: formData.billingData.state,
-          city: formData.billingData.city,
-          address: formData.billingData.address,
-          postcode: formData.billingData.postCode,
-          phone: formData.billingData.phone,
-          email: formData.billingData.email,
-        },
-        ...(formData.isDifferent && {
-          shipping: {
-            firstName: formData.shippingData.firstName,
-            lastName: formData.shippingData.lastName,
-            country: formData.shippingData.country,
-            state: formData.shippingData.state,
-            city: formData.shippingData.city,
-            address: formData.shippingData.address,
-            postcode: formData.shippingData.postCode,
-            phone: formData.shippingData.phone,
-            email: formData.shippingData.email,
-          },
-        }),
-      });
-
-      if (res?.status === 200 || res?.status === 201) {
-        dispatch(setShowAddressForm(false));
-        setFormData({
-          userId: user.userid,
-          billingData: {
-            firstName: "",
-            lastName: "",
-            country: "",
-            state: "",
-            city: "",
-            address: "",
-            postCode: "",
-            phone: "",
-            email: "",
-          },
-          shippingData: {
-            firstName: "",
-            lastName: "",
-            country: "",
-            state: "",
-            city: "",
-            address: "",
-            postCode: "",
-            phone: "",
-            email: "",
-          },
-          isDifferent: false,
-          isActive: true,
-        });
-      } else {
-        setApiError("Failed to submit address. Please try again.");
+      if (hasBillingErrors || hasShippingErrors) {
+        setIsLoading(false);
+        return;
       }
-    } catch (error) {
-      setApiError(
-        error.response?.data?.message ||
-          "An error occurred while submitting the address."
-      );
-    } finally {
-      setIsLoading(false);
+      try {
+        const res = await addUserAddress({
+          userId: user.userid,
+          isDifferent: formData.isDifferent,
+          billing: {
+            firstName: formData.billingData.firstName,
+            lastName: formData.billingData.lastName,
+            country: formData.billingData.country,
+            state: formData.billingData.state,
+            city: formData.billingData.city,
+            address: formData.billingData.address,
+            postcode: formData.billingData.postCode,
+            phone: formData.billingData.phone,
+            email: formData.billingData.email,
+          },
+          ...(formData.isDifferent && {
+            shipping: {
+              firstName: formData.shippingData.firstName,
+              lastName: formData.shippingData.lastName,
+              country: formData.shippingData.country,
+              state: formData.shippingData.state,
+              city: formData.shippingData.city,
+              address: formData.shippingData.address,
+              postcode: formData.shippingData.postCode,
+              phone: formData.shippingData.phone,
+              email: formData.shippingData.email,
+            },
+          }),
+        });
+
+        if (res?.status === 200 || res?.status === 201) {
+          dispatch(setShowAddressForm(false));
+          setFormData({
+            userId: user.userid,
+            billingData: {
+              firstName: "",
+              lastName: "",
+              country: "",
+              state: "",
+              city: "",
+              address: "",
+              postCode: "",
+              phone: "",
+              email: "",
+            },
+            shippingData: {
+              firstName: "",
+              lastName: "",
+              country: "",
+              state: "",
+              city: "",
+              address: "",
+              postCode: "",
+              phone: "",
+              email: "",
+            },
+            isDifferent: false,
+            isActive: true,
+          });
+        } else {
+          setApiError("Failed to submit address. Please try again.");
+        }
+      } catch (error) {
+        setApiError(
+          error.response?.data?.message ||
+            "An error occurred while submitting the address."
+        );
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
