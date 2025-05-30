@@ -1,8 +1,8 @@
 .footerContainer {
-  background: linear-gradient(to right, #4fb5f1, #5b92ca);
+  background: var(--primary-blue);
   padding: 60px 140px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
 .footerInner {

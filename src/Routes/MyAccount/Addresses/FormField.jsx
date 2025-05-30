@@ -143,7 +143,7 @@ const FormField = ({
 
         <div className={style.inputFieldContainer}>
           <InputField
-            type="number"
+            type="text"
             name="postCode"
             value={formData.postCode || ""}
             onChange={handleChange}

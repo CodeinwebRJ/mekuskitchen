@@ -84,7 +84,7 @@ const App = () => {
         ProductCategory: filterData?.productCategories,
         brands: filterData?.Brands,
         ratings: filterData?.ratings,
-        prices: filterData?.prices,
+        price: filterData?.price,
         attributes: filterData?.attributes,
       };
       const response = await getProduct(data);

@@ -18,15 +18,9 @@ const MyAccountContainer = ({ children }) => {
 
   return (
     <div>
-      {/* Header */}
       <Header />
-
-      {/* Banner */}
       <Banner name={"My Account"} />
-
-      {/* Container */}
       <div className={style.myAccountContainer}>
-        {/* Left Container */}
         <div className={style.myAccountLeftContainer}>
           <div className={style.myAccountLeftContainerSticky}>
             <p className={style.myAccountLeftContainerTitle}>MY ACCOUNT</p>

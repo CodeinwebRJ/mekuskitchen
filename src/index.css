@@ -170,6 +170,10 @@ ul {
   color: #111827;
 }
  
+.discount{
+  color: var(--primary-green-alt);
+  font-weight: var(--font-semibold);
+}
 
 .loadingContainer {
   height: 100%;

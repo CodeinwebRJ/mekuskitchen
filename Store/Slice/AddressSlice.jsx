@@ -17,6 +17,15 @@ const addressSlice = createSlice({
     setShowAddressForm: (state, action) => {
       state.showAddressForm = action.payload;
     },
+    deleteAddress: (state, action) => {
+      const addressId = action.payload;
+      state.addresses = state.addresses.filter(
+        (address) => address.id !== addressId
+      );
+      if (state.defaultAddress?.id === addressId) {
+        state.defaultAddress = null;
+      }
+    },
   },
 });
 
@@ -24,7 +33,7 @@ export const {
   setAddresses,
   setDefaultAddress,
   setShowAddressForm,
-  setIsEditAddress,
+  deleteAddress,
 } = addressSlice.actions;
 
 export default addressSlice.reducer;

@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/AddAddressCard.module.css";
 import { MdAdd } from "react-icons/md";
 

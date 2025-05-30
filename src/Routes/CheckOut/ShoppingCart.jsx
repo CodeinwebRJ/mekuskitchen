@@ -31,7 +31,9 @@ const CartItem = ({
   const name = isProduct
     ? item?.productDetails?.name?.toUpperCase()
     : item?.day;
-  const price = isProduct ? item?.price : item?.tiffinMenuDetails?.totalAmount;
+  const price = isProduct
+    ? item?.productDetails?.sellingPrice
+    : item?.tiffinMenuDetails?.totalAmount;
 
   return (
     <tr className={style.cartItem}>
@@ -78,12 +80,23 @@ const CartItem = ({
   );
 };
 
-const CartTotals = ({ subtotal, tax, total }) => (
+const CartTotals = ({ subtotal, total, discount, discountPercentage }) => (
   <div className={style.cartTotals}>
     <h3>Cart Totals</h3>
     <p>
+      Total: <span>${total.toFixed(2)}</span>
+    </p>
+    <p>
       Subtotal: <span>${subtotal.toFixed(2)}</span>
     </p>
+    {discount > 0 && (
+      <p>
+        Discount:{" "}
+        <span className="discount">
+          -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
+        </span>
+      </p>
+    )}
     <hr />
     <p>
       Shipping: <span>Self Pickup</span>
@@ -94,11 +107,11 @@ const CartTotals = ({ subtotal, tax, total }) => (
     </p>
     <hr />
     <p className={style.total}>
-      Total: <span className={style.totalAmount}>${total.toFixed(2)}</span>
+      Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
     </p>
     <Link to="/checkout">
       <div className={style.checkoutButton}>
-        <Button variant="success" size="md">
+        <Button variant="primary" size="md">
           Proceed to Checkout
         </Button>
       </div>
@@ -115,7 +128,7 @@ const ShoppingCart = () => {
   const subtotal = useMemo(
     () =>
       (cart?.items?.items?.reduce(
-        (acc, item) => acc + item.price * item.quantity,
+        (acc, item) => acc + item?.productDetails?.sellingPrice * item.quantity,
         0
       ) || 0) +
       (cart?.items?.tiffins?.reduce(
@@ -126,7 +139,37 @@ const ShoppingCart = () => {
     [cart]
   );
 
-  // Fetch user cart for authenticated users
+  const total = useMemo(
+    () =>
+      (cart?.items?.items?.reduce(
+        (acc, item) => acc + item.productDetails.price * item.quantity,
+        0
+      ) || 0) +
+      (cart?.items?.tiffins?.reduce(
+        (acc, item) =>
+          acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+        0
+      ) || 0),
+    [cart]
+  );
+
+  const discount = useMemo(
+    () =>
+      cart?.items?.items?.reduce(
+        (acc, item) =>
+          acc +
+          (item.productDetails.price - item.productDetails.sellingPrice) *
+            item.quantity,
+        0
+      ) || 0,
+    [cart]
+  );
+
+  const discountPercentage = useMemo(() => {
+    if (total === 0) return 0;
+    return (discount / total) * 100;
+  }, [discount, total]);
+
   const fetchUserCart = async () => {
     try {
       if (user?.userid) {
@@ -346,7 +389,7 @@ const ShoppingCart = () => {
                           className={style.removeIcon}
                           onClick={() => handleDelete(item._id, "product")}
                         />
-                        <FaEye onClick={() => onShowProduct(item._id)} />
+                        <FaEye onClick={() => handleShowProduct(item._id)} />
                       </div>
                     </td>
                     <td>
@@ -388,7 +431,12 @@ const ShoppingCart = () => {
             </tbody>
           </table>
         </div>
-        <CartTotals subtotal={subtotal} total={subtotal} />
+        <CartTotals
+          subtotal={subtotal}
+          total={total}
+          discount={discount}
+          discountPercentage={discountPercentage}
+        />
       </div>
       <Footer />
 

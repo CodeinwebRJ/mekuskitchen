@@ -54,7 +54,7 @@ const RelatedProductCard = ({ item }) => {
   const displayTitle = isTiffin ? item?.day : item?.name;
   const displayPrice = isTiffin
     ? Number(item?.subTotal || 0).toFixed(2)
-    : Number(item?.price || 0).toFixed(2);
+    : Number(item?.sellingPrice || 0).toFixed(2);
 
   const displayOrignalPrice = isTiffin
     ? ""
@@ -153,7 +153,7 @@ const RelatedProductCard = ({ item }) => {
             />
           </div>
           <div className={style.PriceContainer}>
-            {/* <p className="originalPrice">${displayPrice}</p> */}
+            <p className="originalPrice">${displayPrice}</p>
             <p className="price">${displayPrice}</p>
           </div>
           <AddToCartButton onclick={handleAddToCart} />

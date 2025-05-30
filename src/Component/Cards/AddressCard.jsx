@@ -50,19 +50,6 @@ const AddressCard = ({
         >
           Delete
         </span>
-        {/* {address?.isActive ? null : (
-          <>
-            <span>|</span>
-            <span
-              onClick={() => {
-                handleSetAsDefaultAddress(address?._id);
-              }}
-              className={style.link}
-            >
-              Set as Default
-            </span>
-          </>
-        )} */}
       </div>
 
       {address?.isActive && <span className={style.defaultLabel}>Default</span>}

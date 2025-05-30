@@ -15,6 +15,7 @@ import {
 } from "../../Store/Slice/FilterDataSlice";
 import CheckboxField from "./UI-Components/CheckboxFeild";
 import { setPage } from "../../Store/Slice/FilterDataSlice";
+import { Link } from "react-router-dom";
 
 const useDebounce = (value, delay, callback) => {
   useEffect(() => {
@@ -102,6 +103,7 @@ const FilterContainer = ({
   const { combinations, products } = useSelector((state) => state.product);
   const filterData = useSelector((state) => state.filterData);
 
+  console.log(data);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBrand, setSearchBrand] = useState("");
   const [selectedBrands, setSelectedBrands] = useState(
@@ -503,33 +505,39 @@ const FilterContainer = ({
         <ul>
           {Array.isArray(data) && data.length > 0 ? (
             data.map((product, index) => (
-              <li
-                key={product?.productDetails?.id || index}
-                className={style.topRatedItem}
+              <Link
+                to={`/product/${product?.productDetails?.category.toLowerCase()}/${product?.productDetails?.product_name.toLowerCase()}`}
+                state={{ id: product?.productDetails?._id }}
               >
-                <div className={style.imageContainer}>
-                  <img
-                    src={
-                      product?.productDetails?.image_url || "/defaultImage.png"
-                    }
-                    alt={product?.productDetails?.product_name || "Product"}
-                    className={style.topRatedImg}
-                  />
-                </div>
-                <div className={style.topRatedInfo}>
-                  <p>{product?.productDetails?.product_name || "N/A"}</p>
-                  <div className={style.rating}>
-                    <RatingStar
-                      rating={product?.averageRating || 0}
-                      start={0}
-                      stop={5}
+                <li
+                  key={product?.productDetails?.id || index}
+                  className={style.topRatedItem}
+                >
+                  <div className={style.imageContainer}>
+                    <img
+                      src={
+                        product?.productDetails?.image_url ||
+                        "/defaultImage.png"
+                      }
+                      alt={product?.productDetails?.product_name || "Product"}
+                      className={style.topRatedImg}
                     />
                   </div>
-                  <p className="price">
-                    ${product?.productDetails?.price?.toFixed(2) || "0.00"}
-                  </p>
-                </div>
-              </li>
+                  <div className={style.topRatedInfo}>
+                    <p>{product?.productDetails?.product_name || "N/A"}</p>
+                    <div className={style.rating}>
+                      <RatingStar
+                        rating={product?.averageRating || 0}
+                        start={0}
+                        stop={5}
+                      />
+                    </div>
+                    <p className="price">
+                      ${product?.productDetails?.price?.toFixed(2) || "0.00"}
+                    </p>
+                  </div>
+                </li>
+              </Link>
             ))
           ) : (
             <p>No top-rated products available.</p>

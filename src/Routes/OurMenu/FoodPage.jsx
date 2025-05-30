@@ -17,7 +17,11 @@ import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import styles from "../../styles/Food.module.css";
-import { setGrid, setPage, setPrices } from "../../../Store/Slice/FilterDataSlice.jsx";
+import {
+  setGrid,
+  setPage,
+  setPrices,
+} from "../../../Store/Slice/FilterDataSlice.jsx";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
@@ -33,9 +37,10 @@ const FoodPage = () => {
 
   const handlePriceChange = useCallback(
     (e) => {
-      dispatch(setPrices(parseInt(e.target.value)));
+      const newMax = parseInt(e.target.value, 10);
+      dispatch(setPrices([0, newMax]));
     },
-    [dispatch]
+    [dispatch, price]
   );
 
   const handlePageChange = useCallback(

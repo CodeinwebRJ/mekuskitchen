@@ -19,7 +19,7 @@ const WishlistPage = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchWishlist = async () => {
-    if (!user?.userid) return;
+    if (!isAuthenticated) return;
     try {
       setLoading(true);
       const res = await getUserWishlist(user.userid);

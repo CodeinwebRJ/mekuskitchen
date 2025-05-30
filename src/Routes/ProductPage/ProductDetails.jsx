@@ -32,9 +32,9 @@ const ProductDetails = ({
     (state) => state.wishlist?.likedMap?.[product?._id] || false
   );
 
-  const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
+  console.log(product);
 
-  
+  const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);
@@ -171,56 +171,59 @@ const ProductDetails = ({
         </div>
       </div>
 
-      {product?.sku?.length > 1 && (
-        <>
-          <div className={style.colorContainer}>
-            <h6>Color:</h6>
-            {product.sku.map((item, i) => {
-              const firstImg =
-                item?.details?.SKUImages?.[0] || "/default-image.png";
-              return (
-                <img
-                  key={item._id || i}
-                  src={firstImg}
-                  className={`${style.thumbnail} ${
-                    selectedSKUs?._id === item._id ? style.selected : ""
-                  }`}
-                  onClick={() => handleSKUSelect(item)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSKUSelect(item);
-                  }}
-                  tabIndex={0}
-                  alt={`Color option for ${item?.details?.SKUname || "SKU"}`}
-                  role="button"
-                />
-              );
-            })}
-          </div>
-          {selectedSKUs?.details?.combinations?.length > 0 &&
-            Object.entries(availableOptions || {}).map(
-              ([attribute, options]) => (
-                <OptionSelector
-                  key={attribute}
-                  options={options}
-                  selected={selectedOptions[attribute]}
-                  onSelect={(value) => handleOptionSelect(attribute, value)}
-                  label={attribute}
-                  isCompatible={(value) => isOptionCompatible(attribute, value)}
-                  suffix={
-                    attribute.toLowerCase().includes("size") ||
-                    attribute.toLowerCase().includes("weight")
-                      ? attribute.toLowerCase().includes("weight")
-                        ? options[0]?.toLowerCase().includes("kg")
-                          ? ""
-                          : "g"
+      {product?.sku?.length > 0 &&
+        product?.sku[0]?.details?.combinations?.length > 0 && (
+          <>
+            <div className={style.colorContainer}>
+              <h6>Color:</h6>
+              {product.sku.map((item, i) => {
+                const firstImg =
+                  item?.details?.SKUImages?.[0] || "/default-image.png";
+                return (
+                  <img
+                    key={item._id || i}
+                    src={firstImg}
+                    className={`${style.thumbnail} ${
+                      selectedSKUs?._id === item._id ? style.selected : ""
+                    }`}
+                    onClick={() => handleSKUSelect(item)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSKUSelect(item);
+                    }}
+                    tabIndex={0}
+                    alt={`Color option for ${item?.details?.SKUname || "SKU"}`}
+                    role="button"
+                  />
+                );
+              })}
+            </div>
+            {selectedSKUs?.details?.combinations?.length > 0 &&
+              Object.entries(availableOptions || {}).map(
+                ([attribute, options]) => (
+                  <OptionSelector
+                    key={attribute}
+                    options={options}
+                    selected={selectedOptions[attribute]}
+                    onSelect={(value) => handleOptionSelect(attribute, value)}
+                    label={attribute}
+                    isCompatible={(value) =>
+                      isOptionCompatible(attribute, value)
+                    }
+                    suffix={
+                      attribute.toLowerCase().includes("size") ||
+                      attribute.toLowerCase().includes("weight")
+                        ? attribute.toLowerCase().includes("weight")
+                          ? options[0]?.toLowerCase().includes("kg")
+                            ? ""
+                            : "g"
+                          : ""
                         : ""
-                      : ""
-                  }
-                />
-              )
-            )}
-        </>
-      )}
+                    }
+                  />
+                )
+              )}
+          </>
+        )}
 
       {product?.tags?.length > 0 && (
         <div className={style.Chip}>

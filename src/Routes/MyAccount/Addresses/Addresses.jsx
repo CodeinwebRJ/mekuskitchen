@@ -10,6 +10,7 @@ import {
   getUserAddress,
 } from "../../../axiosConfig/AxiosConfig";
 import {
+  deleteAddress,
   setAddresses,
   setDefaultAddress,
   setShowAddressForm,
@@ -23,7 +24,7 @@ const Addresses = () => {
   const { user } = useSelector((state) => state.auth);
   const { addresses, showAddressForm } = useSelector((state) => state.address);
 
-  const fetchAddresses = async () => {
+  const fetchAddress = async () => {
     try {
       const response = await getUserAddress(user.userid);
       if (response.status === 200) {
@@ -48,10 +49,9 @@ const Addresses = () => {
         userId: user.userid,
         addressId: addressId,
       };
-      const response = await DeleteUserAddress(data);
-      if (response.status === 200) {
-        fetchAddresses();
-      }
+      await DeleteUserAddress(data);
+      dispatch(deleteAddress(addressId));
+      fetchAddress();
     } catch (error) {
       console.error("Error deleting address:", error);
     }
@@ -65,7 +65,7 @@ const Addresses = () => {
       };
       const response = await ActiveUserAddress(data);
       if (response.status === 200) {
-        fetchAddresses();
+        fetchAddress();
       }
     } catch (error) {
       console.error("Error activating address:", error);
@@ -110,7 +110,7 @@ const Addresses = () => {
           </div>
         </>
       ) : (
-        <AddressForm isEdit={isEdit} fetchAddresses={fetchAddresses} />
+        <AddressForm isEdit={isEdit} fetchAddresses={fetchAddress} />
       )}
     </MyAccountContainer>
   );

@@ -1,15 +1,45 @@
-.checkoutContianer {
-  padding: 60px 20px;
+/* Define CSS custom properties for consistency */
+:root {
+  --gap-5: 0.5rem;
+  --gap-6: 0.75rem;
+  --gap-9: 1rem;
+  --charcoal-navy: #1a2b3c;
+  --text-dark: #333;
+  --gray-lighter: #f5f5f5;
+  --light-cool-gray: #e0e4e8;
+  --white: #fff;
+  --pale-gray-blue: #d3dce6;
+  --very-light-cool-gray: #f8f9fa;
+  --gunmetal: #2c3e50;
+  --gray-placeholder: #6c757d;
+  --font-size-sm: 0.85rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+.mainContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.checkoutContainer {
+  padding: 3rem 1rem;
   max-width: 1250px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 0.6fr;
-  gap: 40px;
-  align-items: start;
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
 }
 
 .billingForm {
-  padding: 8px 0;
+  padding: var(--gap-9) 0;
   display: flex;
   flex-direction: column;
   gap: var(--gap-9);
@@ -18,11 +48,11 @@
 .billingTitle {
   display: flex;
   gap: var(--gap-6);
-  font-size: 20px;
+  font-size: var(--font-size-xl);
   font-weight: 700;
   text-transform: uppercase;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 1.5rem;
   color: var(--charcoal-navy);
 }
 
@@ -35,89 +65,102 @@
   transform: translateX(-3px);
 }
 
+.backButton:focus {
+  outline: 2px solid var(--charcoal-navy);
+  outline-offset: 2px;
+}
+
 .addressDetails {
   display: flex;
   flex-direction: column;
   gap: var(--gap-6);
-  font-size: 16px;
+  font-size: var(--font-size-base);
   color: var(--text-dark);
   background-color: var(--gray-lighter);
-  padding: 20px;
-  border-radius: 8px;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
   border: 1px solid var(--light-cool-gray);
+  flex: 1;
 }
 
 .fullname {
-  font-size: 18px;
+  font-size: var(--font-size-lg);
   font-weight: 600;
   text-transform: capitalize;
   color: var(--charcoal-navy);
 }
 
-.Country {
-  font-size: 16px;
-}
-
 .orderSummaryContainer {
   display: flex;
   justify-content: center;
+  flex: 1;
 }
 
 .orderCard {
   border: 1px solid var(--light-cool-gray);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
   background-color: var(--white);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--box-shadow);
   width: 100%;
   max-width: 400px;
 }
 
 .orderTitle {
-  font-size: 18px;
+  font-size: var(--font-size-lg);
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   color: var(--charcoal-navy);
 }
 
 .orderRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 16px;
+  margin-bottom: 0.75rem;
+  font-size: var(--font-size-base);
   color: var(--text-dark);
 }
 
 .orderRow.total {
   font-weight: 700;
-  font-size: 1.16px;
-  margin-top: 15px;
-  padding-top: 15px;
+  font-size: var(--font-size-lg);
+  margin-top: 1rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--pale-gray-blue);
 }
 
 .paymentMethod {
-  margin-top: 25px;
-  padding: 14px;
-  background-color: var(--very-light-cool-gra);
+  margin-top: 1.5rem;
+  padding: 0.875rem;
+  background-color: var(--very-light-cool-gray);
   border-radius: 6px;
   text-align: center;
-  font-size: 0.95rem;
-  color: var(--gummetal);
+  font-size: var(--font-size-sm);
+  color: var(--gunmetal);
   border: 1px solid var(--light-cool-gray);
 }
 
 .privacyText {
-  margin-top: 15px;
-  font-size: 0.85rem;
+  margin-top: 1rem;
+  font-size: var(--font-size-sm);
   color: var(--gray-placeholder);
   line-height: 1.6;
 }
 
 .placeOrder {
-  margin: 8px 0;
-  border-radius: 8px;
+  margin: var(--gap-9) 0;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease;
+}
+
+.placeOrder:hover {
+  opacity: 0.9;
+}
+
+.placeOrder:focus {
+  outline: 2px solid var(--charcoal-navy);
+  outline-offset: 2px;
 }
 
 .checkboxContainer {
@@ -126,13 +169,44 @@
   gap: var(--gap-5);
 }
 
+.errorMessage {
+  color: #d32f2f;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--gap-9);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .checkoutContianer {
-    grid-template-columns: 1fr;
-    padding: 30px 16px;
+  .checkoutContainer {
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
   }
 
   .orderCard {
     max-width: 100%;
+  }
+
+  .billingForm {
+    gap: 0.75rem;
+  }
+
+  .billingTitle {
+    font-size: var(--font-size-lg);
+  }
+
+  .addressDetails,
+  .orderCard {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .billingTitle {
+    font-size: var(--font-size-base);
+  }
+
+  .placeOrder {
+    width: 100%;
   }
 }

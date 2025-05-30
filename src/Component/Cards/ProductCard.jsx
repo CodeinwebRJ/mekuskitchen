@@ -157,9 +157,12 @@ const ProductCard = ({ product, grid }) => {
               disabled
             />
           </div>
-          <div className={style.PriceContainer}>
-            <p className="originalPrice">${product?.price}</p>
-            <p className="price">${product?.sellingPrice}</p>
+          <div className={style.discountContainer}>
+            <div className={style.PriceContainer}>
+              <p className="originalPrice">${product?.price}</p>
+              <p className="price">${product?.sellingPrice}</p>
+            </div>
+            {product?.discount && <strong className="discount">{product?.discount}% off</strong>}
           </div>
         </div>
       </Link>

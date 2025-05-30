@@ -6,8 +6,8 @@ import style from "../../styles/NewArrival.module.css";
 
 const NewArrivals = ({ data }) => {
   const products = Array.isArray(data?.NewProducts) ? data.NewProducts : [];
-  const enableLoop = products.length >= 4; 
-  const enableAutoplay = products.length >= 4; 
+  const enableLoop = products.length >= 4;
+  const enableAutoplay = products.length >= 4;
 
   return (
     <div className={style.container}>
@@ -28,20 +28,21 @@ const NewArrivals = ({ data }) => {
               ? { delay: 2000, disableOnInteraction: false }
               : false
           }
-          slidesPerView={4} 
+          slidesPerView={4}
           breakpoints={{
             0: { slidesPerView: Math.min(products.length, 1) },
-            480: { slidesPerView: Math.min(products.length, 2) }, 
-            768: { slidesPerView: Math.min(products.length, 3) }, 
+            480: { slidesPerView: Math.min(products.length, 2) },
+            768: { slidesPerView: Math.min(products.length, 3) },
             1024: { slidesPerView: 4 },
             1280: { slidesPerView: 4 },
-            1536: { slidesPerView: 4 }, 
+            1536: { slidesPerView: 4 },
           }}
-          className={style.swiperContainer} 
+          className={style.swiperContainer}
         >
           {products.map((product) => (
             <SwiperSlide className={style.container} key={product.id}>
               <HomeProductCard
+                data={product}
                 image={product.images}
                 name={product.name}
                 subtitle={product?.subtitle || ""}

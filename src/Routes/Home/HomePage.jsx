@@ -7,6 +7,7 @@ import BestSellerProduct from "./BestSellerProduct";
 import Category from "./Category";
 import NewArrivals from "./NewArrivals";
 import OurProduct from "./OurProducts";
+import Cooking from "./Cooking";
 
 const HomePage = () => {
   const { data } = useSelector((state) => state.home);
@@ -77,14 +78,12 @@ const HomePage = () => {
           </div>
 
           <div className={style.imageBox}>
-            <div className={style.imageWrapper}>
-              <img
-                src="https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg"
-                alt="Authentic Gujarati Thali with a variety of dishes"
-                className={style.mainThaliImg}
-                loading="lazy"
-              />
-            </div>
+            <img
+              src="https://www.indubenkhakhrawala.com/wp-content/uploads/2025/04/Gujarati-Methi-Thepla-Made-By-Induben-Khakhrawala.jpg"
+              alt="Authentic Gujarati Thali with a variety of dishes"
+              className={style.mainThaliImg}
+              loading="lazy"
+            />
           </div>
         </section>
 
@@ -107,8 +106,8 @@ const HomePage = () => {
         </section>
 
         <BestSellerProduct data={data} />
-
         <OurProduct data={data} />
+        <Cooking />
       </div>
 
       <Footer />

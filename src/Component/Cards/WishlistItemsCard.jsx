@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/WishlistItem.module.css";
 import RatingStar from "../RatingStar";
 import { RiShareLine } from "react-icons/ri";
@@ -10,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Toast } from "../../Utils/Toast";
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
+import { Link } from "react-router-dom";
 
 const WishlistItem = ({ product, fetchWishlist }) => {
   const dispatch = useDispatch();
@@ -78,7 +78,14 @@ const WishlistItem = ({ product, fetchWishlist }) => {
           />
         </div>
         <div className={style.itemContent}>
-          <span className={style.itemName}>{product.name?.toUpperCase()}</span>
+          <Link
+            to={`/product/${product.category.toLowerCase()}/${product.name.toLowerCase()}`}
+            state={{ id: product._id }}
+          >
+            <span className={style.itemName}>
+              {product.name?.toUpperCase()}
+            </span>
+          </Link>
           <span className="price">${product.sellingPrice}</span>
           <span className={style.itemDescription}>{product.description}</span>
         </div>
