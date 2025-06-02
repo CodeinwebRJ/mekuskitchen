@@ -7,6 +7,7 @@ const addressSlice = createSlice({
     defaultAddress: null,
     showAddressForm: false,
   },
+
   reducers: {
     setAddresses: (state, action) => {
       state.addresses = action.payload;
@@ -20,9 +21,9 @@ const addressSlice = createSlice({
     deleteAddress: (state, action) => {
       const addressId = action.payload;
       state.addresses = state.addresses.filter(
-        (address) => address.id !== addressId
+        (address) => address._id !== addressId
       );
-      if (state.defaultAddress?.id === addressId) {
+      if (state.defaultAddress?._id === addressId) {
         state.defaultAddress = null;
       }
     },

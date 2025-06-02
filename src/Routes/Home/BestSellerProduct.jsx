@@ -25,7 +25,7 @@ const BestSellerProduct = ({ data }) => {
           loop={enableLoop}
           autoplay={
             enableAutoplay
-              ? { delay: 2000, disableOnInteraction: false }
+              ? { delay: 2500, disableOnInteraction: false }
               : false
           }
           slidesPerView={4}

@@ -1,93 +1,71 @@
-/* Define CSS custom properties for consistency */
 :root {
-  --gap-5: 0.5rem;
-  --gap-6: 0.75rem;
-  --gap-9: 1rem;
-  --charcoal-navy: #1a2b3c;
-  --text-dark: #333;
-  --gray-lighter: #f5f5f5;
-  --light-cool-gray: #e0e4e8;
-  --white: #fff;
-  --pale-gray-blue: #d3dce6;
-  --very-light-cool-gray: #f8f9fa;
-  --gunmetal: #2c3e50;
-  --gray-placeholder: #6c757d;
-  --font-size-sm: 0.85rem;
+  --gap-4: 0.25rem;
+  --gap-8: 0.5rem;
+  --gap-16: 1rem;
+  --gap-24: 1.5rem;
+  --primary-dark: #1a2b3c;
+  --text-primary: #1f2a44;
+  --background-light: #f9fafb;
+  --border-light: #e2e8f0;
+  --accent-light: #edf2f7;
+  --error: #e53e3e;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  --border-radius: 6px;
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s ease-in-out;
 }
 
 .mainContainer {
   width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 1rem;
+  background-color: var(--background-light);
 }
 
 .checkoutContainer {
-  padding: 3rem 1rem;
-  max-width: 1250px;
+  padding: var(--gap-24) var(--gap-16);
+  max-width: 1280px;
   margin: 0 auto;
   display: flex;
-  gap: 2.5rem;
+  gap: var(--gap-24);
   align-items: flex-start;
-}
-
-.billingForm {
-  padding: var(--gap-9) 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-9);
-}
-
-.billingTitle {
-  display: flex;
-  gap: var(--gap-6);
-  font-size: var(--font-size-xl);
-  font-weight: 700;
-  text-transform: uppercase;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  color: var(--charcoal-navy);
-}
-
-.backButton {
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.backButton:hover {
-  transform: translateX(-3px);
-}
-
-.backButton:focus {
-  outline: 2px solid var(--charcoal-navy);
-  outline-offset: 2px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .addressDetails {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-6);
+  gap: var(--gap-8);
   font-size: var(--font-size-base);
-  color: var(--text-dark);
-  background-color: var(--gray-lighter);
-  padding: 1.5rem;
+  color: var(--text-primary);
+  background-color: var(--accent-light);
+  padding: var(--gap-16);
   border-radius: var(--border-radius);
-  border: 1px solid var(--light-cool-gray);
+  border: 1px solid var(--border-light);
   flex: 1;
+  transition: var(--transition);
+}
+
+.billingTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: var(--gap-16);
+  color: var(--primary-dark);
 }
 
 .fullname {
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: 500;
   text-transform: capitalize;
-  color: var(--charcoal-navy);
+  color: var(--primary-dark);
 }
 
 .orderSummaryContainer {
@@ -97,116 +75,190 @@
 }
 
 .orderCard {
-  border: 1px solid var(--light-cool-gray);
+  border: 1px solid var(--border-light);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
-  background-color: var(--white);
+  padding: var(--gap-16);
+  background-color: var(--background-light);
   box-shadow: var(--box-shadow);
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
+  transition: var(--transition);
 }
 
 .orderTitle {
   font-size: var(--font-size-lg);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  margin-bottom: 1.25rem;
-  color: var(--charcoal-navy);
+  margin-bottom: var(--gap-16);
+  color: var(--primary-dark);
 }
 
 .orderRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--gap-8);
   font-size: var(--font-size-base);
-  color: var(--text-dark);
+  color: var(--text-primary);
 }
 
 .orderRow.total {
   font-weight: 700;
   font-size: var(--font-size-lg);
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--pale-gray-blue);
+  margin-top: var(--gap-16);
+  padding-top: var(--gap-16);
+  border-top: 1px solid var(--border-light);
 }
 
 .paymentMethod {
-  margin-top: 1.5rem;
-  padding: 0.875rem;
-  background-color: var(--very-light-cool-gray);
-  border-radius: 6px;
+  margin-top: var(--gap-16);
+  padding: var(--gap-8);
+  background-color: var(--accent-light);
+  border-radius: var(--border-radius);
   text-align: center;
   font-size: var(--font-size-sm);
-  color: var(--gunmetal);
-  border: 1px solid var(--light-cool-gray);
-}
-
-.privacyText {
-  margin-top: 1rem;
-  font-size: var(--font-size-sm);
-  color: var(--gray-placeholder);
-  line-height: 1.6;
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
 }
 
 .placeOrder {
-  margin: var(--gap-9) 0;
+  margin: var(--gap-16) 0;
   border-radius: var(--border-radius);
-  transition: background-color 0.2s ease;
+  transition: var(--transition);
+  width: 100%;
+  font-size: var(--font-size-base);
+  padding: var(--gap-8) var(--gap-16);
 }
 
 .placeOrder:hover {
-  opacity: 0.9;
+  opacity: 0.85;
+  transform: translateY(-1px);
 }
 
 .placeOrder:focus {
-  outline: 2px solid var(--charcoal-navy);
+  outline: 2px solid var(--primary-dark);
   outline-offset: 2px;
 }
 
-.checkboxContainer {
+.placeOrder:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.noAddressContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--gap-5);
+  justify-content: center;
+  gap: var(--gap-16);
+  padding: var(--gap-24);
+  background-color: var(--accent-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.noAddressTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--primary-dark);
+  margin-bottom: var(--gap-8);
+}
+
+.addAddressButton {
+  width: 100%;
+  max-width: 200px;
+  padding: var(--gap-8) var(--gap-16);
+  font-size: var(--font-size-base);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.addAddressButton:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.addAddressButton:focus {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
 }
 
 .errorMessage {
-  color: #d32f2f;
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--gap-9);
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--gap-16);
+  text-align: center;
+  font-weight: 500;
 }
 
-/* Responsive Design */
+.noAddressIcon {
+  font-size: 3rem;
+  color: var(--primary-dark);
+  margin-bottom: var(--gap-8);
+}
+
 @media (max-width: 768px) {
   .checkoutContainer {
     flex-direction: column;
-    padding: 1.5rem 1rem;
-    gap: 1.5rem;
+    padding: var(--gap-16) var(--gap-8);
+    gap: var(--gap-16);
   }
 
   .orderCard {
     max-width: 100%;
   }
 
-  .billingForm {
-    gap: 0.75rem;
+  .noAddressContainer {
+    padding: var(--gap-16);
+    width: 100%;
   }
 
-  .billingTitle {
-    font-size: var(--font-size-lg);
+  .billingTitle,
+  .orderTitle,
+  .noAddressTitle {
+    font-size: var(--font-size-base);
   }
 
   .addressDetails,
   .orderCard {
     font-size: var(--font-size-sm);
+    padding: var(--gap-8);
+  }
+
+  .addAddressButton {
+    max-width: 180px;
+    font-size: var(--font-size-sm);
   }
 }
 
 @media (max-width: 480px) {
-  .billingTitle {
-    font-size: var(--font-size-base);
+  .billingTitle,
+  .orderTitle,
+  .noAddressTitle {
+    font-size: var(--font-size-sm);
   }
 
   .placeOrder {
-    width: 100%;
+    font-size: var(--font-size-sm);
+    padding: var(--gap-8);
+  }
+
+  .addAddressButton {
+    max-width: 160px;
+    padding: var(--gap-8);
+    font-size: var(--font-size-xs);
+  }
+
+  .errorMessage {
+    font-size: var(--font-size-xs);
+  }
+
+  .noAddressContainer {
+    padding: var(--gap-8);
   }
 }

@@ -22,7 +22,9 @@ const Addresses = () => {
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const { addresses, showAddressForm } = useSelector((state) => state.address);
+  const { addresses, showAddressForm, defaultAddress } = useSelector(
+    (state) => state.address
+  );
 
   const fetchAddress = async () => {
     try {
@@ -56,6 +58,8 @@ const Addresses = () => {
       console.error("Error deleting address:", error);
     }
   };
+  console.log(defaultAddress);
+  console.log(addresses);
 
   const handleSetAsDefaultAddress = async (addressId) => {
     try {
