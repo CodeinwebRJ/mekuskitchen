@@ -92,7 +92,7 @@ const Header = () => {
           to="/product-category"
           className={`${style.link} ${handleLinkActive("/product-category")}`}
         >
-          OUR MENU
+          OUR PRODUCT
         </Link>
 
         <Link

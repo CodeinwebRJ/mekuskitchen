@@ -8,6 +8,7 @@ import Category from "./Category";
 import NewArrivals from "./NewArrivals";
 import OurProduct from "./OurProducts";
 import Cooking from "./Cooking";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const { data } = useSelector((state) => state.home);
@@ -18,6 +19,7 @@ const HomePage = () => {
 
       <div className={style.container}>
         <Category data={data} />
+        <NewArrivals data={data} />
 
         <section className={style.dishesSection}>
           <div className={style.headingContainer}>
@@ -54,6 +56,7 @@ const HomePage = () => {
             </div>
           </div>
         </section>
+        <BestSellerProduct data={data} />
 
         <section className={style.thaliSection}>
           <div className={style.contentBox}>
@@ -87,8 +90,9 @@ const HomePage = () => {
           </div>
         </section>
 
-        <NewArrivals data={data} />
-
+        <OurProduct data={data} />
+        <Cooking />
+        
         <section className={style.hero}>
           <div className={style.container}>
             <h1 className={style.title}>
@@ -99,15 +103,13 @@ const HomePage = () => {
             <p className={style.subtitle}>
               From comforting tiffins to full thalis, enjoy homemade-style food.
             </p>
-            <button className={style.button}>
-              Explore Our Kitchen <span className={style.arrow}>→</span>
-            </button>
+            <Link to={"/daily-tiffin"}>
+              <button className={style.button}>
+                Explore Our Tiffin <span className={style.arrow}>→</span>
+              </button>
+            </Link>
           </div>
         </section>
-
-        <BestSellerProduct data={data} />
-        <OurProduct data={data} />
-        <Cooking />
       </div>
 
       <Footer />

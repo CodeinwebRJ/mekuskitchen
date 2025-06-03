@@ -5,6 +5,7 @@ import "swiper/css/navigation";
 import { useRef, useState, useEffect } from "react";
 import style from "../../styles/Category.module.css";
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 const Category = ({ data }) => {
   const swiperRef = useRef(null);
@@ -76,7 +77,7 @@ const Category = ({ data }) => {
           slidesPerView={1}
           loop={data.Category.length > 1}
           autoplay={{
-            delay: 2000,
+            delay: 5000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
@@ -89,19 +90,21 @@ const Category = ({ data }) => {
         >
           {data.Category.map((card) => (
             <SwiperSlide className={style.swiperSlide} key={card.id}>
-              <div className={style.relatedProductCard}>
-                <div className={style.card} role="listitem">
-                  <img
-                    src={card.images?.[0]?.url || "/fallback-image.jpg"}
-                    alt={card.name || card.title || "Gujarati dish"}
-                    className={style.image}
-                    loading="lazy"
-                  />
-                  <div className={style.overlay}>
-                    <h3>{card?.category?.toUpperCase() || "Dish"}</h3>
+              <Link to={`/product-category?${card?.category}`}>
+                <div className={style.relatedProductCard}>
+                  <div className={style.card} role="listitem">
+                    <img
+                      src={card.images?.[0]?.url || "/fallback-image.jpg"}
+                      alt={card.name || card.title || "Gujarati dish"}
+                      className={style.image}
+                      loading="lazy"
+                    />
+                    <div className={style.overlay}>
+                      <h3>{card?.category?.toUpperCase() || "Dish"}</h3>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

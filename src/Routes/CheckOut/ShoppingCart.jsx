@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaMinus, FaPlus, FaEye } from "react-icons/fa";
@@ -98,13 +97,13 @@ const CartTotals = ({ subtotal, total, discount, discountPercentage }) => (
       </p>
     )}
     <hr />
-    <p>
+    {/* <p>
       Shipping: <span>Self Pickup</span>
-    </p>
+    </p> */}
     <hr />
-    <p>
+    {/* <p>
       Shipping to: <strong>Calgary, AB</strong>
-    </p>
+    </p> */}
     <hr />
     <p className={style.total}>
       Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
@@ -173,7 +172,10 @@ const ShoppingCart = () => {
   const fetchUserCart = async () => {
     try {
       if (user?.userid) {
-        const res = await getUserCart(user.userid);
+        const data = {
+          id: user.userid,
+        };
+        const res = await getUserCart(data);
         dispatch(setCart(res.data.data));
       }
     } catch (error) {

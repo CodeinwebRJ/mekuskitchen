@@ -4,10 +4,9 @@ import { FaTimes } from "react-icons/fa";
 import Button from "../Buttons/Button";
 import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
+import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
-import { de } from "date-fns/locale";
 import { Toast } from "../../Utils/Toast";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
 
@@ -65,6 +64,15 @@ const Sidebar = ({ isOpen, onClose }) => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
+
+  console.log(Cart);
+
+  const calculateSubtotal = () => {
+    const subtotal = Cart?.items
+      ?.reduce((acc, item) => acc + item?.sellingPrice * item?.quantity, 0)
+      .toFixed(2);
+    return subtotal;
+  };
 
   return (
     <>
@@ -228,7 +236,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
-            <h5 className="price">${Cart.items.totalAmount}</h5>
+            <h5 className="price">
+              ${isAuthenticated ? Cart.items.totalAmount : calculateSubtotal()}
+            </h5>
           </div>
           <div className={style.subtotalButtons}>
             <div className={style.viewCart}>

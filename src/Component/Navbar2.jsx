@@ -7,7 +7,7 @@ function Navbar2() {
       <nav className="navbar navbar-expand-lg bg-white navbar-light shadow border-top border-5 border-primary sticky-top p-0">
         <div className="navbar-brand d-flex align-items-center px-4 px-lg-5">
           <NavLink
-            to="/login"
+            to="/"
             className="d-flex align-items-center"
             style={{ height: "auto" }}
           >
@@ -75,7 +75,7 @@ function Navbar2() {
                 Login As Subuser
               </Link> */}
               <Link
-                to="/login"
+                to="/"
                 className="btn btn-outline-primary me-2"
                 style={{ height: "auto", lineHeight: "normal" }}
               >

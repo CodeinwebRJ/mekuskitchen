@@ -58,8 +58,6 @@ const Addresses = () => {
       console.error("Error deleting address:", error);
     }
   };
-  console.log(defaultAddress);
-  console.log(addresses);
 
   const handleSetAsDefaultAddress = async (addressId) => {
     try {

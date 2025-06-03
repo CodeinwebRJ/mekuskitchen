@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import style from "../../styles/EmptyCartPage.module.css";
 import { BsCartX } from "react-icons/bs";
 import Button from "../../Component/Buttons/Button";

@@ -1,23 +1,27 @@
 .card {
-  width: 315px;
-  padding: 20px;
+  width: 100%;
+  max-width: 315px;
+  padding: 16px;
   border-radius: 18px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  background: var(--white);
+  transition: transform 0.2s ease;
 }
 
 .imgeContainer {
-  border-radius: 16px;
+  border-radius: 10px;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
   background-color: #f9fafb;
+  width: 100%;
+  aspect-ratio: 4 / 3;
 }
 
 .image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
@@ -26,39 +30,43 @@
   align-items: flex-start;
   justify-content: space-between;
   padding-top: 16px;
+  flex-wrap: wrap;
+  gap: 8px; 
 }
 
 .content {
   flex: 1;
-  padding-right: 0.5rem;
+  padding-right: 8px; 
 }
 
 .title {
-  font-size: 18px;
+  font-size: 18px; 
+  font-weight: 600;
 }
 
 .subtitle {
-  margin-top: 0.25rem;
+  margin-top: 4px; 
   color: #6b7280;
-  font-size: 0.95rem;
+  font-size: 14.4px; 
 }
 
 .price {
-  margin-top: 0.4rem;
+  margin-top: 6px;
   font-weight: 600;
   color: #111827;
-  font-size: 16px;
+  font-size: 16px; 
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
+  align-items: flex-end;
 }
 
 .iconBtn {
   background-color: #1f2937;
-  color: var(--white);
+  color: white;
   border: none;
   border-radius: 50%;
   width: 34px;
@@ -66,4 +74,58 @@
   display: grid;
   place-items: center;
   cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 16px; 
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .price {
+    font-size: 16px; 
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 16px; 
+  }
+}
+
+@media (min-width: 481px) and (max-width: 1023px) {
+  .card {
+    max-width: 100%;
+  }
+
+  .imgeContainer {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    max-width: 315px;
+    height: auto;
+  }
+
+  .imgeContainer {
+    height: 180px;
+    aspect-ratio: unset;
+  }
+
+  .image {
+    object-fit: cover;
+  }
+
+  .cardContent {
+    flex-wrap: nowrap;
+  }
 }

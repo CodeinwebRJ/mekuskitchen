@@ -3,6 +3,15 @@ import styles from "../../styles/Footer.module.css";
 import { IoMdCall } from "react-icons/io";
 import { IoMail } from "react-icons/io5";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import {
+  FaHome,
+  FaUtensils,
+  FaInfoCircle,
+  FaPhoneAlt,
+  FaShieldAlt,
+  FaMoneyCheckAlt,
+} from "react-icons/fa";
+import { MdOutlineLunchDining } from "react-icons/md";
 
 const Footer = () => {
   return (
@@ -27,13 +36,27 @@ const Footer = () => {
             <span className={styles.quickText}>Quick</span> Links
           </h3>
           <div className={styles.linkList}>
-            <Link to="/">Home</Link>
-            <Link to="/product-category">Our Menu</Link>
-            <Link to="/daily-tiffin">Daily Tiffin</Link>
-            <Link to="/about-us">About Us</Link>
-            <Link to="/contact-us">Contact Us</Link>
-            <Link to="/privacy-policy">Privacy Policy</Link>
-            <Link to="/refund-policy">Refund policy</Link>
+            <Link to="/">
+              <FaHome /> Home
+            </Link>
+            <Link to="/product-category">
+              <FaUtensils /> Our Menu
+            </Link>
+            <Link to="/daily-tiffin">
+              <MdOutlineLunchDining /> Daily Tiffin
+            </Link>
+            <Link to="/about-us">
+              <FaInfoCircle /> About Us
+            </Link>
+            <Link to="/contact-us">
+              <FaPhoneAlt /> Contact Us
+            </Link>
+            <Link to="/privacy-policy">
+              <FaShieldAlt /> Privacy Policy
+            </Link>
+            <Link to="/refund-policy">
+              <FaMoneyCheckAlt /> Refund Policy
+            </Link>
           </div>
         </div>
 

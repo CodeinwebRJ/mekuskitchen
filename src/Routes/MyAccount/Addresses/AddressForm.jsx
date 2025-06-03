@@ -71,10 +71,6 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
       }
     }
 
-    if (data.postCode && !/^\d{5,6}$/.test(data.postCode)) {
-      validationErrors.postCode = "Please enter a valid 5-6 digit pincode";
-    }
-
     if (data.phone && !/^\d{10}$/.test(data.phone)) {
       validationErrors.phone = "Please enter a valid 10-digit phone number";
     }

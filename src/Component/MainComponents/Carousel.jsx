@@ -15,7 +15,7 @@ const Carousel = () => {
           slidesPerView={1}
           navigation
           pagination={{ clickable: true }}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          autoplay={{ delay: 7000, disableOnInteraction: false }}
           loop={true}
         >
           <SwiperSlide>

@@ -1,5 +1,4 @@
 .carousel {
-  padding: 30px 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,7 +8,6 @@
 
 .carouselContainer {
   width: 100%;
-  border-radius: 0 56px 0 56px;
   overflow: hidden;
 }
 

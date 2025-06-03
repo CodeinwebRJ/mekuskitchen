@@ -61,7 +61,7 @@ const filterDataSlice = createSlice({
       state.productCategories = [];
       state.Brands = [];
       state.ratings = [];
-      state.prices = [];
+      state.price = [0, 2000];
       state.attributes = {};
     },
   },

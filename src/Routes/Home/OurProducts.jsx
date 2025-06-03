@@ -5,49 +5,49 @@ import { HomeProductCard } from "../../Component/Cards/HomeProductCard";
 import style from "../../styles/NewArrival.module.css";
 
 const OurProduct = ({ data }) => {
-  const products = Array.isArray(data?.NewProducts) ? data.NewProducts : [];
+  const products = Array.isArray(data?.OurProduct) ? data.OurProduct : [];
   const enableLoop = products.length >= 4;
   const enableAutoplay = products.length >= 4;
 
   return (
-    <div className={style.container}>
+    <div className={style.wrapper}>
       <h2 className={style.newArrival}>
-        <span className={style.blueText}>Our </span>
-        <span>Products</span>
+        <span className={style.blueText}>New </span>
+        <span>Arrival</span>
       </h2>
 
       {products.length === 0 ? (
-        <p>No new products available.</p>
+        <p className={style.noProducts}>No new products available.</p>
       ) : (
         <Swiper
           modules={[Autoplay]}
-          spaceBetween={20}
+          spaceBetween={16}
           loop={enableLoop}
           autoplay={
             enableAutoplay
-              ? { delay: 2000, disableOnInteraction: false }
+              ? { delay: 2500, disableOnInteraction: false }
               : false
           }
-          slidesPerView={4}
           breakpoints={{
-            0: { slidesPerView: Math.min(products.length, 1) },
-            480: { slidesPerView: Math.min(products.length, 2) },
-            768: { slidesPerView: Math.min(products.length, 3) },
+            0: { slidesPerView: 1 },
+            480: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
-            1280: { slidesPerView: 4 },
-            1536: { slidesPerView: 4 },
           }}
           className={style.swiperContainer}
         >
           {products.map((product) => (
-            <SwiperSlide className={style.container} key={product.id}>
-              <HomeProductCard
-                image={product.images}
-                title={product.name}
-                subtitle={product?.subtitle || ""}
-                price={product.sellingPrice}
-                alt={`Image of ${product.name || "product"}`}
-              />
+            <SwiperSlide key={product.id}>
+              <div className={style.slideWrapper}>
+                <HomeProductCard
+                  data={product}
+                  image={product.images}
+                  name={product.name}
+                  subtitle={product?.subtitle || ""}
+                  price={product.sellingPrice}
+                  alt={`Image of ${product.name || "product"}`}
+                />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>

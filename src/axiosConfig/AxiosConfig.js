@@ -40,7 +40,8 @@ export const AddtoCart = async (data) => {
 };
 
 export const getUserCart = async (data) => {
-  return axiosInstance.get(`/api/v1/cart/${data}`);
+  const { id, provinceCode } = data;
+  return axiosInstance.get(`/api/v1/cart/${id}?provinceCode=${provinceCode}`);
 };
 
 export const UpdateUserCart = async (data) => {

@@ -48,6 +48,7 @@ import VeryfyOtp from "./Routes/VeryfyOtp/VeryfyOtp.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 import { setCart } from "../Store/Slice/UserCartSlice.jsx";
 import { setData } from "../Store/Slice/HomePageSlice.jsx";
+import OrderPlaced from "./Routes/CheckOut/OrderPlaced.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -171,7 +172,10 @@ const App = () => {
 
   const fetchUserCart = async () => {
     try {
-      const res = await getUserCart(user.userid);
+      const data = {
+        id: user.userid,
+      };
+      const res = await getUserCart(data);
       dispatch(setCart(res.data.data));
     } catch (error) {
       console.error("Error fetching user cart", error);
@@ -207,6 +211,7 @@ const App = () => {
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/order-placed" element={<OrderPlaced />} />
         <Route path="/forgotpassword" element={<ForgetPassword />} />
         <Route path="/veryfy-email" element={<VeryfyOtp />} />
 

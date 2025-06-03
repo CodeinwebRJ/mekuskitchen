@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styles from "../../styles/CheckoutPage.module.css";
+import style from "../../styles/CheckoutPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
@@ -10,68 +10,58 @@ import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { BiMapPin } from "react-icons/bi";
 
-const OrderSummary = ({ cart, isLoading, handleSubmit }) => (
-  <section
-    className={styles.orderSummaryContainer}
-    aria-labelledby="order-summary-title"
-  >
-    <article className={styles.orderCard}>
-      <h2 id="order-summary-title" className={styles.orderTitle}>
-        Your Order
-      </h2>
-      <div className={styles.orderRow}>
-        <span>PRODUCT</span>
-        <span>SUBTOTAL</span>
+const OrderSummary = ({
+  total,
+  discount,
+  discountPercentage,
+  tax,
+  handleSubmit,
+  isLoading,
+}) => (
+  <div className={style.cartTotals}>
+    <h3 className={style.cartTitle}>Cart Totals</h3>
+    <p className={style.total}>
+      SubTotal: <strong>${total.toFixed(2)}</strong>
+    </p>
+    {discount > 0 && (
+      <p>
+        Discount:{" "}
+        <span className="discount">
+          -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
+        </span>
+      </p>
+    )}
+    <hr />
+    <p className={style.total}>
+      Tax: <span className={style.price}>${tax}</span>
+    </p>
+    <hr />
+    <p className={style.total}>
+      Total: <strong>${(Number(total) + Number(tax)).toFixed(2)}</strong>
+    </p>
+    <hr />
+
+    <Link to="/checkout">
+      <div className={style.checkoutButton}>
+        <Button
+          type="button"
+          disabled={isLoading}
+          onClick={handleSubmit}
+          variant="primary"
+          size="md"
+          aria-label="Place order"
+        >
+          {isLoading ? "Processing..." : "Place Order"}
+        </Button>
       </div>
-      {cart?.items?.products?.length > 0 ? (
-        cart.items.products.map((item, index) => (
-          <div key={item._id || index} className={styles.orderRow}>
-            <span>{`${item.name} x ${item.quantity}`}</span>
-            <span>${item.subtotal?.toFixed(2) || "0.00"}</span>
-          </div>
-        ))
-      ) : (
-        <div className={styles.orderRow}>No items in cart</div>
-      )}
-      <div className={styles.orderRow}>
-        <span>Subtotal</span>
-        <span>${cart?.items?.subtotal?.toFixed(2) || "0.00"}</span>
-      </div>
-      <div className={styles.orderRow}>
-        <span>Shipping</span>
-        <span>Self Pickup</span>
-      </div>
-      <div className={styles.orderRow}>
-        <span>Tax</span>
-        <span>${cart?.items?.taxAmount?.toFixed(2) || "0.00"}</span>
-      </div>
-      <div className={`${styles.orderRow} ${styles.total}`}>
-        <span>TOTAL</span>
-        <span>${cart?.items?.totalAmount || "0.00"}</span>
-      </div>
-      <div className={styles.paymentMethod}>
-        <p>Debit Card</p>
-        <p>You will be redirected to Moneris</p>
-      </div>
-      <Button
-        type="button"
-        className={styles.placeOrder}
-        disabled={isLoading}
-        onClick={handleSubmit}
-        variant="primary"
-        size="md"
-        aria-label="Place order"
-      >
-        {isLoading ? "Processing..." : "Place Order"}
-      </Button>
-    </article>
-  </section>
+    </Link>
+  </div>
 );
 
 const AddressDisplay = ({ defaultAddress }) => (
-  <section className={styles.addressDetails} aria-labelledby="address-title">
-    <h1 className={styles.billingTitle}>Address</h1>
-    <p className={styles.fullname}>
+  <section className={style.addressDetails} aria-labelledby="address-title">
+    <h1 className={style.billingTitle}>Address</h1>
+    <p className={style.fullname}>
       {defaultAddress?.billing?.firstName || ""}{" "}
       {defaultAddress?.billing?.lastName || ""}
     </p>
@@ -97,7 +87,7 @@ const CheckoutPage = () => {
   const [apiError, setApiError] = useState("");
 
   const handleSubmit = async () => {
-    if (!cart?.items?._id || !defaultAddress?._id || !user?.userid) {
+    if (!user?.userid) {
       setApiError("Missing required information (cart, address, or user ID).");
       return;
     }
@@ -107,15 +97,19 @@ const CheckoutPage = () => {
     try {
       const data = {
         userId: user.userid,
-        cartId: cart.items._id,
+        cartId: cart?.items?._id,
         addressId: defaultAddress._id,
         paymentMethod: "COD",
         totalAmount: cart?.items?.totalAmount || 0,
       };
+
+      console.log(data);
       await sendOrder(data);
-      const response = await getUserCart(user.userid);
+      const response = await getUserCart({ id: user.userid });
       dispatch(setCart(response.data.data));
-      navigate("/");
+      if (response.status === 200) {
+        navigate("/order-placed");
+      }
     } catch (error) {
       setApiError(
         error.response?.data?.message ||
@@ -126,38 +120,90 @@ const CheckoutPage = () => {
     }
   };
 
+  const fetchUserCart = async () => {
+    try {
+      const data = {
+        id: user?.userid,
+        provinceCode: defaultAddress?.billing?.postcode,
+      };
+      const res = await getUserCart(data);
+      dispatch(setCart(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const total = useMemo(
+    () =>
+      (cart?.items?.items?.reduce(
+        (acc, item) => acc + item.productDetails.sellingPrice * item.quantity,
+        0
+      ) || 0) +
+      (cart?.items?.tiffins?.reduce(
+        (acc, item) =>
+          acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+        0
+      ) || 0),
+    [cart]
+  );
+
+  const discount = useMemo(
+    () =>
+      cart?.items?.items?.reduce(
+        (acc, item) =>
+          acc +
+          (item.productDetails.price - item.productDetails.sellingPrice) *
+            item.quantity,
+        0
+      ) || 0,
+    [cart]
+  );
+
+  const discountPercentage = useMemo(() => {
+    if (total === 0) return 0;
+    return (discount / total) * 100;
+  }, [discount, total]);
+
+  useEffect(() => {
+    if (user?.userid && defaultAddress?.billing?.postcode) {
+      fetchUserCart();
+    }
+  }, [user?.userid, defaultAddress?.billing?.postcode]);
+
   return (
-    <div className={styles.mainContainer}>
+    <div className={style.mainContainer}>
       <Header />
       <Banner name="Checkout" path="/cart" />
-      <div className={styles.checkoutContainer}>
-        {apiError && <p className={styles.errorMessage}>{apiError}</p>}
+      <div className={style.checkoutContainer}>
         {defaultAddress ? (
           <>
             <AddressDisplay defaultAddress={defaultAddress} />
             <OrderSummary
-              cart={cart}
+              total={total}
+              discount={discount}
               isLoading={isLoading}
+              discountPercentage={discountPercentage}
               handleSubmit={handleSubmit}
+              tax={cart?.items?.totalTax}
             />
           </>
         ) : (
           <section
-            className={styles.noAddressContainer}
+            className={style.noAddressContainer}
             aria-labelledby="no-address-title"
           >
-            <BiMapPin className={styles.noAddressIcon} aria-hidden="true" />
-            <h2 id="no-address-title" className={styles.noAddressTitle}>
+            <BiMapPin className={style.noAddressIcon} aria-hidden="true" />
+            <h2 id="no-address-title" className={style.noAddressTitle}>
               No Billing Address
             </h2>
-            <p className={styles.errorMessage}>
+            <p className={style.errorMessage}>
               Please add a billing address to proceed with your order.
             </p>
             <Link to="/my-account/addresses">
               <Button
                 variant="primary"
                 size="md"
-                className={styles.addAddressButton}
+                className={style.addAddressButton}
                 aria-label="Add a billing address"
               >
                 Add Address

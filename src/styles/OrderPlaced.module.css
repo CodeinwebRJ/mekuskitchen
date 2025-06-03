@@ -1,0 +1,70 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--white);
+}
+
+.card {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.iconWrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.checkIcon {
+  width: 64px;
+  height: 64px;
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border-radius: 50%;
+  font-size: 36px;
+  line-height: 64px;
+  margin: 0 auto;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(70, 163, 223, 0.4);
+}
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.viewBtn {
+  padding: 10px 20px;
+  background: #ffffff;
+  color: #46a3df;
+  border: 2px solid #46a3df;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.viewBtn:hover {
+  background: #46a3df;
+  color: #ffffff;
+}
+
+.continueBtn {
+  padding: 10px 20px;
+  background-color: #46a3df;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.continueBtn:hover {
+  background-color: #368cc1;
+}

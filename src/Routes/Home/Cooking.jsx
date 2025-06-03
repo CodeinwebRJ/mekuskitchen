@@ -1,6 +1,7 @@
 import styles from "../../styles/Cooking.module.css";
 import rightThali from "../../../public/Dish.png";
 import leftThali from "../../../public/Dish2.png";
+import { Link } from "react-router-dom";
 
 const Cooking = () => {
   return (
@@ -25,9 +26,11 @@ const Cooking = () => {
           Get fresh groceries delivered fast. Whatever your mood — we bring the
           kitchen to you.
         </p>
-        <button className={styles.orderButton}>
-          Order Now <span className={styles.arrow}>→</span>
-        </button>
+        <Link to="/product-category">
+          <button className={styles.orderButton}>
+            Order Now <span className={styles.arrow}>→</span>
+          </button>
+        </Link>
       </div>
       <img
         src={rightThali}

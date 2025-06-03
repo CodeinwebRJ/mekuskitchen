@@ -19,6 +19,31 @@
   --transition: all 0.2s ease-in-out;
 }
 
+.cartTotals {
+  width: 30%;
+  height: 100%;
+  background: var(--white);
+  padding: 30px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+.total {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--black);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.checkoutButton {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
 .mainContainer {
   width: 100%;
   min-height: 100vh;
