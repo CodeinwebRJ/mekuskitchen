@@ -32,8 +32,6 @@ const ProductDetails = ({
     (state) => state.wishlist?.likedMap?.[product?._id] || false
   );
 
-  console.log(product);
-
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
   const handleQuantityChange = (e) => {

@@ -24,6 +24,7 @@
   z-index: 999;
   transition: opacity 0.3s ease;
 }
+
 .deleteButton {
   cursor: pointer;
 }
@@ -157,12 +158,8 @@
 .deleteIcon {
   font-size: 18px;
   cursor: pointer;
-  color: var(--gray-soft);
+  color: var(--error);
   transition: color 0.2s ease-in-out;
-}
-
-.deleteIcon:hover {
-  color: var(--red);
 }
 
 .cartItemSubtotal {

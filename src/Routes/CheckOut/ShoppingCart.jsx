@@ -15,6 +15,7 @@ import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
+import { BsTrash } from "react-icons/bs";
 
 const CartItem = ({
   item,
@@ -38,8 +39,7 @@ const CartItem = ({
     <tr className={style.cartItem}>
       <td>
         <div className={style.removeCell}>
-          <RxCross2
-            className={style.removeIcon}
+          <button
             onClick={() =>
               onDelete(
                 isProduct ? item.product_id : item.tiffinMenuId,
@@ -47,8 +47,14 @@ const CartItem = ({
                 item.day
               )
             }
-          />
-          {isProduct && <FaEye onClick={() => onShowProduct(item._id)} />}
+          >
+            <BsTrash className={style.removeIcon} />
+          </button>
+          {isProduct && (
+            <button onClick={() => onShowProduct(item._id)}>
+              <FaEye />
+            </button>
+          )}
         </div>
       </td>
       <td>

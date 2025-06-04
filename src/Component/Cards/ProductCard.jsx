@@ -37,7 +37,7 @@ const ProductCard = ({ product, grid }) => {
   }, [product._id, user]);
 
   const handleAddToCart = async () => {
-    if (!user.userid) {
+    if (!isAuthenticated) {
       const localCart = JSON.parse(localStorage.getItem("cart")) || [];
       const exists = localCart.find((item) => item._id === product._id);
 
@@ -49,7 +49,10 @@ const ProductCard = ({ product, grid }) => {
           return item;
         });
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({ message: "Product added to cart!", type: "success" });
+        Toast({
+          message: "Product added to cart!",
+          type: "success",
+        });
         dispatch(setCart(updatedCart));
       } else {
         localCart.push({
@@ -162,7 +165,9 @@ const ProductCard = ({ product, grid }) => {
               <p className="originalPrice">${product?.price}</p>
               <p className="price">${product?.sellingPrice}</p>
             </div>
-            {product?.discount && <strong className="discount">{product?.discount}% off</strong>}
+            {product?.discount && (
+              <strong className="discount">{product?.discount}% off</strong>
+            )}
           </div>
         </div>
       </Link>

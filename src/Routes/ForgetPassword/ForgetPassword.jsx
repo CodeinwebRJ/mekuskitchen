@@ -12,10 +12,6 @@ function ForgetPassword() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  // Retrieve userId from local storage
-  const userId = localStorage.getItem("userId");
-  const api_token = localStorage.getItem("api_token");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -47,9 +43,7 @@ function ForgetPassword() {
         new URLSearchParams({
           change_pass: true,
           method: "post",
-          api_token: api_token,
           password: password,
-          userid: userId,
         })
       );
 
@@ -80,7 +74,7 @@ function ForgetPassword() {
       {/* <Navbar /> */}
       <Navbar2 />
       {/* new one */}
-      <div className="container mt-5">
+      <div className="container my-5">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8">
             <div className="card shadow">

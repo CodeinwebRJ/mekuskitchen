@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../Component/MainComponents/Footer";
 import Navbar2 from "../../Component/Navbar2";
+import Footer from "../../Component/MainComponents/Footer";
 
-function VeryfyOtp() {
+function VerifyOtp() {
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -12,8 +12,7 @@ function VeryfyOtp() {
     e.preventDefault();
     const storedOtp = localStorage.getItem("otp");
 
-    // Check if entered OTP matches the stored OTP
-    if (otp === storedOtp) {
+    if (Number(otp) === Number(storedOtp)) {
       setMessage("OTP verified successfully.");
       console.log("OTP verified successfully, navigating to forget-password");
 
@@ -29,7 +28,7 @@ function VeryfyOtp() {
     <>
       {/* <Navbar /> */}
       <Navbar2 />
-      <div className="container mt-5">
+      <div className="container my-5">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8">
             <div className="card shadow">
@@ -69,8 +68,9 @@ function VeryfyOtp() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
 
-export default VeryfyOtp;
+export default VerifyOtp;

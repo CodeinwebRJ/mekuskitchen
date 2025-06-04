@@ -23,8 +23,9 @@
 }
 
 .label {
+  padding: 0px 4px;
   cursor: pointer;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .InputFieldContainer:focus-within {

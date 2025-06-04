@@ -1,19 +1,8 @@
 :root {
-  --gap-4: 0.25rem;
-  --gap-8: 0.5rem;
-  --gap-16: 1rem;
-  --gap-24: 1.5rem;
   --primary-dark: #1a2b3c;
   --text-primary: #1f2a44;
-  --background-light: #f9fafb;
-  --border-light: #e2e8f0;
   --accent-light: #edf2f7;
   --error: #e53e3e;
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
   --border-radius: 6px;
   --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   --transition: all 0.2s ease-in-out;
@@ -29,7 +18,7 @@
   transition: all 0.3s ease;
 }
 .total {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 18px;
   color: var(--black);
   display: flex;
@@ -50,15 +39,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--background-light);
+  background-color: var(--gray-lighter);
 }
 
 .checkoutContainer {
-  padding: var(--gap-24) var(--gap-16);
+  padding: 24px 16px;
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
-  gap: var(--gap-24);
+  gap: 24px;
   align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
@@ -68,26 +57,25 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap-8);
-  font-size: var(--font-size-base);
   color: var(--text-primary);
   background-color: var(--accent-light);
-  padding: var(--gap-16);
+  padding: 24px;
   border-radius: var(--border-radius);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--cool-light-blue-gray);
   flex: 1;
   transition: var(--transition);
 }
 
 .billingTitle {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-xl);
   font-weight: 600;
   text-transform: uppercase;
-  margin-bottom: var(--gap-16);
+  margin-bottom: 16px;
   color: var(--primary-dark);
 }
 
 .fullname {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-lg);
   font-weight: 500;
   text-transform: capitalize;
   color: var(--primary-dark);
@@ -100,10 +88,10 @@
 }
 
 .orderCard {
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--cool-light-blue-gray);
   border-radius: var(--border-radius);
-  padding: var(--gap-16);
-  background-color: var(--background-light);
+  padding: 16px;
+  background-color: var(--gray-lighter);
   box-shadow: var(--box-shadow);
   width: 100%;
   max-width: 500px;
@@ -111,47 +99,45 @@
 }
 
 .orderTitle {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-lg);
   font-weight: 600;
   text-transform: uppercase;
-  margin-bottom: var(--gap-16);
+  margin-bottom: 16px;
   color: var(--primary-dark);
 }
 
 .orderRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: var(--gap-8);
-  font-size: var(--font-size-base);
+  margin-bottom: 8px;
   color: var(--text-primary);
 }
 
 .orderRow.total {
-  font-weight: 700;
-  font-size: var(--font-size-lg);
-  margin-top: var(--gap-16);
-  padding-top: var(--gap-16);
-  border-top: 1px solid var(--border-light);
+  font-weight: 600;
+  font-size: var(--font-lg);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--cool-light-blue-gray);
 }
 
 .paymentMethod {
-  margin-top: var(--gap-16);
-  padding: var(--gap-8);
+  margin-top: 16px;
+  padding: 8px;
   background-color: var(--accent-light);
   border-radius: var(--border-radius);
   text-align: center;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-base);
   color: var(--text-primary);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--cool-light-blue-gray);
 }
 
 .placeOrder {
-  margin: var(--gap-16) 0;
+  margin: 16px 0;
   border-radius: var(--border-radius);
   transition: var(--transition);
   width: 100%;
-  font-size: var(--font-size-base);
-  padding: var(--gap-8) var(--gap-16);
+  padding: 8px 16px;
 }
 
 .placeOrder:hover {
@@ -174,10 +160,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--gap-16);
-  padding: var(--gap-24);
+  gap: var(--gap-8);
+  padding: 24px;
   background-color: var(--accent-light);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--cool-light-blue-gray);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   width: 100%;
@@ -188,18 +174,24 @@
 }
 
 .noAddressTitle {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-lg);
   font-weight: 600;
   text-transform: uppercase;
   color: var(--primary-dark);
   margin-bottom: var(--gap-8);
 }
 
+.addressContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-9);
+}
+
 .addAddressButton {
   width: 100%;
   max-width: 200px;
-  padding: var(--gap-8) var(--gap-16);
-  font-size: var(--font-size-base);
+  padding: 8px 16px;
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
@@ -215,8 +207,8 @@
 }
 
 .errorMessage {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--gap-16);
+  font-size: var(--font-lg);
+  margin-bottom: 16px;
   text-align: center;
   font-weight: 500;
 }
@@ -224,14 +216,14 @@
 .noAddressIcon {
   font-size: 3rem;
   color: var(--primary-dark);
-  margin-bottom: var(--gap-8);
+  margin-bottom: 8px;
 }
 
 @media (max-width: 768px) {
   .checkoutContainer {
     flex-direction: column;
-    padding: var(--gap-16) var(--gap-8);
-    gap: var(--gap-16);
+    padding: 16px 8px;
+    gap: var(--gap-8);
   }
 
   .orderCard {
@@ -239,25 +231,25 @@
   }
 
   .noAddressContainer {
-    padding: var(--gap-16);
+    padding: 8px;
     width: 100%;
   }
 
   .billingTitle,
   .orderTitle,
   .noAddressTitle {
-    font-size: var(--font-size-base);
+    font-size: var(--font-md);
   }
 
   .addressDetails,
   .orderCard {
-    font-size: var(--font-size-sm);
-    padding: var(--gap-8);
+    font-size: var(--font-base);
+    padding: 8px;
   }
 
   .addAddressButton {
     max-width: 180px;
-    font-size: var(--font-size-sm);
+    font-size: var(--font-base);
   }
 }
 
@@ -265,25 +257,25 @@
   .billingTitle,
   .orderTitle,
   .noAddressTitle {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-base);
   }
 
   .placeOrder {
-    font-size: var(--font-size-sm);
-    padding: var(--gap-8);
+    font-size: var(--font-base);
+    padding: 8px;
   }
 
   .addAddressButton {
     max-width: 160px;
-    padding: var(--gap-8);
-    font-size: var(--font-size-xs);
+    padding: 8px;
+    font-size: var(--font-base);
   }
 
   .errorMessage {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-base);
   }
 
   .noAddressContainer {
-    padding: var(--gap-8);
+    padding: 8px;
   }
 }

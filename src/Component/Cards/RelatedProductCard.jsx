@@ -101,7 +101,7 @@ const RelatedProductCard = ({ item }) => {
   const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) return;
+    if (!isAuthenticated) return;
     if (Cart?.items?.tiffins?.length > 0) {
       Toast({ message: "Tiffin is already added to cart!", type: "error" });
       return;

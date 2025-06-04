@@ -1,8 +1,19 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import style from "../styles/DialogBox.module.css";
 import { IoClose } from "react-icons/io5";
 
 const DialogBox = ({ isOpen, title, children, onClose }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (

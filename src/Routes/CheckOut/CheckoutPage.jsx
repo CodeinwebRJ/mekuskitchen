@@ -5,10 +5,26 @@ import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import Button from "../../Component/Buttons/Button";
-import { getUserCart, sendOrder } from "../../axiosConfig/AxiosConfig";
+import {
+  ActiveUserAddress,
+  DeleteUserAddress,
+  getUserAddress,
+  getUserCart,
+  sendOrder,
+} from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { BiMapPin } from "react-icons/bi";
+import AddressCard from "../../Component/Cards/AddressCard";
+import {
+  deleteAddress,
+  setAddresses,
+  setDefaultAddress,
+  setShowAddressForm,
+} from "../../../Store/Slice/AddressSlice";
+import AddAddressCard from "../../Component/UI-Components/AddAddressCard";
+import AddressForm from "../MyAccount/Addresses/AddressForm";
+import DialogBox from "../../Component/DialogBox";
+import CouponCode from "../../Component/Cards/CouponCode";
 
 const OrderSummary = ({
   total,
@@ -20,25 +36,25 @@ const OrderSummary = ({
 }) => (
   <div className={style.cartTotals}>
     <h3 className={style.cartTitle}>Cart Totals</h3>
-    <p className={style.total}>
-      SubTotal: <strong>${total.toFixed(2)}</strong>
-    </p>
+    <div className={style.total}>
+      SubTotal: <span>${total.toFixed(2)}</span>
+    </div>
     {discount > 0 && (
-      <p>
+      <div>
         Discount:{" "}
         <span className="discount">
           -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
         </span>
-      </p>
+      </div>
     )}
     <hr />
-    <p className={style.total}>
+    <div className={style.total}>
       Tax: <span className={style.price}>${tax}</span>
-    </p>
+    </div>
     <hr />
-    <p className={style.total}>
-      Total: <strong>${(Number(total) + Number(tax)).toFixed(2)}</strong>
-    </p>
+    <div className={style.total}>
+      Total: <p>${(Number(total) + Number(tax)).toFixed(2)}</p>
+    </div>
     <hr />
 
     <Link to="/checkout">
@@ -58,28 +74,14 @@ const OrderSummary = ({
   </div>
 );
 
-const AddressDisplay = ({ defaultAddress }) => (
-  <section className={style.addressDetails} aria-labelledby="address-title">
-    <h1 className={style.billingTitle}>Address</h1>
-    <p className={style.fullname}>
-      {defaultAddress?.billing?.firstName || ""}{" "}
-      {defaultAddress?.billing?.lastName || ""}
-    </p>
-    <p>{defaultAddress?.billing?.address || "N/A"}</p>
-    <p>{defaultAddress?.billing?.city || "N/A"}</p>
-    <p>
-      {defaultAddress?.billing?.state || ""}{" "}
-      {defaultAddress?.billing?.postcode || ""}
-    </p>
-    <p>{defaultAddress?.billing?.country || "N/A"}</p>
-    <p>Phone - {defaultAddress?.billing?.phone || "N/A"}</p>
-  </section>
-);
-
 const CheckoutPage = () => {
-  const { defaultAddress } = useSelector((state) => state.address);
-  const { user } = useSelector((state) => state.auth);
+  const { defaultAddress, addresses, showAddressForm } = useSelector(
+    (state) => state.address
+  );
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
+  const [dialog, setDialog] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -87,7 +89,7 @@ const CheckoutPage = () => {
   const [apiError, setApiError] = useState("");
 
   const handleSubmit = async () => {
-    if (!user?.userid) {
+    if (!isAuthenticated) {
       setApiError("Missing required information (cart, address, or user ID).");
       return;
     }
@@ -102,8 +104,6 @@ const CheckoutPage = () => {
         paymentMethod: "COD",
         totalAmount: cart?.items?.totalAmount || 0,
       };
-
-      console.log(data);
       await sendOrder(data);
       const response = await getUserCart({ id: user.userid });
       dispatch(setCart(response.data.data));
@@ -170,47 +170,85 @@ const CheckoutPage = () => {
     }
   }, [user?.userid, defaultAddress?.billing?.postcode]);
 
+  const fetchAddress = async () => {
+    try {
+      const response = await getUserAddress(user.userid);
+      if (response.status === 200) {
+        const data = response?.data?.data || [];
+        dispatch(setAddresses(data));
+        const activeAddress = data.find((addr) => addr.isActive);
+        if (activeAddress) dispatch(setDefaultAddress(activeAddress));
+      }
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    }
+  };
+
+  const handleSetAsDefaultAddress = async (addressId) => {
+    try {
+      const data = {
+        userId: user.userid,
+        addressId: addressId,
+      };
+      const response = await ActiveUserAddress(data);
+      if (response.status === 200) {
+        fetchAddress();
+      }
+    } catch (error) {
+      console.error("Error activating address:", error);
+    }
+  };
+
   return (
     <div className={style.mainContainer}>
       <Header />
       <Banner name="Checkout" path="/cart" />
       <div className={style.checkoutContainer}>
-        {defaultAddress ? (
-          <>
-            <AddressDisplay defaultAddress={defaultAddress} />
-            <OrderSummary
-              total={total}
-              discount={discount}
-              isLoading={isLoading}
-              discountPercentage={discountPercentage}
-              handleSubmit={handleSubmit}
-              tax={cart?.items?.totalTax}
-            />
-          </>
-        ) : (
-          <section
-            className={style.noAddressContainer}
-            aria-labelledby="no-address-title"
-          >
-            <BiMapPin className={style.noAddressIcon} aria-hidden="true" />
-            <h2 id="no-address-title" className={style.noAddressTitle}>
-              No Billing Address
-            </h2>
-            <p className={style.errorMessage}>
-              Please add a billing address to proceed with your order.
-            </p>
-            <Link to="/my-account/addresses">
-              <Button
-                variant="primary"
-                size="md"
-                className={style.addAddressButton}
-                aria-label="Add a billing address"
-              >
-                Add Address
-              </Button>
-            </Link>
-          </section>
-        )}
+        <>
+          <div>
+            <div className={style.addressContainer}>
+              {addresses.length < 3 ? (
+                <AddAddressCard
+                  onClick={() => {
+                    dispatch(setShowAddressForm(true));
+                    setIsEdit(false);
+                    setDialog(true);
+                  }}
+                />
+              ) : null}
+              {addresses &&
+                addresses.map((address, index) => (
+                  <AddressCard
+                    key={index}
+                    address={address}
+                    handleSetAsDefaultAddress={handleSetAsDefaultAddress}
+                  />
+                ))}
+            </div>
+              <div>
+                <CouponCode />
+              </div>
+          </div>
+          <OrderSummary
+            total={total}
+            discount={discount}
+            isLoading={isLoading}
+            discountPercentage={discountPercentage}
+            handleSubmit={handleSubmit}
+            tax={cart?.items?.totalTax}
+          />
+        </>
+
+        <DialogBox
+          isOpen={dialog}
+          title="Add Delivery Address"
+          onClose={() => setDialog(false)}
+        >
+          <AddressForm
+            onClose={() => setDialog(false)}
+            fetchAddress={fetchAddress}
+          />
+        </DialogBox>
       </div>
       <Footer />
     </div>

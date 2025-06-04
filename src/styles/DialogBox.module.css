@@ -17,6 +17,8 @@
   border-radius: 8px;
   width: 90%;
   max-width: 900px;
+  height: 90%;
+  overflow-y: auto;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 

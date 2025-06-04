@@ -42,14 +42,14 @@
   align-items: center;
   gap: var(--gap-4);
   color: var(--white);
-  font-size: 68px;
+  font-size: 48px;
   font-weight: var(--font-bold);
   z-index: 10;
 }
 
 .arrow {
   color: var(--white);
-  font-size: var(--font-3x);
+  font-size: var(--font-4xl);
   transition: opacity 0.2s ease-in-out;
 }
 

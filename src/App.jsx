@@ -44,7 +44,8 @@ import RefundPolicyPage from "./Routes/RefundPolicy/RefundPolicyPage.jsx";
 import PrivecyPolicyPage from "./Routes/PrivacyPolicy/PrivecyPolicyPage.jsx";
 import CheckoutPage from "./Routes/CheckOut/CheckoutPage.jsx";
 import ForgetPassword from "./Routes/ForgetPassword/ForgetPassword.jsx";
-import VeryfyOtp from "./Routes/VeryfyOtp/VeryfyOtp.jsx";
+import VerifyOtp from "./Routes/VerifyOtp/VerifyOtp.jsx";
+import VerifyEmail from "./Routes/VerifyEmail/VerifyEmail.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 import { setCart } from "../Store/Slice/UserCartSlice.jsx";
 import { setData } from "../Store/Slice/HomePageSlice.jsx";
@@ -146,7 +147,7 @@ const App = () => {
   };
 
   const fetchWishlist = useCallback(async () => {
-    if (!user?.userid) return;
+    if (!isAuthenticated) return;
     try {
       const res = await getUserWishlist(user.userid);
       dispatch(setWishlist(res.data.data || []));
@@ -212,8 +213,9 @@ const App = () => {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/order-placed" element={<OrderPlaced />} />
-        <Route path="/forgotpassword" element={<ForgetPassword />} />
-        <Route path="/veryfy-email" element={<VeryfyOtp />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/veryfy-email" element={<VerifyEmail />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
 
         {/* Dashboard routes */}
         <Route path="/my-account" element={<Dashboard />} />

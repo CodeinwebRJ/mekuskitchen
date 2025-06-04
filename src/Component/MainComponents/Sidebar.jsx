@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import  { useEffect, useRef } from "react";
 import style from "../../styles/Sidebar.module.css";
 import { FaTimes } from "react-icons/fa";
 import Button from "../Buttons/Button";
@@ -65,13 +65,19 @@ const Sidebar = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  console.log(Cart);
-
   const calculateSubtotal = () => {
-    const subtotal = Cart?.items
-      ?.reduce((acc, item) => acc + item?.sellingPrice * item?.quantity, 0)
-      .toFixed(2);
-    return subtotal;
+    let productItems = [];
+    if (Array.isArray(Cart?.items)) {
+      productItems = Cart.items;
+    } else if (Array.isArray(Cart?.items?.items)) {
+      productItems = Cart.items.items;
+    }
+    const productTotal = productItems.reduce(
+      (acc, item) => acc + (item?.sellingPrice || 0) * (item?.quantity || 1),
+      0
+    );
+
+    return productTotal.toFixed(2);
   };
 
   return (
@@ -118,7 +124,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                       <span className={style.quantity}>{item.quantity}</span>
                       <span className={style.multiply}>×</span>
                       <span className={style.price}>
-                        ${item.price || item?.productDetails?.price || 0}
+                        $
+                        {item.sellingPrice ||
+                          item?.productDetails?.sellingPrice ||
+                          0}
                       </span>
                     </p>
                   </div>

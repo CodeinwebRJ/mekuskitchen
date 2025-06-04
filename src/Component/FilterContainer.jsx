@@ -102,8 +102,6 @@ const FilterContainer = ({
   const dispatch = useDispatch();
   const { combinations, products } = useSelector((state) => state.product);
   const filterData = useSelector((state) => state.filterData);
-
-  console.log(data);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBrand, setSearchBrand] = useState("");
   const [selectedBrands, setSelectedBrands] = useState(

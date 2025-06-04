@@ -1,24 +1,28 @@
 .addAddressCardContainer {
-  padding: 36px;
-  border-radius: 10px;
+  padding: 32px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--gap-6);
-  transition: all 0.1s ease-in-out;
+  gap: 16px;
   border: 2px dashed var(--gray-border-light);
+  background-color: #fafafa;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.addAddressCardContainer:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-color);
 }
 
 .addAddressCardIcon {
-  font-size: 45px !important;
-  color: var(--gray-border-light);
+  font-size: 48px;
+  transition: color 0.2s ease;
 }
 
 .addAddressCardTitle {
-  font-size: var(--font-md);
-  font-weight: var(--font-semibold);
-  color: var(--gray-darkest);
+  font-size: 1.1rem;
+  font-weight: 600;
 }
-

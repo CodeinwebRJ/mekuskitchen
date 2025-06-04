@@ -116,7 +116,7 @@ const FoodPage = () => {
   return (
     <div className={styles.pageWrapper}>
       <Header />
-      <Banner name={id?.toUpperCase() || "FOOD"} />
+      <Banner name={"Product"} />
 
       <div className={styles.container}>
         <div className={styles.container2}>

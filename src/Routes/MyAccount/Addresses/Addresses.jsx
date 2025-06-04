@@ -84,9 +84,7 @@ const Addresses = () => {
               default.
             </p>
           </div>
-
           <BillingShipping />
-
           <div className={style.billingContainer}>
             <div className={style.billingAddressContainer}>
               {addresses.length < 3 ? (
@@ -97,7 +95,6 @@ const Addresses = () => {
                   }}
                 />
               ) : null}
-
               {addresses &&
                 addresses.map((address, index) => (
                   <AddressCard
@@ -112,7 +109,13 @@ const Addresses = () => {
           </div>
         </>
       ) : (
-        <AddressForm isEdit={isEdit} fetchAddresses={fetchAddress} />
+        <AddressForm
+          isEdit={isEdit}
+          onClose={() => {
+            dispatch(setShowAddressForm(false));
+          }}
+          fetchAddress={fetchAddress}
+        />
       )}
     </MyAccountContainer>
   );

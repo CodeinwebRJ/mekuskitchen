@@ -10,11 +10,13 @@ import {
   addUserAddress,
   UpdateUserAddress,
 } from "../../../axiosConfig/AxiosConfig";
+import { useLocation } from "react-router-dom";
 
-const AddressForm = ({ isEdit, fetchAddresses }) => {
+const AddressForm = (props) => {
+  const { isEdit, fetchAddress, onClose } = props;
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
+  const location = useLocation();
   const [formData, setFormData] = useState({
     userId: user.userid,
     billingData: {
@@ -42,7 +44,6 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
     isDifferent: false,
     isActive: true,
   });
-
   const [errors, setErrors] = useState({
     billingErrors: {},
     shippingErrors: {},
@@ -166,7 +167,10 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
           });
       if (res?.status === 201) {
         dispatch(setShowAddressForm(false));
-        fetchAddresses();
+        fetchAddress();
+        {
+          location.pathname === "/my-account/addresses" && onClose();
+        }
       } else {
         console.error("Failed to submit address:", res);
       }
@@ -177,12 +181,14 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
 
   return (
     <div>
-      <div className={style.billingTitle}>
-        <div onClick={() => dispatch(setShowAddressForm(false))}>
-          <GoArrowLeft size={24} className={style.backButton} />
+      {location.pathname === "/my-account/address" && (
+        <div className={style.billingTitle}>
+          <div onClick={() => dispatch(setShowAddressForm(false))}>
+            <GoArrowLeft size={24} className={style.backButton} />
+          </div>
+          {isEdit ? "Edit Address" : "Billing Address"}
         </div>
-        {isEdit ? "Edit Address" : "Billing Address"}
-      </div>
+      )}
 
       <form className={style.billingForm} onSubmit={handleSubmit}>
         <FormField
@@ -223,14 +229,7 @@ const AddressForm = ({ isEdit, fetchAddresses }) => {
 
         <div className={style.billingFormButtons}>
           <div className={style.submitButtonContainer}>
-            <Button
-              size="sm"
-              variant="primary"
-              type="button"
-              onClick={() => {
-                dispatch(setShowAddressForm(false));
-              }}
-            >
+            <Button size="sm" variant="primary" type="button" onClick={onClose}>
               Cancel
             </Button>
           </div>

@@ -1,7 +1,6 @@
 import style from "../../styles/WishlistItem.module.css";
 import RatingStar from "../RatingStar";
 import { RiShareLine } from "react-icons/ri";
-import { AiOutlineDelete } from "react-icons/ai";
 import Button from "../Buttons/Button";
 import { AddtoCart, RemoveWishlist } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
@@ -10,6 +9,7 @@ import { Toast } from "../../Utils/Toast";
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 import { Link } from "react-router-dom";
+import { BsTrash } from "react-icons/bs";
 
 const WishlistItem = ({ product, fetchWishlist }) => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   const handleAddToCart = async () => {
-    if (!user) return;
+    if (!isAuthenticated) return;
 
     if (cartItems?.tiffins?.length > 0) {
       return Toast({
@@ -97,7 +97,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
           <RatingStar start={0} stop={5} rating={3} disabled />
           <div className={style.controllers}>
             <RiShareLine className={style.icon} />
-            <AiOutlineDelete onClick={handleDelete} className={style.icon} />
+            <BsTrash onClick={handleDelete} className={style.icon} />
           </div>
         </div>
 

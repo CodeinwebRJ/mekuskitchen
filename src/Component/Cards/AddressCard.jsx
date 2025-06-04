@@ -1,4 +1,6 @@
+import { useLocation } from "react-router-dom";
 import style from "../../styles/AddressCard.module.css";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const AddressCard = ({
   address,
@@ -6,6 +8,7 @@ const AddressCard = ({
   handleDeleteAddress,
   handleSetAsDefaultAddress,
 }) => {
+  const location = useLocation();
   return (
     <div
       className={`${style.addressCardContainer} ${
@@ -22,35 +25,33 @@ const AddressCard = ({
           {address?.billing?.firstName} {address?.billing?.lastName}
         </h1>
         <p className={style.address}>{address?.address}</p>
-        <p className={style.city}>
+        <p className={style.address}>
           {address?.billing?.city}, {address?.billing?.state}
         </p>
-        <p className={style.state}>
+        <p className={style.address}>
           {address?.billing?.state} - {address?.billing?.postcode}
         </p>
-        <p className={style.CountryPostcode}>{address?.billing?.country}</p>
-        <p className={style.phoneNumber}>Phone: {address?.billing?.phone}</p>
+        <p className={style.address}>{address?.billing?.country}</p>
+        <p className={style.address}>Phone: {address?.billing?.phone}</p>
       </div>
 
-      <div className={style.addressControllers}>
-        <span
-          onClick={() => {
-            handleUpdateAddress(address?._id);
-          }}
-          className={style.link}
-        >
-          Edit
-        </span>
-        <span>|</span>
-        <span
-          onClick={() => {
-            handleDeleteAddress(address?._id);
-          }}
-          className={style.link}
-        >
-          Delete
-        </span>
-      </div>
+      {location.pathname === "/my-account/addresses" && (
+        <div className={style.addressControllers}>
+          <span
+            onClick={() => handleUpdateAddress(address?._id)}
+            className={style.link}
+          >
+            <FaEdit className={style.icon} /> Edit
+          </span>
+          <span className={style.separator}>|</span>
+          <span
+            onClick={() => handleDeleteAddress(address?._id)}
+            className={style.link}
+          >
+            <FaTrash className={style.icon} /> Delete
+          </span>
+        </div>
+      )}
 
       {address?.isActive && <span className={style.defaultLabel}>Default</span>}
     </div>
