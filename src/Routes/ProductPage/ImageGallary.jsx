@@ -1,11 +1,16 @@
 import style from "../../styles/ProductPage.module.css";
 
-const ImageGallery = ({ product, selectedImage, setSelectedImage, selectedSKUs }) => {
-  const defaultImage = "/defaultImage.png";
+const ImageGallery = ({
+  product,
+  selectedImage,
+  setSelectedImage,
+  selectedSKUs,
+}) => {
+  const defaultImage = "/defultImage.png";
   const thumbnailImages =
     selectedSKUs?.details?.SKUImages?.length > 1
-      ? selectedSKUs.details?.SKUImages.slice(0, 4)
-      : product?.images?.slice(0, 4);
+      ? selectedSKUs.details?.SKUImages.slice(0, 4) || "defultImage.png"
+      : product?.images?.slice(0, 4) || "defultImage.png";
 
   return (
     <div className={style.imageContainer}>
@@ -18,7 +23,8 @@ const ImageGallery = ({ product, selectedImage, setSelectedImage, selectedSKUs }
       </div>
       <div className={style.thumbnailsContainer}>
         {thumbnailImages?.map((img, idx) => {
-          const url = typeof img === "string" ? img : img?.url || defaultImage;
+          const url =
+            typeof img === "string" ? img : img?.url || "/defultImage.png";
           return (
             <img
               key={idx}

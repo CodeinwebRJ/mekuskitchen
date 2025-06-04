@@ -23,7 +23,7 @@ import {
 } from "../../../Store/Slice/AddressSlice";
 import AddAddressCard from "../../Component/UI-Components/AddAddressCard";
 import AddressForm from "../MyAccount/Addresses/AddressForm";
-import DialogBox from "../../Component/DialogBox";
+import DialogBox from "../../Component/MainComponents/DialogBox";
 import CouponCode from "../../Component/Cards/CouponCode";
 
 const OrderSummary = ({
@@ -84,7 +84,6 @@ const CheckoutPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
@@ -225,9 +224,9 @@ const CheckoutPage = () => {
                   />
                 ))}
             </div>
-              <div>
-                <CouponCode />
-              </div>
+            <div>
+              <CouponCode />
+            </div>
           </div>
           <OrderSummary
             total={total}

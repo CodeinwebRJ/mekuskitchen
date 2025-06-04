@@ -104,7 +104,8 @@ const ProductPage = () => {
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.breadcrumb}>
-            <Link to="/">Home</Link> / <Link to="">{product.category}</Link> /{" "}
+            <Link to="/">Home</Link> /{" "}
+            <Link to="/product-category">{product.category}</Link> /{" "}
             {product.name}
           </div>
           <div className={style.navigation}>

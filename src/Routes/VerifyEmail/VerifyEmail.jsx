@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar2 from "../../Component/Navbar2";
+import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Footer from "../../Component/MainComponents/Footer";
 
 function VerifyEmail() {

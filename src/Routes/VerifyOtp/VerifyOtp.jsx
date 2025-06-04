@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar2 from "../../Component/Navbar2";
+import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Footer from "../../Component/MainComponents/Footer";
 
 function VerifyOtp() {

@@ -9,7 +9,7 @@ import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import Button from "../../Component/Buttons/Button";
 import Chip from "../../Component/Buttons/Chip";
-import DialogBox from "../../Component/DialogBox";
+import DialogBox from "../../Component/MainComponents/DialogBox";
 import EmptyCartPage from "./EmptyCartPage";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
@@ -85,7 +85,13 @@ const CartItem = ({
   );
 };
 
-const CartTotals = ({ subtotal, total, discount, discountPercentage }) => (
+const CartTotals = ({
+  isAuthenticated,
+  subtotal,
+  total,
+  discount,
+  discountPercentage,
+}) => (
   <div className={style.cartTotals}>
     <h3>Cart Totals</h3>
     <p>
@@ -114,7 +120,7 @@ const CartTotals = ({ subtotal, total, discount, discountPercentage }) => (
     <p className={style.total}>
       Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
     </p>
-    <Link to="/checkout">
+    <Link to={isAuthenticated ? "/checkout" : "/login"}>
       <div className={style.checkoutButton}>
         <Button variant="primary" size="md">
           Proceed to Checkout
@@ -443,6 +449,7 @@ const ShoppingCart = () => {
           subtotal={subtotal}
           total={total}
           discount={discount}
+          isAuthenticated={isAuthenticated}
           discountPercentage={discountPercentage}
         />
       </div>

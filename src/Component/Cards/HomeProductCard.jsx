@@ -27,7 +27,7 @@ export const HomeProductCard = ({
   const imageUrl =
     Array.isArray(image) && image.length > 0 && image[0]?.url
       ? image[0].url
-      : "https://via.placeholder.com/150";
+      : "/defultImage.png";
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const isLikedFromStore = useSelector(

@@ -11,10 +11,13 @@ const NewArrivals = ({ data }) => {
 
   return (
     <div className={style.wrapper}>
-      <h2 className={style.newArrival}>
-        <span className={style.blueText}>New </span>
-        <span>Arrival</span>
-      </h2>
+      <div>
+        <h2 className={style.newArrival}>
+          <span className={style.blueText}>New </span>
+          <span>Arrival</span>
+        </h2>
+        <h6>View All</h6>
+      </div>
 
       {products.length === 0 ? (
         <p className={style.noProducts}>No new products available.</p>

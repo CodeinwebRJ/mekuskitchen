@@ -10,8 +10,8 @@ import NewArrivals from "./NewArrivals";
 import OurProduct from "./OurProducts";
 import Cooking from "./Cooking";
 import { Link } from "react-router-dom";
-import { FaArrowUp } from "react-icons/fa";
 import { IoArrowUpOutline } from "react-icons/io5";
+import ReviewComponent from "../../Component/MainComponents/ReviewComponent";
 
 const HomePage = () => {
   const { data } = useSelector((state) => state.home);
@@ -115,6 +115,8 @@ const HomePage = () => {
 
         <OurProduct data={data} />
         <Cooking />
+
+        <ReviewComponent data={data} />
 
         <section className={style.hero}>
           <div className={style.container}>

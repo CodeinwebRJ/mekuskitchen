@@ -181,7 +181,7 @@ const AddressForm = (props) => {
 
   return (
     <div>
-      {location.pathname === "/my-account/address" && (
+      {location.pathname === "/my-account/addresses" && (
         <div className={style.billingTitle}>
           <div onClick={() => dispatch(setShowAddressForm(false))}>
             <GoArrowLeft size={24} className={style.backButton} />

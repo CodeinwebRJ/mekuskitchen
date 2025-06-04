@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import style from "../styles/DialogBox.module.css";
+import style from "../../styles/DialogBox.module.css";
 import { IoClose } from "react-icons/io5";
 
 const DialogBox = ({ isOpen, title, children, onClose }) => {

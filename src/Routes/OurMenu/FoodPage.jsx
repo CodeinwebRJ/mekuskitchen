@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCategory,
@@ -22,6 +22,7 @@ import {
   setPage,
   setPrices,
 } from "../../../Store/Slice/FilterDataSlice.jsx";
+import { FaHome } from "react-icons/fa";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
@@ -135,7 +136,8 @@ const FoodPage = () => {
             <div className={styles.mainContent}>
               <div className={styles.sortingBar}>
                 <div className={styles.breadcrumb}>
-                  <span aria-label="Breadcrumb">Home / Food</span>
+                  <Link to={"/"}>Home / </Link>
+                  <span>Food</span>
                 </div>
 
                 <div className={styles.sortingOptions}>
