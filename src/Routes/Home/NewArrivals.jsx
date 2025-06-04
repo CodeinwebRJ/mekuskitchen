@@ -16,7 +16,7 @@ const NewArrivals = ({ data }) => {
           <span className={style.blueText}>New </span>
           <span>Arrival</span>
         </h2>
-        <h6>View All</h6>
+        {/* <h6>View All</h6> */}
       </div>
 
       {products.length === 0 ? (

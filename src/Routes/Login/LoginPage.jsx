@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import Loading from "../../Component/UI-Components/Loading";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../Store/Slice/UserSlice";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function LoginPage() {
   const [credentials, setCredentials] = useState({
@@ -136,13 +137,17 @@ function LoginPage() {
                   <div className="mb-3 mt-3">
                     <input
                       type="text"
-                      className="form-control"
                       value={credentials.unique_id}
                       onChange={handleChange}
                       id="unique_id"
                       placeholder="Unique Id"
                       name="unique_id"
-                      required
+                      style={{
+                        border: "1px solid black",
+                        borderRadius: "6px",
+                        width: "100%",
+                        padding: "4px 12px",
+                      }}
                     />
                   </div>
                   <div className="mb-3" style={{ position: "relative" }}>
@@ -150,16 +155,19 @@ function LoginPage() {
                       type={showPassword ? "text" : "password"}
                       value={credentials.password}
                       onChange={handleChange}
-                      className="form-control"
                       id="password"
                       placeholder="Password"
                       name="password"
-                      required
+                      style={{
+                        border: "1px solid black",
+                        borderRadius: "6px",
+                        width: "100%",
+                        padding: "4px 12px",
+                      }}
                     />
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
-                      className="btn btn-link"
                       style={{
                         position: "absolute",
                         right: "20px",
@@ -171,9 +179,9 @@ function LoginPage() {
                       }}
                     >
                       {showPassword ? (
-                        <i className="fas fa-eye"></i>
+                        <FaEye color="black" />
                       ) : (
-                        <i className="fas fa-eye-slash"></i>
+                        <FaEyeSlash color="black" />
                       )}
                     </button>
                   </div>
@@ -186,8 +194,13 @@ function LoginPage() {
                         id="terms"
                         checked={rememberMe}
                         onChange={handleCheckboxChange} // Handle checkbox change
+                        style={{ border: "1px solid black" }}
                       />
-                      <label className="form-check-label" htmlFor="terms">
+                      <label
+                        style={{ color: "black" }}
+                        className="form-check-label"
+                        htmlFor="terms"
+                      >
                         Remember me
                       </label>
                     </div>
@@ -205,7 +218,7 @@ function LoginPage() {
                   <button
                     type="submit"
                     className="btn btn-primary w-100"
-                    style={{ borderRadius: "15px" }}
+                    style={{ borderRadius: "14px" }}
                   >
                     Login
                   </button>

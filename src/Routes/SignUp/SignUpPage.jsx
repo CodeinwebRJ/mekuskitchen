@@ -4,6 +4,7 @@ import axios from "axios";
 import Footer from "../../Component/MainComponents/Footer";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Banner2 from "../../Component/MainComponents/Banner2";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -158,88 +159,87 @@ function SignUpPage() {
                 <form className="was-validated" onSubmit={handleSubmit}>
                   <div className="mb-3 mt-3">
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
+                      style={{
+                        border: "1px solid black",
+                        textDecoration: "none",
+                        padding: "4px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
+                      }}
                       type="text"
                       value={formData.first_name}
                       onChange={handleInputChange}
-                      className="form-control"
                       id="first_name"
                       placeholder="First Name"
                       name="first_name"
-                      required
                     />
                   </div>
                   <div className="mb-3">
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      //   width: "100%",
-                      // }}
+                      style={{
+                        border: "1px solid black",
+                        textDecoration: "none",
+                        padding: "4px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
+                      }}
                       type="text"
                       value={formData.last_name}
                       onChange={handleInputChange}
-                      className="form-control"
                       id="last_name"
                       placeholder="Last Name"
                       name="last_name"
-                      required
                     />
                   </div>
                   <div className="mb-3">
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
+                      style={{
+                        border: "1px solid black",
+                        textDecoration: "none",
+                        padding: "4px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
+                      }}
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="form-control"
                       id="email"
                       placeholder="Email"
                       name="email"
-                      required
                     />
                   </div>
                   <div className="mb-3">
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
+                      style={{
+                        border: "1px solid black",
+                        textDecoration: "none",
+                        padding: "4px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
+                      }}
                       type="number"
-                      className="form-control"
                       id="mobile"
                       value={formData.mobile}
                       onChange={handleInputChange}
                       placeholder="Phone"
                       name="mobile"
-                      required
                     />
                   </div>
                   <div className="mb-3" style={{ position: "relative" }}>
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
+                      style={{
+                        border: "1px solid black",
+                        textDecoration: "none",
+                        padding: "4px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
+                      }}
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="form-control"
                       id="password"
                       placeholder="Password"
                       name="password"
-                      required
                     />
                     <button
                       type="button"
@@ -256,27 +256,27 @@ function SignUpPage() {
                       }}
                     >
                       {showPassword ? (
-                        <i className="fas fa-eye"></i>
+                        <FaEye color="black" />
                       ) : (
-                        <i className="fas fa-eye-slash"></i>
+                        <FaEyeSlash color="black" />
                       )}
                     </button>
                   </div>
                   <div className="mb-3" style={{ position: "relative" }}>
                     <input
-                      // style={{
-                      //   border: "none",
-                      //   borderBottom: "1px solid black",
-                      //   textDecoration: "none",
-                      // }}
+                      style={{
+                        border: "1px solid black",
+                        textDecoration: "none",
+                        padding: "4px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
+                      }}
                       type={showConfirmPassword ? "text" : "password"}
-                      className="form-control"
                       id="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
                       placeholder="Confirm Password"
                       name="confirmPassword"
-                      required
                     />
                     <button
                       type="button"
@@ -293,19 +293,19 @@ function SignUpPage() {
                       }}
                     >
                       {showConfirmPassword ? (
-                        <i className="fas fa-eye"></i>
+                        <FaEye color="black" />
                       ) : (
-                        <i className="fas fa-eye-slash"></i>
+                        <FaEyeSlash color="black" />
                       )}
                     </button>
                   </div>
                   <div className="mb-3">
                     <input
                       style={{
-                        border: "1px solid red",
+                        border: "1px solid black",
                         borderRadius: "6px",
                         width: "100%",
-                        padding: "5px 12px",
+                        padding: "4px 12px",
                       }}
                       type="text"
                       className=""
@@ -322,11 +322,15 @@ function SignUpPage() {
                     <input
                       type="checkbox"
                       className="form-check-input"
+                      style={{ border: "1px solid black" }}
                       id="terms"
                     />
-                    <label className="form-check-label" htmlFor="terms">
-                      I agree all statements in
-                      <span style={{ color: "grey" }}>Terms of service</span>
+                    <label
+                      style={{ color: "black" }}
+                      className="form-check-label"
+                      htmlFor="terms"
+                    >
+                      I agree all statements in Terms of service
                     </label>
                   </div>
                   {/* </div> */}
