@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
-import style from "../../styles/Orderplaced.module.css";
+import style from "../../styles/OrderPlaced.module.css";
 
 const OrderPlaced = () => {
   return (
