@@ -24,13 +24,14 @@ const Header = () => {
   const cart = useSelector((state) => state.cart);
   const navigate = useNavigate();
 
-  const handleCategoryClick = (categoryName) => {
-    dispatch(setCategories(categoryName));
-  };
-  
+  // const handleCategoryClick = (categoryName) => {
+  //   dispatch(setCategories(categoryName));
+  // };
+
   const handleLogout = () => {
     if (!isAuthenticated) {
       navigate("/login");
+
       return;
     }
     try {
@@ -71,9 +72,20 @@ const Header = () => {
     if (!isAuthenticated) {
       const productItemsCount =
         cart?.items?.items?.length > 0
-          ? cart.items.items?.reduce((acc, item) => acc + (item?.quantity || 0), 0)
+          ? cart.items.items?.reduce(
+              (acc, item) => acc + (item?.quantity || 0),
+              0
+            )
           : 0;
-      dispatch(setCartCount(productItemsCount));
+      const tiffinItemsCount =
+        cart?.items?.tiffins?.length > 0
+          ? cart.items.tiffins?.reduce(
+              (acc, item) => acc + (item?.quantity || 0),
+              0
+            )
+          : 0;
+      const totalCount = productItemsCount + tiffinItemsCount;
+      dispatch(setCartCount(totalCount));
     }
   }, [isAuthenticated, cart]);
 

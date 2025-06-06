@@ -20,20 +20,18 @@ const Sidebar = ({ isOpen, onClose }) => {
   const handleDelete = async (id, type, dayName = null, skuId) => {
     if (!isAuthenticated) {
       const localCart = JSON.parse(localStorage.getItem("cart")) || {
-        Tiffin: [],
+        tiffins: [],
         items: [],
       };
-      let updatedTiffin = localCart.Tiffin;
+      let updatedTiffin = localCart.tiffins;
       let updatedItems = localCart.items;
-
       if (localCart.items.length > 0) {
         updatedItems = localCart.items.filter((item) => item._id !== id);
-      } else if (localCart.Tiffin.length > 0) {
-        updatedTiffin = localCart.Tiffin.filter((item) => item._id !== id);
+      } else if (localCart.tiffins.length > 0) {
+        updatedTiffin = localCart.tiffins.filter((item) => item._id !== id);
       }
-
       const updatedCart = {
-        Tiffin: updatedTiffin,
+        tiffins: updatedTiffin,
         items: updatedItems,
       };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -80,18 +78,23 @@ const Sidebar = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const calculateSubtotal = () => {
-    let productItems = [];
-    if (Array.isArray(Cart?.items)) {
-      productItems = Cart.items;
-    } else if (Array.isArray(Cart?.items?.items)) {
-      productItems = Cart.items.items;
-    }
+    const productItems = Cart?.items?.items || [];
+    const tiffinItems = Cart?.items?.tiffins || [];
     const productTotal = productItems.reduce(
       (acc, item) => acc + (item?.sellingPrice || 0) * (item?.quantity || 1),
       0
     );
-
-    return productTotal.toFixed(2);
+    const tiffinTotal = tiffinItems.reduce(
+      (acc, item) =>
+        acc +
+        (isAuthenticated
+          ? item?.tiffinMenuDetails?.totalAmount
+          : item?.totalAmount || 0) *
+          (item?.quantity || 1),
+      0
+    );
+    const total = productTotal + tiffinTotal;
+    return total.toFixed(2);
   };
 
   return (
@@ -108,8 +111,8 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         {Cart?.items?.items?.length > 0 && (
           <div className={style.cartContainer}>
-            {Cart.items.items.map((item, index) => (
-              <div className={style.cartItem} key={item._id || index}>
+            {Cart?.items?.items.map((item, index) => (
+              <div className={style.cartItem} key={item?._id || index}>
                 <div className={style.cartItemImageContainer}>
                   <img
                     src={
@@ -181,8 +184,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemImageContainer}>
                   <img
                     src={
-                      item.tiffinMenuDetails?.image_url?.[0]?.url ||
-                      "/defaultImage.png"
+                      isAuthenticated
+                        ? item?.tiffinMenuDetails?.image_url?.[0]?.url ||
+                          "/defaultImage.png"
+                        : item?.image_url?.[0]?.url || "/defaultImage.png"
                     }
                     alt={item.day || "Tiffin item"}
                     className={style.cartItemImage}
@@ -204,7 +209,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <div
                     className={style.deleteButton}
                     onClick={() =>
-                      handleDelete(item.tiffinMenuId, "tiffin", item.day)
+                      handleDelete(
+                        isAuthenticated ? item.tiffinMenuId : item._id,
+                        "tiffin",
+                        item.day
+                      )
                     }
                   >
                     <BsTrash className={style.deleteIcon} />
@@ -215,15 +224,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         )}
 
-        {isAuthenticated ? (
-          !Cart.items?.items?.length && !Cart?.items?.tiffins?.length ? (
-            <div className={style.cartContainer}>
-              <div className={style.emptyCartText}>
-                <h5>Your Cart Is Empty</h5>
-              </div>
-            </div>
-          ) : null
-        ) : Cart?.items?.length === 0 ? (
+        {!Cart.items?.items?.length && !Cart?.items?.tiffins?.length ? (
           <div className={style.cartContainer}>
             <div className={style.emptyCartText}>
               <h5>Your Cart Is Empty</h5>

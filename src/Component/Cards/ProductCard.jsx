@@ -43,10 +43,10 @@ const ProductCard = ({ product, grid }) => {
     if (!isAuthenticated) {
       const localCartData = JSON.parse(localStorage.getItem("cart")) || {
         items: [],
-        Tiffin: [],
+        tiffins: [],
       };
       const localCartItems = localCartData.items || [];
-      const localCartTiffin = localCartData.Tiffin || [];
+      const localCartTiffin = localCartData.tiffins || [];
       if (localCartTiffin.length > 0) {
         Toast({ message: "Tiffin is already added to cart!", type: "error" });
         return;
@@ -61,7 +61,7 @@ const ProductCard = ({ product, grid }) => {
         });
         const updatedCart = {
           items: updatedItems,
-          Tiffin: localCartTiffin, // keep Tiffin unchanged
+          tiffins: localCartTiffin, // keep Tiffin unchanged
         };
 
         localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -78,7 +78,7 @@ const ProductCard = ({ product, grid }) => {
 
         const updatedCart = {
           items: updatedItems,
-          Tiffin: localCartTiffin,
+          tiffins: localCartTiffin,
         };
 
         localStorage.setItem("cart", JSON.stringify(updatedCart));

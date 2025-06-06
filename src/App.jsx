@@ -50,6 +50,7 @@ import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 import { setCart } from "../Store/Slice/UserCartSlice.jsx";
 import { setData } from "../Store/Slice/HomePageSlice.jsx";
 import OrderPlaced from "./Routes/CheckOut/OrderPlaced.jsx";
+import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -210,11 +211,18 @@ const App = () => {
         <Route path="/product/:category/:id" element={<ProductPage />} />
         <Route path="/product/tiffin/:id" element={<TiffinProductPage />} />
         <Route path="/cart" element={<ShoppingCart />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/order-placed" element={<OrderPlaced />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
-        <Route path="/veryfy-email" element={<VerifyEmail />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
 
         {/* Dashboard routes */}

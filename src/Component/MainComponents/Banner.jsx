@@ -1,60 +1,60 @@
 import style from "../../styles/Banner.module.css";
 import { BsArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
 
-const Banner = (props) => {
-  const { name, path = "/" } = props;
+const Banner = ({ name, path = "/" }) => {
+  const foodImages = useMemo(
+    () => [
+      { src: "/dabeli.png", alt: "Dabeli dish" },
+      { src: "/samosa.png", alt: "Samosa snack" },
+      { src: "/dosa.png", alt: "Dosa crepe" },
+      { src: "/chole.png", alt: "Chole curry" },
+    ],
+    []
+  );
 
-  const foodImages = [
-    {
-      src: "/dabeli.png",
-      alt: "Food Item",
-    },
-    {
-      src: "/samosa.png",
-      alt: "Food Item",
-    },
-    {
-      src: "/dosa.png",
-      alt: "Food Item",
-    },
-    {
-      src: "/chole.png",
-      alt: "Food Item",
-    },
-  ];
+  const showBreadcrumb = name !== "FOOD" && name !== "GROCERY";
 
   return (
-    <div className={style.banner}>
-      <div className={style.foodImages}>
+    <section className={style.banner} aria-label={`${name} banner`}>
+      <div className={style.foodImages} aria-hidden="true">
         {foodImages.map((image, index) => (
-          <div className={style.imagesContainer} key={index}>
+          <div className={style.imagesContainer} key={`${image.alt}-${index}`}>
             <img
-              key={index}
               src={image.src}
-              alt={`${image.alt} ${index + 1}`}
+              alt={image.alt}
               className={style.foodItem}
+              loading="lazy"
+              onError={(e) => {
+                e.target.src = "/fallback.png"; // Fallback image
+              }}
             />
           </div>
         ))}
       </div>
 
       <h1 className={style.bannerText}>
-        <Link to={path} className={style.arrow}>
+        <Link
+          to={path}
+          className={style.arrow}
+          aria-label={`Back to ${path === "/" ? "home" : "previous page"}`}
+        >
           <BsArrowLeft />
         </Link>
         {name}
       </h1>
 
-      {name !== "FOOD" || name !== "GROCERY" ? (
-        <div className={style.bannerBreadcrumb}>
-          <Link to={"/"} className={style.link}>
+      {showBreadcrumb && (
+        <nav className={style.bannerBreadcrumb} aria-label="Breadcrumb">
+          <Link to="/" className={style.link}>
             Home
           </Link>
-          /<span className={style.currentPage}>{name}</span>
-        </div>
-      ) : null}
-    </div>
+          <span className={style.breadcrumbSeparator}>/</span>
+          <span className={style.currentPage}>{name}</span>
+        </nav>
+      )}
+    </section>
   );
 };
 

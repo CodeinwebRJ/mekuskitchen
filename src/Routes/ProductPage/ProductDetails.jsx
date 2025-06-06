@@ -22,7 +22,7 @@ const ProductDetails = ({
   setQuantity,
   selectedCombination,
   availableOptions,
-  handleAddToCart,
+handleAddToCart,
   isAddingToCart,
   handleWishlistToggle,
   isLikedLocal,

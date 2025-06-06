@@ -55,14 +55,18 @@ function LoginPage() {
       );
       if (response.data.response === "1") {
         dispatch(setUser(response.data));
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("api_token", response.data.api_token);
+        if (rememberMe) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("api_token", response.data.api_token);
+        }
         navigate("/");
         setLoading(false);
       } else if (response.data.response === "0") {
         setError("Invalid Unique ID or password");
+        setLoading(false);
       } else {
         setError("Login failed. Please check your credentials.");
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
@@ -140,13 +144,13 @@ function LoginPage() {
                       value={credentials.unique_id}
                       onChange={handleChange}
                       id="unique_id"
-                      placeholder="Unique Id"
+                      placeholder="Unique Id*"
                       name="unique_id"
                       style={{
                         border: "1px solid black",
                         borderRadius: "6px",
                         width: "100%",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                       }}
                     />
                   </div>
@@ -156,13 +160,13 @@ function LoginPage() {
                       value={credentials.password}
                       onChange={handleChange}
                       id="password"
-                      placeholder="Password"
+                      placeholder="Password*"
                       name="password"
                       style={{
                         border: "1px solid black",
                         borderRadius: "6px",
                         width: "100%",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                       }}
                     />
                     <button
@@ -170,12 +174,17 @@ function LoginPage() {
                       onClick={togglePasswordVisibility}
                       style={{
                         position: "absolute",
-                        right: "20px",
-                        top: "2px",
+                        right: "12px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
                         fontSize: "16px",
                         background: "none",
                         border: "none",
                         cursor: "pointer",
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
                       {showPassword ? (
@@ -193,7 +202,7 @@ function LoginPage() {
                         className="form-check-input"
                         id="terms"
                         checked={rememberMe}
-                        onChange={handleCheckboxChange} // Handle checkbox change
+                        onChange={handleCheckboxChange}
                         style={{ border: "1px solid black" }}
                       />
                       <label

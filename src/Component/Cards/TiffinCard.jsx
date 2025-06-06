@@ -18,11 +18,11 @@ const TiffinCard = ({ item }) => {
     if (!isAuthenticated) {
       const localCartData = JSON.parse(localStorage.getItem("cart")) || {
         items: [],
-        Tiffin: [],
+        tiffins: [],
       };
 
       const localCartItems = localCartData.items || [];
-      const localCartTiffin = localCartData.Tiffin || [];
+      const localCartTiffin = localCartData.tiffins || [];
 
       if (localCartItems.length > 0) {
         Toast({
@@ -44,7 +44,7 @@ const TiffinCard = ({ item }) => {
 
         const updatedCart = {
           items: localCartItems,
-          Tiffin: updatedTiffin,
+          tiffins: updatedTiffin,
         };
 
         localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -61,7 +61,7 @@ const TiffinCard = ({ item }) => {
 
         const updatedCart = {
           items: localCartItems,
-          Tiffin: updatedTiffin,
+          tiffins: updatedTiffin,
         };
 
         localStorage.setItem("cart", JSON.stringify(updatedCart));

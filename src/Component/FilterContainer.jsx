@@ -16,6 +16,7 @@ import {
 import CheckboxField from "./UI-Components/CheckboxFeild";
 import { setPage } from "../../Store/Slice/FilterDataSlice";
 import { Link } from "react-router-dom";
+import { BsTrash } from "react-icons/bs";
 
 const useDebounce = (value, delay, callback) => {
   useEffect(() => {
@@ -382,7 +383,7 @@ const FilterContainer = ({
         <div className={style.filterHeader}>
           <h3>Filters</h3>
           <button onClick={handleClearFilters} className={style.clearButton}>
-            Clear All
+            <BsTrash /> Clear All
           </button>
         </div>
 
@@ -394,7 +395,6 @@ const FilterContainer = ({
           onChange={(e) => setSearchTerm(e.target.value)}
           className="form-control"
           placeholder="Search by name"
-          aria-label="Search products by name"
         />
 
         <h6>

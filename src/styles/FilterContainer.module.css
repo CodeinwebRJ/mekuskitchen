@@ -17,6 +17,9 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .filterHeader {
@@ -50,14 +53,13 @@
 .filterSection input[type="range"] {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid var(--gray-light);
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   font-size: 14px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .filterSection input[type="text"]:focus {
-  border-color: var(--success);
   box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
   outline: none;
 }
@@ -66,7 +68,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-left: 4px;
+  padding: 8px 0 0 4px;
 }
 
 .checkboxItem {
@@ -119,6 +121,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 4px;
 }
 
 .topRatedInfo {

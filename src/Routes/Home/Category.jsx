@@ -34,7 +34,7 @@ const Category = ({ data }) => {
   return (
     <section className={style.dishesSection}>
       <div className={style.headingContainer}>
-        <h2 id="gujarati-dishes-heading" className={style.heading}>
+        <h2 className={style.heading}>
           <span>Crave-Worthy </span>
           <span className={style.blueText}>Gujarati Dishes</span>
           <span> You’ll Keep </span>

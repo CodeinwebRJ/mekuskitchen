@@ -30,29 +30,45 @@ function SignUpPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords and Confirm password do not match.");
+    if (!formData.first_name.trim()) {
+      setError("First Name is required.");
       return;
     }
-
-    //phone number validation
+    if (!formData.last_name.trim()) {
+      setError("Last Name is required.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.mobile)) {
       setError("Phone number must be exactly 10 digits.");
       return;
     }
-
-    // Password validation
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]).{8,}$/;
     if (!passwordRegex.test(formData.password)) {
       setError(
-        "password must be at 8 character long, contain at least one uppercase letter, one lowercase letter, and one special character."
+        "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
       );
       return;
     }
-
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords and Confirm password do not match.");
+      return;
+    }
+    if (!formData.refcode.trim()) {
+      setError("Referral Code is required.");
+      return;
+    }
+    const termsCheckbox = document.getElementById("terms");
+    if (!termsCheckbox.checked) {
+      setError("You must agree to the Terms of service.");
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -162,7 +178,7 @@ function SignUpPage() {
                       style={{
                         border: "1px solid black",
                         textDecoration: "none",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                         borderRadius: "6px",
                         width: "100%",
                       }}
@@ -170,7 +186,7 @@ function SignUpPage() {
                       value={formData.first_name}
                       onChange={handleInputChange}
                       id="first_name"
-                      placeholder="First Name"
+                      placeholder="First Name*"
                       name="first_name"
                     />
                   </div>
@@ -179,7 +195,7 @@ function SignUpPage() {
                       style={{
                         border: "1px solid black",
                         textDecoration: "none",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                         borderRadius: "6px",
                         width: "100%",
                       }}
@@ -187,7 +203,7 @@ function SignUpPage() {
                       value={formData.last_name}
                       onChange={handleInputChange}
                       id="last_name"
-                      placeholder="Last Name"
+                      placeholder="Last Name*"
                       name="last_name"
                     />
                   </div>
@@ -196,7 +212,7 @@ function SignUpPage() {
                       style={{
                         border: "1px solid black",
                         textDecoration: "none",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                         borderRadius: "6px",
                         width: "100%",
                       }}
@@ -204,7 +220,7 @@ function SignUpPage() {
                       value={formData.email}
                       onChange={handleInputChange}
                       id="email"
-                      placeholder="Email"
+                      placeholder="Email*"
                       name="email"
                     />
                   </div>
@@ -213,7 +229,7 @@ function SignUpPage() {
                       style={{
                         border: "1px solid black",
                         textDecoration: "none",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                         borderRadius: "6px",
                         width: "100%",
                       }}
@@ -221,7 +237,7 @@ function SignUpPage() {
                       id="mobile"
                       value={formData.mobile}
                       onChange={handleInputChange}
-                      placeholder="Phone"
+                      placeholder="Phone*"
                       name="mobile"
                     />
                   </div>
@@ -230,7 +246,7 @@ function SignUpPage() {
                       style={{
                         border: "1px solid black",
                         textDecoration: "none",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                         borderRadius: "6px",
                         width: "100%",
                       }}
@@ -238,7 +254,7 @@ function SignUpPage() {
                       value={formData.password}
                       onChange={handleInputChange}
                       id="password"
-                      placeholder="Password"
+                      placeholder="Password*"
                       name="password"
                     />
                     <button
@@ -247,12 +263,17 @@ function SignUpPage() {
                       className="btn btn-link"
                       style={{
                         position: "absolute",
-                        right: "20px",
-                        top: "2px",
+                        right: "12px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
                         fontSize: "16px",
                         background: "none",
                         border: "none",
                         cursor: "pointer",
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
                       {showPassword ? (
@@ -267,7 +288,7 @@ function SignUpPage() {
                       style={{
                         border: "1px solid black",
                         textDecoration: "none",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                         borderRadius: "6px",
                         width: "100%",
                       }}
@@ -275,7 +296,7 @@ function SignUpPage() {
                       id="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      placeholder="Confirm Password"
+                      placeholder="Confirm Password*"
                       name="confirmPassword"
                     />
                     <button
@@ -284,12 +305,17 @@ function SignUpPage() {
                       className="btn btn-link"
                       style={{
                         position: "absolute",
-                        right: "20px",
-                        top: "2px",
+                        right: "12px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
                         fontSize: "16px",
                         background: "none",
                         border: "none",
                         cursor: "pointer",
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
                       {showConfirmPassword ? (
@@ -305,14 +331,14 @@ function SignUpPage() {
                         border: "1px solid black",
                         borderRadius: "6px",
                         width: "100%",
-                        padding: "4px 12px",
+                        padding: "10px 12px",
                       }}
                       type="text"
                       className=""
                       id="refcode"
                       value={formData.refcode}
                       onChange={handleInputChange}
-                      placeholder="Referral Code"
+                      placeholder="Referral Code*"
                       name="refcode"
                     />
                   </div>

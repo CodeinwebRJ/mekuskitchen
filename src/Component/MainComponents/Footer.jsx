@@ -28,7 +28,9 @@ const Footer = () => {
             simply craving a memorable dining experience, we invite you to savor
             the flavors of our carefully crafted menu.
           </p>
-          <button className={styles.readMoreBtn}>Read More</button>
+          <Link to={"/about-us"}>
+            <button className={styles.readMoreBtn}>Read More</button>
+          </Link>
         </div>
 
         <div className={styles.footerColumn}>

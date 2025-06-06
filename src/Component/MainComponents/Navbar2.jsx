@@ -75,7 +75,7 @@ function Navbar2() {
                 Login As Subuser
               </Link> */}
               <Link
-                to="/"
+                to="/login"
                 className="btn btn-outline-primary me-2"
                 style={{ height: "auto", lineHeight: "normal" }}
               >

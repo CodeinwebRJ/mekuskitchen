@@ -41,22 +41,30 @@ export const HomeProductCard = ({
   const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    if (!data?._id) {
-      Toast.error("Invalid product data");
-      return;
-    }
-
     if (!isAuthenticated) {
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      const exists = localCart.find((item) => item._id === data._id);
-
+      const localCartData = JSON.parse(localStorage.getItem("cart")) || {
+        items: [],
+        tiffins: [],
+      };
+      const localCartItems = localCartData.items || [];
+      const localCartTiffin = localCartData.tiffins || [];
+      if (localCartTiffin.length > 0) {
+        Toast({ message: "Tiffin is already added to cart!", type: "error" });
+        return;
+      }
+      const exists = localCartItems.find((item) => item?._id === data?._id);
       if (exists) {
-        const updatedCart = localCart.map((item) =>
-          item._id === data._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+        const updatedItems = localCartItems.map((item) => {
+          if (item._id === data._id) {
+            return { ...item, quantity: item.quantity + 1 };
+          }
+          return item;
+        });
+        const updatedCart = {
+          items: updatedItems,
+          tiffins: localCartTiffin, // keep Tiffin unchanged
+        };
+
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         Toast({
           message: "Product quantity updated in cart!",
@@ -64,15 +72,24 @@ export const HomeProductCard = ({
         });
         dispatch(setCart(updatedCart));
       } else {
-        localCart.push({
-          ...data,
-          quantity: 1,
-          price: data.price || price || 0, // Fallback to 0 if price is undefined
+        const updatedItems = [
+          ...localCartItems,
+          { ...data, quantity: 1, price: data.price },
+        ];
+
+        const updatedCart = {
+          items: updatedItems,
+          tiffins: localCartTiffin,
+        };
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        Toast({
+          message: "Product added to cart!",
+          type: "success",
         });
-        localStorage.setItem("cart", JSON.stringify(localCart));
-        Toast({ message: "Product added to cart!", type: "success" });
-        dispatch(setCart(localCart));
+        dispatch(setCart(updatedCart));
       }
+
       return;
     }
 
@@ -83,20 +100,23 @@ export const HomeProductCard = ({
 
     try {
       const res = await AddtoCart({
-        user_id: user?.userid,
+        user_id: user.userid,
         isTiffinCart: false,
         product_id: data._id,
         quantity: 1,
-        price: data.price || price || 0, // Fallback to 0 if price is undefined
+        price: selectedCombination?.Price || data?.price,
+        ...(data?.sku?.length > 1 && selectedSKUs?._id
+          ? { skuId: selectedSKUs._id }
+          : {}),
+        ...(data.sku?.length > 1 && selectedCombination
+          ? { combination: { ...selectedCombination } }
+          : {}),
       });
       dispatch(setCart(res.data.data));
       Toast({ message: "Product added to cart successfully", type: "success" });
     } catch (error) {
-      console.error("Error adding to cart:", error.message);
-      Toast({
-        message: "Failed to add product to cart. Please try again.",
-        type: "error",
-      });
+      console.error("Error adding to cart:", error);
+      Toast({ message: "Failed to add product in cart.", type: "error" });
     }
   };
 

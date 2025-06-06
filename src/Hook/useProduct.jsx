@@ -136,7 +136,6 @@ const useProduct = (id) => {
     );
   }, [selectedSKUs, selectedOptions]);
 
-  // Handle adding to cart
   const handleAddToCart = async () => {
     if (!product) {
       Toast({ message: "No product available", type: "error" });

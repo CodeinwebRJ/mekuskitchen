@@ -12,8 +12,8 @@ const OurProduct = ({ data }) => {
   return (
     <div className={style.wrapper}>
       <h2 className={style.newArrival}>
-        <span className={style.blueText}>New </span>
-        <span>Arrival</span>
+        <span className={style.blueText}>Our </span>
+        <span>Products</span>
       </h2>
 
       {products.length === 0 ? (
@@ -41,7 +41,7 @@ const OurProduct = ({ data }) => {
               <div className={style.slideWrapper}>
                 <HomeProductCard
                   data={product}
-                  image={product.images}
+                  image={product.images || "/defaultImage.png"}
                   name={product.name}
                   subtitle={product?.subtitle || ""}
                   price={product.sellingPrice}
