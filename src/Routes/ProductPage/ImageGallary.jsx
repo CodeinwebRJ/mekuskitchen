@@ -6,11 +6,11 @@ const ImageGallery = ({
   setSelectedImage,
   selectedSKUs,
 }) => {
-  const defaultImage = "/defultImage.png";
+  const defaultImage = "/defaultImage.png";
   const thumbnailImages =
     selectedSKUs?.details?.SKUImages?.length > 1
-      ? selectedSKUs.details?.SKUImages.slice(0, 4) || "defultImage.png"
-      : product?.images?.slice(0, 4) || "defultImage.png";
+      ? selectedSKUs.details?.SKUImages.slice(0, 4) || "defaultImage.png"
+      : product?.images?.slice(0, 4) || "defaultImage.png";
 
   return (
     <div className={style.imageContainer}>
@@ -24,7 +24,7 @@ const ImageGallery = ({
       <div className={style.thumbnailsContainer}>
         {thumbnailImages?.map((img, idx) => {
           const url =
-            typeof img === "string" ? img : img?.url || "/defultImage.png";
+            typeof img === "string" ? img : img?.url || "/defaultImage.png";
           return (
             <img
               key={idx}

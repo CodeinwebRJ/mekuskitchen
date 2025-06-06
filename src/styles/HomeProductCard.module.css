@@ -15,8 +15,10 @@
   overflow: hidden;
   background-color: #f9fafb;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 240px !important;
+  aspect-ratio: unset !important; 
 }
+
 
 .image {
   width: 100%;

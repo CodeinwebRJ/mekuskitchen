@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import { FaMinus, FaPlus, FaEye } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import style from "../../styles/Cart.module.css";
@@ -16,6 +15,7 @@ import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { BsTrash } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const CartItem = ({
   item,
@@ -86,7 +86,7 @@ const CartItem = ({
 };
 
 const CartTotals = ({
-  isAuthenticated,
+  handleClick,
   subtotal,
   total,
   discount,
@@ -120,13 +120,11 @@ const CartTotals = ({
     <p className={style.total}>
       Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
     </p>
-    <Link to={isAuthenticated ? "/checkout" : "/login"}>
-      <div className={style.checkoutButton}>
-        <Button variant="primary" size="md">
-          Proceed to Checkout
-        </Button>
-      </div>
-    </Link>
+    <div className={style.checkoutButton}>
+      <Button onClick={handleClick} variant="primary" size="md">
+        Proceed to Checkout
+      </Button>
+    </div>
   </div>
 );
 
@@ -135,46 +133,88 @@ const ShoppingCart = () => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const [dialog, setDialog] = useState({ isOpen: false, product: null });
+  const navigate = useNavigate();
 
-  const subtotal = useMemo(
-    () =>
-      (cart?.items?.items?.reduce(
-        (acc, item) => acc + item?.productDetails?.sellingPrice * item.quantity,
-        0
-      ) || 0) +
-      (cart?.items?.tiffins?.reduce(
-        (acc, item) =>
-          acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
-        0
-      ) || 0),
-    [cart]
-  );
+  const subtotal = useMemo(() => {
+    if (isAuthenticated) {
+      return (
+        (cart?.items?.items?.reduce(
+          (acc, item) =>
+            acc + (item?.productDetails?.sellingPrice || 0) * item.quantity,
+          0
+        ) || 0) +
+        (cart?.items?.tiffins?.reduce(
+          (acc, item) =>
+            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+          0
+        ) || 0)
+      );
+    } else {
+      return (
+        (cart?.items?.items?.reduce(
+          (acc, item) => acc + (item?.sellingPrice || 0) * item.quantity,
+          0
+        ) || 0) +
+        (cart?.items?.tiffins?.reduce(
+          (acc, item) =>
+            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+          0
+        ) || 0)
+      );
+    }
+  }, [cart, isAuthenticated]);
 
-  const total = useMemo(
-    () =>
-      (cart?.items?.items?.reduce(
-        (acc, item) => acc + item.productDetails.price * item.quantity,
-        0
-      ) || 0) +
-      (cart?.items?.tiffins?.reduce(
-        (acc, item) =>
-          acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
-        0
-      ) || 0),
-    [cart]
-  );
+  const total = useMemo(() => {
+    if (isAuthenticated) {
+      return (
+        (cart?.items?.items?.reduce(
+          (acc, item) =>
+            acc + (item?.productDetails?.sellingPrice || 0) * item.quantity,
+          0
+        ) || 0) +
+        (cart?.items?.tiffins?.reduce(
+          (acc, item) =>
+            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+          0
+        ) || 0)
+      );
+    } else {
+      return (
+        (cart?.items?.items?.reduce(
+          (acc, item) =>
+            acc + (item?.productDetails?.price || 0) * item.quantity,
+          0
+        ) || 0) +
+        (cart?.items?.tiffins?.reduce(
+          (acc, item) =>
+            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+          0
+        ) || 0)
+      );
+    }
+  }, [cart, isAuthenticated]);
 
-  const discount = useMemo(
-    () =>
-      cart?.items?.items?.reduce(
-        (acc, item) =>
-          acc +
-          (item.productDetails.price - item.productDetails.sellingPrice) *
-            item.quantity,
-        0
-      ) || 0,
-    [cart]
-  );
+  const discount = useMemo(() => {
+    if (isAuthenticated) {
+      return (
+        cart?.items?.items?.reduce(
+          (acc, item) =>
+            acc +
+            (item.productDetails?.price - item.productDetails?.sellingPrice) *
+              item.quantity,
+          0
+        ) || 0
+      );
+    } else {
+      return (
+        cart?.items?.items?.reduce(
+          (acc, item) =>
+            acc + (item?.price - item?.sellingPrice) * item.quantity,
+          0
+        ) || 0
+      );
+    }
+  }, [cart]);
 
   const discountPercentage = useMemo(() => {
     if (total === 0) return 0;
@@ -214,27 +254,37 @@ const ShoppingCart = () => {
   const updateItemQuantity = async (id, delta, type, dayName = null) => {
     try {
       if (!isAuthenticated) {
-        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-        const updatedProducts = localCart.map((product) => {
-          if (product._id === id) {
-            const newQuantity = product.quantity + delta;
-            if (newQuantity < 1 || newQuantity > product.stock) {
-              Toast({
-                message:
-                  newQuantity < 1
-                    ? "Quantity cannot be less than 1"
-                    : "Stock limit reached",
-                type: "error",
-              });
-              return product;
+        const localCart = JSON.parse(localStorage.getItem("cart")) || {
+          Tiffin: [],
+          items: [],
+        };
+        const updateQuantity = (array) =>
+          array.map((product) => {
+            if (product._id === id) {
+              const newQuantity = product.quantity + delta;
+              if (newQuantity < 1 || newQuantity > product.stock) {
+                Toast({
+                  message:
+                    newQuantity < 1
+                      ? "Quantity cannot be less than 1"
+                      : "Stock limit reached",
+                  type: "error",
+                });
+                return product;
+              }
+              return { ...product, quantity: newQuantity };
             }
-            return { ...product, quantity: newQuantity };
-          }
-          return product;
-        });
-        localStorage.setItem("cart", JSON.stringify(updatedProducts));
-        dispatch(setCart(updatedProducts));
-        dispatch(setCartCount(updatedProducts.length));
+            return product;
+          });
+        const updatedTiffin = updateQuantity(localCart.Tiffin);
+        const updatedItems = updateQuantity(localCart.items);
+        const updatedCart = {
+          Tiffin: updatedTiffin,
+          items: updatedItems,
+        };
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        dispatch(setCart(updatedCart));
+        dispatch(setCartCount(updatedTiffin.length + updatedItems.length));
         Toast({ message: "Quantity updated!", type: "success" });
       } else {
         let currentItem;
@@ -309,12 +359,26 @@ const ShoppingCart = () => {
   const handleDelete = async (id, type, dayName = null) => {
     try {
       if (!isAuthenticated) {
-        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-        const updatedCart = localCart.filter((item) => item._id !== id);
+        const localCart = JSON.parse(localStorage.getItem("cart")) || {
+          Tiffin: [],
+          items: [],
+        };
+        let updatedTiffin = localCart.Tiffin;
+        let updatedItems = localCart.items;
+        if (localCart.items.length > 0) {
+          updatedItems = localCart.items.filter((item) => item._id !== id);
+        } else if (localCart.Tiffin.length > 0) {
+          updatedTiffin = localCart.Tiffin.filter((item) => item._id !== id);
+        }
+        const updatedCart = {
+          Tiffin: updatedTiffin,
+          items: updatedItems,
+        };
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        dispatch(setCart(updatedCart));
-        dispatch(setCartCount(updatedCart.length));
         Toast({ message: "Removed from cart!", type: "success" });
+        dispatch(setCart(updatedCart));
+        dispatch(setCartCount(updatedTiffin.length + updatedItems.length));
+        return;
       } else {
         const data = {
           user_id: user?.userid,
@@ -340,11 +404,20 @@ const ShoppingCart = () => {
     }
   };
 
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      Toast({ message: "Please login to checkout!", type: "error" });
+    } else {
+      navigate("/checkout");
+    }
+  };
+
   if (
     (isAuthenticated &&
       !cart?.items?.items?.length &&
       !cart?.items?.tiffins?.length) ||
-    (!isAuthenticated && (!cart?.items || !cart.items.length))
+    (!isAuthenticated && (!cart?.items?.items || !cart.items.items.length))
   ) {
     return (
       <div>
@@ -395,7 +468,7 @@ const ShoppingCart = () => {
                 />
               ))}
               {!isAuthenticated &&
-                cart?.items?.map((item) => (
+                cart?.items?.items?.map((item) => (
                   <tr className={style.cartItem}>
                     <td>
                       <div className={style.removeCell}>
@@ -449,8 +522,8 @@ const ShoppingCart = () => {
           subtotal={subtotal}
           total={total}
           discount={discount}
-          isAuthenticated={isAuthenticated}
           discountPercentage={discountPercentage}
+          handleClick={handleClick}
         />
       </div>
       <Footer />
@@ -464,38 +537,65 @@ const ShoppingCart = () => {
           <div className={style.productDetail}>
             <div className={style.productImage}>
               <img
-                src={dialog.product?.productDetails?.images?.[0]?.url}
+                src={
+                  isAuthenticated
+                    ? dialog.product?.productDetails?.images?.[0]?.url
+                    : dialog.product?.images?.[0]?.url
+                }
                 alt="product"
               />
             </div>
             <div className={style.productInfo}>
-              <h2>{dialog.product?.productDetails?.name}</h2>
+              <h2>
+                {isAuthenticated
+                  ? dialog.product?.productDetails?.name
+                  : dialog.product?.name}
+              </h2>
               <div className={style.productPricing}>
                 <span className="originalPrice">
-                  ${dialog.product?.productDetails?.price}
+                  $
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.price
+                    : dialog.product?.price}
                 </span>
                 <span className="Price">
-                  ${dialog.product?.productDetails?.sellingPrice}
+                  $
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.sellingPrice
+                    : dialog.product?.sellingPrice}
                 </span>
               </div>
               <p className={style.productDescription}>
-                Category: {dialog.product?.productDetails?.category}
+                Category:{" "}
+                {isAuthenticated
+                  ? dialog.product?.productDetails?.category
+                  : dialog.product?.category}
               </p>
-              {dialog.product?.productDetails?.subCategory && (
-                <p className={style.productDescription}>
-                  Product: {dialog.product?.productDetails?.subCategory}
-                </p>
-              )}
-              {dialog.product?.productDetails?.subSubCategory && (
-                <p className={style.productDescription}>
-                  Product: {dialog.product?.productDetails?.ProductCategory}
-                </p>
-              )}
-              <div>
-                <Chip name="AddCart" />
-              </div>
+              {dialog.product?.productDetails?.subCategory ||
+                (dialog.product?.subCategory && (
+                  <p className={style.productDescription}>
+                    SubCategory:{" "}
+                    {isAuthenticated
+                      ? dialog.product?.productDetails?.subCategory
+                      : dialog.product?.subCategory}
+                  </p>
+                ))}
+              {dialog.product?.productDetails?.subSubCategory ||
+                (dialog.product?.ProductCategory && (
+                  <p className={style.productDescription}>
+                    Product:{" "}
+                    {isAuthenticated
+                      ? dialog.product?.productDetails?.ProductCategory
+                      : dialog.product?.ProductCategory}
+                  </p>
+                ))}
+              {/* <div>
+                <Chip />
+              </div> */}
               <p className={style.productDescription}>
-                {dialog.product?.productDetails?.shortDescription}
+                {isAuthenticated
+                  ? dialog.product?.productDetails?.shortDescription
+                  : dialog.product?.shortDescription}
               </p>
             </div>
           </div>

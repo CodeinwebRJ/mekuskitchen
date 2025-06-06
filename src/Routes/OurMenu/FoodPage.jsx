@@ -22,15 +22,12 @@ import {
   setPage,
   setPrices,
 } from "../../../Store/Slice/FilterDataSlice.jsx";
-import { FaHome } from "react-icons/fa";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [fetchError, setFetchError] = useState(null);
   const [categoryList, setCategoryList] = useState([]);
-
-  const { id } = useParams();
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.product);
 

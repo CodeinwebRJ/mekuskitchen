@@ -14,7 +14,7 @@ import {
   toggleLiked,
 } from "../../../Store/Slice/UserWishlistSlice";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const HomeProductCard = ({
   data,
@@ -27,7 +27,7 @@ export const HomeProductCard = ({
   const imageUrl =
     Array.isArray(image) && image.length > 0 && image[0]?.url
       ? image[0].url
-      : "/defultImage.png";
+      : "/defaultImage.png";
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const isLikedFromStore = useSelector(
@@ -150,6 +150,14 @@ export const HomeProductCard = ({
       });
     }
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const exists = localWishlist.some((item) => item._id === data._id);
+      setIsLikedLocal(exists);
+    }
+  }, [data._id, user]);
 
   return (
     <Link

@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/TiffinCard.module.css";
 import { Link } from "react-router-dom";
 import AddToCartButton from "../Buttons/AddToCartButton";
@@ -12,11 +11,71 @@ import { setCart } from "../../../Store/Slice/UserCartSlice";
 const TiffinCard = ({ item }) => {
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
 
   const handleAddToCart = async () => {
-    if (Cart?.items?.items.length > 0) {
+    if (!isAuthenticated) {
+      const localCartData = JSON.parse(localStorage.getItem("cart")) || {
+        items: [],
+        Tiffin: [],
+      };
+
+      const localCartItems = localCartData.items || [];
+      const localCartTiffin = localCartData.Tiffin || [];
+
+      if (localCartItems.length > 0) {
+        Toast({
+          message: "Tiffin is already added to cart!",
+          type: "error",
+        });
+        return;
+      }
+
+      const exists = localCartTiffin.find((items) => items._id === item._id);
+
+      if (exists) {
+        const updatedTiffin = localCartTiffin.map((items) => {
+          if (items._id === item._id) {
+            return { ...items, quantity: items.quantity + 1 };
+          }
+          return items;
+        });
+
+        const updatedCart = {
+          items: localCartItems,
+          Tiffin: updatedTiffin,
+        };
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        Toast({
+          message: "Tiffin quantity updated in cart!",
+          type: "success",
+        });
+        dispatch(setCart(updatedCart));
+      } else {
+        const updatedTiffin = [
+          ...localCartTiffin,
+          { ...item, quantity: 1, price: item.price },
+        ];
+
+        const updatedCart = {
+          items: localCartItems,
+          Tiffin: updatedTiffin,
+        };
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        Toast({
+          message: "Tiffin added to cart!",
+          type: "success",
+        });
+        dispatch(setCart(updatedCart));
+      }
+
+      return;
+    }
+
+    if (Cart?.items?.items?.length > 0) {
       Toast({
         message: "Tiffin is already added to cart!",
         type: "error",

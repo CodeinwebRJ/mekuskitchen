@@ -17,6 +17,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Toast } from "../../Utils/Toast";
 import { useState, useEffect } from "react";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
+import useProduct from "../../Hook/useProduct";
 
 const ProductCard = ({ product, grid }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -28,6 +29,8 @@ const ProductCard = ({ product, grid }) => {
   const [isLikedLocal, setIsLikedLocal] = useState(false);
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
+  const { selectedCombination, selectedSKUs } = useProduct(product._id);
+
   useEffect(() => {
     if (!isAuthenticated) {
       const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -38,34 +41,57 @@ const ProductCard = ({ product, grid }) => {
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      const exists = localCart.find((item) => item._id === product._id);
-
+      const localCartData = JSON.parse(localStorage.getItem("cart")) || {
+        items: [],
+        Tiffin: [],
+      };
+      const localCartItems = localCartData.items || [];
+      const localCartTiffin = localCartData.Tiffin || [];
+      if (localCartTiffin.length > 0) {
+        Toast({ message: "Tiffin is already added to cart!", type: "error" });
+        return;
+      }
+      const exists = localCartItems.find((item) => item?._id === product?._id);
       if (exists) {
-        const updatedCart = localCart.map((item) => {
+        const updatedItems = localCartItems.map((item) => {
           if (item._id === product._id) {
             return { ...item, quantity: item.quantity + 1 };
           }
           return item;
         });
+        const updatedCart = {
+          items: updatedItems,
+          Tiffin: localCartTiffin, // keep Tiffin unchanged
+        };
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        Toast({
+          message: "Product quantity updated in cart!",
+          type: "success",
+        });
+        dispatch(setCart(updatedCart));
+      } else {
+        const updatedItems = [
+          ...localCartItems,
+          { ...product, quantity: 1, price: product.price },
+        ];
+
+        const updatedCart = {
+          items: updatedItems,
+          Tiffin: localCartTiffin,
+        };
+
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         Toast({
           message: "Product added to cart!",
           type: "success",
         });
         dispatch(setCart(updatedCart));
-      } else {
-        localCart.push({
-          ...product,
-          quantity: 1,
-          price: product.price,
-        });
-        localStorage.setItem("cart", JSON.stringify(localCart));
-        Toast({ message: "Product added to cart!", type: "success" });
-        dispatch(setCart(localCart));
       }
+
       return;
     }
+
     if (Cart?.items?.tiffins?.length > 0) {
       Toast({ message: "Tiffin is already added to cart!", type: "error" });
       return;
@@ -77,7 +103,13 @@ const ProductCard = ({ product, grid }) => {
         isTiffinCart: false,
         product_id: product._id,
         quantity: 1,
-        price: product.price,
+        price: selectedCombination?.Price || product?.price,
+        ...(product?.sku?.length > 1 && selectedSKUs?._id
+          ? { skuId: selectedSKUs._id }
+          : {}),
+        ...(product.sku?.length > 1 && selectedCombination
+          ? { combination: { ...selectedCombination } }
+          : {}),
       });
       dispatch(setCart(res.data.data));
       Toast({ message: "Product added to cart successfully", type: "success" });
@@ -145,7 +177,7 @@ const ProductCard = ({ product, grid }) => {
           }
         >
           <img
-            src={product?.images?.[0]?.url || "/defultImage.png"}
+            src={product?.images?.[0]?.url || "/defaultImage.png"}
             alt={product?.name}
             className={style.images}
           />

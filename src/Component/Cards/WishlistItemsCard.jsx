@@ -73,7 +73,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
       <div className={style.itemLeftSide}>
         <div className={style.itemImage}>
           <img
-            src={product.images?.[0]?.url || "defultImage.png"}
+            src={product.images?.[0]?.url || "defaultImage.png"}
             alt={product.name || "wishlist item"}
           />
         </div>

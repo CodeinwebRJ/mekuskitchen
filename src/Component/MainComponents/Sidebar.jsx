@@ -1,4 +1,4 @@
-import  { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import style from "../../styles/Sidebar.module.css";
 import { FaTimes } from "react-icons/fa";
 import Button from "../Buttons/Button";
@@ -19,13 +19,27 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const handleDelete = async (id, type, dayName = null, skuId) => {
     if (!isAuthenticated) {
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      const updatedCart = localCart.filter((item) => item._id !== id);
+      const localCart = JSON.parse(localStorage.getItem("cart")) || {
+        Tiffin: [],
+        items: [],
+      };
+      let updatedTiffin = localCart.Tiffin;
+      let updatedItems = localCart.items;
 
+      if (localCart.items.length > 0) {
+        updatedItems = localCart.items.filter((item) => item._id !== id);
+      } else if (localCart.Tiffin.length > 0) {
+        updatedTiffin = localCart.Tiffin.filter((item) => item._id !== id);
+      }
+
+      const updatedCart = {
+        Tiffin: updatedTiffin,
+        items: updatedItems,
+      };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       Toast({ message: "Removed from cart!", type: "success" });
       dispatch(setCart(updatedCart));
-      dispatch(setCartCount(updatedCart.length));
+      dispatch(setCartCount(updatedTiffin.length + updatedItems.length));
       return;
     } else {
       try {
@@ -99,9 +113,13 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemImageContainer}>
                   <img
                     src={
-                      item?.sku?.images?.[0] ||
-                      item?.productDetails?.images?.[0]?.url ||
-                      "/default-image.jpg"
+                      isAuthenticated
+                        ? item?.sku?.images?.[0] ||
+                          item?.productDetails?.images?.[0]?.url ||
+                          "/defaultImage.png"
+                        : item?.sku[0]?.SKUImages?.[0] ||
+                          item?.images?.[0]?.url ||
+                          "/defaultImage.png"
                     }
                     alt={
                       item?.sku?.name ||
@@ -114,11 +132,17 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className={style.cartItemDetails}>
                   <div>
                     <p className={style.cartItemName}>
-                      {(
-                        item?.sku?.name ||
-                        item?.productDetails?.name ||
-                        "Unnamed Item"
-                      ).toUpperCase()}
+                      {isAuthenticated
+                        ? (
+                            item?.sku?.name ||
+                            item?.productDetails?.name ||
+                            "Item"
+                          ).toUpperCase()
+                        : (
+                            item?.sku[0]?.details?.Name ||
+                            item?.name ||
+                            "Item"
+                          ).toUpperCase()}
                     </p>
                     <p className={style.cartItemCalculation}>
                       <span className={style.quantity}>{item.quantity}</span>
@@ -135,7 +159,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     className={style.deleteButton}
                     onClick={() =>
                       handleDelete(
-                        item.product_id,
+                        isAuthenticated ? item.product_id : item._id,
                         "product",
                         null,
                         item?.sku?.skuId
@@ -158,7 +182,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <img
                     src={
                       item.tiffinMenuDetails?.image_url?.[0]?.url ||
-                      "/default-image.jpg"
+                      "/defaultImage.png"
                     }
                     alt={item.day || "Tiffin item"}
                     className={style.cartItemImage}
@@ -206,41 +230,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             </div>
           </div>
         ) : null}
-
-        {Cart?.items?.length > 0 && (
-          <div className={style.cartContainer}>
-            {Cart.items.map((item, index) => (
-              <div className={style.cartItem} key={item._id || index}>
-                <div className={style.cartItemImageContainer}>
-                  <img
-                    src={item?.images?.[0].url || "/default-image.jpg"}
-                    alt={item.day || "Tiffin item"}
-                    className={style.cartItemImage}
-                  />
-                </div>
-
-                <div className={style.cartItemDetails}>
-                  <div>
-                    <p className={style.cartItemName}>
-                      {item?.name?.toUpperCase()}
-                    </p>
-                    <p className={style.cartItemCalculation}>
-                      <span className={style.quantity}>{item.quantity}</span>
-                      <span className={style.multiply}>×</span>
-                      <span className={style.price}>${item?.sellingPrice}</span>
-                    </p>
-                  </div>
-                  <div
-                    className={style.deleteButton}
-                    onClick={() => handleDelete(item._id, "product")}
-                  >
-                    <BsTrash className={style.deleteIcon} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
 
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>

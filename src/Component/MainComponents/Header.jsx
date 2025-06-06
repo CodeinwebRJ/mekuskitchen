@@ -27,7 +27,7 @@ const Header = () => {
   const handleCategoryClick = (categoryName) => {
     dispatch(setCategories(categoryName));
   };
-
+  
   const handleLogout = () => {
     if (!isAuthenticated) {
       navigate("/login");
@@ -70,8 +70,8 @@ const Header = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       const productItemsCount =
-        cart?.items?.length > 0
-          ? cart.items.reduce((acc, item) => acc + (item?.quantity || 0), 0)
+        cart?.items?.items?.length > 0
+          ? cart.items.items?.reduce((acc, item) => acc + (item?.quantity || 0), 0)
           : 0;
       dispatch(setCartCount(productItemsCount));
     }

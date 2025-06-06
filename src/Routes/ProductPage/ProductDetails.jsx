@@ -176,7 +176,7 @@ const ProductDetails = ({
               <h6>Color:</h6>
               {product.sku.map((item, i) => {
                 const firstImg =
-                  item?.details?.SKUImages?.[0] || "/defultImage.png";
+                  item?.details?.SKUImages?.[0] || "/defaultImage.png";
                 return (
                   <img
                     key={item._id || i}
