@@ -1,62 +1,68 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import style from "../../styles/Sidebar.module.css";
 import { FaTimes } from "react-icons/fa";
-import Button from "../Buttons/Button";
 import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
-import { Toast } from "../../Utils/Toast";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
+import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
+import { Toast } from "../../Utils/Toast";
+import Button from "../Buttons/Button";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const Cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const sidebarRef = useRef(null);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleDelete = async (id, type, dayName = null, skuId) => {
-    if (!isAuthenticated) {
-      const localCart = JSON.parse(localStorage.getItem("cart")) || {
-        tiffins: [],
-        items: [],
-      };
-      let updatedTiffin = localCart.tiffins;
-      let updatedItems = localCart.items;
-      if (localCart.items.length > 0) {
-        updatedItems = localCart.items.filter((item) => item._id !== id);
-      } else if (localCart.tiffins.length > 0) {
-        updatedTiffin = localCart.tiffins.filter((item) => item._id !== id);
-      }
-      const updatedCart = {
-        tiffins: updatedTiffin,
-        items: updatedItems,
-      };
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-      Toast({ message: "Removed from cart!", type: "success" });
-      dispatch(setCart(updatedCart));
-      dispatch(setCartCount(updatedTiffin.length + updatedItems.length));
-      return;
-    } else {
+  const handleDelete = useCallback(
+    async (id, type, dayName = null, skuId) => {
+      setIsLoading(true);
       try {
-        const data = {
-          user_id: user?.userid,
-          type,
-          quantity: 0,
-          skuId: skuId ? skuId : undefined,
-          product_id: type === "product" ? id : undefined,
-          tiffinMenuId: type === "tiffin" ? id : undefined,
-          day: type === "tiffin" ? dayName : undefined,
-        };
-        const res = await UpdateUserCart(data);
-        dispatch(setCart(res.data.data));
+        if (!isAuthenticated) {
+          const localCart = JSON.parse(localStorage.getItem("cart")) || {
+            tiffins: [],
+            items: [],
+          };
+
+          const updatedCart = {
+            tiffins: localCart.tiffins.filter((item) => item._id !== id),
+            items: localCart.items.filter((item) => item._id !== id),
+          };
+
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
+          dispatch(setCart(updatedCart));
+          dispatch(
+            setCartCount(updatedCart.tiffins.length + updatedCart.items.length)
+          );
+          Toast({ message: "Removed from cart!", type: "success" });
+        } else {
+          const data = {
+            user_id: user?.userid,
+            type,
+            quantity: 0,
+            skuId: skuId ?? undefined,
+            product_id: type === "product" ? id : undefined,
+            tiffinMenuId: type === "tiffin" ? id : undefined,
+            day: type === "tiffin" ? dayName : undefined,
+          };
+
+          const res = await UpdateUserCart(data);
+          dispatch(setCart(res.data.data));
+          Toast({ message: "Removed from cart!", type: "success" });
+        }
       } catch (error) {
         console.error("Error deleting item from cart", error);
+        Toast({ message: "Failed to remove item from cart", type: "error" });
+      } finally {
+        setIsLoading(false);
       }
-    }
-  };
+    },
+    [isAuthenticated, user, dispatch]
+  );
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -65,9 +71,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
 
   useEffect(() => {
@@ -77,11 +81,15 @@ const Sidebar = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  const calculateSubtotal = () => {
-    const productItems = Cart?.items?.items || [];
-    const tiffinItems = Cart?.items?.tiffins || [];
-    const productTotal = productItems.reduce(
-      (acc, item) => acc + (item?.sellingPrice || 0) * (item?.quantity || 1),
+  const calculateSubtotal = useMemo(() => {
+    const productItems = cart?.items?.items || [];
+    const tiffinItems = cart?.items?.tiffins || [];
+
+    const productTotal = productItems?.reduce(
+      (acc, item) =>
+        acc +
+        (item?.sku?.details?.combinations?.Price || item?.sellingPrice || 0) *
+          (item?.quantity || 1),
       0
     );
     const tiffinTotal = tiffinItems.reduce(
@@ -93,13 +101,82 @@ const Sidebar = ({ isOpen, onClose }) => {
           (item?.quantity || 1),
       0
     );
-    const total = productTotal + tiffinTotal;
-    return total.toFixed(2);
-  };
+
+    return (productTotal + tiffinTotal).toFixed(2);
+  }, [cart, isAuthenticated]);
+
+  const renderCartItem = (item, index, type) => (
+    <div className={style.cartItem} key={item?._id || index}>
+      <div className={style.cartItemImageContainer}>
+        <img
+          src={
+            type === "product"
+              ? isAuthenticated
+                ? item?.sku?.images?.[0] ||
+                  item?.productDetails?.images?.[0]?.url ||
+                  "/defaultImage.png"
+                : item?.sku[0]?.SKUImages?.[0] ||
+                  item?.images?.[0]?.url ||
+                  "/defaultImage.png"
+              : isAuthenticated
+              ? item?.tiffinMenuDetails?.image_url?.[0]?.url ||
+                "/defaultImage.png"
+              : item?.image_url?.[0]?.url || "/defaultImage.png"
+          }
+          alt={
+            type === "product"
+              ? item?.sku?.name || item?.productDetails?.name || "Item"
+              : item?.day || "Tiffin Item"
+          }
+          className={style.cartItemImage}
+        />
+      </div>
+      <div className={style.cartItemDetails}>
+        <div>
+          <p className={style.cartItemName}>
+            {type === "product"
+              ? isAuthenticated
+                ? item?.sku?.name || item?.productDetails?.name
+                : item?.sku[0]?.details?.Name || item?.name || "Item"
+              : (item?.day || "Tiffin Item").toUpperCase()}
+          </p>
+          <p className={style.cartItemCalculation}>
+            <span className={style.quantity}>{item.quantity}</span>
+            <span className={style.multiply}>×</span>
+            <span className={style.price}>
+              $
+              {type === "product"
+                ? isAuthenticated
+                  ? item.price || item?.productDetails?.sellingPrice || 0
+                  : item?.sku?.details?.combinations?.Price || item?.price || 0
+                : item.totalAmount || 0}
+            </span>
+          </p>
+        </div>
+        <div
+          className={style.deleteButton}
+          onClick={() =>
+            handleDelete(
+              isAuthenticated
+                ? type === "product"
+                  ? item.product_id
+                  : item.tiffinMenuId
+                : item._id,
+              type,
+              type === "tiffin" ? item.day : null,
+              type === "product" ? item?.sku?.skuId : undefined
+            )
+          }
+        >
+          <BsTrash className={style.deleteIcon} />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
-      {isOpen && <div className={style.backdrop} onClick={onClose}></div>}
+      {isOpen && <div className={style.backdrop} onClick={onClose} />}
       <div
         className={`${style.sidebar} ${isOpen ? style.open : ""}`}
         ref={sidebarRef}
@@ -109,135 +186,28 @@ const Sidebar = ({ isOpen, onClose }) => {
           <FaTimes size={20} onClick={onClose} />
         </div>
 
-        {Cart?.items?.items?.length > 0 && (
+        {cart?.items?.items?.length > 0 || cart?.items?.tiffins?.length > 0 ? (
           <div className={style.cartContainer}>
-            {Cart?.items?.items.map((item, index) => (
-              <div className={style.cartItem} key={item?._id || index}>
-                <div className={style.cartItemImageContainer}>
-                  <img
-                    src={
-                      isAuthenticated
-                        ? item?.sku?.images?.[0] ||
-                          item?.productDetails?.images?.[0]?.url ||
-                          "/defaultImage.png"
-                        : item?.sku[0]?.SKUImages?.[0] ||
-                          item?.images?.[0]?.url ||
-                          "/defaultImage.png"
-                    }
-                    alt={
-                      item?.sku?.name ||
-                      item?.productDetails?.name ||
-                      "Cart item"
-                    }
-                    className={style.cartItemImage}
-                  />
-                </div>
-                <div className={style.cartItemDetails}>
-                  <div>
-                    <p className={style.cartItemName}>
-                      {isAuthenticated
-                        ? (
-                            item?.sku?.name ||
-                            item?.productDetails?.name ||
-                            "Item"
-                          ).toUpperCase()
-                        : (
-                            item?.sku[0]?.details?.Name ||
-                            item?.name ||
-                            "Item"
-                          ).toUpperCase()}
-                    </p>
-                    <p className={style.cartItemCalculation}>
-                      <span className={style.quantity}>{item.quantity}</span>
-                      <span className={style.multiply}>×</span>
-                      <span className={style.price}>
-                        $
-                        {item.price ||
-                          item?.productDetails?.sellingPrice ||
-                          0}
-                      </span>
-                    </p>
-                  </div>
-                  <div
-                    className={style.deleteButton}
-                    onClick={() =>
-                      handleDelete(
-                        isAuthenticated ? item.product_id : item._id,
-                        "product",
-                        null,
-                        item?.sku?.skuId
-                      )
-                    }
-                  >
-                    <BsTrash className={style.deleteIcon} />
-                  </div>
-                </div>
-              </div>
-            ))}
+            {isLoading && <div className={style.loading}>Loading...</div>}
+            {cart?.items?.items?.map((item, index) =>
+              renderCartItem(item, index, "product")
+            )}
+            {cart?.items?.tiffins?.map((item, index) =>
+              renderCartItem(item, index, "tiffin")
+            )}
           </div>
-        )}
-
-        {Cart?.items?.tiffins?.length > 0 && (
-          <div className={style.cartContainer}>
-            {Cart.items.tiffins.map((item, index) => (
-              <div className={style.cartItem} key={item._id || index}>
-                <div className={style.cartItemImageContainer}>
-                  <img
-                    src={
-                      isAuthenticated
-                        ? item?.tiffinMenuDetails?.image_url?.[0]?.url ||
-                          "/defaultImage.png"
-                        : item?.image_url?.[0]?.url || "/defaultImage.png"
-                    }
-                    alt={item.day || "Tiffin item"}
-                    className={style.cartItemImage}
-                  />
-                </div>
-                <div className={style.cartItemDetails}>
-                  <div>
-                    <p className={style.cartItemName}>
-                      {(item?.day || "Tiffin Item").toUpperCase()}
-                    </p>
-                    <p className={style.cartItemCalculation}>
-                      <span className={style.quantity}>{item.quantity}</span>
-                      <span className={style.multiply}>×</span>
-                      <span className={style.price}>
-                        ${item.totalAmount || 0}
-                      </span>
-                    </p>
-                  </div>
-                  <div
-                    className={style.deleteButton}
-                    onClick={() =>
-                      handleDelete(
-                        isAuthenticated ? item.tiffinMenuId : item._id,
-                        "tiffin",
-                        item.day
-                      )
-                    }
-                  >
-                    <BsTrash className={style.deleteIcon} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {!Cart.items?.items?.length && !Cart?.items?.tiffins?.length ? (
+        ) : (
           <div className={style.cartContainer}>
             <div className={style.emptyCartText}>
               <h5>Your Cart Is Empty</h5>
             </div>
           </div>
-        ) : null}
+        )}
 
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
-            <h5 className="price">
-              ${isAuthenticated ? Cart.items.totalAmount : calculateSubtotal()}
-            </h5>
+            <h5 className="price">${calculateSubtotal}</h5>
           </div>
           <div className={style.subtotalButtons}>
             <div className={style.viewCart}>
@@ -245,6 +215,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 onClick={() => navigate("/cart")}
                 variant="light"
                 size="sm"
+                disabled={isLoading}
               >
                 VIEW CART
               </Button>
@@ -253,6 +224,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               onClick={() => navigate("/checkout")}
               variant="primary"
               size="sm"
+              disabled={isLoading}
             >
               CHECKOUT
             </Button>

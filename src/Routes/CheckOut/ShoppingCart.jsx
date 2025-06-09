@@ -30,7 +30,11 @@ const CartItem = ({
   const name = isProduct
     ? item?.productDetails?.name?.toUpperCase()
     : item?.day;
-  const price = isProduct ? item?.price : item?.tiffinMenuDetails?.totalAmount;
+  const price = isProduct
+    ? isAuthenticated
+      ? item?.price
+      : item?.sku.details.combinations.Price || item?.price || 0
+    : item?.tiffinMenuDetails?.totalAmount;
 
   return (
     <tr className={style.cartItem}>
@@ -148,7 +152,10 @@ const ShoppingCart = () => {
     } else {
       return (
         (cart?.items?.items?.reduce(
-          (acc, item) => acc + (item?.sellingPrice || 0) * item.quantity,
+          (acc, item) =>
+            acc +
+            (item?.sku?.details?.combinations?.Price || item?.price || 0) *
+              item.quantity,
           0
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
@@ -177,7 +184,9 @@ const ShoppingCart = () => {
       return (
         (cart?.items?.items?.reduce(
           (acc, item) =>
-            acc + (item?.productDetails?.price || 0) * item.quantity,
+            acc +
+            (item?.sku?.details?.combinations?.Price || item?.price || 0) *
+              item.quantity,
           0
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
@@ -198,13 +207,14 @@ const ShoppingCart = () => {
         ) || 0
       );
     } else {
-      return (
-        cart?.items?.items?.reduce(
-          (acc, item) =>
-            acc + (item?.price - item?.sellingPrice) * item.quantity,
-          0
-        ) || 0
-      );
+      return cart?.items?.items?.reduce((acc, item) => {
+        const originalPrice =
+          item?.sku?.details?.combinations?.Price || item?.price || 0;
+        const discountedPrice = item?.sellingPrice || 0;
+        const itemDiscount =
+          (discountedPrice - originalPrice) * (item?.quantity || 0);
+        return acc + itemDiscount;
+      }, 0);
     }
   }, [cart]);
 
@@ -250,33 +260,45 @@ const ShoppingCart = () => {
           Tiffin: [],
           items: [],
         };
-        const updateQuantity = (array) =>
-          array.map((product) => {
-            if (product._id === id) {
-              const newQuantity = product.quantity + delta;
-              if (newQuantity < 1 || newQuantity > product.stock) {
+
+        const updateQuantity = (array, isProduct) =>
+          array.map((item) => {
+            if (item._id === id) {
+              const newQuantity = item.quantity + delta;
+              if (newQuantity < 1) {
                 Toast({
-                  message:
-                    newQuantity < 1
-                      ? "Quantity cannot be less than 1"
-                      : "Stock limit reached",
+                  message: "Quantity cannot be less than 1",
                   type: "error",
                 });
-                return product;
+                return item;
               }
-              return { ...product, quantity: newQuantity };
+              if (isProduct && newQuantity > (item.stock || Infinity)) {
+                Toast({
+                  message: "Stock limit reached",
+                  type: "error",
+                });
+                return item;
+              }
+              return { ...item, quantity: newQuantity };
             }
-            return product;
+            return item;
           });
-        const updatedTiffin = updateQuantity(localCart.Tiffin);
-        const updatedItems = updateQuantity(localCart.items);
-        const updatedCart = {
-          Tiffin: updatedTiffin,
-          items: updatedItems,
-        };
+
+        let updatedCart = { ...localCart };
+        if (type === "product") {
+          updatedCart.items = updateQuantity(localCart.items, true);
+        } else if (type === "tiffin") {
+          updatedCart.Tiffin = updateQuantity(localCart.Tiffin, false);
+        } else {
+          Toast({ message: "Invalid item type!", type: "error" });
+          return;
+        }
+
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         dispatch(setCart(updatedCart));
-        dispatch(setCartCount(updatedTiffin.length + updatedItems.length));
+        dispatch(
+          setCartCount(updatedCart?.Tiffin?.length + updatedCart.items.length)
+        );
         Toast({ message: "Quantity updated!", type: "success" });
       } else {
         let currentItem;
@@ -481,7 +503,10 @@ const ShoppingCart = () => {
                         <span>{item.name}</span>
                       </div>
                     </td>
-                    <td>${item.sellingPrice?.toFixed(2)}</td>
+                    <td>
+                      $
+                      {item?.sku?.details?.combinations?.Price || item?.price || 0}
+                    </td>
                     <td>
                       <div className={style.quantityControl}>
                         <button
@@ -503,7 +528,12 @@ const ShoppingCart = () => {
                       </div>
                     </td>
                     <td className={style.totalPrice}>
-                      ${(item.sellingPrice * item.quantity).toFixed(2)}
+                      $
+                      {(
+                        item?.sku?.details?.combinations?.Price ||
+                        item?.price ||
+                        0 * item.quantity
+                      ).toFixed(2)}
                     </td>
                   </tr>
                 ))}

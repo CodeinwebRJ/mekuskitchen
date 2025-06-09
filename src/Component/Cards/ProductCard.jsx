@@ -29,7 +29,9 @@ const ProductCard = ({ product, grid }) => {
   const [isLikedLocal, setIsLikedLocal] = useState(false);
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
-  const { selectedCombination, selectedSKUs } = useProduct(product._id);
+  const { selectedCombination, selectedSKUs, setSelectedSKUs } = useProduct(
+    product._id
+  );
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -61,7 +63,7 @@ const ProductCard = ({ product, grid }) => {
         });
         const updatedCart = {
           items: updatedItems,
-          tiffins: localCartTiffin, // keep Tiffin unchanged
+          tiffins: localCartTiffin,
         };
 
         localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -71,9 +73,29 @@ const ProductCard = ({ product, grid }) => {
         });
         dispatch(setCart(updatedCart));
       } else {
+        const modifiedSKU = selectedSKUs
+          ? {
+              ...selectedSKUs,
+              details: {
+                ...selectedSKUs.details,
+                combinations: undefined,
+                combinations: selectedCombination || undefined,
+              },
+            }
+          : product.sku[0];
+
+        const productWithoutSKU = { ...product, sku: undefined };
         const updatedItems = [
           ...localCartItems,
-          { ...product, quantity: 1, price: product.price },
+          {
+            ...productWithoutSKU,
+            quantity: 1,
+            price: selectedCombination?.Price || product.sellingPrice,
+            sku: modifiedSKU,
+            ...(selectedCombination
+              ? { combination: selectedCombination }
+              : {}),
+          },
         ];
 
         const updatedCart = {
@@ -96,7 +118,7 @@ const ProductCard = ({ product, grid }) => {
       Toast({ message: "Tiffin is already added to cart!", type: "error" });
       return;
     }
-    
+
     try {
       const res = await AddtoCart({
         user_id: user.userid,
@@ -159,6 +181,13 @@ const ProductCard = ({ product, grid }) => {
     }
   };
 
+  console.log(product);
+  useEffect(() => {
+    if (product?.sku) {
+      setSelectedSKUs(product?.sku[0]);
+    }
+  }, []);
+
   return (
     <div className={style.productCard}>
       <Link
@@ -195,7 +224,9 @@ const ProductCard = ({ product, grid }) => {
           <div className={style.discountContainer}>
             <div className={style.PriceContainer}>
               <p className="originalPrice">${product?.price}</p>
-              <p className="price">${selectedCombination?.Price || product?.sellingPrice}</p>
+              <p className="price">
+                ${selectedCombination?.Price || product?.sellingPrice}
+              </p>
             </div>
             {product?.discount && (
               <strong className="discount">{product?.discount}% off</strong>

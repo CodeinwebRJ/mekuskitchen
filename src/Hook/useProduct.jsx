@@ -33,8 +33,6 @@ const useProduct = (id) => {
   const [isLikedLocal, setIsLikedLocal] = useState(false);
 
   const defaultImage = "/defaultImage.png";
-
-  // Centralized function to get default image
   const getDefaultImage = (product, sku) => {
     return (
       sku?.details?.SKUImages?.[0] || product?.images?.[0]?.url || defaultImage
@@ -53,7 +51,6 @@ const useProduct = (id) => {
     }
   }, [isAuthenticated, product?._id]);
 
-  // Compute available options
   const availableOptions = useMemo(() => {
     if (!selectedSKUs?.details?.combinations?.length) return {};
     const options = {};
@@ -70,7 +67,6 @@ const useProduct = (id) => {
     );
   }, [selectedSKUs]);
 
-  // Compute selected combination
   const selectedCombination = useMemo(() => {
     if (!selectedSKUs?.details?.combinations?.length) return null;
     return (
