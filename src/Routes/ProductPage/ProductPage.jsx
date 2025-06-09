@@ -10,6 +10,12 @@ import Loading from "../../Component/UI-Components/Loading";
 import ImageGallery from "./ImageGallary";
 import useProduct from "../../Hook/useProduct";
 import ProductDetails from "./ProductDetails";
+import { getProductById } from "../../axiosConfig/AxiosConfig";
+import { useEffect } from "react";
+
+const getDefaultImage = (productData) => {
+  return productData?.images?.[0] || "/default-image.png";
+};
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -20,31 +26,32 @@ const ProductPage = () => {
   const {
     product,
     selectedImage,
-    setSelectedImage,
     selectedSKUs,
-    setSelectedSKUs,
     selectedOptions,
-    setSelectedOptions,
     quantity,
-    setQuantity,
-    reviews,
-    setReviews,
-    rating,
-    setRating,
-    review,
-    setReview,
     selectedCombination,
+    reviews,
     availableOptions,
-    handleAddToCart,
+    rating,
     isAddingToCart,
-    handleWishlistToggle,
+    review,
+    setSelectedImage,
     isLikedLocal,
+    setSelectedSKUs,
+    setSelectedOptions,
+    setReview,
+    setQuantity,
+    setReviews,
+    setRating,
+    handleAddToCart,
+    setProduct,
+    handleWishlistToggle,
   } = useProduct(id);
 
-  const currentIndex = products?.data?.findIndex((p) => p._id === id);
+  const currentIndex = products?.data?.findIndex((p) => p._id === id) ?? -1;
 
   const handleNext = () => {
-    if (currentIndex < products?.data?.length - 1) {
+    if (currentIndex < (products?.data?.length ?? 0) - 1 && currentIndex >= 0) {
       const nextProduct = products.data[currentIndex + 1];
       navigate(location.pathname, { state: { id: nextProduct._id } });
     }
@@ -60,7 +67,7 @@ const ProductPage = () => {
   const tabData = [
     {
       label: "Product Detail",
-      content: <div>{product?.description}</div>,
+      content: <div>{product?.description || "No description available"}</div>,
     },
     {
       label: "Reviews",
@@ -95,6 +102,51 @@ const ProductPage = () => {
       : []),
   ];
 
+  const fetchProduct = async () => {
+    if (!id) {
+      Toast({ message: "No product selected", type: "error" });
+      navigate("/");
+      return;
+    }
+
+    try {
+      const res = await getProductById(id);
+      const productData = res.data.data;
+      setProduct(productData);
+      setSelectedImage(getDefaultImage(productData));
+      if (productData?.sku?.length > 0) {
+        const firstSKU = productData.sku[0] || {};
+        setSelectedSKUs(firstSKU);
+        if (firstSKU?.details?.combinations?.length > 0) {
+          const firstCombination = firstSKU.details.combinations[0] || {};
+          const initialOptions = Object.fromEntries(
+            Object.entries(firstCombination).filter(
+              ([key]) => key !== "Price" && key !== "Stock"
+            )
+          );
+          setSelectedOptions(initialOptions);
+        } else {
+          setSelectedOptions({});
+        }
+      } else {
+        setSelectedSKUs({});
+        setSelectedOptions({});
+      }
+    } catch (error) {
+      if (isMounted.current) {
+        console.error("Failed to fetch product:", error);
+        Toast({ message: "Failed to load product.", type: "error" });
+        setProduct(null);
+        setSelectedSKUs({});
+        setSelectedOptions({});
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
+
   if (loading) return <Loading />;
   if (!product) return <p>Product not found</p>;
 
@@ -105,13 +157,13 @@ const ProductPage = () => {
         <div className={style.header}>
           <div className={style.breadcrumb}>
             <Link to="/">Home</Link> /{" "}
-            <Link to="/product-category">{product.category}</Link> /{" "}
-            {product.name}
+            <Link to="/product-category">{product.category || "Category"}</Link>{" "}
+            / {product.name || "Product"}
           </div>
           <div className={style.navigation}>
             <button
               onClick={handlePrev}
-              disabled={currentIndex <= 0}
+              disabled={currentIndex <= 0 || !products?.data}
               className={style.navButton}
               aria-label="Previous product"
             >
@@ -119,7 +171,10 @@ const ProductPage = () => {
             </button>
             <button
               onClick={handleNext}
-              disabled={currentIndex >= products?.data?.length - 1}
+              disabled={
+                currentIndex >= (products?.data?.length ?? 0) - 1 ||
+                !products?.data
+              }
               className={style.navButton}
               aria-label="Next product"
             >

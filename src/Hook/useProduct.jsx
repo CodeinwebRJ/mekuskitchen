@@ -41,60 +41,6 @@ const useProduct = (id) => {
     );
   };
 
-  // Fetch product data with cleanup
-  useEffect(() => {
-    if (!id) {
-      Toast({ message: "No product selected", type: "error" });
-      navigate("/");
-      return;
-    }
-
-    let isMounted = true;
-
-    const fetchProduct = async () => {
-      try {
-        const res = await getProductById(id);
-        if (!isMounted) return;
-
-        const productData = res.data.data;
-        setProduct(productData);
-        setSelectedImage(getDefaultImage(productData));
-        if (productData?.sku?.length > 0) {
-          const firstSKU = productData.sku[0] || {};
-          setSelectedSKUs(firstSKU);
-          if (firstSKU?.details?.combinations?.length > 0) {
-            const firstCombination = firstSKU.details.combinations[0] || {};
-            const initialOptions = Object.fromEntries(
-              Object.entries(firstCombination).filter(
-                ([key]) => key !== "Price" && key !== "Stock"
-              )
-            );
-            setSelectedOptions(initialOptions);
-          } else {
-            setSelectedOptions({});
-          }
-        } else {
-          setSelectedSKUs(productData?.sku?.[0] || {});
-          setSelectedOptions({});
-        }
-      } catch (error) {
-        if (isMounted) {
-          console.error("Failed to fetch product:", error);
-          Toast({ message: "Failed to load product.", type: "error" });
-          setProduct(null);
-          setSelectedSKUs(null);
-          setSelectedOptions({});
-        }
-      }
-    };
-
-    fetchProduct();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [id, navigate]);
-
   useEffect(() => {
     if (!product) return;
     setSelectedImage(getDefaultImage(product, selectedSKUs));
@@ -275,6 +221,7 @@ const useProduct = (id) => {
     setReviews,
     setRating,
     setReview,
+    setProduct,
     handleAddToCart,
     handleWishlistToggle,
   };

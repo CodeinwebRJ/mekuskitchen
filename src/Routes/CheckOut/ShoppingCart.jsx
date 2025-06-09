@@ -7,7 +7,6 @@ import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import Button from "../../Component/Buttons/Button";
-import Chip from "../../Component/Buttons/Chip";
 import DialogBox from "../../Component/MainComponents/DialogBox";
 import EmptyCartPage from "./EmptyCartPage";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
@@ -31,9 +30,7 @@ const CartItem = ({
   const name = isProduct
     ? item?.productDetails?.name?.toUpperCase()
     : item?.day;
-  const price = isProduct
-    ? item?.productDetails?.sellingPrice
-    : item?.tiffinMenuDetails?.totalAmount;
+  const price = isProduct ? item?.price : item?.tiffinMenuDetails?.totalAmount;
 
   return (
     <tr className={style.cartItem}>
@@ -139,8 +136,7 @@ const ShoppingCart = () => {
     if (isAuthenticated) {
       return (
         (cart?.items?.items?.reduce(
-          (acc, item) =>
-            acc + (item?.productDetails?.sellingPrice || 0) * item.quantity,
+          (acc, item) => acc + (item?.price || 0) * item.quantity,
           0
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
@@ -168,8 +164,7 @@ const ShoppingCart = () => {
     if (isAuthenticated) {
       return (
         (cart?.items?.items?.reduce(
-          (acc, item) =>
-            acc + (item?.productDetails?.sellingPrice || 0) * item.quantity,
+          (acc, item) => acc + (item?.price || 0) * item.quantity,
           0
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
@@ -198,10 +193,7 @@ const ShoppingCart = () => {
     if (isAuthenticated) {
       return (
         cart?.items?.items?.reduce(
-          (acc, item) =>
-            acc +
-            (item.productDetails?.price - item.productDetails?.sellingPrice) *
-              item.quantity,
+          (acc, item) => acc + (item.price - item.price) * item.quantity,
           0
         ) || 0
       );

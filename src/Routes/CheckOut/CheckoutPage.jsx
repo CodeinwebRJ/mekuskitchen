@@ -135,7 +135,7 @@ const CheckoutPage = () => {
   const total = useMemo(
     () =>
       (cart?.items?.items?.reduce(
-        (acc, item) => acc + item.productDetails.sellingPrice * item.quantity,
+        (acc, item) => acc + item.price * item.quantity,
         0
       ) || 0) +
       (cart?.items?.tiffins?.reduce(
@@ -149,10 +149,7 @@ const CheckoutPage = () => {
   const discount = useMemo(
     () =>
       cart?.items?.items?.reduce(
-        (acc, item) =>
-          acc +
-          (item.productDetails.price - item.productDetails.sellingPrice) *
-            item.quantity,
+        (acc, item) => acc + (item.price - item.price) * item.quantity,
         0
       ) || 0,
     [cart]

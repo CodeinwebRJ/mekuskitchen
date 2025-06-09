@@ -96,14 +96,14 @@ const ProductCard = ({ product, grid }) => {
       Toast({ message: "Tiffin is already added to cart!", type: "error" });
       return;
     }
-
+    
     try {
       const res = await AddtoCart({
         user_id: user.userid,
         isTiffinCart: false,
         product_id: product._id,
         quantity: 1,
-        price: selectedCombination?.Price || product?.price,
+        price: selectedCombination?.Price || product?.sellingPrice,
         ...(product?.sku?.length > 1 && selectedSKUs?._id
           ? { skuId: selectedSKUs._id }
           : {}),
@@ -195,7 +195,7 @@ const ProductCard = ({ product, grid }) => {
           <div className={style.discountContainer}>
             <div className={style.PriceContainer}>
               <p className="originalPrice">${product?.price}</p>
-              <p className="price">${product?.sellingPrice}</p>
+              <p className="price">${selectedCombination?.Price || product?.sellingPrice}</p>
             </div>
             {product?.discount && (
               <strong className="discount">{product?.discount}% off</strong>

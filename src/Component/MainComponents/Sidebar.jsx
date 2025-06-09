@@ -152,7 +152,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                       <span className={style.multiply}>×</span>
                       <span className={style.price}>
                         $
-                        {item.sellingPrice ||
+                        {item.price ||
                           item?.productDetails?.sellingPrice ||
                           0}
                       </span>

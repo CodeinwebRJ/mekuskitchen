@@ -12,7 +12,6 @@ const ImageGallery = ({
       ? selectedSKUs.details?.SKUImages.slice(0, 4) || "defaultImage.png"
       : product?.images?.slice(0, 4) || "defaultImage.png";
 
-      console.log(product)
   return (
     <div className={style.imageContainer}>
       <div className={style.productImageContainer}>
