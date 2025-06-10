@@ -207,7 +207,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={style.cartItemSubtotal}>
           <div className={style.subtotalContainer}>
             <h5 className={style.subtotalText}>SUBTOTAL:</h5>
-            <h5 className="price">${calculateSubtotal}</h5>
+            <h5 className="price">${isAuthenticated ? cart.items.totalAmount : calculateSubtotal}</h5>
           </div>
           <div className={style.subtotalButtons}>
             <div className={style.viewCart}>

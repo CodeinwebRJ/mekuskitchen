@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Footer from "../../Component/MainComponents/Footer";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function ForgetPassword() {
   const [password, setPassword] = useState("");
@@ -86,9 +87,11 @@ function ForgetPassword() {
                   <div className="mb-3 mt-3" style={{ position: "relative" }}>
                     <input
                       style={{
-                        border: "none",
-                        borderBottom: "1px solid black",
+                        border: "1px solid black",
                         textDecoration: "none",
+                        padding: "10px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
                       }}
                       type={showPassword ? "text" : "password"}
                       className="form-control"
@@ -105,18 +108,23 @@ function ForgetPassword() {
                       className="btn btn-link"
                       style={{
                         position: "absolute",
-                        right: "20px",
-                        top: "2px",
+                        right: "12px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
                         fontSize: "16px",
                         background: "none",
                         border: "none",
                         cursor: "pointer",
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
-                      {showPassword ? (
-                        <i className="fas fa-eye-slash"></i>
+                      {showConfirmPassword ? (
+                        <FaEye color="black" />
                       ) : (
-                        <i className="fas fa-eye"></i>
+                        <FaEyeSlash color="black" />
                       )}
                     </button>
                   </div>
@@ -124,9 +132,11 @@ function ForgetPassword() {
                   <div className="mb-3" style={{ position: "relative" }}>
                     <input
                       style={{
-                        border: "none",
-                        borderBottom: "1px solid black",
+                        border: "1px solid black",
                         textDecoration: "none",
+                        padding: "10px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
                       }}
                       type={showConfirmPassword ? "text" : "password"}
                       className="form-control"
@@ -143,18 +153,23 @@ function ForgetPassword() {
                       className="btn btn-link"
                       style={{
                         position: "absolute",
-                        right: "20px",
-                        top: "2px",
+                        right: "12px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
                         fontSize: "16px",
                         background: "none",
                         border: "none",
                         cursor: "pointer",
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
                       {showConfirmPassword ? (
-                        <i className="fas fa-eye-slash"></i>
+                        <FaEye color="black" />
                       ) : (
-                        <i className="fas fa-eye"></i>
+                        <FaEyeSlash color="black" />
                       )}
                     </button>
                   </div>

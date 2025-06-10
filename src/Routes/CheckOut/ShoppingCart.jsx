@@ -17,6 +17,7 @@ import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 const CartItem = ({
+  isAuthenticated,
   item,
   type,
   onDelete,
@@ -466,6 +467,7 @@ const ShoppingCart = () => {
                     key={item._id}
                     item={item}
                     type="product"
+                    isAuthenticated={isAuthenticated}
                     onDelete={handleDelete}
                     onUpdateQuantity={updateItemQuantity}
                     onShowProduct={handleShowProduct}
@@ -476,6 +478,7 @@ const ShoppingCart = () => {
                   key={tiffin._id}
                   item={tiffin}
                   type="tiffin"
+                  isAuthenticated={isAuthenticated}
                   onDelete={handleDelete}
                   onUpdateQuantity={updateItemQuantity}
                   onShowProduct={handleShowProduct}
@@ -505,7 +508,9 @@ const ShoppingCart = () => {
                     </td>
                     <td>
                       $
-                      {item?.sku?.details?.combinations?.Price || item?.price || 0}
+                      {item?.sku?.details?.combinations?.Price ||
+                        item?.price ||
+                        0}
                     </td>
                     <td>
                       <div className={style.quantityControl}>

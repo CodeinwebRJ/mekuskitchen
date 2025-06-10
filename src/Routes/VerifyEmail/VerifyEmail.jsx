@@ -57,9 +57,11 @@ function VerifyEmail() {
                   <div className="mb-3 mt-3">
                     <input
                       style={{
-                        border: "none",
-                        borderBottom: "1px solid black",
+                        border: "1px solid black",
                         textDecoration: "none",
+                        padding: "10px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
                       }}
                       type="email"
                       className="form-control"
@@ -68,7 +70,6 @@ function VerifyEmail() {
                       name="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      required
                     />
                   </div>
                   <button

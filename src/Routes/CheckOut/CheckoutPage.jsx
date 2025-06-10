@@ -92,7 +92,6 @@ const CheckoutPage = () => {
       setApiError("Missing required information (cart, address, or user ID).");
       return;
     }
-
     setIsLoading(true);
     setApiError("");
     try {
@@ -101,7 +100,8 @@ const CheckoutPage = () => {
         cartId: cart?.items?._id,
         addressId: defaultAddress._id,
         paymentMethod: "COD",
-        totalAmount: cart?.items?.totalAmount || 0,
+        cartAmount: cart?.items?.totalAmount || 0,
+        taxAmount: cart?.items?.totalTax,
       };
       await sendOrder(data);
       const response = await getUserCart({ id: user.userid });

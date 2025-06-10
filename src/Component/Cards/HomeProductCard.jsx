@@ -15,6 +15,7 @@ import {
 } from "../../../Store/Slice/UserWishlistSlice";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 import { useEffect, useState } from "react";
+import useProduct from "../../Hook/useProduct";
 
 export const HomeProductCard = ({
   data,
@@ -37,6 +38,9 @@ export const HomeProductCard = ({
   const [isLikedLocal, setIsLikedLocal] = useState(false);
   const dispatch = useDispatch();
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
+  const { selectedCombination, selectedSKUs, setSelectedSKUs } = useProduct(
+    data._id
+  );
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -62,7 +66,7 @@ export const HomeProductCard = ({
         });
         const updatedCart = {
           items: updatedItems,
-          tiffins: localCartTiffin, // keep Tiffin unchanged
+          tiffins: localCartTiffin,
         };
 
         localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -179,6 +183,14 @@ export const HomeProductCard = ({
     }
   }, [data._id, user]);
 
+  useEffect(() => {
+    if (data?.sku) {
+      setSelectedSKUs(data?.sku[0]);
+    }
+  }, []);
+
+  console.log(selectedCombination);
+
   return (
     <Link
       to={`/product/${data?.category?.toLowerCase()}/${data?.name?.toLowerCase()}`}
@@ -198,11 +210,16 @@ export const HomeProductCard = ({
           <div className={style.content}>
             <h3 className={style.title}>{name || "Unnamed Product"}</h3>
             {subtitle && <p className={style.subtitle}>{subtitle}</p>}
-            {(data?.price || price) && (
+            <div className={style.priceContainer}>
+              {(data?.price || price) && (
+                <p className="originalPrice">
+                  ${Number(data?.price || price).toFixed(2)}
+                </p>
+              )}
               <p className={style.price}>
-                ${Number(data?.price || price).toFixed(2)}
+                ${Number(selectedCombination?.Price || data.price).toFixed(2)}
               </p>
-            )}
+            </div>
           </div>
           <div className={style.actions}>
             <button

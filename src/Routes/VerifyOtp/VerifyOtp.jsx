@@ -38,9 +38,11 @@ function VerifyOtp() {
                   <div className="mb-3 mt-3">
                     <input
                       style={{
-                        border: "none",
-                        borderBottom: "1px solid black",
+                        border: "1px solid black",
                         textDecoration: "none",
+                        padding: "10px 12px",
+                        borderRadius: "6px",
+                        width: "100%",
                       }}
                       type="text"
                       className="form-control"
@@ -49,7 +51,6 @@ function VerifyOtp() {
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
                       name="otp"
-                      required
                     />
                   </div>
                   <button

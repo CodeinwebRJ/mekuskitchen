@@ -120,19 +120,22 @@ const ProductCard = ({ product, grid }) => {
     }
 
     try {
-      const res = await AddtoCart({
+      const data = {
         user_id: user.userid,
         isTiffinCart: false,
         product_id: product._id,
         quantity: 1,
         price: selectedCombination?.Price || product?.sellingPrice,
-        ...(product?.sku?.length > 1 && selectedSKUs?._id
+        ...(product?.sku?.length > 0 && selectedSKUs?._id
           ? { skuId: selectedSKUs._id }
           : {}),
-        ...(product.sku?.length > 1 && selectedCombination
+        ...(product.sku?.length > 0 && selectedCombination
           ? { combination: { ...selectedCombination } }
           : {}),
-      });
+      };
+
+      console.log(data.skuId)
+      const res = await AddtoCart(data);
       dispatch(setCart(res.data.data));
       Toast({ message: "Product added to cart successfully", type: "success" });
     } catch (error) {
@@ -181,7 +184,6 @@ const ProductCard = ({ product, grid }) => {
     }
   };
 
-  console.log(product);
   useEffect(() => {
     if (product?.sku) {
       setSelectedSKUs(product?.sku[0]);
