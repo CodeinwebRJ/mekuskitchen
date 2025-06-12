@@ -220,7 +220,6 @@ const App = () => {
           }
         />
         <Route path="/wishlist" element={<WishlistPage />} />
-        <Route path="/order-placed" element={<OrderPlaced />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />

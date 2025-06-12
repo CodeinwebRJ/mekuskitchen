@@ -98,3 +98,6 @@ export const sendOrder = async (data) => {
 export const getHomePageData = async () => {
   return axiosInstance.get("/api/v1/product/category/home");
 };
+export const CreatePayment = async (data) => {
+  return axiosInstance.post("/api/v1/payment/create", data);
+};

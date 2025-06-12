@@ -78,7 +78,6 @@ const ProductCard = ({ product, grid }) => {
               ...selectedSKUs,
               details: {
                 ...selectedSKUs.details,
-                combinations: undefined,
                 combinations: selectedCombination || undefined,
               },
             }

@@ -31,7 +31,6 @@ const Header = () => {
   const handleLogout = () => {
     if (!isAuthenticated) {
       navigate("/login");
-
       return;
     }
     try {

@@ -16,22 +16,21 @@ const productSlice = createSlice({
     },
     setCombinations: (state, action) => {
       state.combinations = [];
-      action.payload.forEach((product) => {
-        product.sku.forEach((sku) => {
-          const combinations = sku.details?.combinations;
-          combinations?.forEach((combination) => {
-            state.combinations.push(combination);
+      action?.payload?.forEach((product) => {
+        if (Array.isArray(product?.sku) && product.sku.length > 0) {
+          product.sku.forEach((sku) => {
+            const combinations = sku.details?.combinations;
+            combinations?.forEach((combination) => {
+              state.combinations.push(combination);
+            });
           });
-        });
+        }
       });
     },
   },
 });
 
-export const {
-  setProducts,
-  setLoading,
-  setCombinations,
-} = productSlice.actions;
+export const { setProducts, setLoading, setCombinations } =
+  productSlice.actions;
 
 export default productSlice.reducer;

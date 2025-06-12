@@ -25,13 +25,14 @@ import AddAddressCard from "../../Component/UI-Components/AddAddressCard";
 import AddressForm from "../MyAccount/Addresses/AddressForm";
 import DialogBox from "../../Component/MainComponents/DialogBox";
 import CouponCode from "../../Component/Cards/CouponCode";
+import PaymentCard from "./PaymentCard";
 
 const OrderSummary = ({
   total,
   discount,
   discountPercentage,
   tax,
-  handleSubmit,
+  payNow,
   isLoading,
 }) => (
   <div className={style.cartTotals}>
@@ -62,7 +63,7 @@ const OrderSummary = ({
         <Button
           type="button"
           disabled={isLoading}
-          onClick={handleSubmit}
+          onClick={payNow}
           variant="primary"
           size="md"
           aria-label="Place order"
@@ -83,40 +84,15 @@ const CheckoutPage = () => {
   const [dialog, setDialog] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState("");
+  const [showComponent, setShowComponent] = useState("cart");
 
-  const handleSubmit = async () => {
-    if (!isAuthenticated) {
-      setApiError("Missing required information (cart, address, or user ID).");
-      return;
-    }
-    setIsLoading(true);
-    setApiError("");
-    try {
-      const data = {
-        userId: user.userid,
-        cartId: cart?.items?._id,
-        addressId: defaultAddress._id,
-        paymentMethod: "COD",
-        cartAmount: cart?.items?.totalAmount || 0,
-        taxAmount: cart?.items?.totalTax,
-      };
-      await sendOrder(data);
-      const response = await getUserCart({ id: user.userid });
-      dispatch(setCart(response.data.data));
-      if (response.status === 200) {
-        navigate("/order-placed");
-      }
-    } catch (error) {
-      setApiError(
-        error.response?.data?.message ||
-          "An error occurred while placing the order."
-      );
-    } finally {
-      setIsLoading(false);
-    }
+  const payNow = () => {
+    setShowComponent("payment");
+  };
+
+  const handleCancel = () => {
+    setShowComponent("cart");
   };
 
   const fetchUserCart = async () => {
@@ -197,56 +173,66 @@ const CheckoutPage = () => {
 
   return (
     <div className={style.mainContainer}>
-      <Header />
-      <Banner name="Checkout" path="/cart" />
-      <div className={style.checkoutContainer}>
-        <>
-          <div>
-            <div className={style.addressContainer}>
-              {addresses.length < 3 ? (
-                <AddAddressCard
-                  onClick={() => {
-                    dispatch(setShowAddressForm(true));
-                    setIsEdit(false);
-                    setDialog(true);
-                  }}
-                />
-              ) : null}
-              {addresses &&
-                addresses.map((address, index) => (
-                  <AddressCard
-                    key={index}
-                    address={address}
-                    handleSetAsDefaultAddress={handleSetAsDefaultAddress}
-                  />
-                ))}
-            </div>
-            <div>
-              <CouponCode />
-            </div>
-          </div>
-          <OrderSummary
-            total={total}
-            discount={discount}
-            isLoading={isLoading}
-            discountPercentage={discountPercentage}
-            handleSubmit={handleSubmit}
-            tax={cart?.items?.totalTax}
-          />
-        </>
+      {showComponent === "cart" && (
+        <div>
+          <Header />
+          <Banner name="Checkout" path="/cart" />
+          <div className={style.checkoutContainer}>
+            <>
+              <div>
+                <div className={style.addressContainer}>
+                  {addresses.length < 3 ? (
+                    <AddAddressCard
+                      onClick={() => {
+                        dispatch(setShowAddressForm(true));
+                        setIsEdit(false);
+                        setDialog(true);
+                      }}
+                    />
+                  ) : null}
+                  {addresses &&
+                    addresses.map((address, index) => (
+                      <AddressCard
+                        key={index}
+                        address={address}
+                        handleSetAsDefaultAddress={handleSetAsDefaultAddress}
+                      />
+                    ))}
+                </div>
+                <div>
+                  <CouponCode />
+                </div>
+              </div>
+              <OrderSummary
+                total={total}
+                discount={discount}
+                isLoading={isLoading}
+                discountPercentage={discountPercentage}
+                payNow={payNow}
+                tax={cart?.items?.totalTax}
+              />
+            </>
 
-        <DialogBox
-          isOpen={dialog}
-          title="Add Delivery Address"
-          onClose={() => setDialog(false)}
-        >
-          <AddressForm
-            onClose={() => setDialog(false)}
-            fetchAddress={fetchAddress}
-          />
-        </DialogBox>
-      </div>
-      <Footer />
+            <DialogBox
+              isOpen={dialog}
+              title="Add Delivery Address"
+              onClose={() => setDialog(false)}
+            >
+              <AddressForm
+                onClose={() => setDialog(false)}
+                fetchAddress={fetchAddress}
+              />
+            </DialogBox>
+          </div>
+          <Footer />
+        </div>
+      )}
+
+      {showComponent === "payment" && (
+        <div>
+          <PaymentCard handleCancel={handleCancel} />
+        </div>
+      )}
     </div>
   );
 };
