@@ -189,8 +189,6 @@ export const HomeProductCard = ({
     }
   }, []);
 
-  console.log(selectedCombination);
-
   return (
     <Link
       to={`/product/${data?.category?.toLowerCase()}/${data?.name?.toLowerCase()}`}
@@ -217,7 +215,7 @@ export const HomeProductCard = ({
                 </p>
               )}
               <p className={style.price}>
-                ${Number(selectedCombination?.Price || data.price).toFixed(2)}
+                ${Number(selectedCombination?.Price || data.sellingPrice).toFixed(2)}
               </p>
             </div>
           </div>

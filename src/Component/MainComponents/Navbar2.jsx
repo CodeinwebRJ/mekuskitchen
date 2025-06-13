@@ -12,13 +12,11 @@ function Navbar2() {
             style={{ height: "auto" }}
           >
             <img
-              src="/logo.png"
+              src="/logo-black.png"
               alt="mekuskitchen Logo"
               style={{
-                height: "50px",
+                height: "60px",
                 width: "auto",
-                backgroundColor: "black",
-                padding:"4px"
               }}
             />
           </NavLink>

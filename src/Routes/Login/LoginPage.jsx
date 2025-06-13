@@ -1,25 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Banner2 from "../../Component/MainComponents/Banner2";
-import { useEffect } from "react";
 import Loading from "../../Component/UI-Components/Loading";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../Store/Slice/UserSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import PasswordInput from "../../Component/Password";
 
 function LoginPage() {
   const [credentials, setCredentials] = useState({
     unique_id: "",
     password: "",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    unique_id: "",
+    password: "",
+    api: "",
+  });
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -28,6 +30,12 @@ function LoginPage() {
       ...credentials,
       [name]: value,
     });
+    // Clear error for the field being edited
+    setError((prev) => ({
+      ...prev,
+      [name]: "",
+      api: "",
+    }));
   };
 
   const handleCheckboxChange = (e) => {
@@ -37,11 +45,23 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!credentials.unique_id || !credentials.password) {
-      setError("Please enter both Unique ID and Password.");
+    let validationErrors = {};
+
+    // Validate unique_id
+    if (!credentials.unique_id.trim()) {
+      validationErrors.unique_id = "The field cannot be empty.";
+    }
+
+    // Validate password
+    if (!credentials.password.trim()) {
+      validationErrors.password = "The field cannot be empty.";
+    }
+
+    setError(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
-    setError("");
 
     try {
       setLoading(true);
@@ -60,23 +80,26 @@ function LoginPage() {
           localStorage.setItem("api_token", response.data.api_token);
         }
         navigate("/");
-        setLoading(false);
       } else if (response.data.response === "0") {
-        setError("Invalid Unique ID or password");
-        setLoading(false);
+        setError((prev) => ({
+          ...prev,
+          api: "Please Enter Valid Id or Password",
+        }));
       } else {
-        setError("Login failed. Please check your credentials.");
-        setLoading(false);
+        setError((prev) => ({
+          ...prev,
+          api: "Login failed. Please check your credentials.",
+        }));
       }
     } catch (err) {
       console.error(err);
+      setError((prev) => ({
+        ...prev,
+        api: "An error occurred. Please try again later.",
+      }));
+    } finally {
       setLoading(false);
-      setError("An error occurred. Please try again later.");
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   useEffect(() => {
@@ -84,7 +107,7 @@ function LoginPage() {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <>
@@ -147,60 +170,31 @@ function LoginPage() {
                       placeholder="Unique Id*"
                       name="unique_id"
                       style={{
-                        border: "1px solid black",
+                        border: "1px solid #ccc",
                         borderRadius: "6px",
                         width: "100%",
                         padding: "10px 12px",
                       }}
                     />
+                    {error.unique_id && (
+                      <div className="text-danger">{error.unique_id}</div>
+                    )}
                   </div>
-                  <div className="mb-3" style={{ position: "relative" }}>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      value={credentials.password}
-                      onChange={handleChange}
-                      id="password"
-                      placeholder="Password*"
-                      name="password"
-                      style={{
-                        border: "1px solid black",
-                        borderRadius: "6px",
-                        width: "100%",
-                        padding: "10px 12px",
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        fontSize: "16px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        padding: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {showPassword ? (
-                        <FaEye color="black" />
-                      ) : (
-                        <FaEyeSlash color="black" />
-                      )}
-                    </button>
-                  </div>
-                  {error && <p className="text-danger">{error}</p>}
+                  <PasswordInput
+                    placeholder="Password*"
+                    onChange={handleChange}
+                    value={credentials.password}
+                    label="Password"
+                    name="password"
+                    error={error.password}
+                  />
+                  {error.api && <div className="text-danger mb-3">{error.api}</div>}
                   <div className="d-flex justify-content-between mb-3">
                     <div className="form-check">
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        id="terms"
+                        id="rememberMe"
                         checked={rememberMe}
                         onChange={handleCheckboxChange}
                         style={{ border: "1px solid black" }}
@@ -208,18 +202,18 @@ function LoginPage() {
                       <label
                         style={{ color: "black" }}
                         className="form-check-label"
-                        htmlFor="terms"
+                        htmlFor="rememberMe"
                       >
                         Remember me
                       </label>
                     </div>
                     <div>
                       <Link
-                        to="/veryfy-email"
+                        to="/verify-email"
                         className="text-end"
                         style={{ textDecoration: "none" }}
                       >
-                        Forget Password
+                        Forgot Password?
                       </Link>
                     </div>
                   </div>
@@ -228,14 +222,15 @@ function LoginPage() {
                     type="submit"
                     className="btn btn-primary w-100"
                     style={{ borderRadius: "14px" }}
+                    disabled={loading}
                   >
-                    Login
+                    {loading ? "Logging in..." : "Login"}
                   </button>
                 </form>
                 <hr className="my-4" />
                 <div className="text-center">
                   <p className="mb-0">
-                    don't have an account? <Link to="/signup">SIGNUP</Link>
+                    Don't have an account? <Link to="/signup">SIGNUP</Link>
                   </p>
                 </div>
               </div>

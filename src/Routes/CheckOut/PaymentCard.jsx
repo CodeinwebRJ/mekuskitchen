@@ -10,6 +10,8 @@ import {
 import OrderPlaced from "./OrderPlaced";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import PaymentFail from "./PaymentFail";
+import Footer from "../../Component/MainComponents/Footer";
+import Header from "../../Component/MainComponents/Header";
 
 const PaymentCard = ({ handleCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,12 +47,16 @@ const PaymentCard = ({ handleCancel }) => {
         cvv: paymentMethod.cvv,
       };
       const res = await CreatePayment(paymentData);
+      console.log(res.data.data);
       if (
-        res.data.data.ResponseCode === "027" ||
-        res.data.data.Complete === "true"
+        res.data.data.rawResponse.ResponseCode === "027" ||
+        res.data.data.rawResponse.ResponseCode === "025" ||
+        res.data.data.rawResponse.ResponseCode < "050" ||
+        res.data.data.rawResponse.Complete === "true"
       ) {
         const data = {
           userId: user.userid,
+          orderId: res.data.data.orderId,
           cartId: cart?.items?._id,
           addressId: defaultAddress?._id,
           cartAmount: cart?.items?.totalAmount || 0,
@@ -83,89 +89,93 @@ const PaymentCard = ({ handleCancel }) => {
   return (
     <>
       {showComponent === "payment" && (
-        <div className={style.paymentContainer}>
-          {showComponent === "payment" && (
-            <div className={style.cardContainer}>
-              <div className={style.cardHeader}>
-                <FaCreditCard className={style.cardIcon} />
-                <h2 className={style.cardTitle}>Payment Details</h2>
-              </div>
-              <form className={style.form} onSubmit={handleSubmit}>
-                <div className={style.formGroup}>
-                  <label htmlFor="cardNumber">Card Number</label>
-                  <input
-                    type="text"
-                    id="cardNumber"
-                    name="cardNumber"
-                    placeholder="1234 5678 9012 3456"
-                    maxLength="19"
-                    className={style.inputField}
-                    value={paymentMethod.cardNumber}
-                    onChange={handleChange}
-                    required
-                  />
+        <div>
+          <Header />
+          <div className={style.paymentContainer}>
+            {showComponent === "payment" && (
+              <div className={style.cardContainer}>
+                <div className={style.cardHeader}>
+                  <FaCreditCard className={style.cardIcon} />
+                  <h2 className={style.cardTitle}>Payment Details</h2>
                 </div>
-
-                <div className={style.row}>
+                <form className={style.form} onSubmit={handleSubmit}>
                   <div className={style.formGroup}>
-                    <label htmlFor="expiryDate">Expiry Date</label>
+                    <label htmlFor="cardNumber">Card Number</label>
                     <input
                       type="text"
-                      id="expiryDate"
-                      name="expiryDate"
-                      placeholder="MM/YY"
-                      maxLength="5"
+                      id="cardNumber"
+                      name="cardNumber"
+                      placeholder="1234 5678 9012 3456"
+                      maxLength="19"
                       className={style.inputField}
-                      value={paymentMethod.expiryDate}
+                      value={paymentMethod.cardNumber}
                       onChange={handleChange}
                       required
                     />
                   </div>
 
-                  <div className={style.formGroup}>
-                    <label htmlFor="cvv">CVV</label>
-                    <input
-                      type="password"
-                      id="cvv"
-                      name="cvv"
-                      placeholder="123"
-                      maxLength="4"
-                      className={style.inputField}
-                      value={paymentMethod.cvv}
-                      onChange={handleChange}
-                      required
-                    />
+                  <div className={style.row}>
+                    <div className={style.formGroup}>
+                      <label htmlFor="expiryDate">Expiry Date</label>
+                      <input
+                        type="text"
+                        id="expiryDate"
+                        name="expiryDate"
+                        placeholder="MM/YY"
+                        maxLength="5"
+                        className={style.inputField}
+                        value={paymentMethod.expiryDate}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+
+                    <div className={style.formGroup}>
+                      <label htmlFor="cvv">CVV</label>
+                      <input
+                        type="password"
+                        id="cvv"
+                        name="cvv"
+                        placeholder="123"
+                        maxLength="4"
+                        className={style.inputField}
+                        value={paymentMethod.cvv}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {apiError && <div className={style.error}>{apiError}</div>}
+                  {apiError && <div className={style.error}>{apiError}</div>}
 
-                <div className={style.buttonContainer}>
-                  <button
-                    type="button"
-                    className={style.cancelBtn}
-                    onClick={handleCancel}
-                    disabled={isLoading}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className={`${style.submitBtn} ${
-                      isLoading ? style.loading : ""
-                    }`}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className={style.loader}></span>
-                    ) : (
-                      "Pay Now"
-                    )}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
+                  <div className={style.buttonContainer}>
+                    <button
+                      type="button"
+                      className={style.cancelBtn}
+                      onClick={handleCancel}
+                      disabled={isLoading}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className={`${style.submitBtn} ${
+                        isLoading ? style.loading : ""
+                      }`}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <span className={style.loader}></span>
+                      ) : (
+                        "Pay Now"
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+          <Footer />
         </div>
       )}
 

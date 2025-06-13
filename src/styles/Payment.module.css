@@ -1,5 +1,5 @@
 .paymentContainer {
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +10,6 @@
   padding: 32px;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
 }
 
 .cardHeader {

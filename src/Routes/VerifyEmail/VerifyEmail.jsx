@@ -7,12 +7,38 @@ import Footer from "../../Component/MainComponents/Footer";
 function VerifyEmail() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState({ email: "" });
   const navigate = useNavigate();
 
   const api_token = localStorage.getItem("api_token");
 
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+    setErrors({ email: "" });
+    setMessage("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let validationErrors = { email: "" };
+
+    // Validate empty email
+    if (!email.trim()) {
+      validationErrors.email = "The field cannot be empty.";
+    } else {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        validationErrors.email = "Please enter a valid email address.";
+      }
+    }
+
+    setErrors(validationErrors);
+
+    if (validationErrors.email) {
+      return;
+    }
+
     try {
       const response = await axios.post(
         "https://eyemesto.com/mapp/check_email.php",
@@ -25,19 +51,17 @@ function VerifyEmail() {
       );
 
       if (response.data.response === "1") {
-        // console.log(response);
-        // Store only userId in localStorage
         const userId = response.data.userid;
         localStorage.setItem("userId", userId);
-        // Store OTP in localStorage
         localStorage.setItem("otp", response.data.OTP);
+        setMessage("OTP sent successfully!");
         navigate("/verify-otp");
       } else {
         console.log("Failed to send OTP:", response.data.message);
-        // setMessage("Error: " + response.data.message);
-        setMessage(response.data.message);
+        setMessage(response.data.message || "Failed to send OTP.");
       }
     } catch (error) {
+      console.error("Error sending OTP:", error);
       setMessage("Error sending OTP. Please try again later.");
     }
   };
@@ -57,20 +81,21 @@ function VerifyEmail() {
                   <div className="mb-3 mt-3">
                     <input
                       style={{
-                        border: "1px solid black",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
                         width: "100%",
+                        padding: "10px",
+                        borderRadius: "5px",
+                        border: "1px solid #ccc",
                       }}
                       type="email"
-                      className="form-control"
-                      id="email"
-                      placeholder="Email"
-                      name="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={handleChange}
+                      id="email"
+                      placeholder="Email*"
+                      name="email"
                     />
+                    {errors.email && (
+                      <div className="text-danger">{errors.email}</div>
+                    )}
                   </div>
                   <button
                     type="submit"
@@ -81,7 +106,15 @@ function VerifyEmail() {
                   </button>
                 </form>
                 {message && (
-                  <div className="mt-3 alert alert-info">{message}</div>
+                  <div
+                    className={`mt-3 alert ${
+                      message.includes("successfully")
+                        ? "alert-success"
+                        : "alert-danger"
+                    }`}
+                  >
+                    {message}
+                  </div>
                 )}
               </div>
             </div>

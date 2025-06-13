@@ -103,10 +103,7 @@ const ProductCard = ({ product, grid }) => {
         };
 
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({
-          message: "Product added to cart!",
-          type: "success",
-        });
+        Toast({ message: "Product added to cart!", type: "success" });
         dispatch(setCart(updatedCart));
       }
 
@@ -133,7 +130,7 @@ const ProductCard = ({ product, grid }) => {
           : {}),
       };
 
-      console.log(data.skuId)
+      console.log(data.skuId);
       const res = await AddtoCart(data);
       dispatch(setCart(res.data.data));
       Toast({ message: "Product added to cart successfully", type: "success" });

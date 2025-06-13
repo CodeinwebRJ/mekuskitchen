@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from "../../Component/MainComponents/Header";
+import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
-import Navbar2 from "../../Component/MainComponents/Navbar2";
-import Banner2 from "../../Component/MainComponents/Banner2";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import PasswordInput from "../../Component/Password.jsx";
+
+const inputStyle = {
+  width: "100%",
+  padding: "10px",
+  borderRadius: "5px",
+  border: "1px solid #ccc",
+};
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -17,10 +24,8 @@ function SignUpPage() {
     refcode: "",
   });
 
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -30,47 +35,58 @@ function SignUpPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let validationErrors = {};
+
     if (!formData.first_name.trim()) {
-      setError("First Name is required.");
-      return;
+      validationErrors.first_name = "First Name is required.";
     }
+
     if (!formData.last_name.trim()) {
-      setError("Last Name is required.");
-      return;
+      validationErrors.last_name = "Last Name is required.";
     }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setError("Please enter a valid email address.");
-      return;
+      validationErrors.email = "Please enter a valid email address.";
     }
+
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.mobile)) {
-      setError("Phone number must be exactly 10 digits.");
-      return;
+      validationErrors.mobile = "Phone number must be exactly 10 digits.";
     }
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]).{8,}$/;
-    if (!passwordRegex.test(formData.password)) {
-      setError(
-        "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
+
+    if (formData.password.length < 8) {
+      validationErrors.password = "Password must be at least 8 characters.";
+    } else {
+      const hasUppercase = /[A-Z]/.test(formData.password);
+      const hasLowercase = /[a-z]/.test(formData.password);
+      const hasNumber = /\d/.test(formData.password);
+      const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>?]/.test(
+        formData.password
       );
-      return;
+
+      if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar) {
+        validationErrors.password =
+          "Password must include uppercase, lowercase, number, and special character.";
+      }
     }
+
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords and Confirm password do not match.");
-      return;
+      validationErrors.confirmPassword = "Passwords do not match.";
     }
     if (!formData.refcode.trim()) {
-      setError("Referral Code is required.");
-      return;
+      validationErrors.refcode = "Referral Code is required.";
     }
+
     const termsCheckbox = document.getElementById("terms");
     if (!termsCheckbox.checked) {
-      setError("You must agree to the Terms of service.");
+      validationErrors.terms = "You must agree to the Terms of service.";
+    }
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
     setLoading(true);
-    setError("");
 
     try {
       const response = await axios.post(
@@ -98,46 +114,24 @@ function SignUpPage() {
         });
         navigate("/login");
       } else {
-        setError(
-          response.data.message || "Something went wrong. Please try again."
-        );
+        setErrors({ api: response.data.message || "Something went wrong." });
       }
     } catch (err) {
       console.error(err);
-      if (err.response) {
-        console.error("Response data: ", err.response.data);
-        console.error("Response status: ", err.response.status);
-      } else if (err.request) {
-        console.error("Request data: ", err.request);
-      } else {
-        console.error("Error message: ", err.message);
-      }
-      setError("Error signing up. Please try again later.");
+      setErrors({ api: "Error signing up. Please try again later." });
     } finally {
       setLoading(false);
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
   return (
-    <>
-      {/* <Navbar /> */}
-      <Navbar2 />
-      <Banner2 title="Signup" secondtitle="signup" />
+    <div>
+      <Header />
+      <Banner name={"Sign Up"} />
       <div className="container">
         <div
-          style={{
-            display: "flex",
-            height: "100vh",
-          }}
           className="mt-5 d-flex align-items-stretch"
+          style={{ height: "120vh" }}
         >
           <div className="col-lg-6 col-md-8 p-0">
             <div
@@ -167,7 +161,7 @@ function SignUpPage() {
                 flex: 1,
                 display: "flex",
                 justifyContent: "center",
-                padding: "40px 80px",
+                padding: "20px 40px",
               }}
             >
               <div className="card-body p-0">
@@ -175,13 +169,7 @@ function SignUpPage() {
                 <form className="was-validated" onSubmit={handleSubmit}>
                   <div className="mb-3 mt-3">
                     <input
-                      style={{
-                        border: "1px solid black",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
+                      style={inputStyle}
                       type="text"
                       value={formData.first_name}
                       onChange={handleInputChange}
@@ -189,16 +177,13 @@ function SignUpPage() {
                       placeholder="First Name*"
                       name="first_name"
                     />
+                    {errors.first_name && (
+                      <div className="text-danger">{errors.first_name}</div>
+                    )}
                   </div>
                   <div className="mb-3">
                     <input
-                      style={{
-                        border: "1px solid black",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
+                      style={inputStyle}
                       type="text"
                       value={formData.last_name}
                       onChange={handleInputChange}
@@ -206,16 +191,13 @@ function SignUpPage() {
                       placeholder="Last Name*"
                       name="last_name"
                     />
+                    {errors.last_name && (
+                      <div className="text-danger">{errors.last_name}</div>
+                    )}
                   </div>
                   <div className="mb-3">
                     <input
-                      style={{
-                        border: "1px solid black",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
+                      style={inputStyle}
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
@@ -223,16 +205,13 @@ function SignUpPage() {
                       placeholder="Email*"
                       name="email"
                     />
+                    {errors.email && (
+                      <div className="text-danger">{errors.email}</div>
+                    )}
                   </div>
                   <div className="mb-3">
                     <input
-                      style={{
-                        border: "1px solid black",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
+                      style={inputStyle}
                       type="number"
                       id="mobile"
                       value={formData.mobile}
@@ -240,110 +219,40 @@ function SignUpPage() {
                       placeholder="Phone*"
                       name="mobile"
                     />
+                    {errors.mobile && (
+                      <div className="text-danger">{errors.mobile}</div>
+                    )}
                   </div>
-                  <div className="mb-3" style={{ position: "relative" }}>
-                    <input
-                      style={{
-                        border: "1px solid black",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
-                      type={showPassword ? "text" : "password"}
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      id="password"
-                      placeholder="Password*"
-                      name="password"
-                    />
-                    <button
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                      className="btn btn-link"
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        fontSize: "16px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        padding: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {showPassword ? (
-                        <FaEye color="black" />
-                      ) : (
-                        <FaEyeSlash color="black" />
-                      )}
-                    </button>
-                  </div>
-                  <div className="mb-3" style={{ position: "relative" }}>
-                    <input
-                      style={{
-                        border: "1px solid black",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
-                      type={showConfirmPassword ? "text" : "password"}
-                      id="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      placeholder="Confirm Password*"
-                      name="confirmPassword"
-                    />
-                    <button
-                      type="button"
-                      onClick={toggleConfirmPasswordVisibility}
-                      className="btn btn-link"
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        fontSize: "16px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        padding: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {showConfirmPassword ? (
-                        <FaEye color="black" />
-                      ) : (
-                        <FaEyeSlash color="black" />
-                      )}
-                    </button>
-                  </div>
+                  <PasswordInput
+                    label="Password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Password*"
+                    error={errors.password}
+                  />
+                  <PasswordInput
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="Confirm Password*"
+                    error={errors.confirmPassword}
+                  />
                   <div className="mb-3">
                     <input
-                      style={{
-                        border: "1px solid black",
-                        borderRadius: "6px",
-                        width: "100%",
-                        padding: "10px 12px",
-                      }}
+                      style={inputStyle}
                       type="text"
-                      className=""
                       id="refcode"
                       value={formData.refcode}
                       onChange={handleInputChange}
                       placeholder="Referral Code*"
                       name="refcode"
                     />
+                    {errors.refcode && (
+                      <div className="text-danger">{errors.refcode}</div>
+                    )}
                   </div>
-                  {error && <p className="text-danger">{error}</p>}
-                  {/* <div className="d-flex justify-content-between mb-3"> */}
                   <div className="form-check">
                     <input
                       type="checkbox"
@@ -359,16 +268,22 @@ function SignUpPage() {
                       I agree all statements in Terms of service
                     </label>
                   </div>
-                  {/* </div> */}
-
+                  {errors.terms && (
+                    <div className="text-danger mt-1">{errors.terms}</div>
+                  )}
+                  {errors.api && (
+                    <div className="text-danger mt-2">{errors.api}</div>
+                  )}
                   <button
                     type="submit"
                     className="btn btn-primary w-100 mt-2"
                     style={{ borderRadius: "15px" }}
+                    disabled={loading}
                   >
-                    Signup
+                    {loading ? "Signing up..." : "Signup"}
                   </button>
                 </form>
+
                 <hr className="my-4" />
                 <div className="text-center">
                   <p className="mb-0">
@@ -380,7 +295,8 @@ function SignUpPage() {
           </div>
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 }
 
