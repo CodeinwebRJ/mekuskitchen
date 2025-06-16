@@ -72,7 +72,7 @@
 }
 
 .iconBtn {
-  background-color: #1f2937;
+  background-color: var(--dark-gray);
   color: white;
   border: none;
   border-radius: 50%;

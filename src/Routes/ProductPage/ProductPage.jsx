@@ -35,8 +35,8 @@ const ProductPage = () => {
     rating,
     isAddingToCart,
     review,
+    isLiked,
     setSelectedImage,
-    isLikedLocal,
     setSelectedSKUs,
     setSelectedOptions,
     setReview,
@@ -65,6 +65,22 @@ const ProductPage = () => {
   };
 
   const tabData = [
+    ...(product?.sku?.length > 1 && product.specifications
+      ? [
+          {
+            label: "Specifications",
+            content: (
+              <div>
+                {Object.entries(product.specifications).map(([key, value]) => (
+                  <div key={key}>
+                    <strong>{key}:</strong> {value}
+                  </div>
+                ))}
+              </div>
+            ),
+          },
+        ]
+      : []),
     {
       label: "Product Detail",
       content: <div>{product?.description || "No description available"}</div>,
@@ -84,22 +100,6 @@ const ProductPage = () => {
         />
       ),
     },
-    ...(product?.sku?.length > 1 && product.specifications
-      ? [
-          {
-            label: "Specifications",
-            content: (
-              <div>
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key}>
-                    <strong>{key}:</strong> {value}
-                  </div>
-                ))}
-              </div>
-            ),
-          },
-        ]
-      : []),
   ];
 
   const fetchProduct = async () => {
@@ -203,7 +203,7 @@ const ProductPage = () => {
             handleAddToCart={handleAddToCart}
             isAddingToCart={isAddingToCart}
             handleWishlistToggle={handleWishlistToggle}
-            isLikedLocal={isLikedLocal}
+            isLiked={isLiked}
           />
         </div>
 

@@ -38,7 +38,7 @@ function VerifyOtp() {
                   <div className="mb-3 mt-3">
                     <input
                       style={{
-                        border: "1px solid black",
+                        border: "1px solid #ccc",
                         textDecoration: "none",
                         padding: "10px 12px",
                         borderRadius: "6px",
@@ -55,8 +55,12 @@ function VerifyOtp() {
                   </div>
                   <button
                     type="submit"
-                    className="btn btn-primary w-100"
-                    style={{ borderRadius: "15px" }}
+                    className="btn w-100"
+                    style={{
+                      backgroundColor: "#46a3df",
+                      color: "#fff",
+                      borderRadius: "14px",
+                    }}
                   >
                     Verify
                   </button>

@@ -89,6 +89,7 @@ const App = () => {
         ratings: filterData?.ratings,
         price: filterData?.price,
         attributes: filterData?.attributes,
+        isActive: filterData?.isActive,
       };
       const response = await getProduct(data);
       dispatch(setProducts(response.data.data));

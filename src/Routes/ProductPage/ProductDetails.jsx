@@ -1,16 +1,10 @@
 import { useSelector } from "react-redux";
-import {
-  FaFacebookF,
-  FaHeart,
-  FaLinkedinIn,
-  FaRegHeart,
-  FaTwitter,
-} from "react-icons/fa";
-import { BiLogoInstagramAlt } from "react-icons/bi";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import OptionSelector from "./OptionSelector";
 import Chip from "../../Component/Buttons/Chip";
 import style from "../../styles/ProductPage.module.css";
 import Button from "../../Component/Buttons/Button";
+import { Link } from "react-router-dom";
 
 const ProductDetails = ({
   product,
@@ -22,17 +16,17 @@ const ProductDetails = ({
   setQuantity,
   selectedCombination,
   availableOptions,
-handleAddToCart,
+  handleAddToCart,
   isAddingToCart,
   handleWishlistToggle,
-  isLikedLocal,
+  isLiked,
 }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const isLikedFromStore = useSelector(
-    (state) => state.wishlist?.likedMap?.[product?._id] || false
-  );
+  // const { isAuthenticated } = useSelector((state) => state.auth);
+  // const isLikedFromStore = useSelector(
+  //   (state) => state.wishlist?.likedMap?.[product?._id] || false
+  // );
 
-  const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
+  // const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
 
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);
@@ -234,11 +228,22 @@ handleAddToCart,
 
       <div className={style.share}>
         Share:
-        <div className={style.shareIcons}>
-          <FaFacebookF size={16} aria-label="Share on Facebook" />
-          <FaTwitter size={16} aria-label="Share on Twitter" />
-          <BiLogoInstagramAlt size={16} aria-label="Share on Instagram" />
-          <FaLinkedinIn size={16} aria-label="Share on LinkedIn" />
+        <div className={style.socialIcons}>
+          <Link to="#">
+            <img src="/facebook.png" alt="FaceBook" />
+          </Link>
+          <Link to="#">
+            <img src="/instagram.png" alt="Twitter" />
+          </Link>
+          <Link to="#">
+            <img src="/Twitter.png" alt="LinkedIn" />
+          </Link>
+          <Link to="#">
+            <img src="/Linkedin.png" alt="Instagram" />
+          </Link>
+          <Link to="#">
+            <img src="/Telegram.png" alt="LinkedIn" />
+          </Link>
         </div>
       </div>
     </div>

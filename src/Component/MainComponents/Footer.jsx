@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import styles from "../../styles/Footer.module.css";
 import { IoMdCall } from "react-icons/io";
 import { IoMail } from "react-icons/io5";
-import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import {
   FaHome,
   FaUtensils,
@@ -77,10 +76,10 @@ const Footer = () => {
           </p>
           <div className={styles.socialIcons}>
             <Link to="#">
-              <FaFacebookF />
+              <img src="/facebook.png" alt="Facebook" />
             </Link>
             <Link to="#">
-              <FaInstagram />
+              <img src="/instagram.png" alt="Facebook" />
             </Link>
           </div>
         </div>

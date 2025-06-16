@@ -65,7 +65,7 @@ const CartItem = ({
           <span>{name}</span>
         </div>
       </td>
-      <td>${price?.toFixed(2)}</td>
+      <td>${Number(price)?.toFixed(2)}</td>
       <td>
         <div className={style.quantityControl}>
           <button
@@ -489,11 +489,14 @@ const ShoppingCart = () => {
                   <tr className={style.cartItem}>
                     <td>
                       <div className={style.removeCell}>
-                        <RxCross2
-                          className={style.removeIcon}
+                        <button
                           onClick={() => handleDelete(item._id, "product")}
-                        />
-                        <FaEye onClick={() => handleShowProduct(item._id)} />
+                        >
+                          <BsTrash className={style.removeIcon} />
+                        </button>
+                        <button onClick={() => handleShowProduct(item._id)}>
+                          <FaEye />
+                        </button>
                       </div>
                     </td>
                     <td>

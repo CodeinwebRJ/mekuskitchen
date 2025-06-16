@@ -235,7 +235,7 @@ export const HomeProductCard = ({
               aria-label={isLiked ? "Remove from Wishlist" : "Add to Wishlist"}
             >
               {isLiked ? (
-                <FaHeart size={20} color="red" />
+                <FaHeart size={20} color="#46a3df" />
               ) : (
                 <FaRegHeart size={20} />
               )}

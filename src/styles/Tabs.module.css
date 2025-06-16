@@ -27,6 +27,6 @@
 
 .tabContent {
   padding: 20px;
-  height: 70vh;
+  height: 50vh;
   overflow-y: auto;
 }

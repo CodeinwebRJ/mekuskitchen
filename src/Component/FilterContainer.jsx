@@ -475,7 +475,7 @@ const FilterContainer = ({
           </div>
         </div>
 
-        {Object.keys(attributeOptions).map((attribute) => (
+        {/* {Object.keys(attributeOptions).map((attribute) => (
           <div key={attribute} className={style.filterGroup}>
             <h6>{attribute}</h6>
             <div className={style.checkboxGroup}>
@@ -497,7 +497,7 @@ const FilterContainer = ({
               ))}
             </div>
           </div>
-        ))}
+        ))} */}
 
         <h5>Top Rated Products</h5>
         <ul>

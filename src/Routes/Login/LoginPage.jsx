@@ -6,8 +6,8 @@ import Banner2 from "../../Component/MainComponents/Banner2";
 import Loading from "../../Component/UI-Components/Loading";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../Store/Slice/UserSlice";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import PasswordInput from "../../Component/Password";
+import { Toast } from "../../Utils/Toast";
 
 function LoginPage() {
   const [credentials, setCredentials] = useState({
@@ -79,6 +79,10 @@ function LoginPage() {
           localStorage.setItem("user", JSON.stringify(response.data));
           localStorage.setItem("api_token", response.data.api_token);
         }
+        Toast({
+          message: "Login Successfully",
+          type: "success",
+        });
         navigate("/");
       } else if (response.data.response === "0") {
         setError((prev) => ({
@@ -188,7 +192,9 @@ function LoginPage() {
                     name="password"
                     error={error.password}
                   />
-                  {error.api && <div className="text-danger mb-3">{error.api}</div>}
+                  {error.api && (
+                    <div className="text-danger mb-3">{error.api}</div>
+                  )}
                   <div className="d-flex justify-content-between mb-3">
                     <div className="form-check">
                       <input
@@ -211,7 +217,7 @@ function LoginPage() {
                       <Link
                         to="/verify-email"
                         className="text-end"
-                        style={{ textDecoration: "none" }}
+                        style={{ color: "#46a3df" }}
                       >
                         Forgot Password?
                       </Link>
@@ -220,8 +226,12 @@ function LoginPage() {
 
                   <button
                     type="submit"
-                    className="btn btn-primary w-100"
-                    style={{ borderRadius: "14px" }}
+                    className="btn w-100"
+                    style={{
+                      backgroundColor: "#46a3df",
+                      color: "#fff",
+                      borderRadius: "14px",
+                    }}
                     disabled={loading}
                   >
                     {loading ? "Logging in..." : "Login"}
@@ -230,7 +240,10 @@ function LoginPage() {
                 <hr className="my-4" />
                 <div className="text-center">
                   <p className="mb-0">
-                    Don't have an account? <Link to="/signup">SIGNUP</Link>
+                    Don't have an account?{" "}
+                    <Link to="/signup" style={{ color: "#46a3df" }}>
+                      SIGNUP
+                    </Link>
                   </p>
                 </div>
               </div>

@@ -129,8 +129,6 @@ const ProductCard = ({ product, grid }) => {
           ? { combination: { ...selectedCombination } }
           : {}),
       };
-
-      console.log(data.skuId);
       const res = await AddtoCart(data);
       dispatch(setCart(res.data.data));
       Toast({ message: "Product added to cart successfully", type: "success" });
@@ -223,7 +221,7 @@ const ProductCard = ({ product, grid }) => {
             <div className={style.PriceContainer}>
               <p className="originalPrice">${product?.price}</p>
               <p className="price">
-                ${selectedCombination?.Price || product?.sellingPrice}
+                ${selectedCombination?.Price || product?.sellingPrice} CAD
               </p>
             </div>
             {product?.discount && (

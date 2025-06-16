@@ -54,7 +54,7 @@
 }
 .linkList a:hover {
   text-decoration: underline;
-  text-underline-offset: 4px
+  text-underline-offset: 4px;
 }
 
 .highlight {
@@ -87,6 +87,12 @@
 .socialIcons a {
   color: #000;
   font-size: 20px;
+}
+
+.socialIcons img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 @media (max-width: 768px) {

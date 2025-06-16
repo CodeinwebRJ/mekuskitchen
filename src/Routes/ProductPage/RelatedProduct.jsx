@@ -68,7 +68,7 @@ const RelatedProduct = () => {
             autoplay={
               enableAutoplay
                 ? {
-                    delay: 15000,
+                    delay: 2000,
                     disableOnInteraction: false,
                   }
                 : false

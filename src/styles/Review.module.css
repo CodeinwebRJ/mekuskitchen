@@ -1,8 +1,8 @@
 .card {
   border-radius: 16px;
   border: 2px solid #d7e7f9;
-  padding: 20px;
-  max-width: 500px;
+  padding: 24px;
+  width: 500px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   font-family: 'Arial', sans-serif;
   display: flex;

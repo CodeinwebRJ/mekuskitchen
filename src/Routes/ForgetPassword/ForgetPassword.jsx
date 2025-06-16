@@ -176,8 +176,12 @@ function ForgetPassword() {
 
                   <button
                     type="submit"
-                    className="btn btn-primary w-100"
-                    style={{ borderRadius: "15px" }}
+                    className="btn w-100"
+                    style={{
+                      backgroundColor: "#46a3df",
+                      color: "#fff",
+                      borderRadius: "14px",
+                    }}
                   >
                     Reset Password
                   </button>

@@ -45,6 +45,17 @@
   outline-offset: 2px;
 }
 
+.socialIcons {
+  display: flex;
+  gap: var(--gap-4);
+}
+
+.socialIcons img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
 .storageContainer {
   display: flex;
   flex-wrap: wrap;

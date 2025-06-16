@@ -154,7 +154,6 @@ ul {
 
 .errorMessage {
   color: var(--error);
-  font-size: var(--font-sm);
 }
 
 .price {

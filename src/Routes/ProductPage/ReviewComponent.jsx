@@ -20,6 +20,8 @@ const ReviewComponent = ({
   setRating,
 }) => {
   const [showForm, setShowForm] = useState(false);
+  const [errors, setErrors] = useState({ rating: "", review: "" });
+  const { user } = useSelector((state) => state.auth);
 
   const fetchReviews = async () => {
     try {
@@ -30,11 +32,30 @@ const ReviewComponent = ({
     }
   };
 
-  const { user } = useSelector((state) => state.auth);
+  const validateForm = () => {
+    let validationErrors = { rating: "", review: "" };
+    let isValid = true;
+
+    if (!rating || rating < 1 || rating > 5) {
+      validationErrors.rating = "Please select a rating between 1 and 5.";
+      isValid = false;
+    }
+
+    if (!review.trim()) {
+      validationErrors.review = "Review is required.";
+      isValid = false;
+    } else if (review.trim().length < 10) {
+      validationErrors.review = "Review must be at least 10 characters long.";
+      isValid = false;
+    }
+
+    setErrors(validationErrors);
+    return isValid;
+  };
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
-    if (!rating || !review.trim()) return;
+    if (!validateForm()) return;
 
     try {
       const data = {
@@ -48,6 +69,7 @@ const ReviewComponent = ({
       setRating(0);
       setReview("");
       setShowForm(false);
+      setErrors({ rating: "", review: "" });
     } catch (error) {
       console.error("Failed to submit review:", error);
     }
@@ -74,7 +96,7 @@ const ReviewComponent = ({
         </div>
       </div>
 
-      {showForm && (
+      {showForm ? (
         <div className={style.reviewForm}>
           <h3 className={style.formTitle}>
             Write a Review for{" "}
@@ -84,23 +106,28 @@ const ReviewComponent = ({
           <form onSubmit={handleSubmitReview} className={style.form}>
             <div className={style.formGroup}>
               <label htmlFor="rating" className={style.label}>
-                Your Rating <span className={style.required}>*</span>
+                Your Rating<span className={style.errorMessage}>*</span>
               </label>
               <RatingStar rating={rating} onChange={setRating} maxRating={5} />
+              {errors.rating && (
+                <p className={style.errorMessage}>{errors.rating}</p>
+              )}
             </div>
 
             <div className={style.formGroup}>
               <label htmlFor="review" className={style.label}>
-                Your Review <span className={style.required}>*</span>
+                Your Review <span className={style.errorMessage}>*</span>
               </label>
               <input
                 id="review"
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
                 placeholder="Share your experience with this product..."
-                required
                 className={style.textarea}
               />
+              {errors.review && (
+                <p className={style.errorMessage}>{errors.review}</p>
+              )}
             </div>
 
             <div className={`${style.formGroup} ${style.submitContainer}`}>
@@ -115,9 +142,7 @@ const ReviewComponent = ({
             </div>
           </form>
         </div>
-      )}
-
-      {reviews.length === 0 ? (
+      ) : reviews.length === 0 ? (
         <div className={style.noReviews}>
           <NoData />
         </div>

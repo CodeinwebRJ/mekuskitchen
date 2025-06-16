@@ -50,9 +50,10 @@ function SignUpPage() {
       validationErrors.email = "Please enter a valid email address.";
     }
 
-    const phoneRegex = /^[0-9]{10}$/;
+    const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     if (!phoneRegex.test(formData.mobile)) {
-      validationErrors.mobile = "Phone number must be exactly 10 digits.";
+      validationErrors.mobile =
+        "Please enter a valid Canadian phone number (e.g., 123-456-7890).";
     }
 
     if (formData.password.length < 8) {
@@ -276,8 +277,12 @@ function SignUpPage() {
                   )}
                   <button
                     type="submit"
-                    className="btn btn-primary w-100 mt-2"
-                    style={{ borderRadius: "15px" }}
+                    className="btn  w-100 mt-2"
+                    style={{
+                      backgroundColor: "#46a3df",
+                      color: "#fff",
+                      borderRadius: "14px",
+                    }}
                     disabled={loading}
                   >
                     {loading ? "Signing up..." : "Signup"}
@@ -287,7 +292,10 @@ function SignUpPage() {
                 <hr className="my-4" />
                 <div className="text-center">
                   <p className="mb-0">
-                    Already have an account? <Link to="/login">LOGIN</Link>
+                    Already have an account?{" "}
+                    <Link to="/login" style={{ color: "#46a3df" }}>
+                      LOGIN
+                    </Link>
                   </p>
                 </div>
               </div>

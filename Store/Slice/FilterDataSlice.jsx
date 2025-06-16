@@ -13,6 +13,7 @@ const initialState = {
   page: "1",
   limit: "9",
   grid: 3,
+  isActive: true,
 };
 
 const filterDataSlice = createSlice({

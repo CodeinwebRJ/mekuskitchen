@@ -47,6 +47,8 @@ const useProduct = (id) => {
   useEffect(() => {
     if (!isAuthenticated && product?._id) {
       const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      console.log(localWishlist);
+      console.log(product?._id);
       setIsLikedLocal(localWishlist.some((item) => item._id === product._id));
     }
   }, [isAuthenticated, product?._id]);
@@ -85,30 +87,70 @@ const useProduct = (id) => {
     }
 
     if (!isAuthenticated) {
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      const exists = localCart.find((item) => item._id === product._id);
-
-      const cartItem = {
-        ...product,
-        quantity,
-        price: selectedCombination?.Price || product.price,
-        ...selectedOptions,
+      const localCartData = JSON.parse(localStorage.getItem("cart")) || {
+        items: [],
+        tiffins: [],
       };
-
+      const localCartItems = localCartData.items || [];
+      const localCartTiffin = localCartData.tiffins || [];
+      if (localCartTiffin.length > 0) {
+        Toast({ message: "Tiffin is already added to cart!", type: "error" });
+        return;
+      }
+      const exists = localCartItems.find((item) => item?._id === product?._id);
       if (exists) {
-        const updatedCart = localCart.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+        const updatedItems = localCartItems.map((item) => {
+          if (item._id === product._id) {
+            return { ...item, quantity: item.quantity + 1 };
+          }
+          return item;
+        });
+        const updatedCart = {
+          items: updatedItems,
+          tiffins: localCartTiffin,
+        };
+
         localStorage.setItem("cart", JSON.stringify(updatedCart));
+        Toast({
+          message: "Product quantity updated in cart!",
+          type: "success",
+        });
         dispatch(setCart(updatedCart));
       } else {
-        localCart.push(cartItem);
-        localStorage.setItem("cart", JSON.stringify(localCart));
-        dispatch(setCart(localCart));
+        const modifiedSKU = selectedSKUs
+          ? {
+              ...selectedSKUs,
+              details: {
+                ...selectedSKUs.details,
+                combinations: selectedCombination || undefined,
+              },
+            }
+          : product.sku[0];
+
+        const productWithoutSKU = { ...product, sku: undefined };
+        const updatedItems = [
+          ...localCartItems,
+          {
+            ...productWithoutSKU,
+            quantity: 1,
+            price: selectedCombination?.Price || product.sellingPrice,
+            sku: modifiedSKU,
+            ...(selectedCombination
+              ? { combination: selectedCombination }
+              : {}),
+          },
+        ];
+
+        const updatedCart = {
+          items: updatedItems,
+          tiffins: localCartTiffin,
+        };
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        Toast({ message: "Product added to cart!", type: "success" });
+        dispatch(setCart(updatedCart));
       }
-      Toast({ message: "Product added to cart!", type: "success" });
+
       return;
     }
 

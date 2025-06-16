@@ -10,6 +10,10 @@
   color: #1a1a1a;
 }
 
+.errorMessage {
+  color: var(--error);
+}
+
 .reviewForm {
   padding: 24px 0px;
 }
@@ -48,11 +52,6 @@
   font-weight: 600;
   color: var(--dark-gray);
   font-size: 0.95rem;
-}
-
-.required {
-  color: red;
-  margin-left: 4px;
 }
 
 .textarea {
@@ -111,6 +110,7 @@
   width: 48px;
   height: 48px;
   background-color: #4a90e2;
+  color: var(--white);
   font-weight: bold;
   font-size: 1.2rem;
   border-radius: 50%;

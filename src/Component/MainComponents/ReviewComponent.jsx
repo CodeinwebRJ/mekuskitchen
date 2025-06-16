@@ -5,7 +5,7 @@ import style from "../../styles/NewArrival.module.css";
 import ReviewCard from "../Cards/Review";
 
 const ReviewComponent = ({ data }) => {
-  const products = Array.isArray(data?.NewProducts) ? data.NewProducts : [];
+  const products = Array.isArray(data?.TopReviews) ? data.TopReviews : [];
   const enableLoop = products.length >= 4;
   const enableAutoplay = products.length >= 4;
   return (
@@ -33,7 +33,7 @@ const ReviewComponent = ({ data }) => {
         >
           {products.map((product, index) => (
             <SwiperSlide key={product.id}>
-              <ReviewCard index={index} />
+              <ReviewCard index={index} product={product} />
             </SwiperSlide>
           ))}
         </Swiper>

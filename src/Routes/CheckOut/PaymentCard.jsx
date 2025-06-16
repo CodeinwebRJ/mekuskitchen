@@ -30,7 +30,13 @@ const PaymentCard = ({ handleCancel }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPaymentMethod((prev) => ({ ...prev, [name]: value }));
+    if (name === "cardNumber") {
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 16);
+      const formatted = digitsOnly.replace(/(.{4})/g, "$1 ").trim();
+      setPaymentMethod((prev) => ({ ...prev, [name]: formatted }));
+    } else {
+      setPaymentMethod((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -47,10 +53,8 @@ const PaymentCard = ({ handleCancel }) => {
         cvv: paymentMethod.cvv,
       };
       const res = await CreatePayment(paymentData);
-      console.log(res.data.data);
       if (
         res.data.data.rawResponse.ResponseCode === "027" ||
-        res.data.data.rawResponse.ResponseCode === "025" ||
         res.data.data.rawResponse.ResponseCode < "050" ||
         res.data.data.rawResponse.Complete === "true"
       ) {
@@ -106,7 +110,7 @@ const PaymentCard = ({ handleCancel }) => {
                       id="cardNumber"
                       name="cardNumber"
                       placeholder="1234 5678 9012 3456"
-                      maxLength="19"
+                      maxLength="16"
                       className={style.inputField}
                       value={paymentMethod.cardNumber}
                       onChange={handleChange}
@@ -137,7 +141,7 @@ const PaymentCard = ({ handleCancel }) => {
                         id="cvv"
                         name="cvv"
                         placeholder="123"
-                        maxLength="4"
+                        maxLength="3"
                         className={style.inputField}
                         value={paymentMethod.cvv}
                         onChange={handleChange}

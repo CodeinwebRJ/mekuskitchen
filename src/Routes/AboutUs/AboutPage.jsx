@@ -102,7 +102,7 @@ const AboutPage = () => {
 
             <p className={style.aboutDescription}>
               At Meku's Kitchen, we believe that enjoying the food is more than
-              just eating; it's an opportunity to create cherished memories. Our
+              just eating it's an opportunity to create cherished memories. Our
               story began when our customers were missing Indian taste in the
               local food. With a focus on using the freshest, Indian sourced
               ingredients, chef's and our talented culinary team have earned
@@ -138,13 +138,13 @@ const AboutPage = () => {
                 <p className={style.countText}>FOUNDING YEAR</p>
               </div>
               <div className={style.happyCustomersCount}>
-                <h1 className={style.countNumber}>{happyCustomers}</h1>
+                <h1 className={style.countNumber}>{happyCustomers} +</h1>
                 <p className={style.countText}>HAPPY COSTUMERS</p>
               </div>
             </div>
 
             <div className={style.menuCount}>
-              <h1 className={style.countNumber}>{menuCount}</h1>
+              <h1 className={style.countNumber}>{menuCount} + </h1>
               <p className={style.countText}>MENU</p>
             </div>
           </div>
