@@ -16,6 +16,7 @@ import {
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 import { useEffect, useState } from "react";
 import useProduct from "../../Hook/useProduct";
+import RatingStar from "../RatingStar";
 
 export const HomeProductCard = ({
   data,
@@ -189,6 +190,8 @@ export const HomeProductCard = ({
     }
   }, []);
 
+  console.log(data)
+
   return (
     <Link
       to={`/product/${data?.category?.toLowerCase()}/${data?.name?.toLowerCase()}`}
@@ -208,6 +211,11 @@ export const HomeProductCard = ({
           <div className={style.content}>
             <h3 className={style.title}>{name || "Unnamed Product"}</h3>
             {subtitle && <p className={style.subtitle}>{subtitle}</p>}
+
+            <div>
+              <RatingStar disabled rating={data?.averageRating || 0} />
+            </div>
+
             <div className={style.priceContainer}>
               {(data?.price || price) && (
                 <p className="originalPrice">

@@ -133,7 +133,7 @@ const ProductDetails = ({
       )}
       {selectedCombination && (
         <p className={style.selectedCombination}>
-          Selected Configuration:{" "}
+          Selected :{" "}
           {Object.entries(selectedOptions)
             .map(([key, value]) => `${value} ${key}`)
             .join(", ") || "None"}

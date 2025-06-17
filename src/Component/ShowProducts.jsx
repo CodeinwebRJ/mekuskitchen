@@ -4,7 +4,7 @@ import { setLimit } from "../../Store/Slice/FilterDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const ShowProducts = () => {
-  const { limit } = useSelector((state) => state.product);
+  const { limit } = useSelector((state) => state.filterData);
 
   const dispatch = useDispatch();
   const handleActive = (value) => {

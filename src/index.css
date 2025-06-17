@@ -157,12 +157,10 @@ ul {
 }
 
 .price {
-  margin-top: 6px;
   font-weight: 600;
 }
 
 .originalPrice {
-  margin-top: 6px;
   font-weight: 600;
   text-decoration: line-through;
   color: var(--error);

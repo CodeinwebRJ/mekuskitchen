@@ -1,8 +1,6 @@
 import style from "../../styles/RelatedProductCard.module.css";
 import AddToCartButton from "../Buttons/AddToCartButton";
 import { Link, useLocation } from "react-router-dom";
-import { formatDate } from "../../Utils/FormateDate";
-import DateChip from "../Buttons/DateChip";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -131,11 +129,6 @@ const RelatedProductCard = ({ item }) => {
             alt={displayTitle || "Product Image"}
             className={style.relatedProductImg}
           />
-          {/* {item?.date && (
-            <div className={style.dateChipWrapper}>
-              <DateChip name={formatDate(item.date)} />
-            </div>
-          )} */}
         </div>
         <div className={style.wishlist} onClick={handleWishlistToggle}>
           {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}

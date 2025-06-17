@@ -14,6 +14,86 @@ const FormField = ({
     <>
       <div className={style.billingFormColumn2}>
         <div className={style.inputFieldContainer}>
+          <SelectField
+            labelName="Country"
+            name="country"
+            value={formData.country || ""}
+            options={countries}
+            placeholder="Select Country"
+            onChange={handleChange}
+            required
+          />
+          {formErrors.country && (
+            <div className={style.errorMessage}>{formErrors.country}</div>
+          )}
+        </div>
+        <div className={style.inputFieldContainer}>
+          <SelectField
+            labelName="State"
+            name="state"
+            value={formData.state || ""}
+            options={states}
+            placeholder="Select State"
+            onChange={handleChange}
+            required
+          />
+          {formErrors.state && (
+            <div className={style.errorMessage}>{formErrors.state}</div>
+          )}
+        </div>
+      </div>
+
+      <div className={style.billingFormColumn2}>
+        <div className={style.inputFieldContainer}>
+          <InputField
+            type="text"
+            name="city"
+            value={formData.city || ""}
+            onChange={handleChange}
+            placeholder="City"
+            labelName="City"
+            required
+          />
+          {formErrors.city && (
+            <div className={style.errorMessage}>{formErrors.city}</div>
+          )}
+        </div>
+
+        <div className={style.inputFieldContainer}>
+          <InputField
+            type="text"
+            name="postCode"
+            value={formData.postCode || ""}
+            onChange={handleChange}
+            placeholder="Postcode / ZIP"
+            labelName="Postcode / ZIP"
+            required
+          />
+          {formErrors.postCode && (
+            <div className={style.errorMessage}>{formErrors.postCode}</div>
+          )}
+        </div>
+      </div>
+
+      <div className={style.billingFormColumn1}>
+        <div className={style.inputFieldContainer}>
+          <InputField
+            type="text"
+            name="address"
+            value={formData.address || ""}
+            onChange={handleChange}
+            placeholder="Address"
+            labelName="Address"
+            required
+          />
+          {formErrors.address && (
+            <div className={style.errorMessage}>{formErrors.address}</div>
+          )}
+        </div>
+      </div>
+
+      <div className={style.billingFormColumn2}>
+        <div className={style.inputFieldContainer}>
           <InputField
             type="text"
             name="firstName"
@@ -72,87 +152,6 @@ const FormField = ({
           />
           {formErrors.email && (
             <div className={style.errorMessage}>{formErrors.email}</div>
-          )}
-        </div>
-      </div>
-
-      <div className={style.billingFormColumn1}>
-        <div className={style.inputFieldContainer}>
-          <InputField
-            type="text"
-            name="address"
-            value={formData.address || ""}
-            onChange={handleChange}
-            placeholder="Address"
-            labelName="Address"
-            required
-          />
-          {formErrors.address && (
-            <div className={style.errorMessage}>{formErrors.address}</div>
-          )}
-        </div>
-      </div>
-
-      <div className={style.billingFormColumn2}>
-        <div className={style.inputFieldContainer}>
-          <InputField
-            type="text"
-            name="city"
-            value={formData.city || ""}
-            onChange={handleChange}
-            placeholder="Town / City"
-            labelName="Town / City"
-            required
-          />
-          {formErrors.city && (
-            <div className={style.errorMessage}>{formErrors.city}</div>
-          )}
-        </div>
-
-        <div className={style.inputFieldContainer}>
-          <SelectField
-            labelName="Country"
-            name="country"
-            value={formData.country || ""}
-            options={countries}
-            placeholder="Select Country"
-            onChange={handleChange}
-            required
-          />
-          {formErrors.country && (
-            <div className={style.errorMessage}>{formErrors.country}</div>
-          )}
-        </div>
-      </div>
-
-      <div className={style.billingFormColumn2}>
-        <div className={style.inputFieldContainer}>
-          <SelectField
-            labelName="State / County"
-            name="state"
-            value={formData.state || ""}
-            options={states}
-            placeholder="Select State"
-            onChange={handleChange}
-            required
-          />
-          {formErrors.state && (
-            <div className={style.errorMessage}>{formErrors.state}</div>
-          )}
-        </div>
-
-        <div className={style.inputFieldContainer}>
-          <InputField
-            type="text"
-            name="postCode"
-            value={formData.postCode || ""}
-            onChange={handleChange}
-            placeholder="Postcode / ZIP"
-            labelName="Postcode / ZIP"
-            required
-          />
-          {formErrors.postCode && (
-            <div className={style.errorMessage}>{formErrors.postCode}</div>
           )}
         </div>
       </div>

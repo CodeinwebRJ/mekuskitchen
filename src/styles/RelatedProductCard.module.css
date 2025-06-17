@@ -14,6 +14,7 @@
 .PriceContainer {
   display: flex;
   align-items: center;
+  padding: 8px 0;
   gap: var(--gap-4);
 }
 
@@ -55,13 +56,6 @@
   height: 100%;
   object-fit: cover;
   border-radius: 4px;
-}
-
-.dateChipWrapper {
-  display: flex;
-  justify-content: flex-start;
-  padding-left: 0.25rem;
-  height: 2rem; /* Fixed height for date chip */
 }
 
 .contentWrapper {
