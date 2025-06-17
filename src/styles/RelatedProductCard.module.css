@@ -1,4 +1,5 @@
 .relatedProductCard {
+  position: relative;
   background: var(--white);
   padding: 8px;
   border-radius: 8px;

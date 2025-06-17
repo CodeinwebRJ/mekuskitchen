@@ -397,19 +397,22 @@ const FilterContainer = ({
           placeholder="Search by name"
         />
 
-        <h6>
-          Price Range: ${priceRange[0]} - ${priceRange[1]}
-        </h6>
-        <div className={style.priceRange}>
-          <input
-            type="range"
-            min="0"
-            max="2000"
-            value={priceRange[1]}
-            onChange={handlePriceChange}
-            id="priceRange"
-            aria-label={`Price range from $${priceRange[0]} to $${priceRange[1]}`}
-          />
+        <div className={style.priceRangeContainer}>
+          <h6 className={style.priceLabel}>
+            Price Range: ${priceRange[0]} - ${priceRange[1]}
+          </h6>
+          <div className={style.priceRange}>
+            <input
+              type="range"
+              min="0"
+              max="2000"
+              value={priceRange[1]}
+              onChange={handlePriceChange}
+              id="priceRange"
+              aria-label={`Price range from $${priceRange[0]} to $${priceRange[1]}`}
+              className={style.rangeInput}
+            />
+          </div>
         </div>
 
         <FilterSection

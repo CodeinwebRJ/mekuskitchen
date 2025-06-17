@@ -46,7 +46,7 @@ const RelatedProduct = () => {
     <div className={style.relatedProductContainer}>
       <Heading title="RELATED PRODUCTS" size="xs" />
 
-      {productCount > 4 ? (
+      {productCount >= 4 ? (
         <div className={style.sliderWrapper}>
           {showArrows && (
             <div

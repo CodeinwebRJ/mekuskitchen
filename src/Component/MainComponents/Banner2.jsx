@@ -1,41 +1,25 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 function Banner2(props) {
   return (
     <>
-      {/* Page Header Start */}
       <div
         className="container-fluid page-header py-5"
-        style={{ marginBottom: "4rem" }}
       >
-        <div className="container py-5">
+        <div className="container py-5 text-center">
           <h1 className="display-3 text-white mb-3 animated slideInDown">
             {props.title}
           </h1>
-          <nav aria-label="breadcrumb animated slideInDown">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <Link className="text-white" to="/">
-                  Home
-                </Link>
-              </li>
-              <li className="breadcrumb-item">
-                <a className="text-white" href="#">
-                  Pages
-                </a>
-              </li>
-              <li
-                className="breadcrumb-item text-white active"
-                aria-current="page"
-              >
-                {props.secondtitle}
-              </li>
-            </ol>
-          </nav>
+          <div
+            style={{ textAlign: "center", width: "100%" }}
+            className="homebreadcrumb"
+          >
+            <Link className="breadcrumb-link" to="/">
+              Home
+            </Link>
+          </div>
         </div>
       </div>
-      {/* Page Header End */}
     </>
   );
 }

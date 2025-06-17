@@ -215,7 +215,10 @@ export const HomeProductCard = ({
                 </p>
               )}
               <p className={style.price}>
-                ${Number(selectedCombination?.Price || data.sellingPrice).toFixed(2)}
+                $
+                {Number(
+                  selectedCombination?.Price || data.sellingPrice
+                ).toFixed(2)}
               </p>
             </div>
           </div>
@@ -226,7 +229,7 @@ export const HomeProductCard = ({
               title="Add to Cart"
               aria-label="Add to Cart"
             >
-              <FaPlus />
+              <FaPlus color="#000" />
             </button>
             <button
               onClick={handleWishlistToggle}
@@ -235,9 +238,9 @@ export const HomeProductCard = ({
               aria-label={isLiked ? "Remove from Wishlist" : "Add to Wishlist"}
             >
               {isLiked ? (
-                <FaHeart size={20} color="#46a3df" />
+                <FaHeart size={20} color="red" />
               ) : (
-                <FaRegHeart size={20} />
+                <FaRegHeart color="#000" size={20} />
               )}
             </button>
           </div>

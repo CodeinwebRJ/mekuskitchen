@@ -128,9 +128,9 @@ const HomePage = () => {
             <p className={style.subtitle}>
               From comforting tiffins to full thalis, enjoy homemade-style food.
             </p>
-            <Link to={"/daily-tiffin"}>
+            <Link to={"/product-category"}>
               <button className={style.button}>
-                Explore Our Tiffin <span className={style.arrow}>→</span>
+                Explore Our Products <span className={style.arrow}>→</span>
               </button>
             </Link>
           </div>

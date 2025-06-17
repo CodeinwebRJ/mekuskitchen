@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styles from "../../styles/Footer.module.css";
+import style from "../../styles/Footer.module.css";
 import { IoMdCall } from "react-icons/io";
 import { IoMail } from "react-icons/io5";
 import {
@@ -14,13 +14,13 @@ import { MdOutlineLunchDining } from "react-icons/md";
 
 const Footer = () => {
   return (
-    <footer className={styles.footerContainer}>
-      <div className={styles.footerInner}>
-        <div className={styles.footerColumn}>
-          <h3 className={styles.footerTitle}>
-            About <span className={styles.highlight}>Meku's Kitchen</span>
+    <footer className={style.footerContainer}>
+      <div className={style.footerInner}>
+        <div className={style.footerColumn}>
+          <h3 className={style.footerTitle}>
+            About <span className={style.highlight}>Meku's Kitchen</span>
           </h3>
-          <p className={styles.footerText}>
+          <p className={style.footerText}>
             Discover a culinary journey like no other at Meku’s Kitchen. Our
             passion for food and commitment to excellence are evident in every
             dish we create. Whether you're celebrating a special occasion or
@@ -28,53 +28,60 @@ const Footer = () => {
             the flavors of our carefully crafted menu.
           </p>
           <Link to={"/about-us"}>
-            <button className={styles.readMoreBtn}>Read More</button>
+            <button className={style.readMoreBtn}>Read More</button>
           </Link>
         </div>
 
-        <div className={styles.footerColumn}>
-          <h3 className={styles.footerTitle}>
-            <span className={styles.quickText}>Quick</span> Links
+        <div className={style.footerColumn}>
+          <h3 className={style.footerTitle}>
+            <span className={style.quickText}>Quick</span> Links
           </h3>
-          <div className={styles.linkList}>
+          <div className={style.linkList}>
             <Link to="/">
-              <FaHome /> Home
+              <FaHome />
+              <div className={style.listName}>Home</div>
             </Link>
             <Link to="/product-category">
-              <FaUtensils /> Our Menu
+              <FaUtensils />
+              <div className={style.listName}>Our Menu</div>
             </Link>
-            <Link to="/daily-tiffin">
-              <MdOutlineLunchDining /> Daily Tiffin
-            </Link>
+            {/* <Link to="/daily-tiffin">
+              <MdOutlineLunchDining />
+              <div>Daily Tiffin</div>
+            </Link> */}
             <Link to="/about-us">
-              <FaInfoCircle /> About Us
+              <FaInfoCircle />
+              <div className={style.listName}>About Us</div>
             </Link>
             <Link to="/contact-us">
-              <FaPhoneAlt /> Contact Us
+              <FaPhoneAlt />
+              <div className={style.listName}>Contact Us</div>
             </Link>
             <Link to="/privacy-policy">
-              <FaShieldAlt /> Privacy Policy
+              <FaShieldAlt />
+              <div className={style.listName}>Privacy Policy</div>
             </Link>
             <Link to="/refund-policy">
-              <FaMoneyCheckAlt /> Refund Policy
+              <FaMoneyCheckAlt />{" "}
+              <div className={style.listName}>Refund Policy</div>
             </Link>
           </div>
         </div>
 
-        <div className={styles.footerColumn}>
-          <h3 className={styles.footerTitle}>
-            Get in <span className={styles.highlight}>Touch</span>
+        <div className={style.footerColumn}>
+          <h3 className={style.footerTitle}>
+            Get in <span className={style.highlight}>Touch</span>
           </h3>
-          <p className={styles.contactLine}>
+          <p className={style.contactLine}>
             <IoMdCall size={18} /> <span>+1(672)-377-4949</span>
           </p>
-          <p className={styles.contactLine}>
+          <p className={style.contactLine}>
             <IoMail size={18} /> <span>mekuskitchen@gmail.com</span>
           </p>
-          <p className={styles.followUs}>
+          <p className={style.followUs}>
             <strong>Follow us on:</strong>
           </p>
-          <div className={styles.socialIcons}>
+          <div className={style.socialIcons}>
             <Link to="#">
               <img src="/facebook.png" alt="Facebook" />
             </Link>

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Header from "../../Component/MainComponents/Header";
-import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
-import PasswordInput from "../../Component/Password.jsx";
+import PasswordInput from "../../Component/Fields/Password";
+import Banner2 from "../../Component/MainComponents/Banner2";
+import Navbar2 from "../../Component/MainComponents/Navbar2";
 
 const inputStyle = {
   width: "100%",
@@ -52,8 +52,7 @@ function SignUpPage() {
 
     const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     if (!phoneRegex.test(formData.mobile)) {
-      validationErrors.mobile =
-        "Please enter a valid Canadian phone number (e.g., 123-456-7890).";
+      validationErrors.mobile = "Please enter a valid phone number";
     }
 
     if (formData.password.length < 8) {
@@ -74,9 +73,6 @@ function SignUpPage() {
 
     if (formData.password !== formData.confirmPassword) {
       validationErrors.confirmPassword = "Passwords do not match.";
-    }
-    if (!formData.refcode.trim()) {
-      validationErrors.refcode = "Referral Code is required.";
     }
 
     const termsCheckbox = document.getElementById("terms");
@@ -127,8 +123,9 @@ function SignUpPage() {
 
   return (
     <div>
-      <Header />
-      <Banner name={"Sign Up"} />
+      <Navbar2 />
+      <Banner2 title="Sign Up" />
+
       <div className="container">
         <div
           className="mt-5 d-flex align-items-stretch"
@@ -166,7 +163,7 @@ function SignUpPage() {
               }}
             >
               <div className="card-body p-0">
-                <h4 className="card-title text-center mb-4">Sign up</h4>
+                <h2 className="card-title text-center mb-4">Sign up</h2>
                 <form className="was-validated" onSubmit={handleSubmit}>
                   <div className="mb-3 mt-3">
                     <input
@@ -247,12 +244,9 @@ function SignUpPage() {
                       id="refcode"
                       value={formData.refcode}
                       onChange={handleInputChange}
-                      placeholder="Referral Code*"
+                      placeholder="Referral Code"
                       name="refcode"
                     />
-                    {errors.refcode && (
-                      <div className="text-danger">{errors.refcode}</div>
-                    )}
                   </div>
                   <div className="form-check">
                     <input

@@ -30,6 +30,7 @@ const RelatedProductCard = ({ item }) => {
   const Cart = useSelector((state) => state.cart);
   const [isLikedLocal, setIsLikedLocal] = useState(false);
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -37,8 +38,7 @@ const RelatedProductCard = ({ item }) => {
       const exists = localWishlist.some((loc) => loc._id === item._id);
       setIsLikedLocal(exists);
     }
-  }, [item._id, user]);
-  const dispatch = useDispatch();
+  }, [item._id, user, isLikedFromStore]);
 
   const isTiffin = category[1] === "tiffin";
   const linkPath = isTiffin
@@ -154,7 +154,7 @@ const RelatedProductCard = ({ item }) => {
           </div>
           <div className={style.PriceContainer}>
             <p className="originalPrice">${displayPrice}</p>
-            <p className="price">${displayPrice}</p>
+            <p className="price">${displayPrice} CAD </p>
           </div>
           <AddToCartButton onclick={handleAddToCart} />
         </div>

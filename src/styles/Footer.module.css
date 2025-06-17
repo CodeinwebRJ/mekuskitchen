@@ -52,17 +52,23 @@
   text-decoration: none;
   gap: 12px;
 }
+
 .linkList a:hover {
-  text-decoration: underline;
   text-underline-offset: 4px;
 }
 
+.listName:hover {
+  text-decoration: underline;
+  color: var(--white);
+  transition: color 0.2s ease;
+}
+
 .highlight {
-  color: white;
+  color: var(--white);
 }
 
 .quickText {
-  color: #fff;
+  color: var(--white);
 }
 
 .contactLine {

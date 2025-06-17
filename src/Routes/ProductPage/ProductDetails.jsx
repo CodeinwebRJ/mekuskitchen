@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import OptionSelector from "./OptionSelector";
 import Chip from "../../Component/Buttons/Chip";
@@ -237,9 +236,6 @@ const ProductDetails = ({
           </Link>
           <Link to="#">
             <img src="/Twitter.png" alt="LinkedIn" />
-          </Link>
-          <Link to="#">
-            <img src="/Linkedin.png" alt="Instagram" />
           </Link>
           <Link to="#">
             <img src="/Telegram.png" alt="LinkedIn" />

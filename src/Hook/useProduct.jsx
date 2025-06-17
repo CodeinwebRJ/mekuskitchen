@@ -47,8 +47,6 @@ const useProduct = (id) => {
   useEffect(() => {
     if (!isAuthenticated && product?._id) {
       const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-      console.log(localWishlist);
-      console.log(product?._id);
       setIsLikedLocal(localWishlist.some((item) => item._id === product._id));
     }
   }, [isAuthenticated, product?._id]);

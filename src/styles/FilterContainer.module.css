@@ -52,7 +52,6 @@
 .filterSection input[type="text"],
 .filterSection input[type="range"] {
   width: 100%;
-  padding: 10px 12px;
   border: 1px solid var(--gray-border);
   border-radius: 6px;
   font-size: 14px;

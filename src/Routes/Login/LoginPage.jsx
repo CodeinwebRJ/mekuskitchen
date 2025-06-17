@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
-import Banner2 from "../../Component/MainComponents/Banner2";
 import Loading from "../../Component/UI-Components/Loading";
+import Banner2 from "../../Component/MainComponents/Banner2";
+import Footer from "../../Component/MainComponents/Footer";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../Store/Slice/UserSlice";
-import PasswordInput from "../../Component/Password";
+import PasswordInput from "../../Component/Fields/Password";
 import { Toast } from "../../Utils/Toast";
 
 function LoginPage() {
@@ -121,7 +122,7 @@ function LoginPage() {
         </div>
       )}
       <Navbar2 />
-      <Banner2 title="Login" secondtitle="Login" />
+      <Banner2 title="Login" />
 
       <div className="container">
         <div
@@ -163,7 +164,7 @@ function LoginPage() {
               }}
             >
               <div className="card-body p-0">
-                <h4 className="card-title text-center mb-4">Log in</h4>
+                <h2 className="text-center mb-4">Log in</h2>
                 <form className="was-validated" onSubmit={handleSubmit}>
                   <div className="mb-3 mt-3">
                     <input
@@ -251,6 +252,7 @@ function LoginPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
