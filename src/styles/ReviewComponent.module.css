@@ -69,7 +69,7 @@
 
 .submitButton {
   padding: 8px 24px;
-  white-space: nowrap;
+  var(--white)-space: nowrap;
   border-radius: 8px;
 }
 

@@ -72,7 +72,7 @@
 
 .confirmbutton {
   background-color: #007bff;
-  color: white;
+  color: var(--white);
 }
 
 .confirmbutton:hover {

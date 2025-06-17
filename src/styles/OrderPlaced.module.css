@@ -42,7 +42,7 @@
 
 .viewBtn {
   padding: 10px 20px;
-  background: #ffffff;
+  background: var(--white);
   color: #46a3df;
   border: 2px solid #46a3df;
   border-radius: 8px;
@@ -52,13 +52,13 @@
 
 .viewBtn:hover {
   background: #46a3df;
-  color: #ffffff;
+  color: var(--white);
 }
 
 .continueBtn {
   padding: 10px 20px;
   background-color: #46a3df;
-  color: #ffffff;
+  color: var(--white);
   border: none;
   border-radius: 8px;
   cursor: pointer;

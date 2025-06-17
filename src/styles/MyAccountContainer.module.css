@@ -1,3 +1,9 @@
+.sideTitleContent{
+  display: flex;
+  gap: var(--gap-3);
+  align-items: center;
+}
+
 .myAccountContainer {
   display: flex;
   padding: 50px 15px;
@@ -46,6 +52,7 @@
   padding: 8px 16px;
   cursor: pointer;
   background-color: var(--blue-soft-overlay);
+  border-radius: 8px;
 }
 
 .sideTitle:hover {

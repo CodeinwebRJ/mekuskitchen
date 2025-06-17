@@ -21,7 +21,7 @@
   align-items: center;
   font-weight: bold;
   font-size: 16px;
-  color: #000;
+  color:  var(--black);
 }
 
 .starIcon {
@@ -31,7 +31,7 @@
 
 .reviewNumber {
   font-weight: bold;
-  color: #000;
+  color:  var(--black);
 }
 
 .text {
@@ -60,7 +60,7 @@
 
 .name {
   font-weight: 700;
-  color: #000;
+  color:  var(--black);
 }
 
 .title {

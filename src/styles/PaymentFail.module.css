@@ -44,7 +44,7 @@
 .retryBtn {
   padding: 10px 20px;
   background: #df4646;
-  color: #ffffff;
+  color: var(--white);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -58,7 +58,7 @@
 .continueBtn {
   padding: 10px 20px;
   background-color: #46a3df;
-  color: #ffffff;
+  color: var(--white);
   border: none;
   border-radius: 8px;
   cursor: pointer;

@@ -86,7 +86,10 @@ const WishlistItem = ({ product, fetchWishlist }) => {
               {product.name?.toUpperCase()}
             </span>
           </Link>
-          <span className="price">${product.sellingPrice}</span>
+          <div className={style.itemPrice}>
+            <span className="originalPrice">${product.price}</span>
+            <span className="price">${product.sellingPrice} CAD</span>
+          </div>
           <span className={style.itemDescription}>{product.description}</span>
         </div>
       </div>

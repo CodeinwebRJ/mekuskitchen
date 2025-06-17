@@ -119,6 +119,7 @@
 .userDropdownItem {
   display: flex;
   align-items: center;
+  gap: 8px;
   padding: 10px;
   color: var(--black);
   text-decoration: none;

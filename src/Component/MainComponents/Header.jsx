@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import style from "../../styles/Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { IoSearch } from "react-icons/io5";
+import { IoDownloadOutline, IoSearch } from "react-icons/io5";
 import { LuUserRound } from "react-icons/lu";
-import { PiShoppingCartSimpleBold } from "react-icons/pi";
+import {
+  PiNotepadLight,
+  PiShoppingCartSimpleBold,
+  PiUserCircleLight,
+} from "react-icons/pi";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart } from "react-icons/fa6";
@@ -15,6 +19,10 @@ import {
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
 import { setCategories } from "../../../Store/Slice/FilterDataSlice";
+import { IoLogOutOutline } from "react-icons/io5";
+import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { RxDashboard } from "react-icons/rx";
+import { TfiLocationPin } from "react-icons/tfi";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -35,8 +43,7 @@ const Header = () => {
     }
     try {
       dispatch(logout());
-      localStorage.removeItem("api_token");
-      localStorage.removeItem("user");
+      localStorage.clear();
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -132,25 +139,36 @@ const Header = () => {
           <LuUserRound className={style.userDropdownIcon} />
           <div className={style.userDropdownMenu}>
             <Link to="/my-account" className={style.userDropdownItem}>
+              <RxDashboard size={20} />
               Dashboard
             </Link>
             <Link to="/my-account/orders" className={style.userDropdownItem}>
-              Orders
+              <PiNotepadLight size={20} /> Orders
             </Link>
             <Link to="/my-account/downloads" className={style.userDropdownItem}>
+              <IoDownloadOutline size={20} />
               Downloads
             </Link>
             <Link to="/my-account/addresses" className={style.userDropdownItem}>
-              Address
+              <TfiLocationPin size={20} /> Address
             </Link>
             <Link
               to="/my-account/account-details"
               className={style.userDropdownItem}
             >
+              <PiUserCircleLight size={20} />
               Account Details
             </Link>
             <span onClick={handleLogout} className={style.userDropdownItem}>
-              {isAuthenticated ? "Logout" : "Login"}
+              {isAuthenticated ? (
+                <>
+                  <FiLogOut size={20} /> Logout
+                </>
+              ) : (
+                <>
+                  <FiLogIn size={20} /> Login
+                </>
+              )}
             </span>
           </div>
         </div>

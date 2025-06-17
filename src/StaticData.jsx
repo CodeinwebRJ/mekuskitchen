@@ -2,13 +2,13 @@ import { PiNotepadLight } from "react-icons/pi";
 import { TfiLocationPin } from "react-icons/tfi";
 import { IoDownloadOutline } from "react-icons/io5";
 import { PiUserCircleLight } from "react-icons/pi";
-import { IoLogOutOutline } from "react-icons/io5";
+import { RxDashboard } from "react-icons/rx";
 
 export const MyAccountData = [
   {
     id: 1,
     title: "Dashboard",
-    icon: "/Dashboard.svg",
+    icon: <RxDashboard />,
     route: "/my-account",
   },
   {
@@ -34,11 +34,5 @@ export const MyAccountData = [
     title: "Account Details",
     icon: <PiUserCircleLight />,
     route: "/my-account/account-details",
-  },
-  {
-    id: 6,
-    title: "Logout",
-    icon: <IoLogOutOutline />,
-    route: "#",
   },
 ];

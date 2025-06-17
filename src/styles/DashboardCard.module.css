@@ -1,14 +1,12 @@
 .cardContainer {
-  width: 100%;
-  height: 100%;
-  padding: 4px 0;
+  padding: 24px;
   display: flex;
   flex-direction: column;
+  gap: var(--gap-4);
   justify-content: center;
   align-items: center;
-  border: 1.6px solid var(--gray-shadow);
-  margin-bottom: 20px;
-  border-radius: 5px;
+  border: 1px solid var(--gray-shadow);
+  border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   transition: background-color 0.1s ease-in-out;
@@ -19,13 +17,13 @@
 }
 
 .cardContainer:hover .cardIcon svg {
-  color: var(--primary-green-soft);
+  color: var(--primary-blue);
 }
 
 .cardIcon {
-  height: 78px;
-  width: 67px;
-  color: var(--gray-shadow);
+  height: 48px;
+  width: 48px;
+  color: var(--gray-border);
 }
 
 .cardIcon svg {

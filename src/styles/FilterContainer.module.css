@@ -113,7 +113,7 @@
   flex-shrink: 0;
   border: 1px solid var(--gray-border);
   padding: 4px;
-  background: #fff;
+  background: var(--white);
 }
 
 .topRatedImg {

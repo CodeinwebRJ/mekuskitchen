@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/DashboardCard.module.css";
 import { Link } from "react-router-dom";
 
@@ -8,7 +7,6 @@ const DashboardCard = (props) => {
   return (
     <Link to={route} className={style.cardContainer}>
       <div className={style.cardIcon}>{icon}</div>
-
       <p className={style.cardIconText}>{title}</p>
     </Link>
   );
