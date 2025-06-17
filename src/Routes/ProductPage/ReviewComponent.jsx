@@ -1,36 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import style from "../../styles/ReviewComponent.module.css";
 import RatingStar from "../../Component/RatingStar";
-import {
-  addProductReview,
-  getAllProductReview,
-} from "../../axiosConfig/AxiosConfig";
+import { addProductReview } from "../../axiosConfig/AxiosConfig";
 import Button from "../../Component/Buttons/Button";
 import { useSelector } from "react-redux";
 import NoData from "../../Component/UI-Components/NoData";
 
 const ReviewComponent = ({
   reviews,
-  setReviews,
   product,
   rating,
   review,
   setReview,
   id,
   setRating,
+  fetchReviews,
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [errors, setErrors] = useState({ rating: "", review: "" });
   const { user } = useSelector((state) => state.auth);
-
-  const fetchReviews = async () => {
-    try {
-      const res = await getAllProductReview(id);
-      setReviews(res.data.data || []);
-    } catch (error) {
-      console.error("Failed to fetch reviews:", error);
-    }
-  };
 
   const validateForm = () => {
     let validationErrors = { rating: "", review: "" };
@@ -74,10 +62,6 @@ const ReviewComponent = ({
       console.error("Failed to submit review:", error);
     }
   };
-
-  useEffect(() => {
-    if (id) fetchReviews();
-  }, [id]);
 
   return (
     <div className={style.reviewsSection}>

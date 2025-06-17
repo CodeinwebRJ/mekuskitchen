@@ -15,9 +15,7 @@ import Heading from "../../Component/UI-Components/Heading";
 const RelatedProduct = () => {
   const { pathname } = useLocation();
   const category = pathname.split("/").filter((segment) => segment);
-
   const [relatedProduct, setRelatedProduct] = useState([]);
-
   const fetchProduct = async () => {
     try {
       const data = { category: category[1] };

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCategory,
@@ -135,7 +135,6 @@ const FoodPage = () => {
                   <Link to={"/"}>Home / </Link>
                   <span>Food</span>
                 </div>
-
                 <div className={styles.sortingOptions}>
                   <ShowProducts />
                   <div

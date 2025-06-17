@@ -4,6 +4,8 @@ import Chip from "../../Component/Buttons/Chip";
 import style from "../../styles/ProductPage.module.css";
 import Button from "../../Component/Buttons/Button";
 import { Link } from "react-router-dom";
+import RatingStar from "../../Component/RatingStar";
+import Features from "../../Component/UI-Components/Features";
 
 const ProductDetails = ({
   product,
@@ -19,6 +21,7 @@ const ProductDetails = ({
   isAddingToCart,
   handleWishlistToggle,
   isLiked,
+  reviews,
 }) => {
   // const { isAuthenticated } = useSelector((state) => state.auth);
   // const isLikedFromStore = useSelector(
@@ -77,18 +80,31 @@ const ProductDetails = ({
     } else {
       setSelectedOptions({});
     }
-  };
+  }
 
   return (
     <div className={style.productDetails}>
-      <div className={style.LikeContainer}>
-        <h1>{product?.name?.toUpperCase() || "Product Name"}</h1>
-        <div className={style.wishlist} onClick={handleWishlistToggle}>
-          {isLiked ? (
-            <FaHeart color="red" size={20} aria-label="Remove from wishlist" />
-          ) : (
-            <FaRegHeart size={20} aria-label="Add to wishlist" />
-          )}
+      <div>
+        <div className={style.LikeContainer}>
+          <h1>{product?.name?.toUpperCase() || "Product Name"}</h1>
+          <div className={style.wishlist} onClick={handleWishlistToggle}>
+            {isLiked ? (
+              <FaHeart
+                color="red"
+                size={20}
+                aria-label="Remove from wishlist"
+              />
+            ) : (
+              <FaRegHeart size={20} aria-label="Add to wishlist" />
+            )}
+          </div>
+        </div>
+        <div className={style.ratingContainer}>
+          <RatingStar rating={product?.averageRating || 0} disabled />
+          <span>({reviews?.length || 0})</span>
+        </div>
+        <div>
+          <span>500+ bought in past month</span>
         </div>
       </div>
       <div className={style.priceContainer}>
@@ -98,14 +114,13 @@ const ProductDetails = ({
           {selectedCombination?.Price ??
             product?.sellingPrice ??
             product?.price ??
-            0}
+            0}{" "}
+          CAD
         </p>
       </div>
-
       {!selectedCombination && Object.keys(selectedOptions).length > 0 && (
         <p className={style.unavailableMessage}>Unavailable</p>
       )}
-
       {product?.category && (
         <p>
           Category: <span>{product.category}</span>
@@ -116,7 +131,6 @@ const ProductDetails = ({
           Brand: <span>{product.brand}</span>
         </p>
       )}
-
       {selectedCombination && (
         <p className={style.selectedCombination}>
           Selected Configuration:{" "}
@@ -125,7 +139,6 @@ const ProductDetails = ({
             .join(", ") || "None"}
         </p>
       )}
-
       <div className={style.quantity}>
         <button
           className={style.quantityButton}
@@ -160,6 +173,10 @@ const ProductDetails = ({
             ADD TO CART
           </Button>
         </div>
+      </div>
+
+      <div>
+        <Features />
       </div>
 
       {product?.sku?.length > 0 &&

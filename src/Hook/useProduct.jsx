@@ -1,8 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
-  getProductById,
   AddtoCart,
   AddtoWishlist,
   RemoveWishlist,
@@ -13,14 +11,13 @@ import { setWishlist, toggleLiked } from "../../Store/Slice/UserWishlistSlice";
 import { setWishlistCount } from "../../Store/Slice/CountSlice";
 
 const useProduct = (id) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth) || {};
   const cart = useSelector((state) => state.cart) || {};
   const isLikedFromStore = useSelector(
     (state) => state.wishlist?.likedMap?.[id]
   );
-
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -33,6 +30,7 @@ const useProduct = (id) => {
   const [isLikedLocal, setIsLikedLocal] = useState(false);
 
   const defaultImage = "/defaultImage.png";
+
   const getDefaultImage = (product, sku) => {
     return (
       sku?.details?.SKUImages?.[0] || product?.images?.[0]?.url || defaultImage
@@ -49,7 +47,7 @@ const useProduct = (id) => {
       const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
       setIsLikedLocal(localWishlist.some((item) => item._id === product._id));
     }
-  }, [isAuthenticated, product?._id]);
+  }, [isAuthenticated, product?._id, isLikedFromStore, isLikedLocal]);
 
   const availableOptions = useMemo(() => {
     if (!selectedSKUs?.details?.combinations?.length) return {};

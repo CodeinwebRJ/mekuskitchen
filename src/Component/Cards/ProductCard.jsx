@@ -28,7 +28,6 @@ const ProductCard = ({ product, grid }) => {
   const dispatch = useDispatch();
   const [isLikedLocal, setIsLikedLocal] = useState(false);
   const isLiked = isAuthenticated ? isLikedFromStore : isLikedLocal;
-
   const { selectedCombination, selectedSKUs, setSelectedSKUs } = useProduct(
     product._id
   );
@@ -210,12 +209,7 @@ const ProductCard = ({ product, grid }) => {
         <div className={style.productDetails}>
           <p className={style.productName}>{product?.name}</p>
           <div className={style.rating}>
-            <RatingStar
-              rating={product?.averageRating}
-              start={0}
-              stop={5}
-              disabled
-            />
+            <RatingStar rating={product?.averageRating} disabled />
           </div>
           <div className={style.discountContainer}>
             <div className={style.PriceContainer}>

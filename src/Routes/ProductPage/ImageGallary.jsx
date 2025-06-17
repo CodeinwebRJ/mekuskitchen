@@ -1,4 +1,5 @@
-import style from "../../styles/ProductPage.module.css";
+import { Link } from "react-router-dom";
+import style from "../../styles/ImageGallary.module.css";
 
 const ImageGallery = ({
   product,
@@ -14,6 +15,11 @@ const ImageGallery = ({
 
   return (
     <div className={style.imageContainer}>
+      <div className={style.breadcrumb}>
+        <Link to="/">Home</Link> /{" "}
+        <Link to="/product-category">{product.category || "Category"}</Link> /{" "}
+        {product.name || "Product"}
+      </div>
       <div className={style.productImageContainer}>
         <img
           src={selectedImage || defaultImage}
