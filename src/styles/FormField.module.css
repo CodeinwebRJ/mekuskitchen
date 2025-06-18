@@ -21,3 +21,18 @@
   margin-top: 5px;
   margin-left: 5px;
 }
+
+.label {
+  padding: 0px 4px;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.phoneInputWrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.phoneCodeSelect {
+  max-width: 80px;
+}

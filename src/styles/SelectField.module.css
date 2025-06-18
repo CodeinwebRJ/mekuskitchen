@@ -25,9 +25,9 @@
 }
 
 .label {
+  padding: 0px 4px;
   cursor: pointer;
-  margin-bottom: 8px;
-  /* font-weight: var(--font-medium); */
+  margin-bottom: 4px;
 }
 
 .selectfocus {

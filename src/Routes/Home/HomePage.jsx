@@ -43,7 +43,7 @@ const HomePage = () => {
         <NewArrivals data={data} />
         <Category data={data} />
 
-        <section className={style.dishesSection}>
+        {/* <section className={style.dishesSection}>
           <div className={style.headingContainer}>
             <h2 className={style.heading}>
               <span className={style.blueText}>Discover </span>
@@ -77,7 +77,7 @@ const HomePage = () => {
               />
             </div>
           </div>
-        </section>
+        </section> */}
 
         <BestSellerProduct data={data} />
 

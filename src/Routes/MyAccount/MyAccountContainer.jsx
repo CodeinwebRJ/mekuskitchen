@@ -1,29 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "../../styles/MyAccountContainer.module.css";
 import { MyAccountData } from "../../StaticData";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
-import { useSelector, useDispatch } from "react-redux"; // Added useDispatch
-import { logout } from "../../../Store/Slice/UserSlice";
+import { useSelector } from "react-redux";
 
 const MyAccountContainer = ({ children }) => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch(); // Added dispatch
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [active, setActive] = useState("Dashboard");
 
   const handleSideTitleClick = (title) => {
-    console.log(title);
-    if (isAuthenticated === true && title === "Logout") {
-      console.log("object");
-      dispatch(logout());
-      navigate("/login");
-    } else {
-      navigate("/login");
-    }
     setActive(title);
   };
 
@@ -50,7 +39,7 @@ const MyAccountContainer = ({ children }) => {
                   }
                   onClick={() => handleSideTitleClick(item.title)}
                 >
-                  {item.icon}{" "}
+                  {item.icon}
                   {item.title === "Logout" && !isAuthenticated
                     ? "Login"
                     : item.title}

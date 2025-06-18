@@ -88,7 +88,7 @@ export const RemoveWishlist = async (data) => {
 };
 
 export const getCategory = async () => {
-  return axiosInstance.get("/api/v1/C/get/category");
+  return axiosInstance.get("/api/v1/categories/get/category");
 };
 
 export const sendOrder = async (data) => {
@@ -110,4 +110,8 @@ export const getUserOrders = async (data) => {
 
 export const getOrderById = async (id) => {
   return axiosInstance.post(`/api/v1/order/${id}`);
+};
+
+export const getCountryData = async () => {
+  return axiosInstance.get("/api/v1/C/get/country");
 };

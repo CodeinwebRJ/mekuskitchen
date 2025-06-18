@@ -383,7 +383,7 @@ const FilterContainer = ({
         <div className={style.filterHeader}>
           <h3>Filters</h3>
           <button onClick={handleClearFilters} className={style.clearButton}>
-            <BsTrash /> Clear All
+            Clear All
           </button>
         </div>
 

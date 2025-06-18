@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <MyAccountContainer>
       <div className={style.dashboardContainer}>
-        <p className={style.userMessage}>
+        {/* <p className={style.userMessage}>
           Hello <span className={style.userName}>bharat.mbinfoways</span> (not{" "}
           <span className={style.userName}>bharat.mbinfoways</span>? Log out)
         </p>
@@ -17,7 +17,7 @@ const Dashboard = () => {
           From your account dashboard you can view your recent orders, manage
           your shipping and billing addresses, and edit your password and
           account details.
-        </p>
+        </p> */}
 
         <div className={style.dashboardCardContainer}>
           {MyAccountData.slice(1).map((item, index) => (

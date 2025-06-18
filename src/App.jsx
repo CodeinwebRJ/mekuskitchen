@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import "./index.css";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   getAllTiffin,
   getCount,
+  getCountryData,
   getHomePageData,
   getProduct,
   getUserAddress,
@@ -49,8 +49,8 @@ import VerifyEmail from "./Routes/VerifyEmail/VerifyEmail.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 import { setCart } from "../Store/Slice/UserCartSlice.jsx";
 import { setData } from "../Store/Slice/HomePageSlice.jsx";
-import OrderPlaced from "./Routes/CheckOut/OrderPlaced.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
+import { setCountriesData } from "../Store/Slice/CountrySlice.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -168,11 +168,6 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    fetchTiffin();
-    fetchHomeData();
-  }, []);
-
   const fetchUserCart = async () => {
     try {
       const data = {
@@ -185,6 +180,21 @@ const App = () => {
     }
   };
 
+  const featchCountryData = async () => {
+    try {
+      const res = await getCountryData();
+      dispatch(setCountriesData(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTiffin();
+    fetchHomeData();
+    featchCountryData();
+  }, []);
+  
   useEffect(() => {
     if (isAuthenticated) {
       fetchAddresses();

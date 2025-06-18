@@ -16,7 +16,6 @@ const NewArrivals = ({ data }) => {
           <span className={style.blueText}>New </span>
           <span>Arrival</span>
         </h2>
-        {/* <h6>View All</h6> */}
       </div>
 
       {products.length === 0 ? (
@@ -36,10 +35,11 @@ const NewArrivals = ({ data }) => {
             480: { slidesPerView: 2 },
             768: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
+            1280: { slidesPerView: 5 }, // Optional: Show more cards on larger screens
           }}
           className={style.swiperContainer}
         >
-          {products.map((product) => (
+          {products.slice(0, 6).map((product) => ( // Limit to 6 cards if data has more
             <SwiperSlide key={product.id}>
               <div className={style.slideWrapper}>
                 <HomeProductCard

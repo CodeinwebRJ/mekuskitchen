@@ -1,15 +1,47 @@
-import React from "react";
 import style from "../../../styles/FormField.module.css";
 import InputField from "../../../Component/UI-Components/InputField";
 import SelectField from "../../../Component/UI-Components/SelectField";
+import { useSelector } from "react-redux";
 
-const FormField = ({
-  formData,
-  handleChange,
-  countries,
-  states,
-  formErrors = {},
-}) => {
+const FormField = ({ formData, handleChange, formErrors = {} }) => {
+  const { countriesData } = useSelector((state) => state.country);
+
+  const countries = countriesData.map((country) => ({
+    label: country.country,
+    value: country.country,
+  }));
+
+  const selectedCountryData = countriesData.find(
+    (country) => country.country === formData.country
+  );
+
+  const state =
+    selectedCountryData?.states?.map((s) => ({
+      label: s.state,
+      value: s.state,
+    })) || [];
+
+  const selectedStateData = selectedCountryData?.states?.find(
+    (s) => s.state === formData.state
+  );
+
+  const cities =
+    selectedStateData?.cities?.map((city) => ({
+      label: city,
+      value: city,
+    })) || [];
+
+  const Phonecode = countriesData.map((country) => {
+    const code = country?.PhoneCode?.startsWith("+")
+      ? country?.PhoneCode
+      : `+${country?.PhoneCode}`;
+
+    return {
+      label: code,
+      value: code,
+    };
+  });
+
   return (
     <>
       <div className={style.billingFormColumn2}>
@@ -32,7 +64,8 @@ const FormField = ({
             labelName="State"
             name="state"
             value={formData.state || ""}
-            options={states}
+            options={state}
+            disabled={!formData.country}
             placeholder="Select State"
             onChange={handleChange}
             required
@@ -45,11 +78,12 @@ const FormField = ({
 
       <div className={style.billingFormColumn2}>
         <div className={style.inputFieldContainer}>
-          <InputField
-            type="text"
+          <SelectField
             name="city"
             value={formData.city || ""}
             onChange={handleChange}
+            disabled={!formData.state}
+            options={cities}
             placeholder="City"
             labelName="City"
             required
@@ -126,17 +160,33 @@ const FormField = ({
 
       <div className={style.billingFormColumn2}>
         <div className={style.inputFieldContainer}>
-          <InputField
-            type="number"
-            name="phone"
-            value={formData.phone || ""}
-            onChange={handleChange}
-            placeholder="Phone"
-            labelName="Phone"
-            required
-          />
-          {formErrors.phone && (
-            <div className={style.errorMessage}>{formErrors.phone}</div>
+          <label className={style.label}>Phone</label>
+          <div className={style.phoneInputWrapper}>
+            <div>
+              <SelectField
+                name="phoneCode"
+                value={formData.phoneCode || ""}
+                onChange={(e) => handleChange(e, type)}
+                options={Phonecode}
+                placeholder="Phone Code"
+                className={style.phoneCodeSelect}
+                required
+              />
+            </div>
+            <InputField
+              type="number"
+              name="phone"
+              value={formData.phone || ""}
+              onChange={handleChange}
+              placeholder="Phone Number"
+              className={style.phoneNumberInput}
+              required
+            />
+          </div>
+          {(formErrors.phoneCode || formErrors.phone) && (
+            <div className={style.errorMessage}>
+              {formErrors.phoneCode || formErrors.phone}
+            </div>
           )}
         </div>
 

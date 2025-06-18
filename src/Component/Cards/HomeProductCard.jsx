@@ -190,8 +190,6 @@ export const HomeProductCard = ({
     }
   }, []);
 
-  console.log(data)
-
   return (
     <Link
       to={`/product/${data?.category?.toLowerCase()}/${data?.name?.toLowerCase()}`}

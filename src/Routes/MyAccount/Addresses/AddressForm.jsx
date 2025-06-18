@@ -27,6 +27,7 @@ const AddressForm = (props) => {
       city: "",
       address: "",
       postCode: "",
+      phoneCode: "",
       phone: "",
       email: "",
     },
@@ -38,6 +39,7 @@ const AddressForm = (props) => {
       city: "",
       address: "",
       postCode: "",
+      phoneCode: "",
       phone: "",
       email: "",
     },
@@ -49,8 +51,7 @@ const AddressForm = (props) => {
     shippingErrors: {},
   });
 
-  const countries = [{ value: "United States", label: "United States" }];
-  const states = [{ value: "California", label: "California" }];
+  const { countriesData } = useSelector((state) => state.country);
 
   const validateAddressForm = (data) => {
     const validationErrors = {};
@@ -91,11 +92,29 @@ const AddressForm = (props) => {
     const dataKey = type === "billing" ? "billingData" : "shippingData";
     const errorKey = type === "billing" ? "billingErrors" : "shippingErrors";
 
+    let updatedFields = {
+      [name]: value,
+    };
+
+    if (name === "country") {
+      const selectedCountry = countriesData.find(
+        (country) => country.country === value
+      );
+      updatedFields.phoneCode = selectedCountry?.PhoneCode
+        ? `+${selectedCountry.PhoneCode}`
+        : "";
+      updatedFields.state = "";
+      updatedFields.city = "";
+    }
+    if (name === "state") {
+      updatedFields.city = "";
+    }
+
     setFormData((prev) => ({
       ...prev,
       [dataKey]: {
         ...prev[dataKey],
-        [name]: value,
+        ...updatedFields,
       },
     }));
 
@@ -194,8 +213,6 @@ const AddressForm = (props) => {
         <FormField
           formData={formData.billingData}
           handleChange={(e) => handleChange(e, "billing")}
-          countries={countries}
-          states={states}
           formErrors={errors.billingErrors}
         />
 
@@ -219,8 +236,6 @@ const AddressForm = (props) => {
               <FormField
                 formData={formData.shippingData}
                 handleChange={(e) => handleChange(e, "shipping")}
-                countries={countries}
-                states={states}
                 formErrors={errors.shippingErrors}
               />
             </div>

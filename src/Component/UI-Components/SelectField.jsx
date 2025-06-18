@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/SelectField.module.css";
 
 const SelectField = (props) => {
@@ -7,9 +6,9 @@ const SelectField = (props) => {
     name = "",
     value = "",
     onChange = () => {},
-
     error = "",
     options = [],
+    disabled,
     placeholder = "Select an option",
   } = props;
 
@@ -27,9 +26,12 @@ const SelectField = (props) => {
           name={name}
           value={value}
           onChange={onChange}
+          disabled={disabled}
           className={style.select}
         >
-          <option value="">{placeholder}</option>
+          <option value="" disabled>
+            {placeholder}
+          </option>
           {options.map((option, index) => (
             <option key={index} value={option.value}>
               {option.label}
