@@ -115,3 +115,7 @@ export const getOrderById = async (id) => {
 export const getCountryData = async () => {
   return axiosInstance.get("/api/v1/C/get/country");
 };
+
+export const CanadaSearch = async (search) => {
+  return axiosInstance.get(`/api/v1/address/suggest/canada?search=${search}`);
+};
