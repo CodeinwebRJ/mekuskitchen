@@ -237,13 +237,13 @@
 
 .originalPrice {
   text-decoration: line-through;
-  color: #888;
+  color: var(--gray-balanced);
   font-size: 16px;
   font-weight: 500;
 }
 
 .sellingPrice {
-  color: #e53935;
+  color: var(--error);
   font-weight: bold;
   font-size: 18px;
 }
@@ -266,7 +266,7 @@
 
 .addCartButton {
   padding: 10px 20px;
-  background-color: #e53935;
+  background-color: var(--error);
   color: var(--white);
   font-size: 16px;
   font-weight: bold;
@@ -277,7 +277,7 @@
 }
 
 .addCartButton:hover {
-  background-color: #d32f2f;
+  background-color: var(--error);
 }
 
 @media (max-width: 1250px) {

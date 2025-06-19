@@ -1,5 +1,4 @@
 .paymentContainer {
-  /* height: 100vh; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,14 +20,14 @@
 
 .cardIcon {
   font-size: 2rem;
-  color: #0070f3;
+  color: var(--primary-blue);
 }
 
 .cardTitle {
   font-size: 1.75rem;
   margin: 0;
   text-align: center;
-  color: #222;
+  color: var(--very-dark-gray);
   font-weight: 600;
 }
 
@@ -46,23 +45,8 @@
 .formGroup label {
   margin-bottom: 8px;
   font-size: 1rem;
-  color: #333;
+  color: var(--gray-darkest);
   font-weight: 500;
-}
-
-.inputField {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease;
-  background: #fafafa;
-}
-
-.inputField:focus {
-  border-color: #0070f3;
-  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
 }
 
 .row {
@@ -81,7 +65,7 @@
 }
 
 .submitBtn {
-  background-color: #0070f3;
+  background-color: var(--primary-blue);
   color: var(--white);
   border: none;
   padding: 8px;

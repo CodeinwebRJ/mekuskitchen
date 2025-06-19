@@ -43,21 +43,21 @@
 .viewBtn {
   padding: 10px 20px;
   background: var(--white);
-  color: #46a3df;
-  border: 2px solid #46a3df;
+  color: var(--primary-blue);
+  border: 2px solid var(--primary-blue);
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
 }
 
 .viewBtn:hover {
-  background: #46a3df;
+  background: var(--primary-blue);
   color: var(--white);
 }
 
 .continueBtn {
   padding: 10px 20px;
-  background-color: #46a3df;
+  background-color: var(--primary-blue);
   color: var(--white);
   border: none;
   border-radius: 8px;

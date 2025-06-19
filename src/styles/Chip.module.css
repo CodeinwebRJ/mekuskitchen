@@ -3,7 +3,7 @@
   align-items: center;
   padding: 2px 14px;
   font-size: 12px;
-  color: #686867;
+  color: var(--dim-gary);
   border-radius: 20px;
   background: var(--cool-light-blue-gray);
   letter-spacing: 1px;

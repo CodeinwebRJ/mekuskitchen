@@ -7,11 +7,9 @@ import { setLoading, setOrders } from "../../../../Store/Slice/OrderSlice";
 
 const Orders = () => {
   const { user } = useSelector((state) => state.auth);
-  const { Order, loading } = useSelector((state) => state.order);
+  const { Order } = useSelector((state) => state.order);
   const dispatch = useDispatch();
-
-  console.log(Order)
-
+  
   const fetchOrders = async () => {
     try {
       dispatch(setLoading(true));
@@ -33,7 +31,7 @@ const Orders = () => {
   return (
     <MyAccountContainer>
       {Order?.map((order) => (
-        <OrderCard order={order}/>
+        <OrderCard order={order} />
       ))}
     </MyAccountContainer>
   );

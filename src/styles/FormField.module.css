@@ -12,12 +12,13 @@
 
 .inputFieldContainer {
   display: flex;
+  position: relative;
   flex-direction: column;
 }
 
 .errorMessage {
   color: red;
-  font-size: var(--font-sm);
+  font-size: var(--font-base);
   margin-top: 5px;
   margin-left: 5px;
 }
@@ -35,4 +36,31 @@
 
 .phoneCodeSelect {
   max-width: 80px;
+}
+
+.suggestionList {
+  position: absolute;
+  z-index: 1000;
+  top: 100%;
+  left: 0;
+  background: var(--white);
+  border: 1px solid var(--gray-border-light);
+  width: 100%;
+  max-height: 150px;
+  min-width: 150px;
+  max-width: 500px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestionItem {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestionItem:hover {
+  background-color: var(--light-gray);
 }

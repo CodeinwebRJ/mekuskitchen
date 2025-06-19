@@ -57,7 +57,7 @@
 
 .continueBtn {
   padding: 10px 20px;
-  background-color: #46a3df;
+  background-color: var(--primary-blue);
   color: var(--white);
   border: none;
   border-radius: 8px;

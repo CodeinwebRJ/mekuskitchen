@@ -6,6 +6,7 @@ const InputField = (props) => {
     placeholder = "",
     type = "text",
     name = "",
+    maxLength,
     value = "",
     onChange = () => {},
     onBlur = () => {},
@@ -27,6 +28,7 @@ const InputField = (props) => {
           name={name}
           value={value}
           onChange={onChange}
+          maxLength={maxLength}
           onBlur={onBlur}
           placeholder={placeholder}
           className={style.input}

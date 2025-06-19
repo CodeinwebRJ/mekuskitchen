@@ -377,6 +377,8 @@ const FilterContainer = ({
     handlePriceChange([0, 2000]);
   }, [dispatch, handlePriceChange]);
 
+  console.log(data);
+
   return (
     <aside className={style.sidebar}>
       <div className={style.filterSection}>
@@ -505,27 +507,26 @@ const FilterContainer = ({
         <h5>Top Rated Products</h5>
         <ul>
           {Array.isArray(data) && data.length > 0 ? (
-            data.map((product, index) => (
+            data?.map((product, index) => (
               <Link
-                to={`/product/${product?.productDetails?.category.toLowerCase()}/${product?.productDetails?.product_name.toLowerCase()}`}
-                state={{ id: product?.productDetails?._id }}
+                key={product?._id || index}
+                to={`/product/${String(
+                  product?.category
+                ).toLowerCase()}/${String(
+                  product?.product_name
+                ).toLowerCase()}`}
+                state={{ id: product?._id }}
               >
-                <li
-                  key={product?.productDetails?.id || index}
-                  className={style.topRatedItem}
-                >
+                <li key={product?.id || index} className={style.topRatedItem}>
                   <div className={style.imageContainer}>
                     <img
-                      src={
-                        product?.productDetails?.image_url ||
-                        "/defaultImage.png"
-                      }
-                      alt={product?.productDetails?.product_name || "Product"}
+                      src={product?.images[0].url || "/defaultImage.png"}
+                      alt={product?.product_name || "Product"}
                       className={style.topRatedImg}
                     />
                   </div>
                   <div className={style.topRatedInfo}>
-                    <p>{product?.productDetails?.product_name || "N/A"}</p>
+                    <p>{product?.name || "N/A"}</p>
                     <div className={style.rating}>
                       <RatingStar
                         rating={product?.averageRating || 0}
@@ -534,7 +535,7 @@ const FilterContainer = ({
                       />
                     </div>
                     <p className="price">
-                      ${product?.productDetails?.price?.toFixed(2) || "0.00"}
+                      ${product?.price?.toFixed(2) || "0.00"} CAD
                     </p>
                   </div>
                 </li>

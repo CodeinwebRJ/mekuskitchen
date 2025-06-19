@@ -20,8 +20,8 @@
 }
 
 .active {
-  border-bottom: 3px solid #007bff;
-  color: #007bff;
+  border-bottom: 3px solid var(--primary-blue);
+  color: var(--primary-blue);
   background-color: var(--white);
 }
 

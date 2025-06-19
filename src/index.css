@@ -39,7 +39,6 @@
   --gap-11: 28px;
   --gap-12: 32px
 
-  /* Base Colors */
   --black: #000000;
   --white: #ffffff;
   --light-gray: #f0f0f0;
@@ -64,6 +63,7 @@
   --gray-solid: #1a1a1a;
   --gray-solid-2: #2c2c2c;
   --gray-shadow: #0000001b;
+  --dim-gary: #686867;
   --charcoal-navy: #111827;
   --almost-white: #f9fafb;
   --light-cool-gray: #e5e7eb;
@@ -78,6 +78,8 @@
   --primary-green: #218837;
   --primary-green-dark: #218838;
   --primary-green-soft: #2188378b;
+  --gray-balanced: #888888; 
+  --gray-very-light: #e0e0e0; 
   --primary-blue: #46a3df;
   --primary-blue-dark: #3592cd;
   --primary-blue-soft: #46a2df20;

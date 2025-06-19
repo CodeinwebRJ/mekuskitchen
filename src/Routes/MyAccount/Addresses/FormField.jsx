@@ -2,8 +2,12 @@ import style from "../../../styles/FormField.module.css";
 import InputField from "../../../Component/UI-Components/InputField";
 import SelectField from "../../../Component/UI-Components/SelectField";
 import { useSelector } from "react-redux";
+import { CanadaSearch } from "../../../axiosConfig/AxiosConfig";
+import { useEffect, useState } from "react";
 
 const FormField = ({ formData, handleChange, formErrors = {} }) => {
+  const [addressSuggestions, setAddressSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const { countriesData } = useSelector((state) => state.country);
 
   const countries = countriesData.map((country) => ({
@@ -41,6 +45,31 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
       value: code,
     };
   });
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (formData.address?.length < 3) {
+        setAddressSuggestions([]);
+        return;
+      }
+      try {
+        const res = await CanadaSearch(formData.address);
+        if (res.status === 200) {
+          setAddressSuggestions(res.data);
+          setShowSuggestions(true);
+        }
+      } catch (error) {
+        console.error("Error fetching address suggestions:", error);
+        setShowSuggestions(false);
+      }
+    };
+
+    const debounce = setTimeout(() => {
+      fetchSuggestions();
+    }, 300);
+
+    return () => clearTimeout(debounce);
+  }, [formData.address]);
 
   return (
     <>
@@ -122,6 +151,27 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
           />
           {formErrors.address && (
             <div className={style.errorMessage}>{formErrors.address}</div>
+          )}
+          {showSuggestions && addressSuggestions.length > 0 && (
+            <ul className={style.suggestionList}>
+              {addressSuggestions.map((suggestion, idx) => (
+                <li
+                  key={idx}
+                  onClick={() => {
+                    handleChange({
+                      target: {
+                        name: "address",
+                        value: `${suggestion.Text}, ${suggestion.Description}`,
+                      },
+                    });
+                    setShowSuggestions(false);
+                  }}
+                  className={style.suggestionItem}
+                >
+                  {suggestion.Text}, {suggestion.Description}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </div>

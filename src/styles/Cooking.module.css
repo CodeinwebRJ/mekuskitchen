@@ -42,7 +42,7 @@
 }
 
 .textContainer p {
-  color: #333;
+  color: var(--gray-darkest);
   font-size: 16px;
   margin-bottom: 24px;
 }

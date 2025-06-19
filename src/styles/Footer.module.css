@@ -30,7 +30,7 @@
 
 .readMoreBtn {
   background-color: var(--white);
-  color: #4fb5f1;
+  color: var(--primary-blue);
   border: none;
   padding: 10px 20px;
   border-radius: 20px;

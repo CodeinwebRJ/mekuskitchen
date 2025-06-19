@@ -132,7 +132,7 @@ const FoodPage = () => {
             <div className={styles.mainContent}>
               <div className={styles.sortingBar}>
                 <div className={styles.breadcrumb}>
-                  <Link to={"/"}>Home / </Link>
+                  <Link to={"/"} className={styles.homeLink}>Home / </Link>
                   <span>Food</span>
                 </div>
                 <div className={styles.sortingOptions}>

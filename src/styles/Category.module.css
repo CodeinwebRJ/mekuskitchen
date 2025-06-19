@@ -31,7 +31,7 @@
 }
 
 .blueText {
-  color: #3b82f6;
+  color: var(--primary-blue);
 }
 
 .description {

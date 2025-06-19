@@ -35,11 +35,11 @@ const NewArrivals = ({ data }) => {
             480: { slidesPerView: 2 },
             768: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
-            1280: { slidesPerView: 5 }, // Optional: Show more cards on larger screens
+            1280: { slidesPerView: 5 }, 
           }}
           className={style.swiperContainer}
         >
-          {products.slice(0, 6).map((product) => ( // Limit to 6 cards if data has more
+          {products?.map((product) => ( 
             <SwiperSlide key={product.id}>
               <div className={style.slideWrapper}>
                 <HomeProductCard

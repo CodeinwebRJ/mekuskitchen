@@ -1,52 +1,59 @@
-import { useEffect, useState } from "react";
-import { getOrderById } from "../../axiosConfig/AxiosConfig";
+import { useState } from "react";
 import styles from "../../styles/OrderCard.module.css";
 import { formatDate } from "../../Utils/FormateDate";
 import DialogBox from "../MainComponents/DialogBox";
 
 const OrderCard = ({ order }) => {
-  const status = order?.orderStatus?.toLowerCase();
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const status = order?.orderStatus?.toLowerCase();
 
-  const handleViewOrder = async (id) => {
-    try {
-      setLoading(true);
-      console.log(id);
-      const res = await getOrderById(id);
-      setData(res.data.data);
-      setLoading(false);
-      setOpen(true);
-    } catch (error) {
-      console.error("Failed to fetch order details:", error);
-      setLoading(false);
+  const handleToggle = () => setOpen(!open);
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "delivered":
+        return styles.delivered;
+      case "pending":
+        return styles.pending;
+      case "cancelled":
+        return styles.cancelled;
+      default:
+        return "";
     }
   };
+
+  const getFirstImage = (item) => {
+    return (
+      item?.sku?.images?.find(Boolean) ||
+      item?.productDetails?.images?.[0]?.url ||
+      "/defaultImage.png"
+    );
+  };
+
+  const firstItem = order?.cartItems?.[0];
+  const totalItems = order?.cartItems?.reduce(
+    (sum, item) => sum + (item.quantity || 0),
+    0
+  );
 
   return (
     <>
       <div className={styles.card}>
         <div className={styles.header}>
-          <span
-            className={`${styles.status} ${
-              status === "delivered"
-                ? styles.delivered
-                : status === "pending"
-                ? styles.pending
-                : status === "cancelled"
-                ? styles.cancelled
-                : ""
-            }`}
-          >
+          <span className={`${styles.status} ${getStatusClass(status)}`}>
             {order?.orderStatus}
           </span>
           <span className={styles.review}>⭐ Rate & Review Product</span>
         </div>
 
         <div className={styles.info}>
-          <span>{formatDate(order?.Orderdate)}</span>
-          <span>Order No: {order?.orderId}</span>
+          <div className={styles.orderInfo}>
+            <span>{formatDate(order?.Orderdate)}</span>
+            <span>Order No: {order?.orderId}</span>
+            <span>
+              Total Items : {totalItems} Item{totalItems > 1 ? "s" : ""}
+            </span>
+          </div>
           <span className={styles.total}>
             Total: <strong>${order?.grandTotal} CAD</strong>
           </span>
@@ -57,39 +64,95 @@ const OrderCard = ({ order }) => {
         <div className={styles.productSection}>
           <img
             className={styles.productImage}
-            src={
-              order?.cartItems?.[0]?.sku?.images?.[0] ||
-              order?.cartItems?.[0]?.sku?.images?.[1] ||
-              order?.cartItems?.[0]?.productDetails?.images?.[0]?.url ||
-              "/defaultImage.png"
-            }
+            src={getFirstImage(firstItem)}
             alt="Product"
           />
           <div className={styles.productDetails}>
             <div className={styles.productName}>
-              {order?.cartItems?.[0]?.sku?.name ||
-                order?.cartItems?.[0]?.productDetails?.name ||
+              {firstItem?.sku?.name ||
+                firstItem?.productDetails?.name ||
                 "Unknown Product"}
             </div>
             <div className={styles.productPrice}>
               $
-              {order?.cartItems?.[0]?.combination?.price ||
-                order?.cartItems?.[0]?.productDetails?.sellingPrice ||
+              {firstItem?.combination?.price ||
+                firstItem?.productDetails?.sellingPrice ||
                 "0"}{" "}
-              CAD × {order?.cartItems?.[0]?.quantity || 1}
+              CAD × {firstItem?.quantity || 1}
             </div>
           </div>
-          <button
-            className={styles.orderBtn}
-            onClick={() => handleViewOrder(order._id)}
-          >
+          <button className={styles.orderBtn} onClick={handleToggle}>
             Order Details
           </button>
         </div>
       </div>
 
-      <DialogBox isOpen={open} onClose={() => setOpen(false)} title={loading}>
-        sadfkj
+      <DialogBox isOpen={open} onClose={handleToggle} title={"Order Details"}>
+        <div className={styles.dialogContent}>
+          <div className={styles.orderInfo}>
+            <span className={`${styles.status} ${getStatusClass(status)}`}>
+              {order?.orderStatus}
+            </span>
+            <span className={styles.dialogOrderId}>
+              Order Id: {order?.orderId}
+            </span>
+          </div>
+
+          {order?.cartItems?.map((item, index) => {
+            const details = item?.productDetails;
+
+            return (
+              <div key={index} className={styles.dialogCard}>
+                <div className={styles.productSection}>
+                  <img
+                    className={styles.productImage}
+                    src={getFirstImage(item)}
+                    alt="Product"
+                  />
+                  <div className={styles.productDetails}>
+                    <div className={styles.productName}>
+                      {details?.name || "Unknown Product"}
+                    </div>
+                    <div className={styles.productPrice}>
+                      ${item?.price || details?.sellingPrice || "0"} CAD ×{" "}
+                      {item?.quantity || 1}
+                    </div>
+                    <div className={styles.productDescription}>
+                      {details?.description || "No description available."}
+                    </div>
+                    <div className={styles.productMeta}>
+                      {details?.brand && (
+                        <span>
+                          <strong>Brand:</strong> {details?.brand || "N/A"}
+                        </span>
+                      )}
+                      <span>
+                        <strong>Category:</strong> {details?.category} &raquo;{" "}
+                        {details?.subCategory}
+                      </span>
+                      {details?.productDetail?.[0]?.details?.color && (
+                        <span>
+                          <strong>Color:</strong>{" "}
+                          {details?.productDetail?.[0]?.details?.color || "N/A"}
+                        </span>
+                      )}
+                      {details?.productDetail?.[0]?.details?.material && (
+                        <span>
+                          <strong>Material:</strong>{" "}
+                          {details?.productDetail?.[0]?.details?.material}
+                        </span>
+                      )}
+                      <span>
+                        <strong>Weight:</strong> {details?.weight || "N/A"}{" "}
+                        {details?.weightUnit || "kg"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </DialogBox>
     </>
   );

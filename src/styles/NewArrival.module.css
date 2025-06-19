@@ -30,7 +30,7 @@
 
 .noProducts {
   text-align: center;
-  color: #777;
+  color: var(--gray-darker);
   font-size: 1rem;
 }
 
