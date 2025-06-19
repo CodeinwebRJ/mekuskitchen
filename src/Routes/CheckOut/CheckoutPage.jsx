@@ -7,18 +7,16 @@ import Footer from "../../Component/MainComponents/Footer";
 import Button from "../../Component/Buttons/Button";
 import {
   ActiveUserAddress,
-  DeleteUserAddress,
   getUserAddress,
   getUserCart,
-  sendOrder,
 } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AddressCard from "../../Component/Cards/AddressCard";
 import {
-  deleteAddress,
   setAddresses,
   setDefaultAddress,
+  setSelfPickup,
   setShowAddressForm,
 } from "../../../Store/Slice/AddressSlice";
 import AddAddressCard from "../../Component/UI-Components/AddAddressCard";
@@ -26,6 +24,7 @@ import AddressForm from "../MyAccount/Addresses/AddressForm";
 import DialogBox from "../../Component/MainComponents/DialogBox";
 import CouponCode from "../../Component/Cards/CouponCode";
 import PaymentCard from "./PaymentCard";
+import CheckboxField from "../../Component/UI-Components/CheckboxFeild";
 
 const OrderSummary = ({
   total,
@@ -76,7 +75,7 @@ const OrderSummary = ({
 );
 
 const CheckoutPage = () => {
-  const { defaultAddress, addresses, showAddressForm } = useSelector(
+  const { defaultAddress, addresses, selfPickup } = useSelector(
     (state) => state.address
   );
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -171,6 +170,8 @@ const CheckoutPage = () => {
     }
   };
 
+  console.log(defaultAddress);
+
   return (
     <div className={style.mainContainer}>
       {showComponent === "cart" && (
@@ -199,9 +200,16 @@ const CheckoutPage = () => {
                       />
                     ))}
                 </div>
-                <div>
-                  <CouponCode />
+                <div className={style.selfPickup}>
+                  <CheckboxField
+                    checked={selfPickup}
+                    onChange={(e) => dispatch(setSelfPickup(e.target.checked))}
+                  />
+                  <lable>Self PickUp</lable>
                 </div>
+                {/* <div>
+                  <CouponCode />
+                </div> */}
               </div>
               <OrderSummary
                 total={total}

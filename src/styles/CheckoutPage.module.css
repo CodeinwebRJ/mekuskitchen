@@ -25,6 +25,13 @@
   margin-top: 20px;
 }
 
+.selfPickup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 4px;
+}
+
 .checkoutButton {
   width: 100%;
   margin-top: 30px;

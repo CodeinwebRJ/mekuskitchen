@@ -1,6 +1,5 @@
 import { useState } from "react";
 import style from "../../styles/CouponCode.module.css";
-import Button from "../Buttons/Button";
 
 const CouponCode = ({ onApply, isLoading, appliedCoupon }) => {
   const [coupon, setCoupon] = useState("");

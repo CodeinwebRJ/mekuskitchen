@@ -21,7 +21,9 @@ const PaymentCard = ({ handleCancel }) => {
   const { user } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const { defaultAddress } = useSelector((state) => state.address);
+  const { defaultAddress, selfPickup } = useSelector((state) => state.address);
+
+  const [validationErrors, setValidationErrors] = useState({});
 
   const [paymentMethod, setPaymentMethod] = useState({
     cardNumber: "",
@@ -49,13 +51,12 @@ const PaymentCard = ({ handleCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setApiError("");
 
     if (!validateInputs()) {
       return;
     }
-
+    setApiError("");
+    setIsLoading(true);
     try {
       const paymentData = {
         userId: user?.userid,
@@ -77,6 +78,7 @@ const PaymentCard = ({ handleCancel }) => {
           addressId: defaultAddress?._id,
           cartAmount: cart?.items?.totalAmount || 0,
           taxAmount: cart?.items?.totalTax || 0,
+          selfPickup: selfPickup,
           paymentMethod: "CARD",
         };
         await sendOrder(data);
@@ -123,7 +125,7 @@ const PaymentCard = ({ handleCancel }) => {
     }
 
     if (!/^\d{3,4}$/.test(paymentMethod.cvv)) {
-      errors.cvv = "Enter a valid 3 or 4 digit CVV";
+      errors.cvv = "Enter a valid 3 digit CVV";
     }
 
     setValidationErrors(errors);
@@ -155,8 +157,12 @@ const PaymentCard = ({ handleCancel }) => {
                       value={paymentMethod.cardNumber}
                       onChange={handleChange}
                       required
-                      F
                     />
+                    {validationErrors.cardNumber && (
+                      <p className={style.error}>
+                        {validationErrors.cardNumber}
+                      </p>
+                    )}
                   </div>
 
                   <div className={style.row}>
@@ -173,6 +179,11 @@ const PaymentCard = ({ handleCancel }) => {
                         onChange={handleChange}
                         required
                       />
+                      {validationErrors.expiryDate && (
+                        <p className={style.error}>
+                          {validationErrors.expiryDate}
+                        </p>
+                      )}
                     </div>
 
                     <div className={style.formGroup}>
@@ -188,6 +199,9 @@ const PaymentCard = ({ handleCancel }) => {
                         onChange={handleChange}
                         required
                       />
+                      {validationErrors.cvv && (
+                        <p className={style.error}>{validationErrors.cvv}</p>
+                      )}
                     </div>
                   </div>
 

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaMinus, FaPlus, FaEye } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import style from "../../styles/Cart.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
@@ -15,6 +14,7 @@ import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import CouponCode from "../../Component/Cards/CouponCode";
 
 const CartItem = ({
   isAuthenticated,
@@ -94,7 +94,7 @@ const CartTotals = ({
   discount,
   discountPercentage,
 }) => (
-  <div className={style.cartTotals}>
+  <div>
     <h3>Cart Totals</h3>
     <p>
       Total: <span>${total.toFixed(2)}</span>
@@ -548,13 +548,20 @@ const ShoppingCart = () => {
             </tbody>
           </table>
         </div>
-        <CartTotals
-          subtotal={subtotal}
-          total={total}
-          discount={discount}
-          discountPercentage={discountPercentage}
-          handleClick={handleClick}
-        />
+        <div className={style.cartSummary}>
+          <div>
+            <CouponCode />
+          </div>
+          <div className={style.cartTotals}>
+            <CartTotals
+              subtotal={subtotal}
+              total={total}
+              discount={discount}
+              discountPercentage={discountPercentage}
+              handleClick={handleClick}
+            />
+          </div>
+        </div>
       </div>
       <Footer />
 

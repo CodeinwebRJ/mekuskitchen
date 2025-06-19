@@ -23,6 +23,12 @@
   color: var(--primary-blue);
 }
 
+.error {
+  color: var(--error);
+  font-size: var(--font-base);
+  margin-top: 4px;
+}
+
 .cardTitle {
   font-size: 1.75rem;
   margin: 0;

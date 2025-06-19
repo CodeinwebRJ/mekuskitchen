@@ -6,6 +6,7 @@ const addressSlice = createSlice({
     addresses: [],
     defaultAddress: null,
     showAddressForm: false,
+    selfPickup: false,
   },
 
   reducers: {
@@ -17,6 +18,10 @@ const addressSlice = createSlice({
     },
     setShowAddressForm: (state, action) => {
       state.showAddressForm = action.payload;
+    },
+    setSelfPickup: (state, action) => {
+      state.selfPickup = action.payload;
+      state.defaultAddress = null;
     },
     deleteAddress: (state, action) => {
       const addressId = action.payload;
@@ -35,6 +40,7 @@ export const {
   setDefaultAddress,
   setShowAddressForm,
   deleteAddress,
+  setSelfPickup,
 } = addressSlice.actions;
 
 export default addressSlice.reducer;
