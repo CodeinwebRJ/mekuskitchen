@@ -4,6 +4,7 @@ import SelectField from "../../../Component/UI-Components/SelectField";
 import { useSelector } from "react-redux";
 import { CanadaSearch } from "../../../axiosConfig/AxiosConfig";
 import { useEffect, useState } from "react";
+import { IoLocationOutline } from "react-icons/io5";
 
 const FormField = ({ formData, handleChange, formErrors = {} }) => {
   const [addressSuggestions, setAddressSuggestions] = useState([]);

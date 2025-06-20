@@ -16,7 +16,8 @@ import {
 import CheckboxField from "./UI-Components/CheckboxFeild";
 import { setPage } from "../../Store/Slice/FilterDataSlice";
 import { Link } from "react-router-dom";
-import { BsTrash } from "react-icons/bs";
+import InputField from "./UI-Components/InputField";
+import { IoSearch } from "react-icons/io5";
 
 const useDebounce = (value, delay, callback) => {
   useEffect(() => {
@@ -49,7 +50,7 @@ const FilterSection = ({
   return (
     <div className={style.filterGroup}>
       <h6>{title}</h6>
-      <input
+      <InputField
         type="text"
         placeholder={`Search ${title}`}
         className="form-control"
@@ -57,6 +58,7 @@ const FilterSection = ({
         onChange={(e) => setSearchTerm(e.target.value)}
         aria-label={`Search ${title}`}
         id={`search-${title.toLowerCase()}`}
+        icon={<IoSearch size={20} color="var(--gray-medium)" />}
       />
       <div className={style.checkboxGroup}>
         {filteredItems.length > 0 ? (
@@ -390,13 +392,14 @@ const FilterContainer = ({
         </div>
 
         <label htmlFor="search">Search</label>
-        <input
+        <InputField
           id="search"
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="form-control"
-          placeholder="Search by name"
+          placeholder="Search"
+          icon={<IoSearch size={20} color="var(--gray-medium)" />}
         />
 
         <div className={style.priceRangeContainer}>

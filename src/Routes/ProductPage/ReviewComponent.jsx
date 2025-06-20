@@ -5,6 +5,7 @@ import { addProductReview } from "../../axiosConfig/AxiosConfig";
 import Button from "../../Component/Buttons/Button";
 import { useSelector } from "react-redux";
 import NoData from "../../Component/UI-Components/NoData";
+import InputField from "../../Component/UI-Components/InputField";
 
 const ReviewComponent = ({
   reviews,
@@ -102,11 +103,11 @@ const ReviewComponent = ({
               <label htmlFor="review" className={style.label}>
                 Your Review <span className={style.errorMessage}>*</span>
               </label>
-              <input
+              <InputField
                 id="review"
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
-                placeholder="Share your experience with this product..."
+                placeholder="Share your experience with this product"
                 className={style.textarea}
               />
               {errors.review && (
@@ -117,7 +118,7 @@ const ReviewComponent = ({
             <div className={`${style.formGroup} ${style.submitContainer}`}>
               <Button
                 className={style.submitButton}
-                variant="success"
+                variant="primary"
                 type="submit"
                 size="sm"
               >

@@ -101,8 +101,8 @@ function VerifyEmail() {
                     type="submit"
                     className="btn w-100"
                     style={{
-                      backgroundColor: "#46a3df",
-                      color: "#fff",
+                      backgroundColor: "var(--primary-blue)",
+                      color: "var(--white)",
                       borderRadius: "14px",
                     }}
                   >

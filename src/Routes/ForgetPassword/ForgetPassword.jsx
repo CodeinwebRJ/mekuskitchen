@@ -87,7 +87,7 @@ function ForgetPassword() {
                   <div className="mb-3 mt-3" style={{ position: "relative" }}>
                     <input
                       style={{
-                        border: "1px solid black",
+                        border: "1px solid var(--black)",
                         textDecoration: "none",
                         padding: "10px 12px",
                         borderRadius: "6px",
@@ -122,9 +122,9 @@ function ForgetPassword() {
                       }}
                     >
                       {showConfirmPassword ? (
-                        <FaEye color="black" />
+                        <FaEye color="var(--black)" />
                       ) : (
-                        <FaEyeSlash color="black" />
+                        <FaEyeSlash color="var(--black)" />
                       )}
                     </button>
                   </div>
@@ -132,7 +132,7 @@ function ForgetPassword() {
                   <div className="mb-3" style={{ position: "relative" }}>
                     <input
                       style={{
-                        border: "1px solid black",
+                        border: "1px solid var(--black)",
                         textDecoration: "none",
                         padding: "10px 12px",
                         borderRadius: "6px",
@@ -167,9 +167,9 @@ function ForgetPassword() {
                       }}
                     >
                       {showConfirmPassword ? (
-                        <FaEye color="black" />
+                        <FaEye color="var(--black)" />
                       ) : (
-                        <FaEyeSlash color="black" />
+                        <FaEyeSlash color="var(--black)" />
                       )}
                     </button>
                   </div>
@@ -178,8 +178,8 @@ function ForgetPassword() {
                     type="submit"
                     className="btn w-100"
                     style={{
-                      backgroundColor: "#46a3df",
-                      color: "#fff",
+                      backgroundColor: "var(--primary-blue)",
+                      color: "var(--white)",
                       borderRadius: "14px",
                     }}
                   >

@@ -11,6 +11,7 @@ const InputField = (props) => {
     onChange = () => {},
     onBlur = () => {},
     error = "",
+    icon = null,
   } = props;
 
   return (
@@ -22,6 +23,7 @@ const InputField = (props) => {
       )}
 
       <div className={style.InputFieldContainer}>
+        {icon && <span className={style.icon}>{icon}</span>}
         <input
           id={name}
           type={type}
@@ -34,7 +36,7 @@ const InputField = (props) => {
           className={style.input}
         />
       </div>
-      {/* {error && <div className={style.errorMessage}>{error}</div>} */}
+      {error && <div className={style.errorMessage}>{error}</div>}
     </div>
   );
 };

@@ -12,6 +12,16 @@
   padding: 0 10px;
   display: flex;
   align-items: center;
+  background-color: var(--white);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  font-size: var(--font-md); 
+  color: var(--gray-shadow); 
 }
 
 .input {
@@ -36,6 +46,10 @@
   color: red;
   font-size: var(--font-sm);
   margin-top: 5px;
+}
+
+.input[type="number"]:focus {
+  box-shadow: none;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

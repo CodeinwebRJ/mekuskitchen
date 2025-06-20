@@ -125,18 +125,23 @@ const ProductPage = () => {
     fetchReviews();
   }, [id, reviews.length]);
 
+  console.log(product);
+
   const tabData = [
-    ...(product?.sku?.length > 1 && product.specifications
+    ...(product?.specifications &&
+    Object.values(product.specifications).some((val) => !!val)
       ? [
           {
             label: "Specifications",
             content: (
               <div>
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key}>
-                    <strong>{key}:</strong> {value}
-                  </div>
-                ))}
+                {Object.entries(product.specifications).map(([key, value]) =>
+                  value ? (
+                    <div key={key}>
+                      <strong>{key}:</strong> {value}
+                    </div>
+                  ) : null
+                )}
               </div>
             ),
           },
@@ -144,7 +149,26 @@ const ProductPage = () => {
       : []),
     {
       label: "Product Detail",
-      content: <div>{product?.description || "No description available"}</div>,
+      content: (
+        <div>
+          {product?.aboutItem?.length > 0 && (
+            <div className={style.aboutItem}>
+              <div className={style.aboutItemTitle}>About This Item</div>
+              <div>
+                {product?.aboutItem?.map((item) => (
+                  <ul>
+                    <li>{item}</li>
+                  </ul>
+                ))}
+              </div>
+            </div>
+          )}
+          <div>
+            <div className={style.aboutItemTitle}>Description</div>
+            <div>{product?.description || "No description available"}</div>
+          </div>
+        </div>
+      ),
     },
     {
       label: "Reviews",

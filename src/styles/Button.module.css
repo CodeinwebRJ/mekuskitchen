@@ -44,8 +44,6 @@
   pointer-events: none;
 }
 
-/* primary variant */
-
 .primary {
   background-color: var(--primary-blue);
   color: var(--white);

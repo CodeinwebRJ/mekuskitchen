@@ -204,10 +204,10 @@ function LoginPage() {
                         id="rememberMe"
                         checked={rememberMe}
                         onChange={handleCheckboxChange}
-                        style={{ border: "1px solid black" }}
+                        style={{ border: "1px solid var(--black)" }}
                       />
                       <label
-                        style={{ color: "black" }}
+                        style={{ color: "var(--black)" }}
                         className="form-check-label"
                         htmlFor="rememberMe"
                       >
@@ -218,7 +218,7 @@ function LoginPage() {
                       <Link
                         to="/verify-email"
                         className="text-end"
-                        style={{ color: "#46a3df" }}
+                        style={{ color: "var(--primary-blue)" }}
                       >
                         Forgot Password?
                       </Link>
@@ -229,8 +229,8 @@ function LoginPage() {
                     type="submit"
                     className="btn w-100"
                     style={{
-                      backgroundColor: "#46a3df",
-                      color: "#fff",
+                      backgroundColor: "var(--primary-blue)",
+                      color: "var(--white)",
                       borderRadius: "14px",
                     }}
                     disabled={loading}
@@ -242,7 +242,7 @@ function LoginPage() {
                 <div className="text-center">
                   <p className="mb-0">
                     Don't have an account?{" "}
-                    <Link to="/signup" style={{ color: "#46a3df" }}>
+                    <Link to="/signup" style={{ color: "var(--primary-blue)" }}>
                       SIGNUP
                     </Link>
                   </p>
