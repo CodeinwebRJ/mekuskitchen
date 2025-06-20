@@ -18,6 +18,7 @@ import { setPage } from "../../Store/Slice/FilterDataSlice";
 import { Link } from "react-router-dom";
 import InputField from "./UI-Components/InputField";
 import { IoSearch } from "react-icons/io5";
+import FilterSection from "./FilterSection";
 
 const useDebounce = (value, delay, callback) => {
   useEffect(() => {
@@ -26,74 +27,6 @@ const useDebounce = (value, delay, callback) => {
     }, delay);
     return () => clearTimeout(handler);
   }, [value, delay, callback]);
-};
-
-const FilterSection = ({
-  title,
-  items = [],
-  searchTerm,
-  setSearchTerm,
-  selectedItems = [],
-  onChange,
-  showAll,
-  setShowAll,
-  maxItems = 6,
-}) => {
-  const filteredItems = useMemo(
-    () =>
-      items.filter((item) =>
-        item?.name?.toLowerCase()?.includes(searchTerm.toLowerCase())
-      ),
-    [items, searchTerm]
-  );
-
-  return (
-    <div className={style.filterGroup}>
-      <h6>{title}</h6>
-      <InputField
-        type="text"
-        placeholder={`Search ${title}`}
-        className="form-control"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        aria-label={`Search ${title}`}
-        id={`search-${title.toLowerCase()}`}
-        icon={<IoSearch size={20} color="var(--gray-medium)" />}
-      />
-      <div className={style.checkboxGroup}>
-        {filteredItems.length > 0 ? (
-          filteredItems
-            .slice(0, showAll ? filteredItems.length : maxItems)
-            .map((item) => (
-              <div key={item.name} className={style.checkboxItem}>
-                <CheckboxField
-                  size="small"
-                  value={item.name}
-                  onChange={() => onChange(item.name)}
-                  checked={selectedItems.includes(item.name)}
-                  aria-label={`${title}: ${item.name}`}
-                  id={`checkbox-${title.toLowerCase()}-${item.name}`}
-                />
-                <label htmlFor={`checkbox-${title.toLowerCase()}-${item.name}`}>
-                  {item.name}
-                </label>
-              </div>
-            ))
-        ) : (
-          <p>No {title.toLowerCase()} available</p>
-        )}
-        {filteredItems.length > maxItems && (
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className={style.linkButton}
-            aria-expanded={showAll}
-          >
-            {showAll ? "Show Less" : `${filteredItems.length - maxItems} MORE`}
-          </button>
-        )}
-      </div>
-    </div>
-  );
 };
 
 const FilterContainer = ({
@@ -378,8 +311,6 @@ const FilterContainer = ({
     setSearchProductCategory("");
     handlePriceChange([0, 2000]);
   }, [dispatch, handlePriceChange]);
-
-  console.log(data);
 
   return (
     <aside className={style.sidebar}>

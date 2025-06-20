@@ -1,0 +1,56 @@
+.accordionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--gray-border);
+}
+
+.checkboxGroup {
+  padding: 0.75rem 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-8);
+}
+
+.filterGroup h6 {
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  color: var(--gray-dark);
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0 0 4px;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--gray-deep);
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 13px;
+  padding: 4px 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
+}
