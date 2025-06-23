@@ -3,13 +3,14 @@ import InputField from "../../../Component/UI-Components/InputField";
 import SelectField from "../../../Component/UI-Components/SelectField";
 import { useSelector } from "react-redux";
 import { CanadaSearch } from "../../../axiosConfig/AxiosConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 
 const FormField = ({ formData, handleChange, formErrors = {} }) => {
   const [addressSuggestions, setAddressSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const { countriesData } = useSelector((state) => state.country);
+  const suggestionRef = useRef(null);
 
   const countries = countriesData.map((country) => ({
     label: country.country,
@@ -71,6 +72,22 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
 
     return () => clearTimeout(debounce);
   }, [formData.address]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        suggestionRef.current &&
+        !suggestionRef.current.contains(event.target)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -139,42 +156,40 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         </div>
       </div>
 
-      <div className={style.billingFormColumn1}>
-        <div className={style.inputFieldContainer}>
-          <InputField
-            type="text"
-            name="address"
-            value={formData.address || ""}
-            onChange={handleChange}
-            placeholder="Address"
-            labelName="Address"
-            required
-          />
-          {formErrors.address && (
-            <div className={style.errorMessage}>{formErrors.address}</div>
-          )}
-          {showSuggestions && addressSuggestions.length > 0 && (
-            <ul className={style.suggestionList}>
-              {addressSuggestions.map((suggestion, idx) => (
-                <li
-                  key={idx}
-                  onClick={() => {
-                    handleChange({
-                      target: {
-                        name: "address",
-                        value: `${suggestion.Text}, ${suggestion.Description}`,
-                      },
-                    });
-                    setShowSuggestions(false);
-                  }}
-                  className={style.suggestionItem}
-                >
-                  {suggestion.Text}, {suggestion.Description}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+      <div className={style.inputFieldContainer} ref={suggestionRef}>
+        <InputField
+          type="text"
+          name="address"
+          value={formData.address || ""}
+          onChange={handleChange}
+          placeholder="Address"
+          labelName="Address"
+          required
+        />
+        {formErrors.address && (
+          <div className={style.errorMessage}>{formErrors.address}</div>
+        )}
+        {showSuggestions && addressSuggestions.length > 0 && (
+          <ul className={style.suggestionList}>
+            {addressSuggestions.map((suggestion, idx) => (
+              <li
+                key={idx}
+                onClick={() => {
+                  handleChange({
+                    target: {
+                      name: "address",
+                      value: `${suggestion.Text}, ${suggestion.Description}`,
+                    },
+                  });
+                  setShowSuggestions(false);
+                }}
+                className={style.suggestionItem}
+              >
+                {suggestion.Text}, {suggestion.Description}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className={style.billingFormColumn2}>

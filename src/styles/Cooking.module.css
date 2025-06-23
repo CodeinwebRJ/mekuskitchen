@@ -11,6 +11,7 @@
   overflow: hidden;
 }
 
+/* Desktop Defaults */
 .leftImage {
   position: absolute;
   bottom: -10rem;
@@ -61,4 +62,64 @@
 
 .arrow {
   margin-left: 8px;
+}
+
+/* Tablet (≤1024px) */
+@media (max-width: 1024px) {
+  .leftImage,
+  .rightImage {
+    width: 320px;
+    bottom: -6rem;
+  }
+
+  .leftImage {
+    left: -5rem;
+  }
+
+  .rightImage {
+    right: -5rem;
+  }
+
+  .textContainer {
+    width: 70%;
+  }
+
+  .textContainer h2 {
+    font-size: 24px;
+  }
+
+  .textContainer p {
+    font-size: 15px;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .heroContainer {
+    flex-direction: column;
+    padding: 60px 16px;
+    margin: 20px 0;
+  }
+
+  .leftImage,
+  .rightImage {
+    display: none;
+  }
+
+  .textContainer {
+    width: 100%;
+  }
+
+  .textContainer h2 {
+    font-size: 22px;
+  }
+
+  .textContainer p {
+    font-size: 14px;
+  }
+
+  .orderButton {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
 }

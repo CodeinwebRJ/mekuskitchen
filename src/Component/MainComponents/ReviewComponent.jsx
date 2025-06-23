@@ -28,7 +28,17 @@ const ReviewComponent = ({ data }) => {
               ? { delay: 2500, disableOnInteraction: false }
               : false
           }
-          slidesPerView={3}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+            },
+            640: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
           className={style.swiperContainer}
         >
           {products.map((product, index) => (

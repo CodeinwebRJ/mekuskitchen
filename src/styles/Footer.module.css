@@ -1,6 +1,6 @@
 .footerContainer {
   background: var(--primary-blue);
-  padding: 60px 140px;
+  padding: 60px 20px;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 }
@@ -9,40 +9,45 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 80px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footerColumn {
   flex: 1;
+  min-width: 250px;
 }
 
 .footerTitle {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   margin-bottom: 15px;
 }
 
 .footerText {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.6;
-  color:  var(--black);
+  color: var(--black);
 }
 
 .readMoreBtn {
   background-color: var(--white);
   color: var(--primary-blue);
   border: none;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
-  margin-top: 16px;
+  margin-top: 12px;
   font-weight: 600;
+  font-size: 12px;
 }
 
 .linkList {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .linkList a {
@@ -50,7 +55,8 @@
   align-items: center;
   color: var(--black);
   text-decoration: none;
-  gap: 12px;
+  gap: 10px;
+  font-size: 14px;
 }
 
 .linkList a:hover {
@@ -75,43 +81,136 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .followUs {
-  margin-top: 10px;
-  font-size: 16px;
+  margin-top: 8px;
+  font-size: 14px;
 }
 
 .socialIcons {
   display: flex;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .socialIcons a {
-  color:  var(--black);
-  font-size: 20px;
+  color: var(--black);
+  font-size: 18px;
 }
 
 .socialIcons img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
 }
 
-@media (max-width: 768px) {
+/* Tablet screens (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .footerContainer {
+    padding: 40px 30px;
+  }
+
+  .footerInner {
+    gap: 30px;
+  }
+
+  .footerColumn {
+    flex: 1 1 45%;
+    min-width: 200px;
+    text-align: left;
+  }
+
+  .footerTitle {
+    font-size: 20px;
+  }
+
+  .footerText {
+    font-size: 13px;
+  }
+
+  .readMoreBtn {
+    padding: 8px 18px;
+    font-size: 11px;
+  }
+
+  .linkList a {
+    font-size: 13px;
+  }
+
+  .contactLine {
+    font-size: 13px;
+  }
+
+  .socialIcons {
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile screens (below 768px) */
+@media (max-width: 767px) {
+  .footerContainer {
+    padding: 30px 15px;
+  }
+
   .footerInner {
     flex-direction: column;
+    gap: 20px;
     text-align: center;
   }
 
   .footerColumn {
-    margin: 20px 0;
+    flex: 1 1 100%;
+    min-width: 100%;
+    text-align: center;
+  }
+
+  .footerTitle {
+    font-size: 18px;
+  }
+
+  .footerText {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .readMoreBtn {
+    padding: 6px 14px;
+    font-size: 10px;
+  }
+
+  .linkList {
+    align-items: center;
+    gap: 10px;
+  }
+
+  .linkList a {
+    font-size: 12px;
+    justify-content: center;
+  }
+
+  .contactLine {
+    font-size: 12px;
+    justify-content: center;
+  }
+
+  .followUs {
+    font-size: 12px;
   }
 
   .socialIcons {
     justify-content: center;
+    gap: 8px;
+  }
+
+  .socialIcons a {
+    font-size: 16px;
+  }
+
+  .socialIcons img {
+    width: 18px;
+    height: 18px;
   }
 }

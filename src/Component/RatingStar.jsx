@@ -1,4 +1,3 @@
-import React from "react";
 import style from ".././styles/RatingStar.module.css";
 import Rating from "react-rating";
 import { FiStar } from "react-icons/fi";

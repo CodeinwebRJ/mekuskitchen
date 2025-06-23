@@ -1,13 +1,7 @@
 import style from "../../styles/CheckboxFeild.module.css";
 
 const CheckboxField = (props) => {
-  const {
-    checked,
-    defaultChecked = false,
-    onChange,
-    onClick,
-    size = "medium",
-  } = props;
+  const { checked, onChange, onClick, size = "medium" } = props;
 
   const handleChange = (e) => {
     if (onChange) {
@@ -25,7 +19,6 @@ const CheckboxField = (props) => {
         checked={checked}
         onChange={handleChange}
         className={style.checkbox}
-        defaultChecked={defaultChecked}
       />
     </div>
   );

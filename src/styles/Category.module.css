@@ -118,3 +118,60 @@
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+
+/* Tablet (≤1024px) */
+@media (max-width: 1024px) {
+  .headingContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .heading {
+    width: 100%;
+    font-size: 32px;
+    text-align: left;
+  }
+
+  .description {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .arrowButton {
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .dishesSection {
+    padding: 32px 0;
+  }
+
+  .heading {
+    font-size: 24px;
+    text-align: left;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .card {
+    height: 250px;
+    max-width: 260px;
+  }
+
+  .image {
+    padding: 12px;
+  }
+
+  .swiperSlide {
+    padding: 8px 0;
+  }
+
+  .circularButton {
+    padding: 0.4rem;
+  }
+}

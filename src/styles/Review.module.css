@@ -2,18 +2,23 @@
   border-radius: 16px;
   border: 2px solid #d7e7f9;
   padding: 24px;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   font-family: 'Arial', sans-serif;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .rating {
@@ -21,7 +26,7 @@
   align-items: center;
   font-weight: bold;
   font-size: 16px;
-  color:  var(--black);
+  color: var(--black);
 }
 
 .starIcon {
@@ -31,7 +36,7 @@
 
 .reviewNumber {
   font-weight: bold;
-  color:  var(--black);
+  color: var(--black);
 }
 
 .text {
@@ -60,10 +65,54 @@
 
 .name {
   font-weight: 700;
-  color:  var(--black);
+  color: var(--black);
 }
 
 .title {
   font-size: 14px;
   color: var(--gray-steel);
+}
+
+/* 🔽 Responsive Styling */
+@media (max-width: 768px) {
+  .card {
+    padding: 16px;
+  }
+
+  .rating,
+  .reviewNumber {
+    font-size: 14px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 12px;
+  }
+
+  .text {
+    font-size: 13px;
+  }
+
+  .rating,
+  .reviewNumber {
+    font-size: 13px;
+  }
+
+  .name {
+    font-size: 14px;
+  }
 }

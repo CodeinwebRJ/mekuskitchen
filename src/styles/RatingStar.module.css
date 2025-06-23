@@ -1,18 +1,38 @@
 .ratingStarContainer {
   pointer-events: default;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .disabled {
   pointer-events: none;
 }
 
+.fill,
+.unFill {
+  font-size: var(--font-lg); 
+}
+
 .fill {
   color: gold;
-  font-size: var(--font-lg);
 }
 
 .unFill {
   color: var(--black);
   opacity: 0.2;
-  font-size: var(--font-lg);
+}
+
+@media (max-width: 768px) {
+  .fill,
+  .unFill {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fill,
+  .unFill {
+    font-size: 18px;
+  }
 }

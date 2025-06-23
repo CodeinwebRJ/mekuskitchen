@@ -22,7 +22,6 @@ import {
 import AddAddressCard from "../../Component/UI-Components/AddAddressCard";
 import AddressForm from "../MyAccount/Addresses/AddressForm";
 import DialogBox from "../../Component/MainComponents/DialogBox";
-import CouponCode from "../../Component/Cards/CouponCode";
 import PaymentCard from "./PaymentCard";
 import CheckboxField from "../../Component/UI-Components/CheckboxFeild";
 
@@ -47,7 +46,6 @@ const OrderSummary = ({
         </span>
       </div>
     )}
-    <hr />
     <div className={style.total}>
       Tax: <span className={style.price}>${tax}</span>
     </div>
@@ -55,7 +53,6 @@ const OrderSummary = ({
     <div className={style.total}>
       Total: <p>${(Number(total) + Number(tax)).toFixed(2)}</p>
     </div>
-    <hr />
 
     <Link to="/checkout">
       <div className={style.checkoutButton}>
@@ -169,8 +166,6 @@ const CheckoutPage = () => {
       console.error("Error activating address:", error);
     }
   };
-
-  console.log(defaultAddress);
 
   return (
     <div className={style.mainContainer}>

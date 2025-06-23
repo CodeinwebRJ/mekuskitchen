@@ -15,6 +15,7 @@ import { Toast } from "../../Utils/Toast";
 import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import CouponCode from "../../Component/Cards/CouponCode";
+import CartCard from "../../Component/Cards/CartCard";
 
 const CartItem = ({
   isAuthenticated,
@@ -86,49 +87,6 @@ const CartItem = ({
     </tr>
   );
 };
-
-const CartTotals = ({
-  handleClick,
-  subtotal,
-  total,
-  discount,
-  discountPercentage,
-}) => (
-  <div>
-    <h3>Cart Totals</h3>
-    <p>
-      Total: <span>${total.toFixed(2)}</span>
-    </p>
-    <p>
-      Subtotal: <span>${subtotal.toFixed(2)}</span>
-    </p>
-    {discount > 0 && (
-      <p>
-        Discount:{" "}
-        <span className="discount">
-          -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
-        </span>
-      </p>
-    )}
-    <hr />
-    {/* <p>
-      Shipping: <span>Self Pickup</span>
-    </p> */}
-    <hr />
-    {/* <p>
-      Shipping to: <strong>Calgary, AB</strong>
-    </p> */}
-    <hr />
-    <p className={style.total}>
-      Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
-    </p>
-    <div className={style.checkoutButton}>
-      <Button onClick={handleClick} variant="primary" size="md">
-        Proceed to Checkout
-      </Button>
-    </div>
-  </div>
-);
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
@@ -553,7 +511,7 @@ const ShoppingCart = () => {
             <CouponCode />
           </div>
           <div className={style.cartTotals}>
-            <CartTotals
+            <CartCard
               subtotal={subtotal}
               total={total}
               discount={discount}

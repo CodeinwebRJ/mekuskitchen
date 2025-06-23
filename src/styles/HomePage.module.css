@@ -6,9 +6,11 @@
 .dishesSection {
   padding: 40px 0;
 }
+
 .container {
   padding: 40px 100px;
 }
+
 .headingContainer {
   display: flex;
   justify-content: space-between;
@@ -16,6 +18,7 @@
   gap: 2rem;
   margin-bottom: 2rem;
 }
+
 .heading,
 .experience {
   font-size: 40px;
@@ -24,9 +27,11 @@
   line-height: 1.3;
   text-align: left;
 }
+
 .heading {
   width: 50%;
 }
+
 .blueText {
   color: var(--primary-blue);
 }
@@ -70,20 +75,6 @@
   transition: transform 0.3s ease;
 }
 
-.imageBox {
-  width: 600px;
-  height: 600px;
-  overflow: hidden;
-}
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: opacity 0.3s ease;
-}
-
 .card:hover .image {
   opacity: 0.5;
 }
@@ -103,32 +94,72 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
+
 .service {
   width: 100%;
   border-radius: 0 32px 0 32px;
   overflow: hidden;
   height: 350px;
 }
+
+/* ✅ Thali Section and Responsiveness */
 .thaliSection {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   padding: 40px 0;
+  align-items: center;
+  justify-content: center;
 }
+
 .contentBox {
   flex: 1;
-  width: 300px;
+  width: 100%;
+  max-width: 600px;
 }
+
+.imageBox {
+  flex: 1;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  overflow: hidden;
+}
+
 .mainThaliImg {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 500px;
   object-fit: cover;
-  object-position: 50% 50%;
+  object-position: center;
   border-radius: 0 2rem 0 2rem;
 }
+
 .subText {
   color: var(--gray-deep);
   margin-bottom: 16px;
+  display: block;
+}
+
+.benefitsBox {
+  margin-top: 1.5rem;
+}
+
+.benefitsHeading {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--black);
+}
+
+.benefitsList {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: var(--gray-darkest);
+}
+
+.benefitsList li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
 .scrollTopButton {
@@ -157,9 +188,98 @@
   transform: translateY(0);
 }
 
+.hero {
+  padding: 60px 0;
+  text-align: center;
+  background-color: var(--white); /* Optional background */
+}
+
+.container {
+  padding: 40px 100px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gray-solid);
+  line-height: 1.2;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.highlight {
+  color: var(--primary-blue);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-top: 16px;
+  color: var(--gray-darkest);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button {
+  margin-top: 24px;
+  padding: 12px 28px;
+  background-color: var(--primary-blue);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background-color: #1e5ed2; /* Slightly darker shade on hover */
+}
+
+.arrow {
+  margin-left: 8px;
+  font-size: 1.2rem;
+}
+
+.newArrival {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* ✅ Responsive Breakpoints */
 @media (max-width: 768px) {
   .container {
-    padding: 16px 2rem;
+    padding: 0 2rem;
+  }
+
+  .title {
+    font-size: 2rem;
+    line-height: 1.3;
+  }
+
+  .subText {
+    display: none;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin-top: 12px;
+  }
+
+  .button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+
+  .arrow {
+    font-size: 1rem;
   }
 
   .headingContainer {
@@ -169,7 +289,7 @@
   }
 
   .heading,
-  .description {
+  .experience {
     width: 100%;
     text-align: center;
   }
@@ -183,52 +303,27 @@
     height: 40px;
     font-size: 1.2rem;
   }
-}
 
-.hero {
-  padding: 40px 0;
-  text-align: center;
-}
+  .thaliSection {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 1rem;
+  }
 
-.title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--gray-solid);
-  line-height: 1.3;
-}
+  .contentBox,
+  .imageBox {
+    max-width: 100%;
+    width: 100%;
+  }
 
-.highlight {
-  color: var(--primary-blue);
-}
+  .mainThaliImg {
+    max-height: 350px;
+    border-radius: 1rem;
+  }
 
-.subtitle {
-  font-size: 16px;
-  margin-top: 16px;
-  color: var(--gray-darkest);
-}
-
-.button {
-  margin-top: 24px;
-  padding: 12px 24px;
-  background-color: var(--primary-blue);
-  color: var(--white);
-  font-weight: 600;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.arrow {
-  margin-left: 8px;
-  font-size: 1.2rem;
-}
-.newArrival {
-  font-size: 40px;
-  font-weight: 700;
-  color: var(--black);
-  line-height: 1.3;
-  text-align: center;
+  .benefitsBox {
+    text-align: left;
+  }
 }
 
 @media (max-width: 480px) {
@@ -255,5 +350,34 @@
     width: 35px;
     height: 35px;
     font-size: 1rem;
+  }
+
+  .mainThaliImg {
+    max-height: 250px;
+  }
+
+  .benefitsHeading {
+    font-size: 1rem;
+  }
+
+  .benefitsList li {
+    font-size: 0.9rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .button {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+  }
+
+  .arrow {
+    font-size: 0.9rem;
   }
 }
