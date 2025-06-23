@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import styles from "../../styles/LoginPage.module.css";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Loading from "../../Component/UI-Components/Loading";
 import Banner2 from "../../Component/MainComponents/Banner2";

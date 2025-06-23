@@ -2,8 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
   background-color: var(--white);
+  box-sizing: border-box;
 }
 
 .card {
@@ -34,11 +36,23 @@
   box-shadow: 0 4px 12px rgba(223, 70, 70, 0.4);
 }
 
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: var(--very-dark-gray);
+}
+
+p {
+  font-size: 1rem;
+  color: var(--gray-darkest);
+}
+
 .buttonGroup {
   display: flex;
   justify-content: center;
   gap: 12px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .retryBtn {
@@ -67,4 +81,59 @@
 
 .continueBtn:hover {
   background-color: #368cc1;
+}
+
+/* ----------------- Responsive Styles ----------------- */
+@media (max-width: 768px) {
+  .card {
+    padding: 28px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  .crossIcon {
+    width: 56px;
+    height: 56px;
+    font-size: 30px;
+    line-height: 56px;
+  }
+
+  .retryBtn,
+  .continueBtn {
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  .crossIcon {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+    line-height: 50px;
+  }
 }
