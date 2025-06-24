@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import style from "../../../styles/ReviewComponent.module.css";
 import RatingStar from "../../../Component/RatingStar";
 import {
   addProductReview,
   getAllProductReview,
 } from "../../../axiosConfig/AxiosConfig";
-import Button from "../../../Component/Buttons/Button";
-import Heading from "../../../Component/UI-Components/Heading";
 
 const TiffinReviewComponent = ({
   reviews,
@@ -108,9 +106,7 @@ const TiffinReviewComponent = ({
           </div>
 
           <div className={style.submitButtonContainer}>
-            <Button variant="success" type="submit">
-              Submit Review
-            </Button>
+            <button className="Button">Submit Review</button>
           </div>
         </form>
       </div>

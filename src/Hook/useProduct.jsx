@@ -11,7 +11,6 @@ import { setWishlist, toggleLiked } from "../../Store/Slice/UserWishlistSlice";
 import { setWishlistCount } from "../../Store/Slice/CountSlice";
 
 const useProduct = (id) => {
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth) || {};
   const cart = useSelector((state) => state.cart) || {};

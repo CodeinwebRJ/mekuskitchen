@@ -216,6 +216,7 @@
 
 .addToCartContainer {
   width: fit-content;
+  display: block;
 }
 
 .addToCart:hover {

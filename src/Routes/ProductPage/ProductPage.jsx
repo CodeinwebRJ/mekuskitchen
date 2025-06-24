@@ -187,65 +187,78 @@ const ProductPage = () => {
     },
   ];
 
-  if (loading) return <Loading />;
-  if (!product) return <p>Product not found</p>;
-
   return (
     <div>
       <Header />
-      <div className={style.container}>
-        <div className={style.header}>
-          <div className={style.navigation}>
-            <button
-              onClick={handlePrev}
-              disabled={currentIndex <= 0 || !products?.data}
-              className={style.navButton}
-              aria-label="Previous product"
-            >
-              <img src="/nextArrow.png" alt="" className={style.navIconPrev} />
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={
-                currentIndex >= (products?.data?.length ?? 0) - 1 ||
-                !products?.data
-              }
-              className={style.navButton}
-              aria-label="Next product"
-            >
-              <img src="/nextArrow.png" alt="" className={style.navIconNext} />
-            </button>
+      {loading || product === null ? (
+        <Loading />
+      ) : product.length === 0 ? (
+        <div>No Data Found</div>
+      ) : (
+        <div>
+          <div className={style.container}>
+            <div className={style.header}>
+              <div className={style.navigation}>
+                <button
+                  onClick={handlePrev}
+                  disabled={currentIndex <= 0 || !products?.data}
+                  className={style.navButton}
+                  aria-label="Previous product"
+                >
+                  <img
+                    src="/nextArrow.png"
+                    alt=""
+                    className={style.navIconPrev}
+                  />
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={
+                    currentIndex >= (products?.data?.length ?? 0) - 1 ||
+                    !products?.data
+                  }
+                  className={style.navButton}
+                  aria-label="Next product"
+                >
+                  <img
+                    src="/nextArrow.png"
+                    alt=""
+                    className={style.navIconNext}
+                  />
+                </button>
+              </div>
+            </div>
+
+            <div className={style.productLayout}>
+              <ImageGallery
+                product={product}
+                selectedImage={selectedImage}
+                setSelectedImage={setSelectedImage}
+                selectedSKUs={selectedSKUs}
+              />
+              <ProductDetails
+                product={product}
+                selectedSKUs={selectedSKUs}
+                setSelectedSKUs={setSelectedSKUs}
+                selectedOptions={selectedOptions}
+                setSelectedOptions={setSelectedOptions}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                selectedCombination={selectedCombination}
+                availableOptions={availableOptions}
+                handleAddToCart={handleAddToCart}
+                isAddingToCart={isAddingToCart}
+                handleWishlistToggle={handleWishlistToggle}
+                isLiked={isLiked}
+                reviews={reviews}
+              />
+            </div>
+
+            <Tabs tabs={tabData} />
           </div>
+          <RelatedProduct />
         </div>
-
-        <div className={style.productLayout}>
-          <ImageGallery
-            product={product}
-            selectedImage={selectedImage}
-            setSelectedImage={setSelectedImage}
-            selectedSKUs={selectedSKUs}
-          />
-          <ProductDetails
-            product={product}
-            selectedSKUs={selectedSKUs}
-            setSelectedSKUs={setSelectedSKUs}
-            selectedOptions={selectedOptions}
-            setSelectedOptions={setSelectedOptions}
-            quantity={quantity}
-            setQuantity={setQuantity}
-            selectedCombination={selectedCombination}
-            availableOptions={availableOptions}
-            handleAddToCart={handleAddToCart}
-            isAddingToCart={isAddingToCart}
-            handleWishlistToggle={handleWishlistToggle}
-            isLiked={isLiked}
-            reviews={reviews}
-          />
-        </div>
-
-        <Tabs tabs={tabData} />
-      </div>
-      <RelatedProduct />
+      )}
       <Footer />
     </div>
   );

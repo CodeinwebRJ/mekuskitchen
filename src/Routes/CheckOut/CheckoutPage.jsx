@@ -4,7 +4,6 @@ import style from "../../styles/CheckoutPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
-import Button from "../../Component/Buttons/Button";
 import {
   ActiveUserAddress,
   getUserAddress,
@@ -56,16 +55,9 @@ const OrderSummary = ({
 
     <Link to="/checkout">
       <div className={style.checkoutButton}>
-        <Button
-          type="button"
-          disabled={isLoading}
-          onClick={payNow}
-          variant="primary"
-          size="md"
-          aria-label="Place order"
-        >
+        <button disabled={isLoading} onClick={payNow} className="Button md">
           {isLoading ? "Processing..." : "Place Order"}
-        </Button>
+        </button>
       </div>
     </Link>
   </div>

@@ -2,7 +2,6 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import OptionSelector from "./OptionSelector";
 import Chip from "../../Component/Buttons/Chip";
 import style from "../../styles/ProductPage.module.css";
-import Button from "../../Component/Buttons/Button";
 import { Link } from "react-router-dom";
 import RatingStar from "../../Component/RatingStar";
 import Features from "../../Component/UI-Components/Features";
@@ -80,7 +79,7 @@ const ProductDetails = ({
     } else {
       setSelectedOptions({});
     }
-  }
+  };
 
   return (
     <div className={style.productDetails}>
@@ -163,15 +162,13 @@ const ProductDetails = ({
           +
         </button>
         <div className={style.addToCartContainer}>
-          <Button
+          <button
             onClick={handleAddToCart}
-            variant="primary"
-            size="sm"
+            className="Button sm"
             disabled={product.sku.length > 1 && !selectedCombination}
-            aria-label={isAddingToCart ? "Adding to cart" : "Add to cart"}
           >
             ADD TO CART
-          </Button>
+          </button>
         </div>
       </div>
 

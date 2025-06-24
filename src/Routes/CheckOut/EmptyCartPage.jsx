@@ -1,6 +1,5 @@
 import style from "../../styles/EmptyCartPage.module.css";
 import { BsCartX } from "react-icons/bs";
-import Button from "../../Component/Buttons/Button";
 import { Link } from "react-router-dom";
 
 const EmptyCartPage = () => {
@@ -14,9 +13,9 @@ const EmptyCartPage = () => {
       <span className={style.emptyCartText}>Your cart is empty</span>
 
       <Link to="/product-category" className={style.emptyCartButton}>
-        <Button text="Continue Shopping" variant="success" size="md">
+        <button className="Button md">
           Continue Shopping
-        </Button>
+        </button>
       </Link>
     </div>
   );

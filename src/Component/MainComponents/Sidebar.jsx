@@ -8,7 +8,6 @@ import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
-import Button from "../Buttons/Button";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -219,23 +218,17 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
           <div className={style.subtotalButtons}>
             <div className={style.viewCart}>
-              <Button
-                onClick={() => navigate("/cart")}
-                variant="light"
-                size="sm"
-                disabled={isLoading}
-              >
+              <button onClick={() => navigate("/cart")} disabled={isLoading}>
                 VIEW CART
-              </Button>
+              </button>
             </div>
-            <Button
+            <button
               onClick={() => navigate("/checkout")}
-              variant="primary"
-              size="sm"
+              className="Button sm"
               disabled={isLoading}
             >
               CHECKOUT
-            </Button>
+            </button>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import style from "../../styles/ContactPage.module.css";
 import Footer from "../../Component/MainComponents/Footer";
 import Banner from "../../Component/MainComponents/Banner";
 import InputField from "../../Component/UI-Components/InputField";
-import Button from "../../Component/Buttons/Button";
 import Header from "../../Component/MainComponents/Header";
 import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
@@ -173,14 +172,12 @@ const ContactPage = () => {
               </div>
 
               <div className={style.submitButtonContainer}>
-                <Button
-                  type="submit"
+                <button
                   onClick={handleSubmit}
-                  variant="primary"
-                  size="md"
+                  className="Button md"
                 >
                   Ask A Question
-                </Button>
+                </button>
               </div>
             </form>
           </div>

@@ -1,7 +1,6 @@
 import style from "../../styles/WishlistItem.module.css";
 import RatingStar from "../RatingStar";
 import { RiShareLine } from "react-icons/ri";
-import Button from "../Buttons/Button";
 import { AddtoCart, RemoveWishlist } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -104,9 +103,9 @@ const WishlistItem = ({ product, fetchWishlist }) => {
           </div>
         </div>
 
-        <Button onClick={handleAddToCart} variant="primary" size="sm">
+        <button className="Button sm" onClick={handleAddToCart}>
           Add to Cart
-        </Button>
+        </button>
       </div>
     </div>
   );

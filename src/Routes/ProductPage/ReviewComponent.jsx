@@ -2,7 +2,6 @@ import { useState } from "react";
 import style from "../../styles/ReviewComponent.module.css";
 import RatingStar from "../../Component/RatingStar";
 import { addProductReview } from "../../axiosConfig/AxiosConfig";
-import Button from "../../Component/Buttons/Button";
 import { useSelector } from "react-redux";
 import NoData from "../../Component/UI-Components/NoData";
 import InputField from "../../Component/UI-Components/InputField";
@@ -71,13 +70,9 @@ const ReviewComponent = ({
           Customer Reviews ({reviews.length})
         </h2>
         <div>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => setShowForm(!showForm)}
-          >
+          <button className="Button sm" onClick={() => setShowForm(!showForm)}>
             {showForm ? "Cancel" : "Add Review"}
-          </Button>
+          </button>
         </div>
       </div>
 
@@ -116,14 +111,7 @@ const ReviewComponent = ({
             </div>
 
             <div className={`${style.formGroup} ${style.submitContainer}`}>
-              <Button
-                className={style.submitButton}
-                variant="primary"
-                type="submit"
-                size="sm"
-              >
-                Submit Review
-              </Button>
+              <button className={style.submitButton}>Submit Review</button>
             </div>
           </form>
         </div>

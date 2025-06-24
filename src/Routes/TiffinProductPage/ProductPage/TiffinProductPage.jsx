@@ -12,7 +12,6 @@ import { BiLogoInstagramAlt } from "react-icons/bi";
 import Footer from "../../../Component/MainComponents/Footer";
 import TiffinReviewComponent from "./TiffinReviewComponent";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
-import Button from "../../../Component/Buttons/Button";
 import Header from "../../../Component/MainComponents/Header";
 import Tabs from "../../../Component/UI-Components/Tabs";
 import Chip from "../../../Component/Buttons/Chip";
@@ -208,7 +207,6 @@ const TiffinProductPage = () => {
   const productItems = quantities.items.filter((item) => item.quantity > 0);
 
   const handleSubmit = async () => {
-    
     if (cart?.items?.items?.length > 0) {
       Toast({
         message: "Cannot add tiffin - cart already contains items",
@@ -405,9 +403,9 @@ const TiffinProductPage = () => {
                 +
               </button>
               <div className={style.addToCartContainer}>
-                <Button variant="primary" onClick={handleSubmit} size="sm">
+                <button onClick={handleSubmit} className="Button sm">
                   ADD TO CART
-                </Button>
+                </button>
               </div>
             </div>
 

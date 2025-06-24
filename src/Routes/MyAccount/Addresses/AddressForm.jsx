@@ -1,7 +1,6 @@
 import { useState } from "react";
 import style from "../../../styles/Addresses.module.css";
 import FormField from "./FormField";
-import Button from "../../../Component/Buttons/Button";
 import CheckboxFeild from "../../../Component/UI-Components/CheckboxFeild";
 import { useDispatch, useSelector } from "react-redux";
 import { GoArrowLeft } from "react-icons/go";
@@ -244,14 +243,12 @@ const AddressForm = (props) => {
 
         <div className={style.billingFormButtons}>
           <div className={style.submitButtonContainer}>
-            <Button size="sm" variant="primary" type="button" onClick={onClose}>
+            <button className="Button sm" onClick={onClose}>
               Cancel
-            </Button>
+            </button>
           </div>
           <div className={style.submitButtonContainer}>
-            <Button type="submit" variant="primary" size="sm">
-              Save Address
-            </Button>
+            <button className="Button sm">Save Address</button>
           </div>
         </div>
       </form>

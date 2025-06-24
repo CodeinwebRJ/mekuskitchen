@@ -1,5 +1,4 @@
 import style from "../../styles/CartCard.module.css";
-import Button from "../Buttons/Button";
 
 const CartCard = ({
   handleClick,
@@ -29,9 +28,9 @@ const CartCard = ({
       Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
     </p>
     <div className={style.checkoutButton}>
-      <Button onClick={handleClick} variant="primary" size="md">
+      <button className="Button" onClick={handleClick}>
         Proceed to Checkout
-      </Button>
+      </button>
     </div>
   </div>
 );

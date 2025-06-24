@@ -188,3 +188,23 @@ ul {
 .breadcrumb-link:hover {
   color: var(--primary-blue);
 }
+
+.Button {
+  width: 100%;
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+.sm {
+  padding: 8px 16px;
+}
+
+.md {
+  padding: 12px 24px;
+}

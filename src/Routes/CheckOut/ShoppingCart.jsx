@@ -5,7 +5,6 @@ import style from "../../styles/Cart.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
-import Button from "../../Component/Buttons/Button";
 import DialogBox from "../../Component/MainComponents/DialogBox";
 import EmptyCartPage from "./EmptyCartPage";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
