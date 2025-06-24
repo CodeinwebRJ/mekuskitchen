@@ -134,7 +134,7 @@ const ProductPage = () => {
           {
             label: "Specifications",
             content: (
-              <div>
+              <div className={style.specification}>
                 {Object.entries(product.specifications).map(([key, value]) =>
                   value ? (
                     <div key={key}>
@@ -165,7 +165,7 @@ const ProductPage = () => {
           )}
           <div>
             <div className={style.aboutItemTitle}>Description</div>
-            <div>{product?.description || "No description available"}</div>
+            <div className={style.description}>{product?.description || "No description available"}</div>
           </div>
         </div>
       ),

@@ -9,7 +9,6 @@ const userWishlistSlice = createSlice({
   name: "wishlist",
   initialState,
   reducers: {
-    // In userWishlistSlice
     setWishlist(state, action) {
       const payloadItems = Array.isArray(action.payload)
         ? action.payload

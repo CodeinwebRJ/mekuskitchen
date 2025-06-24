@@ -62,7 +62,7 @@ const CartItem = ({
       <td>
         <div className={style.productCell}>
           <img src={imageUrl} alt={type} className={style.cartItemImage} />
-          <span>{name}</span>
+          <span className={style.productName}>{name}</span>
         </div>
       </td>
       <td>${Number(price)?.toFixed(2)}</td>
@@ -93,6 +93,7 @@ const ShoppingCart = () => {
   const cart = useSelector((state) => state.cart);
   const [dialog, setDialog] = useState({ isOpen: false, product: null });
   const navigate = useNavigate();
+  const { cartCount } = useSelector((state) => state.count);
 
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
@@ -506,11 +507,12 @@ const ShoppingCart = () => {
           </table>
         </div>
         <div className={style.cartSummary}>
-          <div>
+        <div>
             <CouponCode />
           </div>
           <div className={style.cartTotals}>
             <CartCard
+              item={cartCount}
               subtotal={subtotal}
               total={total}
               discount={discount}

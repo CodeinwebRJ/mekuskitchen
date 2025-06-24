@@ -146,7 +146,6 @@ const HomePage = () => {
       >
         <IoArrowUpOutline />
       </button>
-
       <Footer />
     </div>
   );

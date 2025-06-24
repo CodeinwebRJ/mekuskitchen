@@ -1,5 +1,6 @@
 .breadcrumb {
   color: var(--gray-muted);
+  font-size: 14px;
 }
 
 .breadcrumb a {
@@ -12,24 +13,24 @@
 }
 
 .imageContainer {
-  align-self: flex-start;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: var(--gap-5);
+  z-index: 1;
+  width: 100%;
 }
 
-/* Sticky only on laptop screens and larger */
 @media screen and (min-width: 1024px) {
   .imageContainer {
     position: sticky;
     top: 14vh;
+    align-self: flex-start;
   }
 }
 
 .productImageContainer {
+  width: 100%;
   height: 60vh;
-  width: 30vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,21 +47,78 @@
   border-radius: 4px;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
 .thumbnailsContainer {
   display: flex;
-  gap: var(--gap-5);
+  gap: var(--gap-4);
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.thumbnail:focus {
+  outline: none;
 }
 
 .thumbnail {
-  width: 70px;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
-  overflow: hidden;
   cursor: pointer;
   padding: 4px;
   border: 1px solid var(--gray-border);
   border-radius: 8px;
+  transition: border 0.2s ease;
+}
+
+.activeThumbnail {
+  border: 1px solid var(--gray-dark);
+}
+
+@media screen and (max-width: 1023px) {
+  .productImageContainer {
+    height: auto;
+    width: 100%;
+    max-height: 45vh;
+  }
+
+  .productImage {
+    max-height: 40vh;
+  }
+
+  .thumbnail {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .breadcrumb {
+    font-size: 12px;
+  }
+
+  .productImageContainer {
+    padding: 12px;
+    max-height: 40vh;
+  }
+
+  .productImage {
+    max-height: 35vh;
+  }
+
+  .thumbnail {
+    width: 50px;
+    height: 50px;
+  }
 }

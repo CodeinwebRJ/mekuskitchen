@@ -41,6 +41,15 @@
   right: 0;
 }
 
+.viewCartButton {
+  background-color: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
 .sidebarContent {
   padding: 20px;
   display: flex;
@@ -191,10 +200,4 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap-5);
-}
-
-.viewCart {
-  border: 2px solid var(--gray-border);
-  border-radius: 8px;
-  overflow: hidden;
 }

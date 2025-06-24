@@ -26,7 +26,8 @@
 }
 
 .footerText {
-  font-size: 14px;
+  text-align: justify;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--black);
 }
@@ -40,7 +41,7 @@
   cursor: pointer;
   margin-top: 12px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .linkList {
@@ -56,7 +57,7 @@
   color: var(--black);
   text-decoration: none;
   gap: 10px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .linkList a:hover {
@@ -81,13 +82,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 8px;
 }
 
 .followUs {
   margin-top: 8px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .socialIcons {
@@ -107,7 +108,6 @@
   object-fit: contain;
 }
 
-/* Tablet screens (768px to 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
   .footerContainer {
     padding: 40px 30px;
@@ -128,20 +128,20 @@
   }
 
   .footerText {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .readMoreBtn {
     padding: 8px 18px;
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .linkList a {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .contactLine {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .socialIcons {

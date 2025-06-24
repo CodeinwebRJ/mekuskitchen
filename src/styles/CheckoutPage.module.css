@@ -8,41 +8,45 @@
 }
 
 .cartTotals {
-  width: 30%;
-  height: 100%;
+  width: 100%;
+  max-width: 400px;
   background: var(--white);
-  padding: 30px 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  padding: 24px 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transition: var(--transition);
 }
 
 .cartTitle {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--primary-dark);
-  margin-bottom: 8px;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.totalContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0;
 }
 
 .total {
   display: flex;
   justify-content: space-between;
-  font-size: 16px;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.total span {
-  font-weight: 600;
-  color: var(--primary-dark);
 }
 
 .discount {
   color: var(--error);
-  font-weight: 500;
 }
+
+.grandTotal {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-top: 12px; 
+}
+
 
 .selfPickup {
   display: flex;
@@ -53,7 +57,7 @@
 
 .checkoutButton {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 28px;
   display: flex;
   justify-content: center;
 }

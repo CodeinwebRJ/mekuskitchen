@@ -86,9 +86,9 @@ const RelatedProductCard = ({ item }) => {
     }
     try {
       if (isLiked) {
-        await RemoveWishlist({ userid: user.userid, product_id: item._id });
+        await RemoveWishlist({ userid: user.userid, productId: item._id });
       } else {
-        await AddtoWishlist({ userid: user.userid, product_id: item._id });
+        await AddtoWishlist({ userid: user.userid, productId: item._id });
       }
       dispatch(toggleLiked(item._id));
     } catch (error) {

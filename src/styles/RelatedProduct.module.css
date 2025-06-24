@@ -1,5 +1,4 @@
 .relatedProductContainer {
-  padding: 20px;
   max-width: 1250px;
   width: 100%;
   margin: 0 auto;
@@ -17,7 +16,7 @@
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gap-9);
+  gap: var(--gap-8);
   justify-content: flex-start;
 }
 

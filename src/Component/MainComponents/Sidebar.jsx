@@ -217,17 +217,19 @@ const Sidebar = ({ isOpen, onClose }) => {
             </h5>
           </div>
           <div className={style.subtotalButtons}>
-            <div className={style.viewCart}>
-              <button onClick={() => navigate("/cart")} disabled={isLoading}>
-                VIEW CART
-              </button>
-            </div>
+            <button
+              className={style.viewCartButton}
+              onClick={() => navigate("/cart")}
+              disabled={isLoading}
+            >
+              View Cart
+            </button>
             <button
               onClick={() => navigate("/checkout")}
               className="Button sm"
               disabled={isLoading}
             >
-              CHECKOUT
+              Checkout
             </button>
           </div>
         </div>

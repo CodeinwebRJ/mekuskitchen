@@ -109,12 +109,12 @@ const PaymentCard = ({ handleCancel }) => {
 
     const cardDigits = paymentMethod.cardNumber.replace(/\s/g, "");
     if (cardDigits.length !== 16 || !/^\d+$/.test(cardDigits)) {
-      errors.cardNumber = "Enter a valid 16-digit card number";
+      errors.cardNumber = "Enter a valid card number";
     }
 
     const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
     if (!expiryRegex.test(paymentMethod.expiryDate)) {
-      errors.expiryDate = "Enter a valid expiry date (MM/YY)";
+      errors.expiryDate = "Enter a valid expiry date";
     } else {
       const [month, year] = paymentMethod.expiryDate.split("/").map(Number);
       const now = new Date();
@@ -125,7 +125,7 @@ const PaymentCard = ({ handleCancel }) => {
     }
 
     if (!/^\d{3,4}$/.test(paymentMethod.cvv)) {
-      errors.cvv = "Enter a valid 3 digit CVV";
+      errors.cvv = "Enter a valid CVV";
     }
 
     setValidationErrors(errors);

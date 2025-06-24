@@ -80,10 +80,12 @@ export const getCount = async (id) => {
 };
 
 export const AddtoWishlist = async (data) => {
+  console.log(data)
   return axiosInstance.post("/api/v1/wishlist/create", data);
 };
 
 export const RemoveWishlist = async (data) => {
+  console.log(data)
   return axiosInstance.put("/api/v1/wishlist/remove", data);
 };
 

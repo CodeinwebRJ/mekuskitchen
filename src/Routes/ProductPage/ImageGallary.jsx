@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import style from "../../styles/ImageGallary.module.css";
 
 const ImageGallery = ({
@@ -10,8 +11,43 @@ const ImageGallery = ({
   const defaultImage = "/defaultImage.png";
   const thumbnailImages =
     selectedSKUs?.details?.SKUImages?.length > 1
-      ? selectedSKUs.details?.SKUImages.slice(0, 4) || "defaultImage.png"
-      : product?.images?.slice(0, 4) || "defaultImage.png";
+      ? selectedSKUs.details?.SKUImages.slice(0, 4)
+      : product?.images?.slice(0, 4) || [defaultImage];
+
+  const imageList = thumbnailImages.map((img) =>
+    typeof img === "string" ? img : img?.url || defaultImage
+  );
+
+  const currentIndex = imageList.findIndex((img) => img === selectedImage);
+  const imageRef = useRef(null);
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+  const [fadeKey, setFadeKey] = useState(0);
+
+  useEffect(() => {
+    setFadeKey((prev) => prev + 1);
+  }, [selectedImage]);
+
+  const handleSwipe = () => {
+    if (!touchStartX || !touchEndX) return;
+    const distance = touchStartX - touchEndX;
+    const threshold = 50;
+
+    if (distance > threshold && currentIndex < imageList.length - 1) {
+      setSelectedImage(imageList[currentIndex + 1]);
+    } else if (distance < -threshold && currentIndex > 0) {
+      setSelectedImage(imageList[currentIndex - 1]);
+    }
+
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
+  useEffect(() => {
+    if (touchStartX !== null && touchEndX !== null) {
+      handleSwipe();
+    }
+  }, [touchEndX]);
 
   return (
     <div className={style.imageContainer}>
@@ -20,29 +56,35 @@ const ImageGallery = ({
         <Link to="/product-category">{product.category || "Category"}</Link> /{" "}
         {product.name || "Product"}
       </div>
-      <div className={style.productImageContainer}>
+
+      <div
+        className={style.productImageContainer}
+        ref={imageRef}
+        onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
+        onTouchEnd={(e) => setTouchEndX(e.changedTouches[0].clientX)}
+      >
         <img
+          key={fadeKey}
           src={selectedImage || defaultImage}
           alt={product.name}
-          className={style.productImage}
+          className={`${style.productImage} ${style.fadeIn}`}
         />
       </div>
+
       <div className={style.thumbnailsContainer}>
-        {thumbnailImages?.map((img, idx) => {
-          const url =
-            typeof img === "string" ? img : img?.url || "/defaultImage.png";
-          return (
-            <img
-              key={idx}
-              src={url}
-              alt={`Thumbnail ${idx + 1}`}
-              className={style.thumbnail}
-              onClick={() => setSelectedImage(url)}
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && setSelectedImage(url)}
-            />
-          );
-        })}
+        {imageList.map((url, idx) => (
+          <img
+            key={idx}
+            src={url}
+            alt={`Thumbnail ${idx + 1}`}
+            className={`${style.thumbnail} ${
+              url === selectedImage ? style.activeThumbnail : ""
+            }`}
+            onClick={() => setSelectedImage(url)}
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setSelectedImage(url)}
+          />
+        ))}
       </div>
     </div>
   );

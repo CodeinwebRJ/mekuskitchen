@@ -29,37 +29,53 @@ const OrderSummary = ({
   discount,
   discountPercentage,
   tax,
+  federalTax,
+  provinceTax,
   payNow,
   isLoading,
 }) => (
   <div className={style.cartTotals}>
-    <h3 className={style.cartTitle}>Cart Totals</h3>
-    <div className={style.total}>
-      SubTotal: <span>${total.toFixed(2)}</span>
-    </div>
-    {discount > 0 && (
-      <div>
-        Discount:{" "}
-        <span className="discount">
-          -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
-        </span>
+    <h3 className={style.cartTitle}>Billing Summary</h3>
+    <hr />
+    <div className={style.totalContainer}>
+      <div className={style.total}>
+        <span>Subtotal</span>
+        <span>${total.toFixed(2)}</span>
       </div>
-    )}
-    <div className={style.total}>
-      Tax: <span className={style.price}>${tax}</span>
+
+      {discount > 0 && (
+        <div className={`${style.total} ${style.discount}`}>
+          <span>Discount</span>
+          <span>
+            -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
+          </span>
+        </div>
+      )}
+
+      <div className={style.total}>
+        <span>Province Tax</span>
+        <span>${Number(provinceTax).toFixed(2)}</span>
+      </div>
+      <div className={style.total}>
+        <span>Federal Tax</span>
+        <span>${Number(federalTax).toFixed(2)}</span>
+      </div>
+      <div className={style.total}>
+        <span>Total Tax</span>
+        <span>${Number(tax).toFixed(2)}</span>
+      </div>
     </div>
     <hr />
-    <div className={style.total}>
-      Total: <p>${(Number(total) + Number(tax)).toFixed(2)}</p>
+    <div className={`${style.total} ${style.grandTotal}`}>
+      <span>Total</span>
+      <p>${(Number(total) + Number(tax)).toFixed(2)}</p>
     </div>
 
-    <Link to="/checkout">
-      <div className={style.checkoutButton}>
-        <button disabled={isLoading} onClick={payNow} className="Button md">
-          {isLoading ? "Processing..." : "Place Order"}
-        </button>
-      </div>
-    </Link>
+    <div className={style.checkoutButton}>
+      <button disabled={isLoading} onClick={payNow} className="Button md">
+        {isLoading ? "Processing..." : "Place Order"}
+      </button>
+    </div>
   </div>
 );
 
@@ -90,6 +106,7 @@ const CheckoutPage = () => {
         provinceCode: defaultAddress?.billing?.postcode,
       };
       const res = await getUserCart(data);
+      console.log(res.data.data);
       dispatch(setCart(res.data.data));
     } catch (error) {
       console.log(error);
@@ -204,6 +221,8 @@ const CheckoutPage = () => {
                 isLoading={isLoading}
                 discountPercentage={discountPercentage}
                 payNow={payNow}
+                federalTax={cart?.items?.totalFederalTax}
+                provinceTax={cart?.items?.totalProvinceTax}
                 tax={cart?.items?.totalTax}
               />
             </>

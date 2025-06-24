@@ -10,9 +10,6 @@
   font-size: 20px;
   font-weight: 600;
   color: var(--very-dark-gray);
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--gray-offwhite);
-  padding-bottom: 10px;
 }
 
 .cartTotals p {
@@ -29,8 +26,7 @@
 }
 
 .cartTotals hr {
-  border: none;
-  border-top: 1px solid var(--gray-offwhite);
+  border-top: 2px solid var(--gray-dark);
   margin: 10px 0;
 }
 
@@ -40,7 +36,6 @@
   color: var(--black);
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
 }
 
 .price {
@@ -49,7 +44,6 @@
 
 .checkoutButton {
   width: 100%;
-  margin-top: 30px;
   display: flex;
   justify-content: center;
 }

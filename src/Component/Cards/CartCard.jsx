@@ -1,6 +1,7 @@
 import style from "../../styles/CartCard.module.css";
 
 const CartCard = ({
+  item,
   handleClick,
   subtotal,
   total,
@@ -8,29 +9,37 @@ const CartCard = ({
   discountPercentage,
 }) => (
   <div className={style.cartTotals}>
-    <h3>Cart Totals</h3>
-    <p>
-      Total: <span>${total.toFixed(2)}</span>
-    </p>
-    <p>
-      Subtotal: <span>${subtotal.toFixed(2)}</span>
-    </p>
-    {discount > 0 && (
+    <h3>Cart Summary</h3>
+    <hr/>
+    <div>
       <p>
-        Discount:{" "}
-        <span className={style.discount}>
-          -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
-        </span>
+        Total: <span>${total.toFixed(2)}</span>
       </p>
-    )}
+      <p>
+        Item: <span>{item}</span>
+      </p>
+      <p>
+        Subtotal: <span>${subtotal.toFixed(2)}</span>
+      </p>
+      {discount > 0 && (
+        <p>
+          Discount:{" "}
+          <span className={style.discount}>
+            -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
+          </span>
+        </p>
+      )}
+    </div>
     <hr />
-    <p className={style.total}>
-      Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
-    </p>
-    <div className={style.checkoutButton}>
-      <button className="Button" onClick={handleClick}>
-        Proceed to Checkout
-      </button>
+    <div>
+      <p className={style.total}>
+        Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
+      </p>
+      <div className={style.checkoutButton}>
+        <button className="Button" onClick={handleClick}>
+          Proceed to Checkout
+        </button>
+      </div>
     </div>
   </div>
 );

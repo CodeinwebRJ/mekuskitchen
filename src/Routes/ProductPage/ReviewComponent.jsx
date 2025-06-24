@@ -111,7 +111,7 @@ const ReviewComponent = ({
             </div>
 
             <div className={`${style.formGroup} ${style.submitContainer}`}>
-              <button className={style.submitButton}>Submit Review</button>
+              <button className="Button sm">Submit Review</button>
             </div>
           </form>
         </div>

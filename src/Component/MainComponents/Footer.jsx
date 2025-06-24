@@ -10,7 +10,6 @@ import {
   FaShieldAlt,
   FaMoneyCheckAlt,
 } from "react-icons/fa";
-import { MdOutlineLunchDining } from "react-icons/md";
 
 const Footer = () => {
   return (

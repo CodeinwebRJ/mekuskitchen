@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .sectionTitle {
@@ -12,10 +14,11 @@
 
 .errorMessage {
   color: var(--error);
+  font-size: 0.85rem;
 }
 
 .reviewForm {
-  padding: 24px 0px;
+  padding: 24px 0;
 }
 
 .formTitle {
@@ -59,18 +62,14 @@
   border-radius: 8px;
   border: 1px solid var(--gray-border-light);
   font-size: 16px;
-  padding: 8px;
+  padding: 12px;
+  min-height: 120px;
+  resize: vertical;
 }
 
 .textarea:focus {
   outline: none;
   border-color: var(--primary-blue);
-}
-
-.submitButton {
-  padding: 8px 24px;
-  white-space: nowrap;
-  border-radius: 8px;
 }
 
 .noReviews {
@@ -79,18 +78,19 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  padding: 20px;
 }
 
 .reviewList {
   display: flex;
   flex-direction: column;
   gap: var(--gap-6);
-  margin: 8px 0px;
+  margin: 8px 0;
 }
 
 .reviewItem {
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease-in-out;
 }
@@ -137,27 +137,27 @@
   line-height: 1.6;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
+/* Tablet View (max-width: 1024px) */
+@media (max-width: 1024px) {
   .reviewsSection {
-    padding: 20px;
-  }
-
-  .reviewForm {
-    padding: 20px;
+    padding: 16px;
   }
 
   .sectionTitle {
-    font-size: 20px;
+    font-size: 1.5rem;
+  }
+
+  .reviewForm {
+    padding: 20px 0;
   }
 
   .formTitle {
-    font-size: 18px;
+    font-size: 1.25rem;
   }
 
   .form {
     flex-direction: column;
-    align-items: stretch;
+    gap: var(--gap-12);
   }
 
   .submitContainer {
@@ -165,6 +165,155 @@
   }
 
   .textarea {
+    font-size: 15px;
+    padding: 10px;
+  }
+  .reviewItem {
+    padding: 14px;
+  }
+
+  .reviewAvatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+
+  .reviewUser {
+    font-size: 15px;
+  }
+
+  .reviewComment {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile View (max-width: 768px) */
+@media (max-width: 768px) {
+  .reviewsSection {
+    padding: 12px;
+  }
+
+  .sectionTitleContainer {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .reviewForm {
+    padding: 16px 0;
+  }
+
+  .formTitle {
+    font-size: 1.1rem;
+  }
+
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap-10);
+  }
+
+  .formGroup {
+    gap: var(--gap-6);
+  }
+
+  .label {
+    font-size: 0.9rem;
+  }
+
+  .textarea {
+    font-size: 14px;
+    padding: 10px;
     min-height: 100px;
+  }
+
+  .submitContainer {
+    align-self: stretch;
+    margin: 0;
+  }
+
+  .noReviews {
+    padding: 16px;
+    font-size: 0.9rem;
+  }
+
+  .reviewList {
+    gap: var(--gap-4);
+  }
+
+  .reviewItem {
+    padding: 12px;
+  }
+
+  .reviewHeader {
+    gap: var(--gap-6);
+  }
+
+  .reviewAvatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .reviewUser {
+    font-size: 14px;
+  }
+
+  .reviewRating {
+    margin-top: 2px;
+  }
+
+  .reviewComment {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+}
+
+/* Extra Small Mobile View (max-width: 480px) */
+@media (max-width: 480px) {
+  .reviewsSection {
+    padding: 8px;
+  }
+
+  .sectionTitle {
+    font-size: 1.1rem;
+  }
+
+  .reviewForm {
+    padding: 12px 0;
+  }
+
+  .formTitle {
+    font-size: 1rem;
+  }
+
+  .label {
+    font-size: 0.85rem;
+  }
+
+  .textarea {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .reviewItem {
+    padding: 10px;
+  }
+
+  .reviewAvatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .reviewUser {
+    font-size: 13px;
+  }
+
+  .reviewComment {
+    font-size: 0.8rem;
   }
 }
