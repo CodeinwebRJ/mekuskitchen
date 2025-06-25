@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer";
 import Banner from "../../Component/MainComponents/Banner";

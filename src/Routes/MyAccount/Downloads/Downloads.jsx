@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../../styles/Downloads.module.css";
 import MyAccountContainer from "../MyAccountContainer";
 

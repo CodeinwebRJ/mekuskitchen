@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../../styles/Addresses.module.css";
 import FormField from "./FormField";
 import CheckboxFeild from "../../../Component/UI-Components/CheckboxFeild";
@@ -12,32 +12,33 @@ import {
 import { useLocation } from "react-router-dom";
 
 const AddressForm = (props) => {
-  const { isEdit, fetchAddress, onClose } = props;
+  const { isEdit, editData, fetchAddress, onClose } = props;
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
   const [formData, setFormData] = useState({
-    userId: user.userid,
     billingData: {
-      firstName: "",
-      lastName: "",
+      name: "",
       country: "",
       state: "",
       city: "",
       address: "",
       postCode: "",
       phoneCode: "",
+      provinceCode: "",
+      countryCode: "",
       phone: "",
       email: "",
     },
     shippingData: {
-      firstName: "",
-      lastName: "",
+      name: "",
       country: "",
       state: "",
       city: "",
       address: "",
       postCode: "",
+      provinceCode: "",
+      countryCode: "",
       phoneCode: "",
       phone: "",
       email: "",
@@ -45,6 +46,7 @@ const AddressForm = (props) => {
     isDifferent: false,
     isActive: true,
   });
+
   const [errors, setErrors] = useState({
     billingErrors: {},
     shippingErrors: {},
@@ -55,8 +57,7 @@ const AddressForm = (props) => {
   const validateAddressForm = (data) => {
     const validationErrors = {};
     const requiredFields = {
-      firstName: "First Name is required",
-      lastName: "Last Name is required",
+      name: "Name is required",
       country: "Country is required",
       state: "State is required",
       city: "City is required",
@@ -102,6 +103,7 @@ const AddressForm = (props) => {
       updatedFields.phoneCode = selectedCountry?.PhoneCode
         ? `+${selectedCountry.PhoneCode}`
         : "";
+      updatedFields.countryCode = selectedCountry?.iso2;
       updatedFields.state = "";
       updatedFields.city = "";
     }
@@ -154,36 +156,72 @@ const AddressForm = (props) => {
 
     try {
       const res = isEdit
-        ? await UpdateUserAddress(formData)
-        : await addUserAddress({
+        ? await UpdateUserAddress({
+            addressId: editData._id,
             userId: user.userid,
             isDifferent: formData.isDifferent,
             billing: {
-              firstName: formData.billingData.firstName,
-              lastName: formData.billingData.lastName,
+              name: formData.billingData.name,
               country: formData.billingData.country,
               state: formData.billingData.state,
               city: formData.billingData.city,
               address: formData.billingData.address,
-              postcode: formData.billingData.postCode,
+              postCode: formData.billingData.postCode,
+              phoneCode: formData.billingData.phoneCode,
+              countryCode: formData.billingData.countryCode,
+              provinceCode: formData.billingData.provinceCode,
               phone: formData.billingData.phone,
               email: formData.billingData.email,
             },
             ...(formData.isDifferent && {
               shipping: {
-                firstName: formData.shippingData.firstName,
-                lastName: formData.shippingData.lastName,
+                name: formData.shippingData.name,
                 country: formData.shippingData.country,
                 state: formData.shippingData.state,
                 city: formData.shippingData.city,
+                phoneCode: formData.shippingData.phoneCode,
                 address: formData.shippingData.address,
-                postcode: formData.shippingData.postCode,
+                postCode: formData.shippingData.postCode,
+                countryCode: formData.shippingData.countryCode,
+                provinceCode: formData.shippingData.provinceCode,
+                phone: formData.shippingData.phone,
+                email: formData.shippingData.email,
+              },
+            }),
+          })
+        : await addUserAddress({
+            userId: user.userid,
+            isDifferent: formData.isDifferent,
+            billing: {
+              name: formData.billingData.name,
+              country: formData.billingData.country,
+              state: formData.billingData.state,
+              city: formData.billingData.city,
+              address: formData.billingData.address,
+              postCode: formData.billingData.postCode,
+              phoneCode: formData.billingData.phoneCode,
+              countryCode: formData.billingData.countryCode,
+              provinceCode: formData.billingData.provinceCode,
+              phone: formData.billingData.phone,
+              email: formData.billingData.email,
+            },
+            ...(formData.isDifferent && {
+              shipping: {
+                name: formData.shippingData.name,
+                country: formData.shippingData.country,
+                state: formData.shippingData.state,
+                city: formData.shippingData.city,
+                phoneCode: formData.shippingData.phoneCode,
+                address: formData.shippingData.address,
+                postCode: formData.shippingData.postCode,
+                countryCode: formData.shippingData.countryCode,
+                provinceCode: formData.shippingData.provinceCode,
                 phone: formData.shippingData.phone,
                 email: formData.shippingData.email,
               },
             }),
           });
-      if (res?.status === 201) {
+      if (res?.status === 200) {
         dispatch(setShowAddressForm(false));
         fetchAddress();
         {
@@ -196,6 +234,57 @@ const AddressForm = (props) => {
       console.error("Error submitting address:", error);
     }
   };
+
+
+  useEffect(() => {
+    if (isEdit && editData) {
+      setFormData({
+        billingData: {
+          name: editData.billing?.name || "",
+          country: editData.billing?.country || "",
+          state: editData.billing?.state || "",
+          city: editData.billing?.city || "",
+          address: editData.billing?.address || "",
+          postCode: editData.billing?.postCode || "",
+          phoneCode: editData.billing?.phoneCode || "",
+          provinceCode: editData.billing?.provinceCode || "",
+          countryCode: editData.billing?.countryCode || "",
+          phone: editData.billing?.phone || "",
+          email: editData.billing?.email || "",
+        },
+        shippingData: editData.isDifferent
+          ? {
+              name: editData.shipping?.name || "",
+              country: editData.shipping?.country || "",
+              state: editData.shipping?.state || "",
+              city: editData.shipping?.city || "",
+              address: editData.shipping?.address || "",
+              postCode: editData.shipping?.postCode || "",
+              phoneCode: editData.shipping?.phoneCode || "",
+              provinceCode: editData.shipping?.provinceCode || "",
+              countryCode: editData.shipping?.countryCode || "",
+              phone: editData.shipping?.phone || "",
+              email: editData.shipping?.email || "",
+            }
+          : {
+              name: "",
+              country: "",
+              state: "",
+              city: "",
+              address: "",
+              postCode: "",
+              phoneCode: "",
+              provinceCode: "",
+              countryCode: "",
+              phone: "",
+              email: "",
+            },
+        isDifferent: !!editData.isDifferent,
+        isActive: editData.isActive !== undefined ? editData.isActive : true,
+      });
+    }
+  }, [isEdit, editData]);
+
 
   return (
     <div>

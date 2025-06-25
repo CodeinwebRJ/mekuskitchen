@@ -1,16 +1,13 @@
-import React from "react";
 import style from "../../styles/Heading.module.css";
 
-const   Heading = (props) => {
-  const { title, titleColor, note, size = "md", review } = props;
-
+const Heading = ({ title, titleColor, note, size = "md", review }) => {
   return (
     <>
       <div className={style.headingContainer}>
         <h1 className={`${style.title} ${style[size]}`}>
           {title}{" "}
           {titleColor && <span className={style.titleColor}>{titleColor}</span>}
-          {review && { review }}
+          {review && <span className={style.review}>{review}</span>}
         </h1>
       </div>
       {note && <p className={style.note}>{note}</p>}

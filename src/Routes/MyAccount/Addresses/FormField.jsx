@@ -4,7 +4,6 @@ import SelectField from "../../../Component/UI-Components/SelectField";
 import { useSelector } from "react-redux";
 import { CanadaSearch } from "../../../axiosConfig/AxiosConfig";
 import { useEffect, useRef, useState } from "react";
-import { IoLocationOutline } from "react-icons/io5";
 
 const FormField = ({ formData, handleChange, formErrors = {} }) => {
   const [addressSuggestions, setAddressSuggestions] = useState([]);
@@ -15,6 +14,8 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
   const countries = countriesData.map((country) => ({
     label: country.country,
     value: country.country,
+    iso2: country.iso2,
+    iso3: country.iso3,
   }));
 
   const selectedCountryData = countriesData.find(
@@ -52,6 +53,7 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
     const fetchSuggestions = async () => {
       if (formData.address?.length < 3) {
         setAddressSuggestions([]);
+        setShowSuggestions(false);
         return;
       }
       try {
@@ -196,30 +198,30 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         <div className={style.inputFieldContainer}>
           <InputField
             type="text"
-            name="firstName"
-            value={formData.firstName || ""}
+            name="name"
+            value={formData.name || ""}
             onChange={handleChange}
-            placeholder="First Name"
-            labelName="First Name"
+            placeholder="Name"
+            labelName="Name"
             required
           />
-          {formErrors.firstName && (
-            <div className={style.errorMessage}>{formErrors.firstName}</div>
+          {formErrors.name && (
+            <div className={style.errorMessage}>{formErrors.name}</div>
           )}
         </div>
 
         <div className={style.inputFieldContainer}>
           <InputField
             type="text"
-            name="lastName"
-            value={formData.lastName || ""}
+            name="email"
+            value={formData.email || ""}
             onChange={handleChange}
-            placeholder="Last Name"
-            labelName="Last Name"
+            placeholder="Email"
+            labelName="Email"
             required
           />
-          {formErrors.lastName && (
-            <div className={style.errorMessage}>{formErrors.lastName}</div>
+          {formErrors.email && (
+            <div className={style.errorMessage}>{formErrors.email}</div>
           )}
         </div>
       </div>
@@ -259,15 +261,15 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         <div className={style.inputFieldContainer}>
           <InputField
             type="text"
-            name="email"
-            value={formData.email || ""}
+            name="provinceCode"
+            value={formData.provinceCode || ""}
             onChange={handleChange}
-            placeholder="Email"
-            labelName="Email"
+            placeholder="Province Code"
+            labelName="Province Code"
             required
           />
-          {formErrors.email && (
-            <div className={style.errorMessage}>{formErrors.email}</div>
+          {formErrors.provinceCode && (
+            <div className={style.errorMessage}>{formErrors.provinceCode}</div>
           )}
         </div>
       </div>

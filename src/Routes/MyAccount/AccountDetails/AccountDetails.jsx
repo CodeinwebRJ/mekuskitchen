@@ -1,4 +1,3 @@
-import React from "react";
 import MyAccountContainer from "../MyAccountContainer";
 
 const AccountDetails = () => {

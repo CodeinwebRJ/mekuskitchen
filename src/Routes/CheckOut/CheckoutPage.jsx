@@ -8,9 +8,9 @@ import {
   ActiveUserAddress,
   getUserAddress,
   getUserCart,
+  ShippingCharges,
 } from "../../axiosConfig/AxiosConfig";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
-import { Link } from "react-router-dom";
 import AddressCard from "../../Component/Cards/AddressCard";
 import {
   setAddresses,
@@ -27,6 +27,8 @@ import CheckboxField from "../../Component/UI-Components/CheckboxFeild";
 const OrderSummary = ({
   total,
   discount,
+  SCV,
+  SCC,
   discountPercentage,
   tax,
   federalTax,
@@ -52,6 +54,12 @@ const OrderSummary = ({
         </div>
       )}
 
+      <div className={style.total}>
+        <span>Shipping charges</span>
+        <span>
+          ${SCV} {SCC}
+        </span>
+      </div>
       <div className={style.total}>
         <span>Province Tax</span>
         <span>${Number(provinceTax).toFixed(2)}</span>
@@ -90,6 +98,7 @@ const CheckoutPage = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [showComponent, setShowComponent] = useState("cart");
+  const [shippingCharges, setShippingCharges] = useState(null);
 
   const payNow = () => {
     setShowComponent("payment");
@@ -103,10 +112,9 @@ const CheckoutPage = () => {
     try {
       const data = {
         id: user?.userid,
-        provinceCode: defaultAddress?.billing?.postcode,
+        provinceCode: defaultAddress?.billing?.postCode,
       };
       const res = await getUserCart(data);
-      console.log(res.data.data);
       dispatch(setCart(res.data.data));
     } catch (error) {
       console.log(error);
@@ -142,10 +150,10 @@ const CheckoutPage = () => {
   }, [discount, total]);
 
   useEffect(() => {
-    if (user?.userid && defaultAddress?.billing?.postcode) {
+    if (user?.userid && defaultAddress?.billing?.postCode) {
       fetchUserCart();
     }
-  }, [user?.userid, defaultAddress?.billing?.postcode]);
+  }, [user?.userid, defaultAddress?.billing?.postCode]);
 
   const fetchAddress = async () => {
     try {
@@ -175,6 +183,44 @@ const CheckoutPage = () => {
       console.error("Error activating address:", error);
     }
   };
+
+  const fetchShipping = async () => {
+    try {
+      const data = {
+        shipTo: {
+          name: defaultAddress.billing.name,
+          phone: defaultAddress.billing.phone,
+          address: {
+            addressLine: [defaultAddress.billing.address],
+            city: defaultAddress.billing.city,
+            postalCode: defaultAddress.billing.postCode,
+            stateOrProvince: defaultAddress.billing.provinceCode,
+            countryCode: defaultAddress.billing.countryCode,
+          },
+        },
+        packages: cart?.items?.items?.map((item) => ({
+          unit: "KGS",
+          weight: "1",
+        })),
+      };
+      const res = await ShippingCharges(data);
+      setShippingCharges(res.data.data);
+    } catch (error) {
+      console.error("Error fetching shipping:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchShipping();
+  }, [defaultAddress, cart]);
+
+  const SCV =
+    shippingCharges?.ShipmentResponse?.ShipmentResults?.ShipmentCharges
+      ?.TotalCharges?.MonetaryValue;
+
+  const SCC =
+    shippingCharges?.ShipmentResponse?.ShipmentResults?.ShipmentCharges
+      ?.TotalCharges?.CurrencyCode;
 
   return (
     <div className={style.mainContainer}>
@@ -224,6 +270,8 @@ const CheckoutPage = () => {
                 federalTax={cart?.items?.totalFederalTax}
                 provinceTax={cart?.items?.totalProvinceTax}
                 tax={cart?.items?.totalTax}
+                SCV={SCV}
+                SCC={SCC}
               />
             </>
 

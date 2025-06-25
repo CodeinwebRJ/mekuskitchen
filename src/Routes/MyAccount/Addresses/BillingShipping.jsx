@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../../styles/Billing.module.css";
 import { useSelector } from "react-redux";
 
@@ -15,8 +14,7 @@ const BillingShipping = () => {
           <div className={`${style.addressCardContainer}`}>
             <div className={style.addressCard}>
               <h1 className={style.fullName}>
-                {defaultAddress?.billing?.firstName}{" "}
-                {defaultAddress?.billing?.lastName}
+                {defaultAddress?.billing?.name}
               </h1>
 
               <p className={style.address}>{defaultAddress?.address}</p>
@@ -28,7 +26,7 @@ const BillingShipping = () => {
 
               <p className={style.CountryPostcode}>
                 {defaultAddress?.billing?.country} -{" "}
-                {defaultAddress?.billing?.postcode}
+                {defaultAddress?.billing?.postCode}
               </p>
 
               <p className={style.phoneNumber}>
@@ -51,8 +49,7 @@ const BillingShipping = () => {
           <div className={`${style.addressCardContainer}`}>
             <div className={style.addressCard}>
               <h1 className={style.fullName}>
-                {defaultAddress?.shipping?.firstName}{" "}
-                {defaultAddress?.shipping?.lastName}
+                {defaultAddress?.shipping?.name}
               </h1>
 
               <p className={style.address}>{defaultAddress?.address}</p>
@@ -64,7 +61,7 @@ const BillingShipping = () => {
 
               <p className={style.CountryPostcode}>
                 {defaultAddress?.shipping?.country} -{" "}
-                {defaultAddress?.shipping?.postcode}
+                {defaultAddress?.shipping?.postCode}
               </p>
 
               <p className={style.phoneNumber}>

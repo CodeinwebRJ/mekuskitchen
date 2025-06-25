@@ -5,31 +5,75 @@
 
 .title {
   width: fit-content;
-  font-size: 40px;
   font-weight: var(--font-semibold);
   padding-bottom: 10px;
   margin-bottom: -2px;
   border-bottom: 2px solid var(--primary-blue);
+  font-size: 2.5rem; /* default for md */
 }
 
+/* Title Sizes */
 .title.xs {
-  font-size: var(--font-2xl);
+  font-size: 1.25rem; /* 20px */
 }
 
 .title.sm {
-  font-size: 28px;
+  font-size: 1.75rem; /* 28px */
 }
 
 .title.md {
-  font-size: 40px;
+  font-size: 2.5rem; /* 40px */
 }
 
 .titleColor {
   color: var(--primary-blue);
 }
 
+.review {
+  font-size: 1rem;
+  margin-left: 8px;
+  color: var(--gray-darker);
+}
+
 .note {
   margin: 0;
-  font-size: var(--font-md);
+  font-size: 1rem;
   color: var(--gray-darker);
+}
+
+/* 🔽 Responsive Breakpoints */
+@media (max-width: 768px) {
+  .title.xs {
+    font-size: 1rem;
+  }
+
+  .title.sm {
+    font-size: 1.25rem;
+  }
+
+  .title.md {
+    font-size: 1.75rem;
+  }
+
+  .note {
+    font-size: 0.9rem;
+  }
+
+  .review {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title.md {
+    font-size: 1.5rem;
+  }
+
+  .note {
+    font-size: 0.85rem;
+  }
+
+  .review {
+    font-size: 0.85rem;
+  }
 }

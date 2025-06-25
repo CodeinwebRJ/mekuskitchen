@@ -20,7 +20,7 @@ import AddAddressCard from "../../../Component/UI-Components/AddAddressCard";
 
 const Addresses = () => {
   const dispatch = useDispatch();
-  const [isEdit, setIsEdit] = useState(false);
+  const [editAddress, setEditAddress] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { addresses, showAddressForm, defaultAddress } = useSelector(
     (state) => state.address
@@ -40,8 +40,8 @@ const Addresses = () => {
     }
   };
 
-  const handleUpdateAddress = (addressId) => {
-    setIsEdit(true);
+  const handleUpdateAddress = (addressData) => {
+    setEditAddress(addressData);
     dispatch(setShowAddressForm(true));
   };
 
@@ -91,7 +91,7 @@ const Addresses = () => {
                 <AddAddressCard
                   onClick={() => {
                     dispatch(setShowAddressForm(true));
-                    setIsEdit(false);
+                    // setIsEdit(false);
                   }}
                 />
               ) : null}
@@ -110,11 +110,13 @@ const Addresses = () => {
         </>
       ) : (
         <AddressForm
-          isEdit={isEdit}
+          isEdit={!!editAddress}
+          editData={editAddress}
+          fetchAddress={fetchAddress}
           onClose={() => {
+            setEditAddress(null);
             dispatch(setShowAddressForm(false));
           }}
-          fetchAddress={fetchAddress}
         />
       )}
     </MyAccountContainer>

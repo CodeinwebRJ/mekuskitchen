@@ -21,15 +21,13 @@ const AddressCard = ({
         }}
         className={style.addressCard}
       >
-        <h1 className={style.fullName}>
-          {address?.billing?.firstName} {address?.billing?.lastName}
-        </h1>
+        <h1 className={style.fullName}>{address?.billing?.name}</h1>
         <p className={style.address}>{address?.address}</p>
         <p className={style.address}>
           {address?.billing?.city}, {address?.billing?.state}
         </p>
         <p className={style.address}>
-          {address?.billing?.state} - {address?.billing?.postcode}
+          {address?.billing?.state} - {address?.billing?.postCode}
         </p>
         <p className={style.address}>{address?.billing?.country}</p>
         <p className={style.address}>Phone: {address?.billing?.phone}</p>
@@ -38,7 +36,7 @@ const AddressCard = ({
       {location.pathname === "/my-account/addresses" && (
         <div className={style.addressControllers}>
           <span
-            onClick={() => handleUpdateAddress(address?._id)}
+            onClick={() => handleUpdateAddress(address)}
             className={style.link}
           >
             <FaEdit className={style.icon} /> Edit

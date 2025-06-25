@@ -10,7 +10,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* border-bottom: 2px solid var(--gray-shadow); */
   padding-bottom: 40px;
 }
 

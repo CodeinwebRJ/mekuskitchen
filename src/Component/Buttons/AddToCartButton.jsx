@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/AddToCartButton.module.css";
 import { BsCartPlus } from "react-icons/bs";
 

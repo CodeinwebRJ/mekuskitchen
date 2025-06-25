@@ -125,8 +125,6 @@ const ProductPage = () => {
     fetchReviews();
   }, [id, reviews.length]);
 
-  console.log(product);
-
   const tabData = [
     ...(product?.specifications &&
     Object.values(product.specifications).some((val) => !!val)

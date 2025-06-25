@@ -80,12 +80,10 @@ export const getCount = async (id) => {
 };
 
 export const AddtoWishlist = async (data) => {
-  console.log(data)
   return axiosInstance.post("/api/v1/wishlist/create", data);
 };
 
 export const RemoveWishlist = async (data) => {
-  console.log(data)
   return axiosInstance.put("/api/v1/wishlist/remove", data);
 };
 
@@ -120,4 +118,8 @@ export const getCountryData = async () => {
 
 export const CanadaSearch = async (search) => {
   return axiosInstance.get(`/api/v1/address/suggest/canada?search=${search}`);
+};
+
+export const ShippingCharges = async (data) => {
+  return axiosInstance.post("/api/v1/shipping/create", data);
 };

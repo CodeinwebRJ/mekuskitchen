@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/WishlistPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer";

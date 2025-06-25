@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../styles/RefundPolicy.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer"; 

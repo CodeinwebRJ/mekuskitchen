@@ -27,7 +27,7 @@ const Banner = ({ name, path = "/" }) => {
               className={style.foodItem}
               loading="lazy"
               onError={(e) => {
-                e.target.src = "/fallback.png"; // Fallback image
+                e.target.src = "/defaultImage.png"; 
               }}
             />
           </div>

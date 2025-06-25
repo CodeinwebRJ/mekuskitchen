@@ -1,4 +1,3 @@
-import React from "react";
 import style from "../../../styles/Dashboard.module.css";
 import DashboardCard from "../../../Component/Cards/DashboardCard";
 import { MyAccountData } from "../../../StaticData";

@@ -97,8 +97,6 @@ function SignUpPage() {
         })
       );
 
-      console.log(response)
-
       if (response.data.response === "1") {
         setShow(true);
       }
