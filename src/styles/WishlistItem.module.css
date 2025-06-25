@@ -1,30 +1,47 @@
-/* WishlistItem.module.css */
 .item {
   display: flex;
   justify-content: space-between;
-  align-items: center; 
-  padding: 16px; 
+  align-items: center;
+  padding: 16px;
   border: 1px solid var(--gray-offwhite);
-  border-radius: 8px; 
+  border-radius: 8px;
   background-color: var(--white);
-  gap: 16px; 
-  transition: box-shadow 0.3s ease, transform 0.2s ease; 
+  gap: 16px;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.wishlist {
+  position: absolute;
+  height: 36px;
+  width: 36px;
+  background: var(--semi-transparent-pale-gray);
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s ease;
 }
 
 .itemLeftSide {
   display: flex;
   align-items: flex-start;
-  gap: 16px; 
-  flex: 2; 
+  gap: 16px;
+  flex: 2;
 }
 
 .itemImage {
-  width: 180px; 
-  aspect-ratio: 1 / 1; 
+  position: relative;
+  width: 180px;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -32,7 +49,7 @@
   border-radius: 8px;
   background-color: var(--white);
   border: 1px solid var(--gray-offwhite);
-  padding: 4px; 
+  padding: 4px;
 }
 
 .itemImage img {
@@ -45,15 +62,16 @@
 .itemContent {
   display: flex;
   flex-direction: column;
-  gap: 8px; 
+  gap: 8px;
   flex: 1;
 }
 
 .itemName {
-  font-size: 18px; 
+  font-size: 18px;
   font-weight: 600;
   color: var(--very-dark-gray);
   transition: color 0.2s ease;
+  word-break: break-word;
 }
 
 .itemName:hover {
@@ -62,10 +80,10 @@
 }
 
 .itemDescription {
-  width: 90%; 
+  width: 90%;
   color: var(--gray-deep);
   font-size: 14px;
-  line-height: 1.5; 
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -75,14 +93,14 @@
 
 .itemPrice {
   display: flex;
-  gap:  var(--gap-4);
+  gap: var(--gap-4);
 }
 
 .itemRightSide {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 16px; 
+  gap: 16px;
   min-width: 160px;
 }
 
@@ -94,9 +112,19 @@
 }
 
 .stockTitle {
-  font-size: 14px; 
+  font-size: 14px;
   font-weight: 600;
   color: var(--primary-green-light);
+}
+
+.controllers {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nameMetaMobile {
+  display: none;
 }
 
 .icon {
@@ -106,66 +134,207 @@
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.controllers {
-  display: flex;
-  gap: 8px; 
-  align-items: center;
-}
-
 .icon:focus,
 .itemName:focus {
   outline: 2px solid var(--primary-green-light);
   outline-offset: 2px;
 }
+
+/* Tablet View */
 @media screen and (max-width: 768px) {
   .item {
     flex-direction: column;
     align-items: stretch;
-    padding: 12px; 
+    padding: 12px;
+    gap: 12px;
   }
 
   .itemLeftSide {
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    gap: 12px; 
+    gap: 12px;
   }
 
   .itemImage {
     width: 100%;
-    width: 240px; 
-    aspect-ratio: 1 / 1;
+    max-width: 220px;
+  }
+
+  .itemContent {
+    align-items: center;
+    gap: 6px;
   }
 
   .itemDescription {
-    max-width: 100%; 
+    width: 100%;
+    max-width: 300px;
+    text-align: justify;
   }
 
   .itemRightSide {
-    align-items: center;
     width: 100%;
-    gap: 12px; 
+    align-items: center;
+    gap: 10px;
   }
 
   .stockContainer {
     align-items: center;
   }
+
+  .Button.sm {
+    padding: 8px 16px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 200px;
+  }
 }
 
 @media screen and (max-width: 480px) {
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--gray-offwhite);
+    border-radius: 12px;
+    background-color: var(--white);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .itemLeftSide {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .itemImage {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--gray-offwhite);
+  }
+
+  .itemImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .itemContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
   .itemName {
-    font-size: 16px; 
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--very-dark-gray);
   }
 
   .itemPrice {
     font-size: 14px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    font-weight: 500;
   }
 
-  .itemImage {
-    max-width: 192px; 
+  .originalPrice {
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  .price {
+    color: var(--primary-green-light);
+  }
+
+  .itemDescription {
+    font-size: 13px;
+    color: var(--gray-deep);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .itemRightSide {
-    min-width: unset; 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .itemRightSide .stockContainer {
+    display: none;
+  }
+
+  .stockContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .stockTitle {
+    font-size: 13px;
+    color: var(--primary-green-light);
+  }
+
+  .controllers {
+    display: flex;
+    gap: 12px;
+  }
+
+  .icon {
+    font-size: 18px;
+    color: var(--dark-gray);
+    cursor: pointer;
+  }
+
+  .Button.sm {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .Button.sm:hover {
+    background-color: var(--primary-green-dark);
+  }
+
+  .Button.sm:active {
+    transform: scale(0.97);
+  }
+
+  .nameRow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .nameMetaMobile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 }

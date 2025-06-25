@@ -273,3 +273,9 @@
     padding: 6px;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .logoImage {
+    height: 35px;
+  }
+}

@@ -7,22 +7,25 @@
 
 .footerInner {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  justify-content: space-between;
   gap: 40px;
   max-width: 1200px;
   margin: 0 auto;
+  text-align: left;
 }
 
 .footerColumn {
-  flex: 1;
+  flex: 1 1 30%;
   min-width: 250px;
+  text-align: left;
 }
 
 .footerTitle {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 15px;
+  color: var(--white);
 }
 
 .footerText {
@@ -84,11 +87,13 @@
   gap: 8px;
   font-size: 16px;
   margin-bottom: 8px;
+  color: var(--black);
 }
 
 .followUs {
   margin-top: 8px;
   font-size: 16px;
+  color: var(--black);
 }
 
 .socialIcons {
@@ -108,18 +113,21 @@
   object-fit: contain;
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+/* ✅ REMOVE all layout overrides for mobile and tablet */
+@media (max-width: 1024px) {
   .footerContainer {
-    padding: 40px 30px;
+    padding: 40px 20px;
   }
 
   .footerInner {
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 30px;
   }
 
   .footerColumn {
-    flex: 1 1 45%;
-    min-width: 200px;
+    flex: 1 1 30%;
+    min-width: 250px;
     text-align: left;
   }
 
@@ -128,85 +136,18 @@
   }
 
   .footerText {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .readMoreBtn {
-    padding: 8px 18px;
-    font-size: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
   }
 
-  .linkList a {
-    font-size: 12px;
-  }
-
-  .contactLine {
-    font-size: 12px;
-  }
-
-  .socialIcons {
-    justify-content: flex-start;
-  }
-}
-
-/* Mobile screens (below 768px) */
-@media (max-width: 767px) {
-  .footerContainer {
-    padding: 30px 15px;
-  }
-
-  .footerInner {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-
-  .footerColumn {
-    flex: 1 1 100%;
-    min-width: 100%;
-    text-align: center;
-  }
-
-  .footerTitle {
-    font-size: 18px;
-  }
-
-  .footerText {
-    font-size: 12px;
-    line-height: 1.5;
-  }
-
-  .readMoreBtn {
-    padding: 6px 14px;
-    font-size: 10px;
-  }
-
-  .linkList {
-    align-items: center;
-    gap: 10px;
-  }
-
-  .linkList a {
-    font-size: 12px;
-    justify-content: center;
-  }
-
-  .contactLine {
-    font-size: 12px;
-    justify-content: center;
-  }
-
+  .linkList a,
+  .contactLine,
   .followUs {
-    font-size: 12px;
-  }
-
-  .socialIcons {
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .socialIcons a {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .socialIcons img {

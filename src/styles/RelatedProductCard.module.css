@@ -78,3 +78,9 @@
   font-size: 1rem;
   font-weight: 500;
 }
+
+@media screen and (max-width: 480px) {
+  .contentWrapper {
+    padding: 4px;
+  }
+}

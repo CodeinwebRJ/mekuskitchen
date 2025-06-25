@@ -16,6 +16,7 @@ const RelatedProduct = () => {
   const { pathname } = useLocation();
   const category = pathname.split("/").filter((segment) => segment);
   const [relatedProduct, setRelatedProduct] = useState([]);
+
   const fetchProduct = async () => {
     try {
       const data = { category: category[1] };
@@ -36,15 +37,13 @@ const RelatedProduct = () => {
   const enableLoop = productCount > 3;
   const enableAutoplay = productCount > 3;
 
-  const getSlidesPerView = () => {
-    return Math.min(productCount, 4);
-  };
+  const getSlidesPerView = () => Math.min(productCount, 4);
 
   return (
     <div className={style.relatedProductContainer}>
       <Heading title="RELATED PRODUCTS" size="xs" />
 
-      {productCount > 4 ? (
+      {showSlider ? (
         <div className={style.sliderWrapper}>
           {showArrows && (
             <div
@@ -77,6 +76,7 @@ const RelatedProduct = () => {
             spaceBetween={20}
             slidesPerView={getSlidesPerView()}
             breakpoints={{
+              0: { slidesPerView: 1 },
               640: { slidesPerView: Math.min(1, productCount) },
               768: { slidesPerView: Math.min(2, productCount) },
               800: { slidesPerView: Math.min(3, productCount) },
@@ -102,13 +102,7 @@ const RelatedProduct = () => {
           )}
         </div>
       ) : (
-        <div className={style.simpleGridWrapper}>
-          {relatedProduct.map((card, index) => (
-            <div key={index} className={style.relatedProductCard}>
-              <RelatedProductCard item={card} />
-            </div>
-          ))}
-        </div>
+        <p>No related products available.</p>
       )}
     </div>
   );
