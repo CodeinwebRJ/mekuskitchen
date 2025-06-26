@@ -47,7 +47,6 @@
   cursor: pointer;
 }
 
-/* === Form Layout === */
 .billingForm {
   padding: 8px 0;
   display: flex;
@@ -91,6 +90,12 @@
 
 .shippingAddress {
   margin: 5px 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .billingAddressContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {

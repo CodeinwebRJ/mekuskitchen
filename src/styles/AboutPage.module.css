@@ -7,18 +7,22 @@
 .aboutContainer2 {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   width: 100%;
+  gap: 32px;
 }
 
 .aboutLeftImageContainer {
-  width: 43%;
+  width: 45%;
 }
 
 .aboutLeftImage {
   width: 100%;
-  height: 100%;
-  object-position: top;
-  object-fit: cover;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 8px;
 }
 
 .aboutRightContainer {
@@ -33,12 +37,13 @@
   text-align: justify;
   margin-top: 30px;
   font-size: var(--font-lg);
+  word-break: break-word;
 }
-
-/* info section */
 
 .infoContainer {
   display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
   padding: 40px 140px;
   background-image: linear-gradient(
       to right,
@@ -50,8 +55,6 @@
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 400px;
-  display: flex;
-  justify-content: space-evenly;
   margin-top: 30px;
 }
 
@@ -60,7 +63,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
+  align-items: flex-start;
   gap: var(--gap-7);
 }
 
@@ -71,7 +74,6 @@
 }
 
 .infoLeftDescription {
-  width: fit-content;
   font-size: var(--font-sm);
   font-weight: var(--font-semibold);
   color: var(--white);
@@ -142,17 +144,17 @@
   border-top: 1px solid var(--gray-medium-transparent);
 }
 
-/* Tablet view (max-width: 1024px) */
 @media screen and (max-width: 1024px) {
   .aboutContainer2 {
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 32px;
   }
 
   .aboutLeftImageContainer,
   .aboutRightContainer {
-    width: 90%;
+    width: 100%;
+    padding: 0 20px;
   }
 
   .infoContainer {
@@ -180,14 +182,11 @@
   }
 
   .menuCount {
-    border-top: none;
-    border-left: none;
     border-top: 1px solid var(--gray-medium-transparent);
     margin-top: 1rem;
   }
 }
 
-/* Mobile view (max-width: 768px) */
 @media screen and (max-width: 768px) {
   .aboutDescription {
     font-size: var(--font-base);
@@ -210,5 +209,36 @@
     height: auto;
     max-height: 300px;
     object-fit: contain;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .aboutDescription {
+    font-size: var(--font-sm);
+    padding: 0 8px;
+  }
+
+  .infoContainer {
+    padding: 30px 10px;
+  }
+
+  .infoLeftTitle {
+    font-size: var(--font-xl);
+  }
+
+  .countNumber {
+    font-size: var(--font-xl);
+  }
+
+  .countText {
+    font-size: var(--font-xs);
+  }
+
+  .aboutLeftImage {
+    max-height: 220px;
+  }
+
+  .infoLeftDescription {
+    font-size: var(--font-xs);
   }
 }

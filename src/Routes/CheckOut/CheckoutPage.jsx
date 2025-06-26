@@ -81,7 +81,7 @@ const OrderSummary = ({
 
     <div className={style.checkoutButton}>
       <button disabled={isLoading} onClick={payNow} className="Button md">
-        {isLoading ? "Processing..." : "Place Order"}
+        {isLoading ? "Processing..." : "Checkout"}
       </button>
     </div>
   </div>
@@ -186,6 +186,7 @@ const CheckoutPage = () => {
 
   const fetchShipping = async () => {
     try {
+      console.log(cart.items.items);
       const data = {
         shipTo: {
           name: defaultAddress.billing.name,
@@ -199,8 +200,9 @@ const CheckoutPage = () => {
           },
         },
         packages: cart?.items?.items?.map((item) => ({
-          unit: "KGS",
-          weight: "1",
+          unit: String(item.productDetails.weightUnit),
+          weight: String(item.productDetails.weight),
+          quantity: String(item.quantity),
         })),
       };
       const res = await ShippingCharges(data);
@@ -230,6 +232,18 @@ const CheckoutPage = () => {
           <Banner name="Checkout" path="/cart" />
           <div className={style.checkoutContainer}>
             <>
+              <OrderSummary
+                total={total}
+                discount={discount}
+                isLoading={isLoading}
+                discountPercentage={discountPercentage}
+                payNow={payNow}
+                federalTax={cart?.items?.totalFederalTax}
+                provinceTax={cart?.items?.totalProvinceTax}
+                tax={cart?.items?.totalTax}
+                SCV={SCV}
+                SCC={SCC}
+              />
               <div>
                 <div className={style.addressContainer}>
                   {addresses.length < 3 ? (
@@ -257,22 +271,7 @@ const CheckoutPage = () => {
                   />
                   <lable>Self PickUp</lable>
                 </div>
-                {/* <div>
-                  <CouponCode />
-                </div> */}
               </div>
-              <OrderSummary
-                total={total}
-                discount={discount}
-                isLoading={isLoading}
-                discountPercentage={discountPercentage}
-                payNow={payNow}
-                federalTax={cart?.items?.totalFederalTax}
-                provinceTax={cart?.items?.totalProvinceTax}
-                tax={cart?.items?.totalTax}
-                SCV={SCV}
-                SCC={SCC}
-              />
             </>
 
             <DialogBox

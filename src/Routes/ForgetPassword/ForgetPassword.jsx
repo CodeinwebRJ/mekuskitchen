@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Footer from "../../Component/MainComponents/Footer";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import PasswordInput from "../../Component/Fields/Password";
 
 function ForgetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -63,18 +61,10 @@ function ForgetPassword() {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  
   return (
     <>
-      {/* <Navbar /> */}
       <Navbar2 />
-      {/* new one */}
       <div className="container my-5">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8">
@@ -84,94 +74,28 @@ function ForgetPassword() {
                   Reset Your Password
                 </h4>
                 <form className="was-validated" onSubmit={handleSubmit}>
-                  <div className="mb-3 mt-3" style={{ position: "relative" }}>
-                    <input
-                      style={{
-                        border: "1px solid var(--black)",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
-                      type={showPassword ? "text" : "password"}
-                      className="form-control"
+                  <div className="mb-3 mt-3">
+                    <PasswordInput
+                      label="Password"
                       id="password"
-                      placeholder="Password"
                       name="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required
+                      placeholder="Password"
+                      error={errors.password}
                     />
-                    <button
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                      className="btn btn-link"
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        fontSize: "16px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        padding: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {showConfirmPassword ? (
-                        <FaEye color="var(--black)" />
-                      ) : (
-                        <FaEyeSlash color="var(--black)" />
-                      )}
-                    </button>
                   </div>
 
-                  <div className="mb-3" style={{ position: "relative" }}>
-                    <input
-                      style={{
-                        border: "1px solid var(--black)",
-                        textDecoration: "none",
-                        padding: "10px 12px",
-                        borderRadius: "6px",
-                        width: "100%",
-                      }}
-                      type={showConfirmPassword ? "text" : "password"}
-                      className="form-control"
+                  <div className="mb-3">
+                    <PasswordInput
+                      label="Confirm Password"
                       id="ConfirmPassword"
-                      placeholder="Confirm Password"
+                      name="ConfirmPassword"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      name="ConfirmPassword"
-                      required
+                      placeholder="Confirm Password"
+                      error={errors.password}
                     />
-                    <button
-                      type="button"
-                      onClick={toggleConfirmPasswordVisibility}
-                      className="btn btn-link"
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        fontSize: "16px",
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        padding: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {showConfirmPassword ? (
-                        <FaEye color="var(--black)" />
-                      ) : (
-                        <FaEyeSlash color="var(--black)" />
-                      )}
-                    </button>
                   </div>
 
                   <button
@@ -187,7 +111,7 @@ function ForgetPassword() {
                   </button>
                 </form>
                 {message && (
-                  <div className="mt-3 alert alert-info">{message}</div>
+                  <div className="mt-3 text-danger">{message}</div>
                 )}
 
                 <hr className="my-4" />

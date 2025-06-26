@@ -88,7 +88,7 @@
 }
 
 .submitBtn:hover {
-  background-color: #005bb5;
+  background-color: var(--royal-blue);
 }
 
 .submitBtn.loading {
@@ -97,7 +97,7 @@
 }
 
 .cancelBtn {
-  background-color: #f2f2f2;
+  background-color: var(--);
   color: var(--gray-darkest);
   border: none;
   padding: 12px;
@@ -109,7 +109,7 @@
 }
 
 .cancelBtn:hover {
-  background-color: #ddd;
+  background-color: var(--gray-border);
 }
 
 .loader {

@@ -7,7 +7,7 @@
   justify-content: center;
   gap: 16px;
   border: 2px dashed var(--gray-border-light);
-  background-color: #fafafa;
+  background-color: var(--off-white);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
@@ -27,6 +27,21 @@
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--gray-darkest);
+}
+
+@media (max-width: 1024px) {
+  .addAddressCardContainer {
+    padding: 28px;
+    gap: 16px;
+  }
+
+  .addAddressCardIcon {
+    font-size: 44px;
+  }
+
+  .addAddressCardTitle {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 768px) {

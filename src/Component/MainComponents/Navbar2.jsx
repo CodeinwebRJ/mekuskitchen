@@ -20,57 +20,9 @@ function Navbar2() {
             />
           </NavLink>
         </div>
-        <button
-          type="button"
-          className="navbar-toggler me-4"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <div className="navbar-nav ms-auto p-4 p-lg-0">
-            {/* <NavLink to="/" className="nav-item nav-link active">
-              Home
-            </NavLink>
-            <NavLink to="/about" className="nav-item nav-link">
-              About
-            </NavLink>
-            <div className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Services
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <NavLink to="/logistic" className="dropdown-item">
-                    <i className="fas fa-truck mr-2" /> Logistic
-                  </NavLink>
-                </li>
-
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-              </ul>
-            </div>
-            <NavLink to="/loan-calculator" className="nav-item nav-link">
-              Loan Calculator
-            </NavLink> */}
-
             <div className="d-flex align-items-center">
-              {/* <Link
-                to="/subuser-login"
-                className="btn btn-outline-primary me-2"
-                style={{ height: "auto", lineHeight: "normal" }}
-              >
-                Login As Subuser
-              </Link> */}
               <Link
                 to="/login"
                 className="btn btn-outline-primary me-2"

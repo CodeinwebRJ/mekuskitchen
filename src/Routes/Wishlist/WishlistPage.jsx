@@ -67,13 +67,15 @@ const WishlistPage = () => {
             <Loading />
           </div>
         ) : items?.length > 0 ? (
-          items?.map((product, index) => (
-            <WishlistItem
-              key={product._id || index}
-              product={product}
-              fetchWishlist={fetchWishlist}
-            />
-          ))
+          <div className={style.gridWrapper}>
+            {items?.map((product, index) => (
+              <WishlistItem
+                key={product._id || index}
+                product={product}
+                fetchWishlist={fetchWishlist}
+              />
+            ))}
+          </div>
         ) : (
           <p>No items in wishlist.</p>
         )}

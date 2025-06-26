@@ -235,7 +235,7 @@ export const HomeProductCard = ({
               title="Add to Cart"
               aria-label="Add to Cart"
             >
-              <FaPlus color="#000" />
+              <FaPlus color="var(--white)" />
             </button>
             <button
               onClick={handleWishlistToggle}
@@ -246,7 +246,7 @@ export const HomeProductCard = ({
               {isLiked ? (
                 <FaHeart size={20} color="red" />
               ) : (
-                <FaRegHeart color="#000" size={20} />
+                <FaRegHeart color="var(--white)" size={20} />
               )}
             </button>
           </div>

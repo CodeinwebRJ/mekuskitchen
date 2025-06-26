@@ -51,6 +51,7 @@
   --gray-lightest: #ffffff26;
   --gray-offwhite: #eee;
   --gray-surface: #e6e6e6;
+  --off-white: #fafafa; 
   --gray-border: #ddd;
   --gray-medium: #c3c3c3;
   --gray-regular: #929292;
@@ -67,10 +68,14 @@
   --charcoal-navy: #111827;
   --almost-white: #f9fafb;
   --light-cool-gray: #e5e7eb;
+  --royal-blue: #005bb5;
   --gummetal: #1f2937;
   --very-light-cool-gray: #f3f4f6;
   --pale-gray-blue: #d1d5db;
   --vivid-azure-blue: #0070f3;
+  --very-light-gray: #f2f2f2;
+  --pale-sky-blue: #d7e7f9;
+  --dim-gray: #6a6a6a;
   --semi-transparent-light-gray: #f0f0f09b;
   --semi-transparent-pale-gray: #e4e4e4a5;
 

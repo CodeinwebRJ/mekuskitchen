@@ -236,6 +236,13 @@
   display: block;
 }
 
+@media screen and (max-width: 1024px) {
+  .logoImage{
+    height: 50px;
+  }
+  
+}
+
 @media screen and (max-width: 768px) {
   .navLinks {
     display: none;
@@ -255,7 +262,7 @@
   }
 
   .logoImage {
-    height: 50px;
+    height: 45px;
   }
 
   .headerIcons {

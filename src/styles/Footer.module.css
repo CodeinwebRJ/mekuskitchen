@@ -113,7 +113,6 @@
   object-fit: contain;
 }
 
-/* ✅ REMOVE all layout overrides for mobile and tablet */
 @media (max-width: 1024px) {
   .footerContainer {
     padding: 40px 20px;
@@ -127,7 +126,7 @@
 
   .footerColumn {
     flex: 1 1 30%;
-    min-width: 250px;
+    min-width: 200px;
     text-align: left;
   }
 

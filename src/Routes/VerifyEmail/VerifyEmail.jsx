@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Footer from "../../Component/MainComponents/Footer";
+import InputField from "../../Component/UI-Components/InputField";
 
 function VerifyEmail() {
   const [email, setEmail] = useState("");
@@ -22,11 +23,9 @@ function VerifyEmail() {
     e.preventDefault();
     let validationErrors = { email: "" };
 
-    // Validate empty email
     if (!email.trim()) {
       validationErrors.email = "The field cannot be empty.";
     } else {
-      // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         validationErrors.email = "Please enter a valid email address.";
@@ -79,13 +78,7 @@ function VerifyEmail() {
                 </h4>
                 <form className="was-validated" onSubmit={handleSubmit}>
                   <div className="mb-3 mt-3">
-                    <input
-                      style={{
-                        width: "100%",
-                        padding: "10px",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc",
-                      }}
+                    <InputField
                       type="email"
                       value={email}
                       onChange={handleChange}
@@ -99,12 +92,7 @@ function VerifyEmail() {
                   </div>
                   <button
                     type="submit"
-                    className="btn w-100"
-                    style={{
-                      backgroundColor: "var(--primary-blue)",
-                      color: "var(--white)",
-                      borderRadius: "14px",
-                    }}
+                    className="Button sm"
                   >
                     Verify
                   </button>

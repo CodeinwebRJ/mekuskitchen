@@ -57,7 +57,7 @@ p {
 
 .retryBtn {
   padding: 10px 20px;
-  background: #df4646;
+  background: var(--error);
   color: var(--white);
   border: none;
   border-radius: 8px;
@@ -66,7 +66,7 @@ p {
 }
 
 .retryBtn:hover {
-  background: #c13b3b;
+  background: var(--error);
 }
 
 .continueBtn {
@@ -80,10 +80,9 @@ p {
 }
 
 .continueBtn:hover {
-  background-color: #368cc1;
+  background-color: var(--royal-blue);
 }
 
-/* ----------------- Responsive Styles ----------------- */
 @media (max-width: 768px) {
   .card {
     padding: 28px;

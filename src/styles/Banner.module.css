@@ -107,7 +107,7 @@
 
 @media (max-width: 768px) {
   .banner {
-    height: 24vh;
+    height: 20vh;
     padding: 0 1rem;
     gap: var(--gap-3);
   }
@@ -143,7 +143,7 @@
 
 @media (max-width: 480px) {
   .banner {
-    height: 22vh;
+    height: 18vh;
   }
 
   .bannerText {

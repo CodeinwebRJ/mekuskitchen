@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import style from "../../styles/AboutPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer";
@@ -36,7 +36,6 @@ const AboutPage = () => {
 
   useEffect(() => {
     if (isVisible) {
-      // Animate founding year
       const foundingYearInterval = setInterval(() => {
         setFoundingYear((prev) => {
           if (prev >= 2023) {
@@ -47,7 +46,6 @@ const AboutPage = () => {
         });
       }, 10);
 
-      // Animate happy customers
       const happyCustomersInterval = setInterval(() => {
         setHappyCustomers((prev) => {
           if (prev >= 100) {
@@ -58,7 +56,6 @@ const AboutPage = () => {
         });
       }, 10);
 
-      // Animate menu count
       const menuCountInterval = setInterval(() => {
         setMenuCount((prev) => {
           if (prev >= 10) {
@@ -80,14 +77,9 @@ const AboutPage = () => {
   return (
     <div>
       <Header />
-
-      {/* banner */}
       <Banner name={"About us"} />
-
-      {/* about container */}
       <div className={style.aboutContainer}>
         <div className={style.aboutContainer2}>
-          {/* left image container */}
           <div className={style.aboutLeftImageContainer}>
             <img
               src="/AboutUs.png"

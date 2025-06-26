@@ -14,8 +14,8 @@ function Banner2(props) {
             style={{ textAlign: "center", width: "100%" }}
             className="homebreadcrumb"
           >
-            <Link className="breadcrumb-link" to="/">
-              Home
+            <Link className="breadcrumb-link" to={props.path}>
+              {props.name}
             </Link>
           </div>
         </div>

@@ -24,13 +24,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 40px;
+  height: 40px;
   color: var(--black);
   cursor: pointer;
   border-radius: 50%;
   transition: background-color 0.3s ease;
-  background-color: #f2f2f2;
+  background-color: var(--very-light-gray);
 }
 
 .prevArrowIcon,
@@ -49,8 +49,8 @@
   }
 
   .customArrow {
-    width: 2rem;
-    height: 2rem;
+    width: 32px;
+    height: 32px;
   }
 
   .prevArrowIcon,

@@ -237,15 +237,53 @@ const App = () => {
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="*" element={<NotFound />} />
 
-        {/* Dashboard routes */}
-        <Route path="/my-account" element={<Dashboard />} />
-        <Route path="/my-account/orders" element={<Orders />} />
-        <Route path="/my-account/downloads" element={<Downloads />} />
-        <Route path="/my-account/addresses" element={<Addresses />} />
-        <Route path="/my-account/add-new-address" element={<AddressForm />} />
+        <Route
+          path="/my-account"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-account/orders"
+          element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-account/downloads"
+          element={
+            <ProtectedRoute>
+              <Downloads />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-account/addresses"
+          element={
+            <ProtectedRoute>
+              <Addresses />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-account/add-new-address"
+          element={
+            <ProtectedRoute>
+              <AddressForm />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/my-account/account-details"
-          element={<AccountDetails />}
+          element={
+            <ProtectedRoute>
+              <AccountDetails />
+            </ProtectedRoute>
+          }
         />
 
         <Route path="/refund-policy" element={<RefundPolicyPage />} />

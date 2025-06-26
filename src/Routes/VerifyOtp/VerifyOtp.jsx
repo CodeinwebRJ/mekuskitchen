@@ -58,9 +58,8 @@ function VerifyOtp({ formData, setFormData }) {
 
   const handleForgotPasswordOtpSubmit = async (e) => {
     e.preventDefault();
+    console.log("sd")
     setErrors({});
-    const storedOtp = localStorage.getItem("otp");
-
     if (Number(otp) === Number(storedOtp)) {
       setMessage("OTP verified successfully.");
       navigate("/forget-password");
@@ -101,13 +100,8 @@ function VerifyOtp({ formData, setFormData }) {
 
                   <button
                     type="submit"
-                    className="btn w-100"
+                    className="Button sm"
                     disabled={loading}
-                    style={{
-                      backgroundColor: "var(--primary-blue)",
-                      color: "var(--white)",
-                      borderRadius: "14px",
-                    }}
                   >
                     {loading ? "Verifying..." : "Verify"}
                   </button>

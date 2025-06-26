@@ -1,11 +1,11 @@
 .card {
   border-radius: 16px;
-  border: 2px solid #d7e7f9;
+  border: 2px solid var(--pale-sky-blue);
   padding: 24px;
   width: 100%;
   max-width: 500px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -30,7 +30,7 @@
 }
 
 .starIcon {
-  color: #2872fa;
+  color: var(--primary-blue);
   margin-right: 5px;
 }
 
@@ -41,7 +41,7 @@
 
 .text {
   font-size: 16px;
-  color: #6a6a6a;
+  color: var(--dim-gray);
   line-height: 1.5;
 }
 

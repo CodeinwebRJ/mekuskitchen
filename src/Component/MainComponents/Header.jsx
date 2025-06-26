@@ -156,7 +156,6 @@ const Header = () => {
         </Link>
       </nav>
 
-      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <nav className={style.mobileNavMenu} ref={mobileMenuRef}>
           <Link
@@ -217,24 +216,40 @@ const Header = () => {
         <div className={`${style.userDropdown} ${style.hideOnMobile}`}>
           <LuUserRound className={style.userDropdownIcon} />
           <div className={style.userDropdownMenu}>
-            <Link to="/my-account" className={style.userDropdownItem}>
-              <RxDashboard size={20} /> Dashboard
-            </Link>
-            <Link to="/my-account/orders" className={style.userDropdownItem}>
-              <PiNotepadLight size={20} /> Orders
-            </Link>
-            <Link to="/my-account/downloads" className={style.userDropdownItem}>
-              <IoDownloadOutline size={20} /> Downloads
-            </Link>
-            <Link to="/my-account/addresses" className={style.userDropdownItem}>
-              <TfiLocationPin size={20} /> Address
-            </Link>
-            <Link
-              to="/my-account/account-details"
-              className={style.userDropdownItem}
-            >
-              <PiUserCircleLight size={20} /> Account Details
-            </Link>
+            {isAuthenticated && (
+              <Link to="/my-account" className={style.userDropdownItem}>
+                <RxDashboard size={20} /> Dashboard
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link to="/my-account/orders" className={style.userDropdownItem}>
+                <PiNotepadLight size={20} /> Orders
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link
+                to="/my-account/downloads"
+                className={style.userDropdownItem}
+              >
+                <IoDownloadOutline size={20} /> Downloads
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link
+                to="/my-account/addresses"
+                className={style.userDropdownItem}
+              >
+                <TfiLocationPin size={20} /> Address
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link
+                to="/my-account/account-details"
+                className={style.userDropdownItem}
+              >
+                <PiUserCircleLight size={20} /> Account Details
+              </Link>
+            )}
             <span onClick={handleLogout} className={style.userDropdownItem}>
               {isAuthenticated ? (
                 <>

@@ -15,14 +15,20 @@
   object-fit: cover;
 }
 
+@media (max-width: 1024px) {
+  .slideImage {
+    height: 50vh;
+  }
+}
+
 @media (max-width: 768px) {
   .slideImage {
-    height: 70vh;
+    height: 50vh;
   }
 }
 
 @media (max-width: 480px) {
   .slideImage {
-    height: 60vh;
+    height: 45vh;
   }
 }

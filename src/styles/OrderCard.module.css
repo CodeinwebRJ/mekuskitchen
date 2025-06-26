@@ -142,7 +142,7 @@
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--light-cool-gray);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -201,9 +201,9 @@
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 10px 20px;
   font-size: 14px;
-  color: #374151;
+  color: var(--text-dark);
   padding-top: 10px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--light-cool-gray);
 }
 
 .dialogCard .productMeta span {

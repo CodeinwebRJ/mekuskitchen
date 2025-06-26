@@ -24,7 +24,7 @@
 .formTitle {
   font-weight: 700;
   margin-bottom: 16px;
-  color: #1e1e1e;
+  color: var(--gray-solid);
 }
 
 .productName {

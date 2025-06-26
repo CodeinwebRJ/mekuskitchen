@@ -1,0 +1,179 @@
+/* LoginPage.module.css */
+
+.container {
+  max-width: 100%;
+  padding: 20px;
+}
+
+.loginWrapper {
+  display: flex;
+  height: 80vh;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.imageSection {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageSection img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.formSection {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  padding: 40px 60px;
+}
+
+.card {
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-radius: 12px;
+  background-color: var(--white);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.inputField {
+  border: 1px solid var(--gray-border-light);
+  border-radius: 6px;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+}
+
+.errorText {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.checkboxLabel {
+  color: var(--black);
+  margin-left: 8px;
+}
+
+.rememberCheckbox{
+  display: flex;
+  align-items: center;
+}
+
+.rememberForgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.forgotLink {
+  color: var(--primary-blue);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.loginButton {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border-radius: 14px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.loginButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.separator {
+  margin: 1.5rem 0;
+  border-top: 1px solid var(--gray-border);
+}
+
+.signupPrompt {
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.signupLink {
+  color: var(--primary-blue);
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+/* Tablet (<= 768px) */
+@media (max-width: 768px) {
+  .loginWrapper {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .imageSection {
+    display: none;
+  }
+
+  .formSection {
+    padding: 30px 20px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .loginButton {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .formSection {
+    padding: 20px 16px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .inputField {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+  }
+
+  .loginButton {
+    padding: 9px;
+    font-size: 0.9rem;
+  }
+
+  .forgotLink,
+  .signupPrompt {
+    font-size: 0.9rem;
+  }
+}

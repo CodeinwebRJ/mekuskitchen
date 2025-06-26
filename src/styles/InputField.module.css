@@ -43,7 +43,7 @@
 }
 
 .errorMessage {
-  color: red;
+  color: var(--error);
   font-size: var(--font-sm);
   margin-top: 5px;
 }

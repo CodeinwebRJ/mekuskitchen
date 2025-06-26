@@ -140,7 +140,16 @@
   outline-offset: 2px;
 }
 
-/* Tablet View */
+@media screen and (max-width: 1024px) {
+  .itemName {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .item {
     flex-direction: column;
@@ -248,7 +257,7 @@
   }
 
   .originalPrice {
-    color: #999;
+    color: var(--gray-label);
     text-decoration: line-through;
   }
 

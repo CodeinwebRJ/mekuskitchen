@@ -1,18 +1,13 @@
 import { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Footer from "../../Component/MainComponents/Footer";
 import PasswordInput from "../../Component/Fields/Password";
 import Banner2 from "../../Component/MainComponents/Banner2";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  borderRadius: "5px",
-  border: "1px solid #ccc",
-};
+import style from "../../styles/SignupPage.module.css";
+import InputField from "../../Component/UI-Components/InputField";
 
 function SignUpPage() {
   const [show, setShow] = useState(false);
@@ -69,12 +64,15 @@ function SignUpPage() {
 
       if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar) {
         validationErrors.password =
-          "Password must include uppercase, lowercase, number, and special character.";
+          "Use a strong password (A-Z, a-z, 0-9, !@#...)";
       }
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      validationErrors.confirmPassword = "Passwords do not match.";
+    if (!formData.confirmPassword.trim()) {
+      validationErrors.confirmPassword = "Please enter a confirmPassword.";
+    } else if (formData.password !== formData.confirmPassword) {
+      validationErrors.confirmPassword =
+        "Passwords does not match. Please try again.";
     }
 
     const termsCheckbox = document.getElementById("terms");
@@ -85,8 +83,8 @@ function SignUpPage() {
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
-    setLoading(true);
 
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://eyemesto.com/mapp_dev/verify_email.php",
@@ -111,189 +109,143 @@ function SignUpPage() {
   return (
     <div>
       <Navbar2 />
-      <Banner2 title="Sign Up" />
+      <Banner2 title="Sign Up" name="Login" path="/login" />
 
       {show ? (
-        <div>
-          <VerifyOtp formData={formData} setFormData={setFormData}/>
-        </div>
+        <VerifyOtp formData={formData} setFormData={setFormData} />
       ) : (
-        <div className="container">
-          <div
-            className="mt-5 d-flex align-items-stretch"
-            style={{ height: "120vh" }}
-          >
-            <div className="col-lg-6 col-md-8 p-0">
-              <div
-                style={{
-                  flex: 1,
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                  alt="Decorative"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </div>
-            </div>
-            <div className="col-lg-6 col-md-8 d-flex align-items-center">
-              <div
-                className="card shadow w-100"
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  padding: "20px 40px",
-                }}
-              >
-                <div className="card-body p-0">
-                  <h2 className="card-title text-center mb-4">Sign up</h2>
-                  <form className="was-validated" onSubmit={handleVerifiyEmail}>
-                    <div className="mb-3 mt-3">
-                      <input
-                        style={inputStyle}
-                        type="text"
-                        value={formData.first_name}
-                        onChange={handleInputChange}
-                        id="first_name"
-                        placeholder="First Name*"
-                        name="first_name"
-                      />
-                      {errors.first_name && (
-                        <div className="text-danger">{errors.first_name}</div>
-                      )}
-                    </div>
-                    <div className="mb-3">
-                      <input
-                        style={inputStyle}
-                        type="text"
-                        value={formData.last_name}
-                        onChange={handleInputChange}
-                        id="last_name"
-                        placeholder="Last Name*"
-                        name="last_name"
-                      />
-                      {errors.last_name && (
-                        <div className="text-danger">{errors.last_name}</div>
-                      )}
-                    </div>
-                    <div className="mb-3">
-                      <input
-                        style={inputStyle}
-                        type="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        id="email"
-                        placeholder="Email*"
-                        name="email"
-                      />
-                      {errors.email && (
-                        <div className="text-danger">{errors.email}</div>
-                      )}
-                    </div>
-                    <div className="mb-3">
-                      <input
-                        style={inputStyle}
-                        type="number"
-                        id="mobile"
-                        value={formData.mobile}
-                        onChange={handleInputChange}
-                        placeholder="Phone*"
-                        name="mobile"
-                      />
-                      {errors.mobile && (
-                        <div className="text-danger">{errors.mobile}</div>
-                      )}
-                    </div>
-                    <PasswordInput
-                      label="Password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="Password*"
-                      error={errors.password}
-                    />
-                    <PasswordInput
-                      label="Confirm Password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      placeholder="Confirm Password*"
-                      error={errors.confirmPassword}
-                    />
-                    <div className="mb-3">
-                      <input
-                        style={inputStyle}
-                        type="text"
-                        id="refcode"
-                        value={formData.refcode}
-                        onChange={handleInputChange}
-                        placeholder="Referral Code"
-                        name="refcode"
-                      />
-                    </div>
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        style={{ border: "1px solid var(--black)" }}
-                        id="terms"
-                      />
-                      <label
-                        style={{ color: "var(--black)" }}
-                        className="form-check-label"
-                        htmlFor="terms"
-                      >
-                        I agree all statements in Terms of service
-                      </label>
-                    </div>
-                    {errors.terms && (
-                      <div className="text-danger mt-1">{errors.terms}</div>
-                    )}
-                    {errors.api && (
-                      <div className="text-danger mt-2">{errors.api}</div>
-                    )}
-                    <button
-                      type="submit"
-                      className="btn  w-100 mt-2"
-                      style={{
-                        backgroundColor: "var(--primary-blue)",
-                        color: "var(--white)",
-                        borderRadius: "14px",
-                      }}
-                      disabled={loading}
-                    >
-                      {loading ? "Signing up..." : "Signup"}
-                    </button>
-                  </form>
+        <div className={style.containerCustom}>
+          <div className={style.imageWrapper}>
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+              alt="Decorative"
+              className={style.image}
+            />
+          </div>
 
-                  <hr className="my-4" />
-                  <div className="text-center">
-                    <p className="mb-0">
-                      Already have an account?{" "}
-                      <Link
-                        to="/login"
-                        style={{ color: "var(--primary-blue)" }}
-                      >
-                        LOGIN
-                      </Link>
-                    </p>
-                  </div>
+          <div className={style.cardWrapper}>
+            <div className={style.cardContent}>
+              <h2 className={style.title}>Sign up</h2>
+              <form className={style.form} onSubmit={handleVerifiyEmail}>
+                <div className={style.formGroup}>
+                  <InputField
+                    className={style.inputField}
+                    type="text"
+                    value={formData.first_name}
+                    onChange={handleInputChange}
+                    id="first_name"
+                    placeholder="First Name*"
+                    name="first_name"
+                  />
+                  {errors.first_name && (
+                    <div className={style.error}>{errors.first_name}</div>
+                  )}
                 </div>
+                <div className={style.formGroup}>
+                  <InputField
+                    type="text"
+                    value={formData.last_name}
+                    onChange={handleInputChange}
+                    id="last_name"
+                    placeholder="Last Name*"
+                    name="last_name"
+                  />
+                  {errors.last_name && (
+                    <div className={style.error}>{errors.last_name}</div>
+                  )}
+                </div>
+                <div className={style.formGroup}>
+                  <InputField
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    id="email"
+                    placeholder="Email*"
+                    name="email"
+                  />
+                  {errors.email && (
+                    <div className={style.error}>{errors.email}</div>
+                  )}
+                </div>
+                <div className={style.formGroup}>
+                  <InputField
+                    type="number"
+                    id="mobile"
+                    value={formData.mobile}
+                    onChange={handleInputChange}
+                    placeholder="Phone*"
+                    name="mobile"
+                  />
+                  {errors.mobile && (
+                    <div className={style.error}>{errors.mobile}</div>
+                  )}
+                </div>
+
+                <PasswordInput
+                  label="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Password*"
+                  error={errors.password}
+                />
+                <PasswordInput
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="Confirm Password*"
+                  error={errors.confirmPassword}
+                />
+
+                <div className={style.formGroup}>
+                  <InputField
+                    type="text"
+                    id="refcode"
+                    value={formData.refcode}
+                    onChange={handleInputChange}
+                    placeholder="Referral Code"
+                    name="refcode"
+                  />
+                </div>
+
+                <div className={style.formCheck}>
+                  <input
+                    type="checkbox"
+                    className={style.checkbox}
+                    id="terms"
+                  />
+                  <label className={style.termsLabel} htmlFor="terms">
+                    I agree all statements in Terms of service
+                  </label>
+                </div>
+                {errors.terms && (
+                  <div className={style.error}>{errors.terms}</div>
+                )}
+                {errors.api && <div className={style.error}>{errors.api}</div>}
+
+                <button
+                  type="submit"
+                  className={style.signupButton}
+                  disabled={loading}
+                >
+                  {loading ? "Signing up..." : "Signup"}
+                </button>
+              </form>
+
+              <hr className={style.divider} />
+              <div className={style.loginLink}>
+                <p>
+                  Already have an account?{" "}
+                  <Link to="/login" className={style.loginAnchor}>
+                    LOGIN
+                  </Link>
+                </p>
               </div>
             </div>
           </div>
         </div>
       )}
-
       <Footer />
     </div>
   );

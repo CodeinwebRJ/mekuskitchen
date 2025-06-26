@@ -81,10 +81,9 @@ p {
 }
 
 .continueBtn:hover {
-  background-color: #368cc1;
+  background-color: var(--primary-blue);
 }
 
-/* ----------------- Responsive Styles ----------------- */
 @media (max-width: 768px) {
   .card {
     padding: 28px;

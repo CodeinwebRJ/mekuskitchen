@@ -1,4 +1,5 @@
 import style from "../../styles/InputField.module.css";
+import { useRef } from "react";
 
 const InputField = (props) => {
   const {
@@ -14,6 +15,26 @@ const InputField = (props) => {
     icon = null,
   } = props;
 
+  const inputRef = useRef(null);
+
+  const handleChange = (e) => {
+    if (type === "number") {
+      const newValue = e.target.value;
+      if (/^\d*$/.test(newValue)) {
+        onChange(e);
+      }
+    } else {
+      onChange(e);
+    }
+  };
+
+  const preventScroll = (e) => {
+    if (type === "number") {
+      e.target.blur();
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className={style.Container}>
       {labelName && (
@@ -26,14 +47,17 @@ const InputField = (props) => {
         {icon && <span className={style.icon}>{icon}</span>}
         <input
           id={name}
-          type={type}
+          ref={inputRef}
+          type="text"
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           maxLength={maxLength}
           onBlur={onBlur}
           placeholder={placeholder}
           className={style.input}
+          inputMode={type === "number" ? "numeric" : undefined}
+          onWheel={preventScroll}
         />
       </div>
       {error && <div className={style.errorMessage}>{error}</div>}
