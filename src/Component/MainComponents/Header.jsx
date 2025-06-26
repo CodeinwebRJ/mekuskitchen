@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "../../styles/Header.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoClose, IoDownloadOutline, IoSearch } from "react-icons/io5";
@@ -10,7 +10,7 @@ import {
 } from "react-icons/pi";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { FaC, FaRegHeart } from "react-icons/fa6";
+import { FaRegHeart } from "react-icons/fa6";
 import { logout } from "../../../Store/Slice/UserSlice";
 import {
   setCartCount,
@@ -32,6 +32,7 @@ const Header = () => {
   const cart = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const location = useLocation();
+  const mobileMenuRef = useRef(null);
 
   const handleLogout = () => {
     if (!isAuthenticated) {
@@ -96,6 +97,34 @@ const Header = () => {
     }
   }, [isAuthenticated, cart]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target) &&
+        isMobileMenuOpen
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMobileMenuOpen]);
+
   return (
     <header className={style.header}>
       <Link to="/" className={style.logo}>
@@ -129,7 +158,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <nav className={style.mobileNavMenu}>
+        <nav className={style.mobileNavMenu} ref={mobileMenuRef}>
           <Link
             to="/"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -157,6 +186,13 @@ const Header = () => {
             className={style.mobileLink}
           >
             CONTACT US
+          </Link>
+          <Link
+            to="/my-account"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={style.mobileLink}
+          >
+            DASHBOARD
           </Link>
           <Link
             to="/cart"

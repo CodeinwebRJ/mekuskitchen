@@ -6,7 +6,6 @@ const BillingShipping = () => {
 
   return (
     <div className={style.addressContainer}>
-      {/* Billing Address */}
       <div className={style.billingAddressContainer}>
         <div className={style.addressTitle}>BILLING ADDRESS</div>
 
@@ -41,7 +40,6 @@ const BillingShipping = () => {
         )}
       </div>
 
-      {/* Shipping Address */}
       {defaultAddress?.shipping && (
         <div className={style.shippingAddressContainer}>
           <div className={style.addressTitle}>SHIPPING ADDRESS</div>

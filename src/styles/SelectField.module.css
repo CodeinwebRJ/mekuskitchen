@@ -14,6 +14,10 @@
   align-items: center;
 }
 
+.SelectFieldContainer select {
+  field-sizing: content;
+}
+
 .select {
   width: 100%;
   height: 100%;

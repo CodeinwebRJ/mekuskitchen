@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FaMinus, FaPlus, FaEye } from "react-icons/fa";
 import style from "../../styles/Cart.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
@@ -11,81 +10,10 @@ import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
-import { BsTrash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import CouponCode from "../../Component/Cards/CouponCode";
 import CartCard from "../../Component/Cards/CartCard";
-
-const CartItem = ({
-  isAuthenticated,
-  item,
-  type,
-  onDelete,
-  onUpdateQuantity,
-  onShowProduct,
-}) => {
-  const isProduct = type === "product";
-  const imageUrl = isProduct
-    ? item?.sku?.images?.[0] || item?.productDetails?.images?.[0]?.url
-    : item?.tiffinMenuDetails?.image_url?.[0]?.url || "/defaultImage.png";
-  const name = isProduct
-    ? item?.productDetails?.name?.toUpperCase()
-    : item?.day;
-  const price = isProduct
-    ? isAuthenticated
-      ? item?.price
-      : item?.sku.details.combinations.Price || item?.price || 0
-    : item?.tiffinMenuDetails?.totalAmount;
-
-  return (
-    <tr className={style.cartItem}>
-      <td>
-        <div className={style.removeCell}>
-          <button
-            onClick={() =>
-              onDelete(
-                isProduct ? item.product_id : item.tiffinMenuId,
-                type,
-                item.day
-              )
-            }
-          >
-            <BsTrash className={style.removeIcon} />
-          </button>
-          {isProduct && (
-            <button onClick={() => onShowProduct(item._id)}>
-              <FaEye />
-            </button>
-          )}
-        </div>
-      </td>
-      <td>
-        <div className={style.productCell}>
-          <img src={imageUrl} alt={type} className={style.cartItemImage} />
-          <span className={style.productName}>{name}</span>
-        </div>
-      </td>
-      <td>${Number(price)?.toFixed(2)}</td>
-      <td>
-        <div className={style.quantityControl}>
-          <button
-            onClick={() => onUpdateQuantity(item._id, -1, type, item.day)}
-            disabled={item.quantity <= 1}
-          >
-            <FaMinus size={14} />
-          </button>
-          <span className={style.quantity}>{item.quantity}</span>
-          <button onClick={() => onUpdateQuantity(item._id, 1, type, item.day)}>
-            <FaPlus size={14} />
-          </button>
-        </div>
-      </td>
-      <td className={style.totalPrice}>
-        ${(price * item.quantity).toFixed(2)}
-      </td>
-    </tr>
-  );
-};
+import CartTable from "../../Component/UI-Components/CartTable";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
@@ -408,106 +336,17 @@ const ShoppingCart = () => {
       <Banner name="CART" />
       <div className={style.cartContainer}>
         <div className={style.cartItems}>
-          <table className={style.cartTable}>
-            <thead>
-              <tr className={style.cartItem}>
-                <th />
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {isAuthenticated &&
-                cart?.items?.items?.map((item) => (
-                  <CartItem
-                    key={item._id}
-                    item={item}
-                    type="product"
-                    isAuthenticated={isAuthenticated}
-                    onDelete={handleDelete}
-                    onUpdateQuantity={updateItemQuantity}
-                    onShowProduct={handleShowProduct}
-                  />
-                ))}
-              {cart?.items?.tiffins?.map((tiffin) => (
-                <CartItem
-                  key={tiffin._id}
-                  item={tiffin}
-                  type="tiffin"
-                  isAuthenticated={isAuthenticated}
-                  onDelete={handleDelete}
-                  onUpdateQuantity={updateItemQuantity}
-                  onShowProduct={handleShowProduct}
-                />
-              ))}
-              {!isAuthenticated &&
-                cart?.items?.items?.map((item) => (
-                  <tr className={style.cartItem}>
-                    <td>
-                      <div className={style.removeCell}>
-                        <button
-                          onClick={() => handleDelete(item._id, "product")}
-                        >
-                          <BsTrash className={style.removeIcon} />
-                        </button>
-                        <button onClick={() => handleShowProduct(item._id)}>
-                          <FaEye />
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div className={style.productCell}>
-                        <img
-                          src={item?.images?.[0]?.url || "/defaultImage.png"}
-                          alt={item.name}
-                          className={style.cartItemImage}
-                        />
-                        <span>{item.name}</span>
-                      </div>
-                    </td>
-                    <td>
-                      $
-                      {item?.sku?.details?.combinations?.Price ||
-                        item?.price ||
-                        0}
-                    </td>
-                    <td>
-                      <div className={style.quantityControl}>
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(item._id, -1, "product")
-                          }
-                          disabled={item.quantity <= 1}
-                        >
-                          <FaMinus size={14} />
-                        </button>
-                        <span className={style.quantity}>{item.quantity}</span>
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(item._id, 1, "product")
-                          }
-                        >
-                          <FaPlus size={14} />
-                        </button>
-                      </div>
-                    </td>
-                    <td className={style.totalPrice}>
-                      $
-                      {(
-                        item?.sku?.details?.combinations?.Price ||
-                        item?.price ||
-                        0 * item.quantity
-                      ).toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <CartTable
+            items={cart?.items?.items || []}
+            tiffins={cart?.items?.tiffins || []}
+            isAuthenticated={isAuthenticated}
+            onDelete={handleDelete}
+            onUpdateQuantity={updateItemQuantity}
+            onShowProduct={handleShowProduct}
+          />
         </div>
         <div className={style.cartSummary}>
-        <div>
+          <div>
             <CouponCode />
           </div>
           <div className={style.cartTotals}>

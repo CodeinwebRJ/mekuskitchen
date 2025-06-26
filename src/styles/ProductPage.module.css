@@ -163,11 +163,6 @@
   gap: var(--gap-5);
 }
 
-.productDetails h1 {
-  font-size: 28px;
-  color: var(--gray-darkest);
-}
-
 .priceContainer {
   display: flex;
   align-items: center;

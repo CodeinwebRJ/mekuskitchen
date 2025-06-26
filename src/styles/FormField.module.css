@@ -17,7 +17,7 @@
 }
 
 .errorMessage {
-  color: red;
+  color: var(--error);
   font-size: var(--font-base);
   margin-top: 5px;
   margin-left: 5px;
@@ -63,4 +63,45 @@
 
 .suggestionItem:hover {
   background-color: var(--light-gray);
+}
+
+@media (max-width: 768px) {
+  .billingFormColumn2 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .phoneCodeSelect {
+    max-width: 100%;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+  }
+
+  .suggestionList {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .billingFormColumn2 {
+    grid-template-columns: 1fr;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+  }
+
+  .suggestionItem {
+    font-size: 14px;
+  }
+
+  .suggestionList {
+    max-width: 100%;
+    font-size: 14px;
+  }
 }

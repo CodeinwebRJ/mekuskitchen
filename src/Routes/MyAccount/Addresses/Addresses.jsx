@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "../../../styles/Addresses.module.css";
 import MyAccountContainer from "../MyAccountContainer";
 import AddressCard from "../../../Component/Cards/AddressCard";
@@ -91,7 +91,6 @@ const Addresses = () => {
                 <AddAddressCard
                   onClick={() => {
                     dispatch(setShowAddressForm(true));
-                    // setIsEdit(false);
                   }}
                 />
               ) : null}

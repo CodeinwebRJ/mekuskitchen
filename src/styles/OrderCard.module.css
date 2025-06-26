@@ -220,11 +220,10 @@
   line-height: 1;
 }
 
+/* Tablet View (≤768px) */
 @media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+  .card {
+    padding: 14px;
   }
 
   .info {
@@ -234,28 +233,36 @@
   }
 
   .productSection {
-    flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .productImage {
+    width: 70px;
+    height: 70px;
   }
 
   .orderBtn {
     width: 100%;
+    text-align: center;
+  }
+
+  .productName,
+  .productPrice {
+    font-size: 13px;
   }
 }
 
-@media (max-width: 600px) {
-  .dialogCard .productSection {
-    flex-direction: column;
-    align-items: flex-start;
+@media (max-width: 480px) {
+  .card {
+    padding: 12px;
+    border-radius: 4px;
   }
 
-  .dialogCard .productImage {
+  .productImage {
     width: 100%;
     height: auto;
-  }
-
-  .dialogCard .productMeta {
-    grid-template-columns: 1fr;
+    max-height: 200px;
   }
 
   .dialogContent {
@@ -264,17 +271,53 @@
 
   .dialogOrderId {
     font-size: 16px;
+    padding-left: 8px;
   }
 
-  .dialogCard .productName {
-    font-size: 16px;
+  .dialogCard {
+    padding: 16px;
   }
 
-  .dialogCard .productPrice {
-    font-size: 14px;
+  .orderInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dialogCard .productSection {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .dialogCard .productImage {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
   }
 
   .dialogCard .productMeta {
+    grid-template-columns: 1fr;
+    font-size: 13px;
+  }
+
+  .dialogCard .productName {
+    font-size: 15px;
+  }
+
+  .dialogCard .productPrice {
+    font-size: 13px;
+  }
+
+  .productDescription {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .orderBtn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .review {
     font-size: 13px;
   }
 }

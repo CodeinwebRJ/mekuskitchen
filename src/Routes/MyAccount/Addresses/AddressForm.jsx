@@ -235,7 +235,6 @@ const AddressForm = (props) => {
     }
   };
 
-
   useEffect(() => {
     if (isEdit && editData) {
       setFormData({

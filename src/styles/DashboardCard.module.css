@@ -10,6 +10,7 @@
   overflow: hidden;
   cursor: pointer;
   transition: background-color 0.1s ease-in-out;
+  text-align: center;
 }
 
 .cardContainer:hover {
@@ -21,15 +22,14 @@
 }
 
 .cardIcon {
+  color: var(--gray-steel);
   height: 48px;
   width: 48px;
-  color: var(--gray-border);
 }
 
 .cardIcon svg {
   height: 100%;
   width: 100%;
-  font-weight: var(--font-light);
   object-position: top;
   object-fit: cover;
   transition: color 0.3s ease-in-out;
@@ -38,4 +38,52 @@
 .cardIconText {
   font-weight: var(--font-semibold);
   text-transform: uppercase;
+  color: var(--gray-regular);
+  line-height: 1.3;
+}
+
+@media screen and (max-width: 1280px) {
+  .cardContainer {
+    padding: 20px;
+  }
+
+  .cardIcon {
+    height: 44px;
+    width: 44px;
+  }
+
+  .cardIconText {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .cardContainer {
+    padding: 32px 16px;
+  }
+
+  .cardIcon {
+    height: 40px;
+    width: 40px;
+  }
+
+  .cardIconText {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .cardContainer {
+    padding: 40px 16px;
+    gap: var(--gap-3);
+  }
+
+  .cardIcon {
+    height: 36px;
+    width: 36px;
+  }
+
+  .cardIconText {
+    font-size: 0.85rem;
+  }
 }

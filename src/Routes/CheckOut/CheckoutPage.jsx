@@ -42,14 +42,14 @@ const OrderSummary = ({
     <div className={style.totalContainer}>
       <div className={style.total}>
         <span>Subtotal</span>
-        <span>${total.toFixed(2)}</span>
+        <span>${total.toFixed(2) || 0}</span>
       </div>
 
       {discount > 0 && (
         <div className={`${style.total} ${style.discount}`}>
           <span>Discount</span>
           <span>
-            -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
+            -${discount.toFixed(2) || 0} ({discountPercentage.toFixed(2)}%)
           </span>
         </div>
       )}
@@ -62,11 +62,11 @@ const OrderSummary = ({
       </div>
       <div className={style.total}>
         <span>Province Tax</span>
-        <span>${Number(provinceTax).toFixed(2)}</span>
+        <span>${Number(provinceTax).toFixed(2) || 0}</span>
       </div>
       <div className={style.total}>
         <span>Federal Tax</span>
-        <span>${Number(federalTax).toFixed(2)}</span>
+        <span>${Number(federalTax).toFixed(2) || 0}</span>
       </div>
       <div className={style.total}>
         <span>Total Tax</span>

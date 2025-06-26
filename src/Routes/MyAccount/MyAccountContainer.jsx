@@ -5,11 +5,9 @@ import { Link, useLocation } from "react-router-dom";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
-import { useSelector } from "react-redux";
 
 const MyAccountContainer = ({ children }) => {
   const location = useLocation();
-  const { isAuthenticated } = useSelector((state) => state.auth);
   const [active, setActive] = useState("Dashboard");
 
   const handleSideTitleClick = (title) => {
@@ -40,9 +38,7 @@ const MyAccountContainer = ({ children }) => {
                   onClick={() => handleSideTitleClick(item.title)}
                 >
                   {item.icon}
-                  {item.title === "Logout" && !isAuthenticated
-                    ? "Login"
-                    : item.title}
+                  {item.title}
                 </Link>
               ))}
             </div>

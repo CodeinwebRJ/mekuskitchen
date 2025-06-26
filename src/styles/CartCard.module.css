@@ -4,6 +4,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .cartTotals h3 {
@@ -18,6 +19,7 @@
   margin: 12px 0;
   font-size: 16px;
   color: var(--dark-gray);
+  flex-wrap: wrap;
 }
 
 .cartTotals .discount {
@@ -27,7 +29,7 @@
 
 .cartTotals hr {
   border-top: 2px solid var(--gray-dark);
-  margin: 10px 0;
+  margin: 16px 0;
 }
 
 .total {
@@ -36,6 +38,7 @@
   color: var(--black);
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .price {
@@ -46,6 +49,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 16px;
 }
 
 .checkoutButton button {
@@ -55,18 +59,52 @@
   font-size: 16px;
   font-weight: 600;
   transition: background 0.3s ease;
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1024px) {
   .cartTotals {
-    width: 60%;
-    margin-top: 30px;
+    max-width: 500px;
+    padding: 20px;
+  }
+
+  .cartTotals p {
+    font-size: 14px;
+  }
+
+  .total {
+    font-size: 16px;
+  }
+
+  .checkoutButton button {
+    font-size: 14px;
+    padding: 10px 0;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .cartTotals {
-    width: 100%;
-    padding: 24px 20px;
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .cartTotals h3 {
+    font-size: 18px;
+  }
+
+  .cartTotals p {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+
+  .total {
+    font-size: 16px;
+  }
+
+  .checkoutButton button {
+    font-size: 14px;
+    padding: 10px;
   }
 }

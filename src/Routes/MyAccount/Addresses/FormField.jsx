@@ -236,7 +236,7 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
                 value={formData.phoneCode || ""}
                 onChange={(e) => handleChange(e, type)}
                 options={Phonecode}
-                placeholder="Phone Code"
+                placeholder="+1"
                 className={style.phoneCodeSelect}
                 required
               />

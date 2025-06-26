@@ -21,7 +21,6 @@ const ProductDetails = ({
   isLiked,
   reviews,
 }) => {
-
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);
     setQuantity(isNaN(value) || value < 1 ? 1 : value);
@@ -78,7 +77,7 @@ const ProductDetails = ({
     <div className={style.productDetails}>
       <div>
         <div className={style.LikeContainer}>
-          <h1>{product?.name?.toUpperCase() || "Product Name"}</h1>
+          <h5>{product?.name?.toUpperCase() || "Product Name"}</h5>
           <div className={style.wishlist} onClick={handleWishlistToggle}>
             {isLiked ? (
               <FaHeart

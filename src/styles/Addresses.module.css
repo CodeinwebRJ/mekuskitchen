@@ -1,8 +1,11 @@
+/* Existing styles (unchanged) */
+
 .addressHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .userMessage {
@@ -14,6 +17,7 @@
 .addressHeaderButtons {
   display: flex;
   gap: var(--gap-5);
+  flex-wrap: wrap;
 }
 
 .addNewAddressButton {
@@ -36,12 +40,14 @@
   font-weight: var(--font-bold);
   text-transform: uppercase;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .backButton {
   cursor: pointer;
 }
 
+/* === Form Layout === */
 .billingForm {
   padding: 8px 0;
   display: flex;
@@ -60,28 +66,80 @@
   grid-template-columns: repeat(3, 1fr);
   gap: var(--gap-9);
 }
-
 .checkboxContainer {
   display: flex;
   align-items: center;
   gap: var(--gap-5);
+  flex-wrap: wrap;
 }
 
 .checkboxLabel {
-  user-select: none;
   cursor: pointer;
+  font-size: var(--font-sm);
 }
 
 .billingFormButtons {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--gap-5);
+  margin-top: 10px;
 }
 
 .submitButtonContainer {
   width: fit-content;
-  margin-top: 10px;
 }
 
 .shippingAddress {
   margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .billingAddressContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .billingFormColumn3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .billingTitle {
+    font-size: var(--font-lg);
+  }
+
+  .checkboxLabel {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .billingAddressContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .billingFormColumn3 {
+    grid-template-columns: 1fr;
+  }
+
+  .billingTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: var(--font-base);
+    gap: 10px;
+  }
+
+  .addressHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .addressHeaderButtons {
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .userMessage {
+    font-size: 14px;
+    line-height: 1.4;
+  }
 }

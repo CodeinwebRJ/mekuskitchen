@@ -1,14 +1,10 @@
-.sideTitleContent{
-  display: flex;
-  gap: var(--gap-3);
-  align-items: center;
-}
-
 .myAccountContainer {
   display: flex;
   padding: 50px 15px;
   max-width: 1250px;
   margin: 0 auto;
+  flex-direction: row;
+  gap: 24px;
 }
 
 .myAccountLeftContainer {
@@ -16,15 +12,15 @@
   padding-right: 28px;
 }
 
-.myAccountLeftContainerSticky {
-  position: sticky;
-  top: 100px;
-}
-
 .myAccountRightContainer {
   border-left: 1px solid var(--gray-shadow);
   padding: 8px 30px;
   width: 75%;
+}
+
+.myAccountLeftContainerSticky {
+  position: sticky;
+  top: 100px;
 }
 
 .myAccountLeftContainerTitle {
@@ -35,11 +31,58 @@
   margin-bottom: 10px;
 }
 
+/* ✅ Grid layout for side links */
 .sideTitlesContainer {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
   gap: var(--gap-3);
   padding: 10px 0;
+}
+
+/* For mobile: 2 in one row */
+@media (max-width: 768px) {
+  .myAccountContainer {
+    flex-direction: column;
+  }
+
+  .myAccountLeftContainer,
+  .myAccountRightContainer {
+    width: 100%;
+    padding: 0;
+  }
+
+  .myAccountRightContainer {
+    border-left: none;
+    padding-top: 20px;
+  }
+
+  .sideTitlesContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .sideTitle,
+  .sideTitleActive {
+    justify-content: center;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .myAccountLeftContainer {
+    width: 30%;
+  }
+
+  .myAccountRightContainer {
+    width: 70%;
+  }
+
+  .sideTitlesContainer {
+    grid-template-columns: 1fr; /* Stack vertically */
+  }
 }
 
 .sideTitle {

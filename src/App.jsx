@@ -51,6 +51,7 @@ import { setCart } from "../Store/Slice/UserCartSlice.jsx";
 import { setData } from "../Store/Slice/HomePageSlice.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import { setCountriesData } from "../Store/Slice/CountrySlice.jsx";
+import NotFound from "./Component/MainComponents/NotFound.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -194,7 +195,7 @@ const App = () => {
     fetchHomeData();
     featchCountryData();
   }, []);
-  
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchAddresses();
@@ -234,6 +235,7 @@ const App = () => {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="*" element={<NotFound />} />
 
         {/* Dashboard routes */}
         <Route path="/my-account" element={<Dashboard />} />

@@ -18,7 +18,7 @@ const Orders = () => {
       dispatch(setLoading(true));
       const data = {
         id: user.userid,
-        orderStatus: status, 
+        orderStatus: status,
       };
       const res = await getUserOrders(data);
       dispatch(setOrders(res.data.data));
@@ -58,8 +58,7 @@ const Orders = () => {
           <p className="text-gray-600">No orders found.</p>
         )}
       </div>
-
-      <Pagination />
+      {Order?.pages > 1 && <Pagination />}
     </MyAccountContainer>
   );
 };

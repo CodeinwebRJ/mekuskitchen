@@ -85,14 +85,53 @@
   color: var(--gray-light);
 }
 
-@media (max-width: 600px) {
+/* ✅ Tablet View (≤768px) */
+@media (max-width: 768px) {
+  .addressCardContainer {
+    padding: 16px;
+  }
+
+  .fullName {
+    font-size: 1rem;
+  }
+
+  .address {
+    font-size: 0.9rem;
+  }
+
+  .defaultLabel {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .addressControllers {
+    gap: 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ✅ Mobile View (≤480px) */
+@media (max-width: 480px) {
   .addressCardContainer {
     padding: 14px;
   }
 
-  .addressControllers {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  .fullName {
+    font-size: 0.95rem;
+  }
+
+  .address {
+    font-size: 0.85rem;
+  }
+
+  .link {
+    font-size: 0.85rem;
+  }
+
+  .defaultLabel {
+    top: 10px;
+    right: 10px;
+    font-size: 0.65rem;
+    padding: 2px 6px;
   }
 }

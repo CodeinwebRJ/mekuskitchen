@@ -1,13 +1,8 @@
 .buttonContainer {
   display: flex;
   gap: var(--gap-4);
-}
-
-.orderContainer {
-  padding: 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
 .Button {
@@ -19,9 +14,43 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   align-self: flex-start;
+  font-size: 1rem;
 }
 
 .Selected {
   background-color: var(--primary-blue);
   color: white;
+}
+
+.orderContainer {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media screen and (max-width: 1024px) {
+  .Button {
+    padding: 8px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .buttonContainer {
+    justify-content: space-between;
+    gap: var(--gap-2);
+  }
+
+  .Button {
+    flex: 1 1 45%;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .orderContainer {
+    padding: 12px 0;
+    gap: 10px;
+  }
 }

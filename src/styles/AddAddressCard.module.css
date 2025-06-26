@@ -10,6 +10,7 @@
   background-color: #fafafa;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
 }
 
 .addAddressCardContainer:hover {
@@ -25,4 +26,35 @@
 .addAddressCardTitle {
   font-size: 1.1rem;
   font-weight: 600;
+  color: var(--gray-darkest);
+}
+
+@media (max-width: 768px) {
+  .addAddressCardContainer {
+    padding: 24px;
+    gap: 14px;
+  }
+
+  .addAddressCardIcon {
+    font-size: 42px;
+  }
+
+  .addAddressCardTitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .addAddressCardContainer {
+    padding: 35px 0;
+    gap: 12px;
+  }
+
+  .addAddressCardIcon {
+    font-size: 36px;
+  }
+
+  .addAddressCardTitle {
+    font-size: 0.95rem;
+  }
 }
