@@ -103,7 +103,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
           </Link>
           <div className={style.itemPrice}>
             <span className="originalPrice">${product.price}</span>
-            <span className="price">${product.sellingPrice} CAD</span>
+            <span className="price">${product.sellingPrice} {product?.currency || "CAD"}</span>
           </div>
           <span className={style.itemDescription}>{product.description}</span>
         </div>

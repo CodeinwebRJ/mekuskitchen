@@ -105,6 +105,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   }, [cart, isAuthenticated]);
 
   const renderCartItem = (item, index, type) => {
+
     return (
       <div className={style.cartItem} key={item?._id || index}>
         <div className={style.cartItemImageContainer}>
@@ -153,7 +154,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                     : item?.sku?.details?.combinations?.Price ||
                       item?.price ||
                       0
-                  : item.totalAmount || 0}
+                  : item.totalAmount || 0}{" "}
+                {item?.productDetails?.currency || "CAD"}
               </span>
             </p>
           </div>

@@ -120,6 +120,7 @@ const RelatedProductCard = ({ item }) => {
     }
   };
 
+
   return (
     <Link to={linkPath} state={{ id: item?._id }}>
       <div className={style.relatedProductCard}>
@@ -147,7 +148,9 @@ const RelatedProductCard = ({ item }) => {
           </div>
           <div className={style.PriceContainer}>
             <p className="originalPrice">${displayPrice}</p>
-            <p className="price">${displayPrice} CAD </p>
+            <p className="price">
+              ${displayPrice} {item?.currency || "CAD"}{" "}
+            </p>
           </div>
           <AddToCartButton onclick={handleAddToCart} />
         </div>

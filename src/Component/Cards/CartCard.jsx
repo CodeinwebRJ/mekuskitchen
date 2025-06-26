@@ -13,13 +13,13 @@ const CartCard = ({
     <hr/>
     <div>
       <p>
-        Subtotal: <span>${subtotal.toFixed(2)}</span>
+        Subtotal: <span>${subtotal.toFixed(2)} CAD</span>
       </p>
       <p>
-        Total Items: <span>{item}</span>
+        Total Items: <span>{item} CAD</span>
       </p>
       <p>
-        Total: <span>${total.toFixed(2)}</span>
+        Total: <span>${total.toFixed(2)} CAD</span>
       </p>
       {discount > 0 && (
         <p>

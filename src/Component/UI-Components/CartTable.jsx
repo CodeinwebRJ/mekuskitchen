@@ -51,7 +51,9 @@ const CartItem = ({
           <span className={style.productName}>{name}</span>
         </div>
       </td>
-      <td>${Number(price)?.toFixed(2)}</td>
+      <td>
+        ${Number(price)?.toFixed(2)} {item?.productDetails?.currency || "CAD"}
+      </td>
       <td>
         <div className={style.quantityControl}>
           <button
@@ -67,7 +69,8 @@ const CartItem = ({
         </div>
       </td>
       <td className={style.totalPrice}>
-        ${(price * item.quantity).toFixed(2)}
+        ${(price * item.quantity).toFixed(2)}{" "}
+        {item?.productDetails?.currency || "CAD"}
       </td>
     </tr>
   );
@@ -81,7 +84,6 @@ const CartTable = ({
   onUpdateQuantity,
   onShowProduct,
 }) => {
-  console.log(items);
   return (
     <table className={style.cartTable}>
       <thead>

@@ -26,19 +26,18 @@ import { FaBars } from "react-icons/fa";
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef(null);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const { cartCount, wishlistCount } = useSelector((state) => state.count);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const cart = useSelector((state) => state.cart);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const mobileMenuRef = useRef(null);
 
   const handleLogout = () => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
+    if (!isAuthenticated) return navigate("/login");
     try {
       dispatch(logout());
       localStorage.clear();
@@ -48,9 +47,8 @@ const Header = () => {
     }
   };
 
-  const handleLinkActive = (link) => {
-    return link === location.pathname ? style.linkActive : style.link;
-  };
+  const handleLinkActive = (link) =>
+    link === location.pathname ? style.linkActive : style.link;
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -59,14 +57,12 @@ const Header = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       try {
-        const wishlist = localStorage.getItem("wishlist");
-        const parsedWishlist = wishlist ? JSON.parse(wishlist) : [];
-        dispatch(setWishlist(parsedWishlist));
-        dispatch(setWishlistCount(parsedWishlist.length));
+        const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+        dispatch(setWishlist(wishlist));
+        dispatch(setWishlistCount(wishlist.length));
 
-        const cartData = localStorage.getItem("cart");
-        const parsedCart = cartData ? JSON.parse(cartData) : [];
-        dispatch(setCart(parsedCart));
+        const cartData = JSON.parse(localStorage.getItem("cart") || "[]");
+        dispatch(setCart(cartData));
       } catch (error) {
         console.error("Error parsing localStorage data:", error);
         dispatch(setWishlist([]));
@@ -74,44 +70,39 @@ const Header = () => {
         dispatch(setCart([]));
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, dispatch]);
 
   useEffect(() => {
     if (!isAuthenticated) {
       const productItemsCount =
-        cart?.items?.items?.length > 0
-          ? cart.items.items.reduce(
-              (acc, item) => acc + (item?.quantity || 0),
-              0
-            )
-          : 0;
+        cart?.items?.items?.reduce(
+          (acc, item) => acc + (item?.quantity || 0),
+          0
+        ) || 0;
+
       const tiffinItemsCount =
-        cart?.items?.tiffins?.length > 0
-          ? cart.items.tiffins.reduce(
-              (acc, item) => acc + (item?.quantity || 0),
-              0
-            )
-          : 0;
-      const totalCount = productItemsCount + tiffinItemsCount;
-      dispatch(setCartCount(totalCount));
+        cart?.items?.tiffins?.reduce(
+          (acc, item) => acc + (item?.quantity || 0),
+          0
+        ) || 0;
+
+      dispatch(setCartCount(productItemsCount + tiffinItemsCount));
     }
-  }, [isAuthenticated, cart]);
+  }, [isAuthenticated, cart, dispatch]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
+        isMobileMenuOpen &&
         mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target) &&
-        isMobileMenuOpen
+        !mobileMenuRef.current.contains(event.target)
       ) {
         setIsMobileMenuOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
@@ -120,7 +111,6 @@ const Header = () => {
         setIsMobileMenuOpen(false);
       }
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isMobileMenuOpen]);
@@ -135,7 +125,6 @@ const Header = () => {
         <Link to="/" className={`${style.link} ${handleLinkActive("/")}`}>
           HOME
         </Link>
-
         <Link
           to="/product-category"
           className={`${style.link} ${handleLinkActive("/product-category")}`}
@@ -158,54 +147,43 @@ const Header = () => {
 
       {isMobileMenuOpen && (
         <nav className={style.mobileNavMenu} ref={mobileMenuRef}>
+          {[
+            { to: "/", label: "HOME" },
+            { to: "/product-category", label: "OUR PRODUCT" },
+            { to: "/about-us", label: "ABOUT US" },
+            { to: "/contact-us", label: "CONTACT US" },
+            isAuthenticated && { to: "/my-account", label: "DASHBOARD" },
+            { to: "/cart", label: "CART" },
+            { to: "/wishlist", label: "WISHLIST" },
+          ]
+            .filter(Boolean)
+            .map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={style.mobileLink}
+              >
+                {label}
+              </Link>
+            ))}
+
           <Link
-            to="/"
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={() => {
+              handleLogout();
+              setIsMobileMenuOpen(false);
+            }}
             className={style.mobileLink}
           >
-            HOME
-          </Link>
-          <Link
-            to="/product-category"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={style.mobileLink}
-          >
-            OUR PRODUCT
-          </Link>
-          <Link
-            to="/about-us"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={style.mobileLink}
-          >
-            ABOUT US
-          </Link>
-          <Link
-            to="/contact-us"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={style.mobileLink}
-          >
-            CONTACT US
-          </Link>
-          <Link
-            to="/my-account"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={style.mobileLink}
-          >
-            DASHBOARD
-          </Link>
-          <Link
-            to="/cart"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={style.mobileLink}
-          >
-            CART
-          </Link>
-          <Link
-            to="/wishlist"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={style.mobileLink}
-          >
-            WISHLIST
+            {isAuthenticated ? (
+              <>
+                <FiLogOut size={20} /> Logout
+              </>
+            ) : (
+              <>
+                <FiLogIn size={20} /> Login
+              </>
+            )}
           </Link>
         </nav>
       )}
@@ -217,38 +195,35 @@ const Header = () => {
           <LuUserRound className={style.userDropdownIcon} />
           <div className={style.userDropdownMenu}>
             {isAuthenticated && (
-              <Link to="/my-account" className={style.userDropdownItem}>
-                <RxDashboard size={20} /> Dashboard
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link to="/my-account/orders" className={style.userDropdownItem}>
-                <PiNotepadLight size={20} /> Orders
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link
-                to="/my-account/downloads"
-                className={style.userDropdownItem}
-              >
-                <IoDownloadOutline size={20} /> Downloads
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link
-                to="/my-account/addresses"
-                className={style.userDropdownItem}
-              >
-                <TfiLocationPin size={20} /> Address
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link
-                to="/my-account/account-details"
-                className={style.userDropdownItem}
-              >
-                <PiUserCircleLight size={20} /> Account Details
-              </Link>
+              <>
+                <Link to="/my-account" className={style.userDropdownItem}>
+                  <RxDashboard size={20} /> Dashboard
+                </Link>
+                <Link
+                  to="/my-account/orders"
+                  className={style.userDropdownItem}
+                >
+                  <PiNotepadLight size={20} /> Orders
+                </Link>
+                <Link
+                  to="/my-account/downloads"
+                  className={style.userDropdownItem}
+                >
+                  <IoDownloadOutline size={20} /> Downloads
+                </Link>
+                <Link
+                  to="/my-account/addresses"
+                  className={style.userDropdownItem}
+                >
+                  <TfiLocationPin size={20} /> Address
+                </Link>
+                <Link
+                  to="/my-account/account-details"
+                  className={style.userDropdownItem}
+                >
+                  <PiUserCircleLight size={20} /> Account Details
+                </Link>
+              </>
             )}
             <span onClick={handleLogout} className={style.userDropdownItem}>
               {isAuthenticated ? (

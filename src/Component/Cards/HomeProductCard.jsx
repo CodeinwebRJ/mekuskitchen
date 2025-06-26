@@ -216,7 +216,7 @@ export const HomeProductCard = ({
 
             <div className={style.priceContainer}>
               {(data?.price || price) && (
-                <p className="originalPrice">
+                <p className={style.originalPrice}>
                   ${Number(data?.price || price).toFixed(2)}
                 </p>
               )}
@@ -224,7 +224,8 @@ export const HomeProductCard = ({
                 $
                 {Number(
                   selectedCombination?.Price || data.sellingPrice
-                ).toFixed(2)}
+                ).toFixed(2)}{" "}
+                {data.currency || "CAD"}
               </p>
             </div>
           </div>

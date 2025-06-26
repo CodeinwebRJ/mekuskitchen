@@ -58,7 +58,6 @@ function VerifyOtp({ formData, setFormData }) {
 
   const handleForgotPasswordOtpSubmit = async (e) => {
     e.preventDefault();
-    console.log("sd")
     setErrors({});
     if (Number(otp) === Number(storedOtp)) {
       setMessage("OTP verified successfully.");

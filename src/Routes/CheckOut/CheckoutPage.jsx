@@ -42,14 +42,14 @@ const OrderSummary = ({
     <div className={style.totalContainer}>
       <div className={style.total}>
         <span>Subtotal</span>
-        <span>${total.toFixed(2) || 0}</span>
+        <span>${total.toFixed(2) || 0} CAD</span>
       </div>
 
       {discount > 0 && (
         <div className={`${style.total} ${style.discount}`}>
           <span>Discount</span>
           <span>
-            -${discount.toFixed(2) || 0} ({discountPercentage.toFixed(2)}%)
+            -${discount.toFixed(2) || 0} CAD ({discountPercentage.toFixed(2)}%)
           </span>
         </div>
       )}
@@ -57,26 +57,26 @@ const OrderSummary = ({
       <div className={style.total}>
         <span>Shipping charges</span>
         <span>
-          ${SCV} {SCC}
+          ${SCV} {SCC || "CAD"}
         </span>
       </div>
       <div className={style.total}>
         <span>Province Tax</span>
-        <span>${Number(provinceTax).toFixed(2) || 0}</span>
+        <span>${Number(provinceTax).toFixed(2) || 0} CAD</span>
       </div>
       <div className={style.total}>
         <span>Federal Tax</span>
-        <span>${Number(federalTax).toFixed(2) || 0}</span>
+        <span>${Number(federalTax).toFixed(2) || 0} CAD</span>
       </div>
       <div className={style.total}>
         <span>Total Tax</span>
-        <span>${Number(tax).toFixed(2)}</span>
+        <span>${Number(tax).toFixed(2)} CAD</span>
       </div>
     </div>
     <hr />
     <div className={`${style.total} ${style.grandTotal}`}>
       <span>Total</span>
-      <p>${(Number(total) + Number(tax)).toFixed(2)}</p>
+      <p>${(Number(total) + Number(tax)).toFixed(2)} CAD</p>
     </div>
 
     <div className={style.checkoutButton}>
@@ -186,7 +186,6 @@ const CheckoutPage = () => {
 
   const fetchShipping = async () => {
     try {
-      console.log(cart.items.items);
       const data = {
         shipTo: {
           name: defaultAddress.billing.name,

@@ -34,7 +34,7 @@ const FoodPage = () => {
 
   const handlePriceChange = useCallback(
     (e) => {
-      const newMax = parseInt(e.target.value, 10);
+      const newMax = parseInt(e?.target?.value, 10);
       dispatch(setPrices([0, newMax]));
     },
     [dispatch, price]
@@ -132,11 +132,15 @@ const FoodPage = () => {
             <div className={styles.mainContent}>
               <div className={styles.sortingBar}>
                 <div className={styles.breadcrumb}>
-                  <Link to={"/"} className={styles.homeLink}>Home / </Link>
+                  <Link to={"/"} className={styles.homeLink}>
+                    Home /{" "}
+                  </Link>
                   <span>Food</span>
                 </div>
                 <div className={styles.sortingOptions}>
-                  <ShowProducts />
+                  <div className={styles.showProducts}>
+                    <ShowProducts />
+                  </div>
                   <div
                     className={styles.gridIcons}
                     role="group"

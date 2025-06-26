@@ -215,7 +215,8 @@ const ProductCard = ({ product, grid }) => {
             <div className={style.PriceContainer}>
               <p className="originalPrice">${product?.price}</p>
               <p className="price">
-                ${selectedCombination?.Price || product?.sellingPrice} CAD
+                ${selectedCombination?.Price || product?.sellingPrice}{" "}
+                {product?.currency || "CAD"}
               </p>
             </div>
             {product?.discount && (
