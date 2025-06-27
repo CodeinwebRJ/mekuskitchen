@@ -97,11 +97,11 @@
   }
 
   .headingTitle {
-    font-size: 20px;
+    font-size: var(--font-xl);
   }
 
   .icon {
-    font-size: 20px;
+    font-size: var(--font-xl);
   }
 
   .headerRightSide {
@@ -125,11 +125,11 @@
   }
 
   .headingTitle {
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 
   .icon {
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 
   .headerRightSide {

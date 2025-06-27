@@ -1,7 +1,7 @@
 .card {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: var(--white);
   padding: 12px;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
@@ -21,21 +21,20 @@
 }
 
 .title {
-  font-size: 16px;
+  font-size: var(--font-md);
   font-weight: 600;
   margin: 0;
-  color: #000;
+  color: var(--black);
 }
 
 .price {
-  font-size: 14px;
+  font-size: var(--font-base);
   font-weight: 500;
-  color: #f5a623;
   margin: 4px 0;
 }
 
 .description {
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: #888;
   white-space: nowrap;
   overflow: hidden;
@@ -51,16 +50,16 @@
 }
 
 .btn {
-  background-color: #f5a623;
-  color: white;
+  background-color: var(--primary-blue);
+  color: var(--white);
   border: none;
   padding: 6px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: var(--font-sm);
   cursor: pointer;
 }
 
 .quantity {
-  font-size: 14px;
+  font-size: var(--font-base);
   font-weight: 500;
 }

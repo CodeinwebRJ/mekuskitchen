@@ -61,7 +61,7 @@
   width: 100%;
   border-radius: 8px;
   border: 1px solid var(--gray-border-light);
-  font-size: 16px;
+  font-size: var(--font-md);
   padding: 12px;
   min-height: 120px;
   resize: vertical;
@@ -120,7 +120,7 @@
 }
 
 .reviewUser {
-  font-size: 16px;
+  font-size: var(--font-md);
   font-weight: 600;
   color: var(--gray-darkest);
 }
@@ -225,7 +225,7 @@
   }
 
   .textarea {
-    font-size: 14px;
+    font-size: var(--font-base);
     padding: 10px;
     min-height: 100px;
   }
@@ -259,7 +259,7 @@
   }
 
   .reviewUser {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .reviewRating {

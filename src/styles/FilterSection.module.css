@@ -20,7 +20,7 @@
 
 .filterGroup h6 {
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--font-base);
   margin-top: 16px;
   margin-bottom: 8px;
   color: var(--gray-dark);
@@ -37,7 +37,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--gray-deep);
 }
 

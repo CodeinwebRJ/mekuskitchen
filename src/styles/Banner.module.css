@@ -132,11 +132,11 @@
   }
 
   .arrow {
-    font-size: 20px;
+    font-size: var(--font-xl);
   }
 
   .bannerBreadcrumb {
-    font-size: 12px;
+    font-size: var(--font-sm);
     gap: var(--gap-2);
   }
 }
@@ -160,6 +160,6 @@
   }
 
   .bannerBreadcrumb {
-    font-size: 12px;
+    font-size: var(--font-sm);
   }
 }

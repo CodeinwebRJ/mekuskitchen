@@ -1,5 +1,4 @@
-
-import styles from "./CartItemCardMobile.module.css";
+import styles from "../../styles/CartItemcard.module.css";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
 const CartItemCardMobile = ({ item, onIncrease, onDecrease }) => {
@@ -12,7 +11,7 @@ const CartItemCardMobile = ({ item, onIncrease, onDecrease }) => {
       />
       <div className={styles.details}>
         <h3 className={styles.title}>{item.name}</h3>
-        <p className={styles.price}>₹{item.price}</p>
+        <p className={styles.price}>${item.price}</p> 
         <p className={styles.description}>{item.description}</p>
       </div>
       <div className={styles.actions}>

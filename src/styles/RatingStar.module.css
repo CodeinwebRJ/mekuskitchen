@@ -26,13 +26,13 @@
 @media (max-width: 768px) {
   .fill,
   .unFill {
-    font-size: 20px;
+    font-size: var(--font-xl);
   }
 }
 
 @media (max-width: 480px) {
   .fill,
   .unFill {
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 }

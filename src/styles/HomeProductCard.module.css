@@ -21,7 +21,7 @@
   font-weight: 600;
   text-decoration: line-through;
   color: var(--error);
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .imgeContainer {
@@ -58,7 +58,7 @@
 }
 
 .title {
-  font-size: 14px;
+  font-size: var(--font-base);
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -69,13 +69,13 @@
 .subtitle {
   margin-top: 4px;
   color: var(--gray-placeholder);
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .price {
   font-weight: 600;
   color: var(--charcoal-navy);
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .actions {
@@ -110,15 +110,15 @@
   
 
   .title {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .subtitle {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .price {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .actions {
@@ -145,15 +145,15 @@
   }
 
   .title {
-    font-size: 16px;
+    font-size: var(--font-md);
   }
 
   .subtitle {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .price {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .cardContent {

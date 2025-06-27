@@ -41,7 +41,7 @@
 }
 
 .grandTotal {
-  font-size: 18px;
+  font-size: var(--font-lg);
   font-weight: 700;
   color: var(--primary-dark);
   margin-top: 12px;
@@ -284,16 +284,16 @@
   .billingTitle,
   .orderTitle,
   .noAddressTitle {
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 
   .addAddressButton {
     max-width: 180px;
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .placeOrder {
-    font-size: 14px;
+    font-size: var(--font-base);
     padding: 10px 12px;
   }
 }
@@ -302,11 +302,11 @@
   .billingTitle,
   .orderTitle,
   .noAddressTitle {
-    font-size: 16px;
+    font-size: var(--font-md);
   }
 
   .placeOrder {
-    font-size: 14px;
+    font-size: var(--font-base);
     padding: 8px;
   }
 
@@ -321,7 +321,7 @@
   }
 
   .errorMessage {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .noAddressContainer {

@@ -19,7 +19,7 @@
 
 .loadingText {
   margin-top: 16px;
-  font-size: 18px;
+  font-size: var(--font-lg);
   color: var(--gray-steel);
   font-weight: 500;
 }
@@ -33,7 +33,7 @@
   }
 
   .loadingText {
-    font-size: 16px;
+    font-size: var(--font-md);
   }
 }
 
@@ -46,7 +46,7 @@
   }
 
   .loadingText {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 }
 

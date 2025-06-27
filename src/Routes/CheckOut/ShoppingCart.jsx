@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import CouponCode from "../../Component/Cards/CouponCode";
 import CartCard from "../../Component/Cards/CartCard";
 import CartTable from "../../Component/UI-Components/CartTable";
+import CartItemCardMobile from "../../Component/UI-Components/CartItemcard";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
@@ -296,7 +297,7 @@ const ShoppingCart = () => {
       <Header />
       <Banner name="CART" />
       <div className={style.cartContainer}>
-        <div className={style.cartItems}>
+        <div className={style.desktopCartView}>
           <CartTable
             items={cart?.items?.items || []}
             tiffins={cart?.items?.tiffins || []}
@@ -305,6 +306,51 @@ const ShoppingCart = () => {
             onUpdateQuantity={updateItemQuantity}
             onShowProduct={handleShowProduct}
           />
+        </div>
+
+        <div className={style.mobileCartView}>
+          {(cart?.items?.items || []).map((item) => (
+            <CartItemCardMobile
+              key={item._id}
+              item={{
+                image: isAuthenticated
+                  ? item?.productDetails?.images?.[0]?.url
+                  : item?.images?.[0]?.url,
+                name: isAuthenticated ? item?.productDetails?.name : item?.name,
+                price:
+                  item?.sellingPrice ||
+                  item?.sku?.details?.combinations?.Price ||
+                  item?.price,
+                quantity: item.quantity,
+                description: isAuthenticated
+                  ? item?.productDetails?.shortDescription
+                  : item?.shortDescription,
+              }}
+              onIncrease={() => updateItemQuantity(item._id, 1, "product")}
+              onDecrease={() => updateItemQuantity(item._id, -1, "product")}
+            />
+          ))}
+
+          {(cart?.items?.tiffins || []).map((item) => (
+            <CartItemCardMobile
+              key={item._id}
+              item={{
+                image:
+                  item?.tiffinMenuDetails?.images?.[0]?.url ||
+                  "/placeholder.jpg",
+                name: item?.tiffinMenuDetails?.name,
+                price: item?.tiffinMenuDetails?.totalAmount,
+                quantity: item.quantity,
+                description: item?.tiffinMenuDetails?.shortDescription || "",
+              }}
+              onIncrease={() =>
+                updateItemQuantity(item._id, 1, "tiffin", item.day)
+              }
+              onDecrease={() =>
+                updateItemQuantity(item._id, -1, "tiffin", item.day)
+              }
+            />
+          ))}
         </div>
         <div className={style.cartSummary}>
           <div>

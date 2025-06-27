@@ -44,7 +44,7 @@
 
 .textContainer p {
   color: var(--gray-darkest);
-  font-size: 16px;
+  font-size: var(--font-md);
   margin-bottom: 24px;
 }
 
@@ -55,7 +55,7 @@
   border: none;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--font-base);
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -115,7 +115,7 @@
   }
 
   .textContainer p {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .orderButton {

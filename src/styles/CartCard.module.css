@@ -8,7 +8,7 @@
 }
 
 .cartTotals h3 {
-  font-size: 20px;
+  font-size: var(--font-xl);
   font-weight: 600;
   color: var(--very-dark-gray);
 }
@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   margin: 12px 0;
-  font-size: 16px;
+  font-size: var(--font-md);
   color: var(--dark-gray);
   flex-wrap: wrap;
 }
@@ -34,7 +34,7 @@
 
 .total {
   font-weight: 700;
-  font-size: 18px;
+  font-size: var(--font-lg);
   color: var(--black);
   display: flex;
   justify-content: space-between;
@@ -56,7 +56,7 @@
   width: 100%;
   padding: 12px 0;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: var(--font-md);
   font-weight: 600;
   transition: background 0.3s ease;
   background-color: var(--primary-blue);
@@ -71,15 +71,15 @@
   }
 
   .cartTotals p {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .total {
-    font-size: 16px;
+    font-size: var(--font-md);
   }
 
   .checkoutButton button {
-    font-size: 14px;
+    font-size: var(--font-base);
     padding: 10px 0;
   }
 }
@@ -91,20 +91,20 @@
   }
 
   .cartTotals h3 {
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 
   .cartTotals p {
-    font-size: 14px;
+    font-size: var(--font-base);
     margin: 10px 0;
   }
 
   .total {
-    font-size: 16px;
+    font-size: var(--font-md);
   }
 
   .checkoutButton button {
-    font-size: 14px;
+    font-size: var(--font-base);
     padding: 10px;
   }
 }

@@ -17,7 +17,7 @@
 }
 
 .message {
-  font-size: 20px;
+  font-size: var(--font-xl);
   color: var(--gray-steel);
   margin: 16px 0;
 }
@@ -42,12 +42,12 @@
   }
 
   .message {
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 
   .homeButton {
     padding: 8px 18px;
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 }
 
@@ -57,11 +57,11 @@
   }
 
   .message {
-    font-size: 16px;
+    font-size: var(--font-md);
   }
 
   .homeButton {
     padding: 8px 16px;
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 }

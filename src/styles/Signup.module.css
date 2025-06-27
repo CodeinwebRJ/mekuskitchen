@@ -58,7 +58,7 @@
 .error {
   color: var(--error);
   margin-top: 4px;
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .formCheck {
@@ -74,7 +74,7 @@
 
 .termsLabel {
   color: var(--black);
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .signupButton {
@@ -84,7 +84,7 @@
   border: none;
   border-radius: 14px;
   padding: 10px;
-  font-size: 16px;
+  font-size: var(--font-md);
   cursor: pointer;
 }
 

@@ -25,7 +25,7 @@
   padding: 4px 12px;
   border-radius: 4px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--white);
 }
 
@@ -43,7 +43,7 @@
 
 .review {
   color: var(--primary-blue);
-  font-size: 14px;
+  font-size: var(--font-base);
   cursor: pointer;
 }
 
@@ -52,7 +52,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 8px;
-  font-size: 14px;
+  font-size: var(--font-base);
   margin-top: 8px;
   color: var(--gray-steel);
 }
@@ -96,11 +96,11 @@
 .productName {
   font-weight: 500;
   color: var(--very-dark-gray);
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .productPrice {
-  font-size: 14px;
+  font-size: var(--font-base);
   font-weight: 500;
 }
 
@@ -110,7 +110,7 @@
   border-radius: 4px;
   background: var(--white);
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--gray-darkest);
   transition: background 0.2s;
 }
@@ -129,7 +129,7 @@
 
 .dialogOrderId {
   font-weight: 600;
-  font-size: 18px;
+  font-size: var(--font-lg);
   color: var(--gummetal);
   border-left: 4px solid var(--primary-blue);
   padding-left: 10px;
@@ -172,13 +172,13 @@
 }
 
 .dialogCard .productName {
-  font-size: 18px;
+  font-size: var(--font-lg);
   font-weight: 600;
   color: var(--charcoal-navy);
 }
 
 .dialogCard .productPrice {
-  font-size: 16px;
+  font-size: var(--font-md);
   color: var(--text-muted);
   font-weight: 500;
   margin-bottom: 8px;
@@ -190,7 +190,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--text-muted);
   margin-top: 4px;
   line-height: 1.5;
@@ -200,7 +200,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 10px 20px;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: var(--text-dark);
   padding-top: 10px;
   border-top: 1px solid var(--light-cool-gray);
@@ -216,7 +216,7 @@
 .dialogCard .productMeta span::before {
   content: "•";
   color: var(--primary-blue);
-  font-size: 18px;
+  font-size: var(--font-lg);
   line-height: 1;
 }
 
@@ -270,7 +270,7 @@
   }
 
   .dialogOrderId {
-    font-size: 16px;
+    font-size: var(--font-md);
     padding-left: 8px;
   }
 

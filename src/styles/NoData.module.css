@@ -17,7 +17,7 @@
 
 .loadingText {
   margin-top: 16px;
-  font-size: 18px;
+  font-size: var(--font-lg);
   color: var(--gray-steel);
   font-weight: 500;
 }

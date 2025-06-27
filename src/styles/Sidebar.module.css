@@ -173,7 +173,7 @@
 }
 
 .deleteIcon {
-  font-size: 18px;
+  font-size: var(--font-lg);
   cursor: pointer;
   color: var(--error);
   transition: color 0.2s ease-in-out;

@@ -75,7 +75,7 @@
   }
 
   .errorMessage {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .suggestionList {
@@ -89,19 +89,19 @@
   }
 
   .label {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .errorMessage {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .suggestionItem {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .suggestionList {
     max-width: 100%;
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 }

@@ -25,7 +25,7 @@
 
 .apiError {
   color: var(--error);
-  font-size: 14px;
+  font-size: var(--font-base);
   margin-bottom: 16px;
 }
 

@@ -30,7 +30,7 @@
 
 .footerText {
   text-align: justify;
-  font-size: 16px;
+  font-size: var(--font-md);
   line-height: 1.6;
   color: var(--black);
 }
@@ -44,7 +44,7 @@
   cursor: pointer;
   margin-top: 12px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: var(--font-md);
 }
 
 .linkList {
@@ -60,7 +60,7 @@
   color: var(--black);
   text-decoration: none;
   gap: 10px;
-  font-size: 16px;
+  font-size: var(--font-md);
 }
 
 .linkList a svg {
@@ -85,14 +85,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: var(--font-md);
   margin-bottom: 8px;
   color: var(--black);
 }
 
 .followUs {
   margin-top: 8px;
-  font-size: 16px;
+  font-size: var(--font-md);
   color: var(--black);
 }
 
@@ -104,7 +104,7 @@
 
 .socialIcons a {
   color: var(--black);
-  font-size: 18px;
+  font-size: var(--font-lg);
 }
 
 .socialIcons img {
@@ -131,22 +131,22 @@
   }
 
   .footerTitle {
-    font-size: 20px;
+    font-size: var(--font-xl);
   }
 
   .footerText {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .readMoreBtn {
     padding: 8px 14px;
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .linkList a,
   .contactLine,
   .followUs {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .socialIcons img {

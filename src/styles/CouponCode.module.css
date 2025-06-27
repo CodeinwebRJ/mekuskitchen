@@ -11,7 +11,7 @@
   font-weight: 600;
   color: var(--primary-dark);
   margin-bottom: 12px;
-  font-size: 16px;
+  font-size: var(--font-md);
 }
 
 .couponRow {
@@ -26,7 +26,7 @@
   border: none;
   border-radius: 4px;
   color: var(--white);
-  font-size: 14px;
+  font-size: var(--font-base);
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.3s ease;
@@ -37,7 +37,7 @@
   padding: 8px 12px;
   border: 1px solid var(--cool-light-blue-gray);
   border-radius: 4px;
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 
 .couponError {
@@ -49,16 +49,16 @@
 /* Tablet view (≤ 1024px) */
 @media (max-width: 1024px) {
   .couponTitle {
-    font-size: 15px;
+    font-size: var(--font-md);
   }
 
   .CouponButton {
-    font-size: 13px;
-    padding: 7px 14px;
+    font-size: var(--font-base);
+    padding: 6px 14px;
   }
 
   .couponInput {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 }
 
@@ -71,19 +71,19 @@
 
   .CouponButton {
     width: 100%;
-    font-size: 14px;
+    font-size: var(--font-base);
     padding: 10px;
   }
 
   .couponInput {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .couponTitle {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .couponError {
-    font-size: 12px;
+    font-size: var(--font-sm);
   }
 }

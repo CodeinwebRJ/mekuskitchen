@@ -3,7 +3,7 @@
 }
 
 .aboutItemTitle {
-  font-size: 20px;
+  font-size: var(--font-xl);
   font-weight: var(--font-semibold);
   margin: 0 0 8px 0;
 }
@@ -322,7 +322,7 @@
 
   .aboutItemTitle {
     font-weight: 700;
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 
   .description {
@@ -330,7 +330,7 @@
   }
 
   .productDetails h1 {
-    font-size: 18px;
+    font-size: var(--font-lg);
   }
 
   .priceContainer {
@@ -338,14 +338,14 @@
   }
 
   .specification {
-    font-size: 12px;
+    font-size: var(--font-sm);
   }
 
   .quantityButton,
   .quantityInput {
     width: 28px;
     height: 28px;
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 
   .quantityInput {
@@ -360,7 +360,7 @@
   .storage {
     padding: 6px 10px;
     min-width: 55px;
-    font-size: 12px;
+    font-size: var(--font-sm);
   }
 
   .colorContainer {
@@ -390,6 +390,6 @@
   }
 
   .itemPrice {
-    font-size: 14px;
+    font-size: var(--font-base);
   }
 }

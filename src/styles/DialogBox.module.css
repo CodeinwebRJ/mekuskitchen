@@ -30,7 +30,7 @@
 
 .dialogtitle {
   margin: 0;
-  font-size: 20px;
+  font-size: var(--font-xl);
   font-weight: bold;
 }
 
@@ -45,7 +45,7 @@
 
 .dialogmessage {
   margin: 16px 0;
-  font-size: 16px;
+  font-size: var(--font-md);
   color: var(--gray-darkest);
 }
 
@@ -59,7 +59,7 @@
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: var(--font-base);
   cursor: pointer;
   background-color: var(--gray-very-light);
   color: var(--gray-darkest);

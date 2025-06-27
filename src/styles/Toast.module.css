@@ -1,6 +1,6 @@
 /* Base Toast Styling */
 .Toastify__toast {
-  font-size: 16px;
+  font-size: var(--font-md);
   padding: 16px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -19,7 +19,7 @@
 /* Responsive for Mobile (≤768px) */
 @media (max-width: 768px) {
   .Toastify__toast {
-    font-size: 14px;
+    font-size: var(--font-base);
     padding: 12px 16px;
     max-width: 95%;
     margin: 0 auto;
