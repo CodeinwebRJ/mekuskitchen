@@ -33,7 +33,7 @@ const CartCard = ({
     <hr />
     <div>
       <p className={style.total}>
-        Total: <span className={style.price}>${subtotal.toFixed(2)}</span>
+        Total: <span className={style.price}>${subtotal.toFixed(2)} CAD</span>
       </p>
       <div className={style.checkoutButton}>
         <button className="Button" onClick={handleClick}>
