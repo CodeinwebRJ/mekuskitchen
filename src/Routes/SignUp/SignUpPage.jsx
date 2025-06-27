@@ -6,7 +6,7 @@ import PasswordInput from "../../Component/Fields/Password";
 import Banner2 from "../../Component/MainComponents/Banner2";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
-import style from "../../styles/SignupPage.module.css";
+import style from "../../styles/Signup.module.css";
 import InputField from "../../Component/UI-Components/InputField";
 
 function SignUpPage() {
