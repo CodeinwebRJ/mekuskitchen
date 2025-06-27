@@ -64,19 +64,27 @@ const AddressForm = (props) => {
       address: "Address is required",
       postCode: "Postcode / ZIP is required",
       phone: "Phone is required",
+      phoneCode: "Phone code is required",
       email: "Email is required",
+      provinceCode: "Province code is required",
     };
 
+    // Check required fields
     for (const [field, message] of Object.entries(requiredFields)) {
-      if (!data[field]?.trim()) {
+      if (
+        !data[field] ||
+        (typeof data[field] === "string" && data[field].trim() === "")
+      ) {
         validationErrors[field] = message;
       }
     }
 
+    // Phone number validation (only if provided)
     if (data.phone && !/^\d{10}$/.test(data.phone)) {
       validationErrors.phone = "Please enter a valid 10-digit phone number";
     }
 
+    // Email validation
     if (
       data.email &&
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(data.email)
@@ -284,7 +292,6 @@ const AddressForm = (props) => {
       });
     }
   }, [isEdit, editData]);
-
 
   return (
     <div>

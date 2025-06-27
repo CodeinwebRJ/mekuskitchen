@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const AddressAutocomplete = ({ onPlaceSelect }) => {
+const AddressAutocomplete = ({ onPlaceSelect, value, onChange, name }) => {
   const inputRef = useRef();
 
   const google_key = import.meta.env.VITE_GOOGLE_KEY;
@@ -12,7 +12,7 @@ const AddressAutocomplete = ({ onPlaceSelect }) => {
       const autocomplete = new window.google.maps.places.Autocomplete(
         inputRef.current,
         {
-          types: ["geocode", "establishment"], // all address + buildings
+          types: ["geocode", "establishment"],
         }
       );
 
@@ -20,6 +20,16 @@ const AddressAutocomplete = ({ onPlaceSelect }) => {
         const place = autocomplete.getPlace();
         if (onPlaceSelect) {
           onPlaceSelect(place);
+        }
+
+        // Also update field with formatted address
+        if (onChange && place?.formatted_address) {
+          onChange({
+            target: {
+              name: name || "address",
+              value: place.formatted_address,
+            },
+          });
         }
       });
     };
@@ -39,6 +49,9 @@ const AddressAutocomplete = ({ onPlaceSelect }) => {
     <input
       type="text"
       ref={inputRef}
+      name={name}
+      value={value}
+      onChange={onChange}
       placeholder="Address"
       className="form-control"
     />

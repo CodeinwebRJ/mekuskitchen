@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { CanadaSearch, googleAddress } from "../../../axiosConfig/AxiosConfig";
 import { useEffect, useRef, useState } from "react";
 import AddressAutocomplete from "../../../Component/Fields/Address";
-import CanadaPostAddressInput from "../../../Component/Fields/CanadaAddress";
 
 const FormField = ({ formData, handleChange, formErrors = {} }) => {
   const [addressSuggestions, setAddressSuggestions] = useState([]);
@@ -106,10 +105,6 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
     console.log("Longitude:", lng);
   };
 
-  const handleAddressSelect = (data) => {
-    console.log("Address selected:", data);
-  };
-
   return (
     <>
       <div className={style.billingFormColumn2}>
@@ -177,7 +172,7 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         </div>
       </div>
 
-      <div className={style.inputFieldContainer} ref={suggestionRef}>
+      {/* <div className={style.inputFieldContainer} ref={suggestionRef}>
         <InputField
           type="text"
           name="address"
@@ -211,10 +206,22 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
             ))}
           </ul>
         )}
-      </div>
+      </div> */}
 
-      <CanadaPostAddressInput onAddressSelect={handleAddressSelect} />
-      <AddressAutocomplete onPlaceSelect={handlePlaceSelect} />
+      {/* <CanadaPostAddressInput onAddressSelect={handleAddressSelect} /> */}
+
+      <div className={style.inputFieldContainer}>
+        <label className={style.label}>Address</label>
+        <AddressAutocomplete
+          name="address"
+          value={formData.address || ""}
+          onChange={handleChange}
+          onPlaceSelect={handlePlaceSelect}
+        />
+        {formErrors.address && (
+          <div className={style.errorMessage}>{formErrors.address}</div>
+        )}
+      </div>
 
       <div className={style.billingFormColumn2}>
         <div className={style.inputFieldContainer}>
