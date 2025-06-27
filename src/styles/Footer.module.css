@@ -63,6 +63,10 @@
   font-size: 16px;
 }
 
+.linkList a svg {
+  color: var(--gray-offwhite);
+}
+
 .linkList a:hover {
   text-underline-offset: 4px;
 }
@@ -74,11 +78,7 @@
 }
 
 .highlight {
-  color: var(--white);
-}
-
-.quickText {
-  color: var(--white);
+  color: var(--black);
 }
 
 .contactLine {

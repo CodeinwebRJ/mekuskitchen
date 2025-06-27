@@ -1,23 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
 import Footer from "../../Component/MainComponents/Footer";
 import InputField from "../../Component/UI-Components/InputField";
+import styles from "../../styles/Verifyotp.module.css";
 
 function VerifyOtp({ formData, setFormData }) {
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [timer, setTimer] = useState(60);
+  const [resendEnabled, setResendEnabled] = useState(false);
   const navigate = useNavigate();
 
   const isSignupFlow = formData?.first_name && formData?.email;
+
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    } else {
+      setResendEnabled(true);
+    }
+  }, [timer]);
+
+  const handleResendOtp = async () => {
+    setResendEnabled(false);
+    setTimer(60);
+    setMessage("");
+
+    try {
+      if (isSignupFlow) {
+        const response = await axios.post(
+          "https://eyemesto.com/mapp_dev/resend_otp.php",
+          new URLSearchParams({
+            email: formData.email,
+            mobile: formData.mobile,
+          })
+        );
+        setMessage(response.data.message || "OTP resent successfully.");
+      } else {
+        setMessage("OTP resent to your registered contact.");
+      }
+    } catch (error) {
+      setErrors({ api: "Failed to resend OTP. Please try again." });
+    }
+  };
 
   const handleSignupOtpSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
+    if (!otp || otp.length !== 6) {
+      setErrors({ otp: "Please enter a valid OTP." });
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post(
         "https://eyemesto.com/mapp_dev/signup.php",
@@ -59,6 +102,11 @@ function VerifyOtp({ formData, setFormData }) {
   const handleForgotPasswordOtpSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
+    const storedOtp = formData.otp;
+    if (!otp || otp.length !== 6) {
+      setErrors({ otp: "Please enter a valid OTP." });
+      return;
+    }
     if (Number(otp) === Number(storedOtp)) {
       setMessage("OTP verified successfully.");
       navigate("/forget-password");
@@ -70,49 +118,52 @@ function VerifyOtp({ formData, setFormData }) {
   return (
     <>
       {!isSignupFlow && <Navbar2 />}
-      <div className="container my-5">
-        <div className="row justify-content-center">
-          <div className="col-lg-6 col-md-8">
-            <div className="card shadow">
-              <div className="card-body p-4">
-                <h4 className="card-title text-center mb-4">Verify OTP</h4>
+      <div className={styles.container}>
+        <div className={styles.centerRow}>
+          <div className={styles.column}>
+            <div className={styles.card}>
+              <div className={styles.cardBody}>
+                <h4 className={styles.heading}>Verify OTP</h4>
                 <form
-                  className="was-validated"
+                  className={styles.form}
                   onSubmit={
                     isSignupFlow
                       ? handleSignupOtpSubmit
                       : handleForgotPasswordOtpSubmit
                   }
                 >
-                  <div className="mb-3 mt-3">
-                    <InputField
-                      type="text"
-                      className="form-control"
-                      id="otp"
-                      placeholder="Enter OTP"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      name="otp"
-                      required
-                    />
+                  <InputField
+                    type="text"
+                    className="form-control"
+                    id="otp"
+                    placeholder="Enter OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    name="otp"
+                    required
+                  />
+                  {errors.otp && (
+                    <div className={styles.inputError}>{errors.otp}</div>
+                  )}
+
+                  <div className={styles.resendWrapper}>
+                    <div className={styles.timer}>
+                      {timer > 0 && <span>Resend OTP in {timer}s</span>}
+                    </div>
+                    <div
+                      className={`${styles.resendLink} ${
+                        resendEnabled ? styles.enabled : styles.disabled
+                      }`}
+                      onClick={resendEnabled ? handleResendOtp : undefined}
+                    >
+                      Resend OTP
+                    </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="Button sm"
-                    disabled={loading}
-                  >
+                  <button type="submit" className={styles.verifyBtn}>
                     {loading ? "Verifying..." : "Verify"}
                   </button>
                 </form>
-
-                {message && (
-                  <div className="mt-3 alert alert-info">{message}</div>
-                )}
-
-                {errors.api && (
-                  <div className="mt-3 alert alert-danger">{errors.api}</div>
-                )}
               </div>
             </div>
           </div>

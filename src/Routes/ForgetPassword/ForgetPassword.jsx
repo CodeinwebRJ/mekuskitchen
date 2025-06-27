@@ -21,7 +21,7 @@ function ForgetPassword() {
 
     // Check if passwords match
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match. Please try again.");
+      setMessage("Passwords does not match. Please try again.");
       return;
     }
 
@@ -61,7 +61,6 @@ function ForgetPassword() {
     }
   };
 
-  
   return (
     <>
       <Navbar2 />
@@ -82,8 +81,10 @@ function ForgetPassword() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Password"
-                      error={errors.password}
                     />
+                    {error.password && (
+                      <div className={styles.errorText}>{error.password}</div>
+                    )}
                   </div>
 
                   <div className="mb-3">
@@ -96,6 +97,9 @@ function ForgetPassword() {
                       placeholder="Confirm Password"
                       error={errors.password}
                     />
+                    {error.password && (
+                      <div className={styles.errorText}>{error.password}</div>
+                    )}
                   </div>
 
                   <button
@@ -110,9 +114,7 @@ function ForgetPassword() {
                     Reset Password
                   </button>
                 </form>
-                {message && (
-                  <div className="mt-3 text-danger">{message}</div>
-                )}
+                {message && <div className="mt-3 text-danger">{message}</div>}
 
                 <hr className="my-4" />
               </div>

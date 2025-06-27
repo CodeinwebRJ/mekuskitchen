@@ -17,7 +17,8 @@ const Footer = () => {
       <div className={style.footerInner}>
         <div className={style.footerColumn}>
           <h3 className={style.footerTitle}>
-            About <span className={style.highlight}>Meku's Kitchen</span>
+            <span className={style.highlight}>About </span> Meku's{" "}
+            <span className={style.highlight}>Kitchen</span>
           </h3>
           <p className={style.footerText}>
             Discover a culinary journey like no other at Meku’s Kitchen. Our
@@ -33,7 +34,7 @@ const Footer = () => {
 
         <div className={style.footerColumn}>
           <h3 className={style.footerTitle}>
-            <span className={style.quickText}>Quick</span> Links
+            Quick <span className={style.highlight}> Links</span>
           </h3>
           <div className={style.linkList}>
             <Link to="/">
@@ -75,8 +76,17 @@ const Footer = () => {
             <IoMdCall size={18} /> <span>+1(672)-377-4949</span>
           </p>
           <p className={style.contactLine}>
-            <IoMail size={18} /> <span>mekuskitchen@gmail.com</span>
+            <IoMail size={18} />
+            <Link
+              to="https://mail.google.com/mail/?view=cm&fs=1&to=mekuskitchen@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={style.mailLink}
+            >
+              mekuskitchen@gmail.com
+            </Link>
           </p>
+
           <p className={style.followUs}>
             <strong>Follow us on:</strong>
           </p>

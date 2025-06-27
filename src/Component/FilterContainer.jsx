@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import style from "../styles/FilterContainer.module.css";
 import RatingStar from "./RatingStar";
 import SidebarFilter from "./MainComponents/SidebarFilter";
+import { useDispatch } from "react-redux";
+import { setCategories } from "../../Store/Slice/FilterDataSlice";
 
 const FilterContainer = ({
   priceRange,
@@ -12,6 +14,14 @@ const FilterContainer = ({
 }) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const mobileSidebarRef = useRef(null);
+  const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    const categoryArray = categoryParam ? categoryParam.split(",") : [];
+    dispatch(setCategories(categoryArray));
+  }, [dispatch, searchParams]);
 
   const toggleMobileFilter = () => setIsMobileFilterOpen((prev) => !prev);
   const closeMobileFilter = () => setIsMobileFilterOpen(false);

@@ -100,6 +100,17 @@ const SidebarFilter = ({
       </div>
 
       <div className={style.filterContainer}>
+        {/* <FilterSection
+          title="Category"
+          items={categoryList}
+          searchTerm={searchCategory}
+          setSearchTerm={setSearchCategory}
+          selectedItems={selectedCategories}
+          onChange={handleCategoryChange}
+          showAll={showAllCategories}
+          setShowAll={setShowAllCategories}
+        /> */}
+
         <FilterSection
           title="Category"
           items={categoryList}

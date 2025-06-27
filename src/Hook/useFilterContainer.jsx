@@ -24,22 +24,16 @@ export const useFilterContainer = ({
   const dispatch = useDispatch();
   const filterData = useSelector((state) => state.filterData);
   const { combinations } = useSelector((state) => state.product);
-
-  // Local search states
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBrand, setSearchBrand] = useState("");
   const [searchCategory, setSearchCategory] = useState("");
   const [searchSubCategory, setSearchSubCategory] = useState("");
   const [searchProductCategory, setSearchProductCategory] = useState("");
-
-  // Show all toggles
   const [showAllBrands, setShowAllBrands] = useState(false);
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [showAllSubCategories, setShowAllSubCategories] = useState(false);
   const [showAllProductCategories, setShowAllProductCategories] =
     useState(false);
-
-  // Selected filters
   const [selectedBrands, setSelectedBrands] = useState(filterData.brands || []);
   const [selectedRatings, setSelectedRatings] = useState(
     filterData.ratings || []
@@ -57,12 +51,14 @@ export const useFilterContainer = ({
     filterData.productCategories || []
   );
 
-  // Sync price range
+  useEffect(() => {
+    setSelectedCategories(filterData.categories || []);
+  }, [filterData.categories]);
+
   useEffect(() => {
     dispatch(setPrices(priceRange));
   }, [priceRange]);
 
-  // Brands
   const brands = useMemo(() => {
     const unique = new Set(
       products?.data?.map((p) => p?.brand).filter(Boolean)
@@ -70,7 +66,6 @@ export const useFilterContainer = ({
     return [...unique];
   }, [products]);
 
-  // Derived sub-categories and product categories
   const subCategoryList = useMemo(() => {
     if (!categoryList.length) return [];
     return selectedCategories.length
@@ -197,7 +192,6 @@ export const useFilterContainer = ({
     setSearchCategory("");
     setSearchSubCategory("");
     setSearchProductCategory("");
-    handlePriceChange([0, 2000]);
   }, [dispatch, handlePriceChange]);
 
   return {
@@ -211,7 +205,6 @@ export const useFilterContainer = ({
     setSearchSubCategory,
     searchProductCategory,
     setSearchProductCategory,
-
     showAllBrands,
     setShowAllBrands,
     showAllCategories,
@@ -220,20 +213,17 @@ export const useFilterContainer = ({
     setShowAllSubCategories,
     showAllProductCategories,
     setShowAllProductCategories,
-
     selectedBrands,
     selectedRatings,
     selectedFilters,
     selectedCategories,
     selectedSubCategories,
     selectedProductCategories,
-
     brands,
     categoryList,
     subCategoryList,
     productCategoryList,
     attributeOptions: sortedAttributeOptions,
-
     handleBrandChange,
     handleRatingChange,
     handleCategoryChange,

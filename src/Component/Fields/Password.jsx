@@ -2,14 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "../../styles/Password.module.css";
 
-const PasswordInput = ({
-  label,
-  name,
-  value,
-  onChange,
-  placeholder,
-  error,
-}) => {
+const PasswordInput = ({ label, name, value, onChange, placeholder }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleVisibility = () => {
@@ -34,7 +27,6 @@ const PasswordInput = ({
       >
         {showPassword ? <FaEye /> : <FaEyeSlash />}
       </button>
-      {error && <div className={styles.errorText}>{error}</div>}
     </div>
   );
 };

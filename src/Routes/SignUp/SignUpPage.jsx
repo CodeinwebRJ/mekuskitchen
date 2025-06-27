@@ -27,7 +27,16 @@ function SignUpPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
   };
 
   const handleVerifiyEmail = async (e) => {
@@ -68,9 +77,7 @@ function SignUpPage() {
       }
     }
 
-    if (!formData.confirmPassword.trim()) {
-      validationErrors.confirmPassword = "Please enter a confirmPassword.";
-    } else if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       validationErrors.confirmPassword =
         "Passwords does not match. Please try again.";
     }
@@ -97,6 +104,8 @@ function SignUpPage() {
 
       if (response.data.response === "1") {
         setShow(true);
+      } else {
+        setErrors({ api: response.data.message });
       }
     } catch (err) {
       console.error(err);
@@ -181,22 +190,30 @@ function SignUpPage() {
                   )}
                 </div>
 
-                <PasswordInput
-                  label="Password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Password*"
-                  error={errors.password}
-                />
-                <PasswordInput
-                  label="Confirm Password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder="Confirm Password*"
-                  error={errors.confirmPassword}
-                />
+                <div className={style.formGroup}>
+                  <PasswordInput
+                    label="Password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Password*"
+                  />
+                  {errors.password && (
+                    <div className={style.error}>{errors.password}</div>
+                  )}
+                </div>
+                <div className={style.formGroup}>
+                  <PasswordInput
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="Confirm Password*"
+                  />
+                  {errors.confirmPassword && (
+                    <div className={style.error}>{errors.confirmPassword}</div>
+                  )}
+                </div>
 
                 <div className={style.formGroup}>
                   <InputField
@@ -208,6 +225,7 @@ function SignUpPage() {
                     name="refcode"
                   />
                 </div>
+                {errors.api && <div className={style.error}>{errors.api}</div>}
 
                 <div className={style.formCheck}>
                   <input
@@ -222,7 +240,6 @@ function SignUpPage() {
                 {errors.terms && (
                   <div className={style.error}>{errors.terms}</div>
                 )}
-                {errors.api && <div className={style.error}>{errors.api}</div>}
 
                 <button
                   type="submit"

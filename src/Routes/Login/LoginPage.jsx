@@ -123,7 +123,7 @@ function LoginPage() {
             <div className={styles.card}>
               <h2 className={styles.title}>Log in</h2>
               <form onSubmit={handleSubmit}>
-                <div className="mb-3 mt-3">
+                <div className={styles.inputGroup}>
                   <InputField
                     type="text"
                     id="unique_id"
@@ -138,17 +138,21 @@ function LoginPage() {
                   )}
                 </div>
 
-                <PasswordInput
-                  placeholder="Password*"
-                  onChange={handleChange}
-                  value={credentials.password}
-                  label="Password"
-                  name="password"
-                  error={error.password}
-                />
+                <div className={styles.inputGroup}>
+                  <PasswordInput
+                    placeholder="Password*"
+                    onChange={handleChange}
+                    value={credentials.password}
+                    label="Password"
+                    name="password"
+                  />
+                  {error.password && (
+                    <div className={styles.errorText}>{error.password}</div>
+                  )}
+                </div>
 
                 {error.api && (
-                  <div className={`${styles.errorText} mb-3`}>{error.api}</div>
+                  <div className={styles.apiError}>{error.api}</div>
                 )}
 
                 <div className={styles.rememberForgot}>

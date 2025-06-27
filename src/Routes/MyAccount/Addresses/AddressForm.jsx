@@ -223,6 +223,7 @@ const AddressForm = (props) => {
           });
       if (res?.status === 200) {
         dispatch(setShowAddressForm(false));
+        props.onClose();
         fetchAddress();
         {
           location.pathname === "/my-account/addresses" && onClose();

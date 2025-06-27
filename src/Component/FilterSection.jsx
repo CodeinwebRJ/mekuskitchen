@@ -16,7 +16,6 @@ const FilterSection = ({
   maxItems = 6,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const filteredItems = useMemo(
     () =>
       items.filter((item) =>

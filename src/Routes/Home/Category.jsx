@@ -90,7 +90,7 @@ const Category = ({ data }) => {
         >
           {data.Category.map((card) => (
             <SwiperSlide className={style.swiperSlide} key={card.id}>
-              <Link to={`/product-category?${card?.category}`}>
+              <Link to={`/product-category?category=${card?.category}`}>
                 <div className={style.relatedProductCard}>
                   <div className={style.card} role="listitem">
                     <img
