@@ -135,3 +135,27 @@ export const googleAddress = async (search) => {
     `/api/v1/address/suggest/googelAddress?search=${search}`
   );
 };
+
+export const validateCoupon = async (data) => {
+  const {
+    userId,
+    code,
+    orderTotal,
+    category,
+    date,
+    subCategory,
+    ProductCategory,
+  } = data;
+
+  const params = new URLSearchParams({
+    userId,
+    code,
+    orderTotal,
+    category,
+    date,
+    subCategory,
+    ProductCategory,
+  });
+
+  return axiosInstance.get(`/api/v1/coupon/validate?${params.toString()}`);
+};

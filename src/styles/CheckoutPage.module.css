@@ -44,9 +44,8 @@
   font-size: 18px;
   font-weight: 700;
   color: var(--primary-dark);
-  margin-top: 12px; 
+  margin-top: 12px;
 }
-
 
 .selfPickup {
   display: flex;
@@ -75,6 +74,7 @@
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
   gap: 24px;
   align-items: flex-start;
   width: 100%;
@@ -247,37 +247,54 @@
   margin-bottom: 8px;
 }
 
+/* Tablet View */
+@media (max-width: 1024px) {
+  .addressContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .checkoutContainer {
+    padding: 20px 12px;
+    gap: 20px;
+  }
+}
+
+/* Mobile View */
 @media (max-width: 768px) {
   .checkoutContainer {
     flex-direction: column;
     padding: 16px 8px;
-    gap: var(--gap-8);
+    gap: 20px;
   }
 
-  .orderCard {
+  .addressContainer {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cartTotals {
     max-width: 100%;
   }
 
-  .noAddressContainer {
-    padding: 8px;
-    width: 100%;
+  .orderCard,
+  .addressDetails {
+    padding: 12px;
   }
 
   .billingTitle,
   .orderTitle,
   .noAddressTitle {
-    font-size: var(--font-md);
-  }
-
-  .addressDetails,
-  .orderCard {
-    font-size: var(--font-base);
-    padding: 8px;
+    font-size: 18px;
   }
 
   .addAddressButton {
     max-width: 180px;
-    font-size: var(--font-base);
+    font-size: 14px;
+  }
+
+  .placeOrder {
+    font-size: 14px;
+    padding: 10px 12px;
   }
 }
 
@@ -285,25 +302,29 @@
   .billingTitle,
   .orderTitle,
   .noAddressTitle {
-    font-size: var(--font-base);
+    font-size: 16px;
   }
 
   .placeOrder {
-    font-size: var(--font-base);
+    font-size: 14px;
     padding: 8px;
   }
 
   .addAddressButton {
     max-width: 160px;
     padding: 8px;
-    font-size: var(--font-base);
+    font-size: 13px;
+  }
+
+  .cartTotals {
+    padding: 16px 12px;
   }
 
   .errorMessage {
-    font-size: var(--font-base);
+    font-size: 14px;
   }
 
   .noAddressContainer {
-    padding: 8px;
+    padding: 12px;
   }
 }

@@ -29,6 +29,7 @@ const OrderSummary = ({
   discount,
   SCV,
   SCC,
+  selfPickup,
   discountPercentage,
   tax,
   federalTax,
@@ -42,7 +43,7 @@ const OrderSummary = ({
     <div className={style.totalContainer}>
       <div className={style.total}>
         <span>Subtotal</span>
-        <span>${total.toFixed(2) || 0} CAD</span>
+        <span>${total || 0} CAD</span>
       </div>
 
       {discount > 0 && (
@@ -54,12 +55,14 @@ const OrderSummary = ({
         </div>
       )}
 
-      <div className={style.total}>
-        <span>Shipping charges</span>
-        <span>
-          ${SCV} {SCC || "CAD"}
-        </span>
-      </div>
+      {selfPickup === false && (
+        <div className={style.total}>
+          <span>Shipping charges</span>
+          <span>
+            ${SCV} {SCC || "CAD"}
+          </span>
+        </div>
+      )}
       <div className={style.total}>
         <span>Province Tax</span>
         <span>${Number(provinceTax).toFixed(2) || 0} CAD</span>
@@ -76,7 +79,15 @@ const OrderSummary = ({
     <hr />
     <div className={`${style.total} ${style.grandTotal}`}>
       <span>Total</span>
-      <p>${(Number(total) + Number(tax)).toFixed(2)} CAD</p>
+      <p>
+        $
+        {(
+          Number(total) +
+          Number(tax) +
+          (selfPickup === false ? Number(SCV) : 0)
+        ).toFixed(2)}{" "}
+        CAD
+      </p>
     </div>
 
     <div className={style.checkoutButton}>
@@ -133,6 +144,8 @@ const CheckoutPage = () => {
       console.error("Error fetching user cart:", error);
     }
   };
+
+  console.log(cart);
 
   const total = useMemo(
     () =>
@@ -245,7 +258,7 @@ const CheckoutPage = () => {
           <div className={style.checkoutContainer}>
             <>
               <OrderSummary
-                total={total}
+                total={cart?.items?.grandTotal}
                 discount={discount}
                 isLoading={isLoading}
                 discountPercentage={discountPercentage}
@@ -253,6 +266,7 @@ const CheckoutPage = () => {
                 federalTax={cart?.items?.totalFederalTax}
                 provinceTax={cart?.items?.totalProvinceTax}
                 tax={cart?.items?.totalTax}
+                selfPickup={selfPickup}
                 SCV={SCV}
                 SCC={SCC}
               />

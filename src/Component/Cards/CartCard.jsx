@@ -1,39 +1,40 @@
 import style from "../../styles/CartCard.module.css";
 
 const CartCard = ({
-  item,
-  handleClick,
+  itemCount,
   subtotal,
-  total,
   discount,
-  discountPercentage,
+  total, 
+  couponCode,
+  handleClick,
 }) => (
   <div className={style.cartTotals}>
     <h3>Cart Summary</h3>
-    <hr/>
+    <hr />
     <div>
       <p>
-        Subtotal: <span>${subtotal.toFixed(2)} CAD</span>
+        Subtotal: <span>${subtotal} CAD</span>
       </p>
       <p>
-        Total Items: <span>{item} CAD</span>
+        Total Items: <span>{itemCount}</span>
       </p>
-      <p>
-        Total: <span>${total.toFixed(2)} CAD</span>
-      </p>
+
       {discount > 0 && (
         <p>
-          Discount:{" "}
-          <span className={style.discount}>
-            -${discount.toFixed(2)} ({discountPercentage.toFixed(2)}%)
-          </span>
+          Coupon Applied: <strong>{couponCode}</strong>
+        </p>
+      )}
+
+      {discount > 0 && (
+        <p>
+          Discount: <span className={style.discount}>-${discount} CAD </span>
         </p>
       )}
     </div>
     <hr />
     <div>
       <p className={style.total}>
-        Total: <span className={style.price}>${subtotal.toFixed(2)} CAD</span>
+        Grand Total: <span className={style.price}>${total} CAD</span>
       </p>
       <div className={style.checkoutButton}>
         <button className="Button" onClick={handleClick}>

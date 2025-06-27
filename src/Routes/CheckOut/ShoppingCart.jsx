@@ -22,20 +22,11 @@ const ShoppingCart = () => {
   const [dialog, setDialog] = useState({ isOpen: false, product: null });
   const navigate = useNavigate();
   const { cartCount } = useSelector((state) => state.count);
+  const [discount, setDiscount] = useState(0);
 
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
-      return (
-        (cart?.items?.items?.reduce(
-          (acc, item) => acc + (item?.price || 0) * item.quantity,
-          0
-        ) || 0) +
-        (cart?.items?.tiffins?.reduce(
-          (acc, item) =>
-            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
-          0
-        ) || 0)
-      );
+      return cart?.items?.totalAmount;
     } else {
       return (
         (cart?.items?.items?.reduce(
@@ -56,17 +47,7 @@ const ShoppingCart = () => {
 
   const total = useMemo(() => {
     if (isAuthenticated) {
-      return (
-        (cart?.items?.items?.reduce(
-          (acc, item) => acc + (item?.price || 0) * item.quantity,
-          0
-        ) || 0) +
-        (cart?.items?.tiffins?.reduce(
-          (acc, item) =>
-            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
-          0
-        ) || 0)
-      );
+      return cart?.items?.grandTotal;
     } else {
       return (
         (cart?.items?.items?.reduce(
@@ -85,25 +66,25 @@ const ShoppingCart = () => {
     }
   }, [cart, isAuthenticated]);
 
-  const discount = useMemo(() => {
-    if (isAuthenticated) {
-      return (
-        cart?.items?.items?.reduce(
-          (acc, item) => acc + (item.price - item.price) * item.quantity,
-          0
-        ) || 0
-      );
-    } else {
-      return cart?.items?.items?.reduce((acc, item) => {
-        const originalPrice =
-          item?.sku?.details?.combinations?.Price || item?.price || 0;
-        const discountedPrice = item?.sellingPrice || 0;
-        const itemDiscount =
-          (discountedPrice - originalPrice) * (item?.quantity || 0);
-        return acc + itemDiscount;
-      }, 0);
-    }
-  }, [cart]);
+  // const discount = useMemo(() => {
+  //   if (isAuthenticated) {
+  //     return (
+  //       cart?.items?.items?.reduce(
+  //         (acc, item) => acc + (item.price - item.price) * item.quantity,
+  //         0
+  //       ) || 0
+  //     );
+  //   } else {
+  //     return cart?.items?.items?.reduce((acc, item) => {
+  //       const originalPrice =
+  //         item?.sku?.details?.combinations?.Price || item?.price || 0;
+  //       const discountedPrice = item?.sellingPrice || 0;
+  //       const itemDiscount =
+  //         (discountedPrice - originalPrice) * (item?.quantity || 0);
+  //       return acc + itemDiscount;
+  //     }, 0);
+  //   }
+  // }, [cart]);
 
   const discountPercentage = useMemo(() => {
     if (total === 0) return 0;
@@ -327,15 +308,15 @@ const ShoppingCart = () => {
         </div>
         <div className={style.cartSummary}>
           <div>
-            <CouponCode />
+            <CouponCode setDiscount={setDiscount} />
           </div>
           <div className={style.cartTotals}>
             <CartCard
-              item={cartCount}
+              itemCount={cartCount}
               subtotal={subtotal}
               total={total}
-              discount={discount}
-              discountPercentage={discountPercentage}
+              couponCode={cart.items.couponCode}
+              discount={cart.items.discount}
               handleClick={handleClick}
             />
           </div>

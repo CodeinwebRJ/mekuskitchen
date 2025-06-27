@@ -7,6 +7,7 @@ import Header from "../../Component/MainComponents/Header";
 import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 import Heading from "../../Component/UI-Components/Heading";
+import { Link } from "react-router-dom";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -17,45 +18,71 @@ const ContactPage = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const User = useSelector((state) => state.auth.user);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
 
-  const User = useSelector((state) => state.auth.user);
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.name) newErrors.name = "Name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email))
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Email is invalid";
-    if (!formData.phone) newErrors.phone = "Phone number is required";
-    else if (!/^\d{10}$/.test(formData.phone))
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^\d{10}$/.test(formData.phone.trim())) {
       newErrors.phone = "Phone number must be 10 digits";
-    if (!formData.message) newErrors.message = "Message is required";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    }
 
     setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
+
     const data = {
-      userId: User.userid,
+      userId: User?.userid || "",
       ...formData,
     };
-    const res = await SendQuestions(data);
 
-    if (Object.keys(newErrors).length === 0) {
+    setLoading(true);
+    try {
+      const res = await SendQuestions(data);
+      console.log("Response:", res);
       setFormData({
         name: "",
         email: "",
         phone: "",
-        menu: "",
         message: "",
       });
+    } catch (err) {
+      console.error("API Error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,11 +90,12 @@ const ContactPage = () => {
     <div>
       <Header />
       <Banner name={"Contact us"} />
+
       <div className={style.ContactContainer}>
         <div className={style.ContactContainer2}>
+          {/* Left Section */}
           <div className={style.leftContainer}>
             <Heading title=" Get in" titleColor="Touch" />
-
             <p className={style.leftContainerDescription}>
               Have questions or special requests? We're here to assist you.
               Contact us for reservations, event inquiries, or any other
@@ -87,9 +115,15 @@ const ContactPage = () => {
               <button className={style.leftContainerMailButton}>
                 <img src="/email.png" alt="email icon" />
               </button>
-
               <span className={style.leftContainerMailNumber}>
-                mekuskitchen@gmail.com
+                <Link
+                  to="https://mail.google.com/mail/?view=cm&fs=1&to=mekuskitchen@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={style.mailLink}
+                >
+                  mekuskitchen@gmail.com
+                </Link>
               </span>
             </div>
 
@@ -97,7 +131,6 @@ const ContactPage = () => {
               <button className={style.leftContainerSocialMediaButton}>
                 <img src="/facebook.png" alt="facebook icon" />
               </button>
-
               <button className={style.leftContainerSocialMediaButton}>
                 <img src="/instagram.png" alt="instagram icon" />
               </button>
@@ -118,7 +151,7 @@ const ContactPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                   />
-                  {formData.name === "" && errors.name && (
+                  {errors.name && (
                     <div className="errorMessage">{errors.name}</div>
                   )}
                 </div>
@@ -132,7 +165,7 @@ const ContactPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                   />
-                  {formData.email === "" && errors.email && (
+                  {errors.email && (
                     <div className="errorMessage">{errors.email}</div>
                   )}
                 </div>
@@ -148,7 +181,7 @@ const ContactPage = () => {
                     value={formData.phone}
                     onChange={handleChange}
                   />
-                  {formData.phone === "" && errors.phone && (
+                  {errors.phone && (
                     <div className="errorMessage">{errors.phone}</div>
                   )}
                 </div>
@@ -166,23 +199,21 @@ const ContactPage = () => {
                   className={style.textarea}
                   rows="5"
                 ></textarea>
-                {formData.message === "" && errors.message && (
+                {errors.message && (
                   <div className="errorMessage">{errors.message}</div>
                 )}
               </div>
 
               <div className={style.submitButtonContainer}>
-                <button
-                  onClick={handleSubmit}
-                  className="Button md"
-                >
-                  Ask A Question
+                <button type="submit" className="Button md" disabled={loading}>
+                  {loading ? "Sending..." : "Ask A Question"}
                 </button>
               </div>
             </form>
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );

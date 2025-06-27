@@ -37,10 +37,16 @@ const Footer = () => {
             Quick <span className={style.highlight}> Links</span>
           </h3>
           <div className={style.linkList}>
-            <Link to="/">
+            <Link
+              to="/"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
               <FaHome />
               <div className={style.listName}>Home</div>
             </Link>
+
             <Link to="/product-category">
               <FaUtensils />
               <div className={style.listName}>Our Product</div>
