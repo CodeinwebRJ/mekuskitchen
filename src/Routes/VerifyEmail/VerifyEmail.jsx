@@ -11,8 +11,6 @@ function VerifyEmail() {
   const [errors, setErrors] = useState({ email: "" });
   const navigate = useNavigate();
 
-  const api_token = localStorage.getItem("api_token");
-
   const handleChange = (e) => {
     setEmail(e.target.value);
     setErrors({ email: "" });
@@ -40,7 +38,7 @@ function VerifyEmail() {
 
     try {
       const response = await axios.post(
-        "https://eyemesto.com/mapp/check_email.php",
+        "https://eyemesto.com/mapp_dev/check_email.php",
         new URLSearchParams({
           check_email: true,
           method: "post",

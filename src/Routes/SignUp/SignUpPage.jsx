@@ -8,6 +8,7 @@ import Navbar2 from "../../Component/MainComponents/Navbar2";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import style from "../../styles/Signup.module.css";
 import InputField from "../../Component/UI-Components/InputField";
+import SelectField from "../../Component/UI-Components/SelectField";
 
 function SignUpPage() {
   const [show, setShow] = useState(false);
@@ -16,6 +17,7 @@ function SignUpPage() {
     first_name: "",
     last_name: "",
     email: "",
+    phoneCode: "+1",
     mobile: "",
     password: "",
     confirmPassword: "",
@@ -56,9 +58,9 @@ function SignUpPage() {
       validationErrors.email = "Please enter a valid email address.";
     }
 
-    const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(formData.mobile)) {
-      validationErrors.mobile = "Please enter a valid phone number";
+      validationErrors.mobile = "Please enter a valid 10-digit phone number.";
     }
 
     if (formData.password.length < 8) {
@@ -91,6 +93,10 @@ function SignUpPage() {
       return;
     }
 
+    // ✅ Combine phoneCode and mobile before sending to backend
+    const fullMobile =
+      (formData.phoneCode || "").replace(/\+/g, "") + formData.mobile;
+
     setLoading(true);
     try {
       const response = await axios.post(
@@ -98,12 +104,16 @@ function SignUpPage() {
         new URLSearchParams({
           email: formData.email,
           verify_email: true,
-          mobile: formData.mobile,
+          mobile: fullMobile,
         })
       );
 
       if (response.data.response === "1") {
         setShow(true);
+        setFormData((prev) => ({
+          ...prev,
+          mobile: fullMobile, // store combined value if needed
+        }));
       } else {
         setErrors({ api: response.data.message });
       }
@@ -114,6 +124,44 @@ function SignUpPage() {
       setLoading(false);
     }
   };
+
+  const Data = [
+    {
+      name: "India",
+      dial_code: "+91",
+      code: "IN",
+      flag: "🇮🇳",
+    },
+    {
+      name: "Canada",
+      dial_code: "+1",
+      code: "CA",
+      flag: "🇨🇦",
+    },
+    {
+      name: "United Kingdom",
+      dial_code: "+44",
+      code: "GB",
+      flag: "🇬🇧",
+    },
+    {
+      name: "United States",
+      dial_code: "+1",
+      code: "US",
+      flag: "🇺🇸",
+    },
+    {
+      name: "Australia",
+      dial_code: "+61",
+      code: "AU",
+      flag: "🇦🇺",
+    },
+  ];
+
+  const phoneCodeOptions = Data.map((c) => ({
+    value: c.dial_code,
+    label: c.dial_code,
+  }));
 
   return (
     <div>
@@ -176,18 +224,36 @@ function SignUpPage() {
                     <div className={style.error}>{errors.email}</div>
                   )}
                 </div>
-                <div className={style.formGroup}>
-                  <InputField
-                    type="number"
-                    id="mobile"
-                    value={formData.mobile}
-                    onChange={handleInputChange}
-                    placeholder="Phone*"
-                    name="mobile"
-                  />
-                  {errors.mobile && (
-                    <div className={style.error}>{errors.mobile}</div>
-                  )}
+                <div className={style.phoneInputWrapper}>
+                  <div>
+                    <SelectField
+                      name="phoneCode"
+                      value={formData.phoneCode}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          phoneCode: e.target.value,
+                        }))
+                      }
+                      options={phoneCodeOptions}
+                      placeholder="+1"
+                      className={style.phoneCodeSelect}
+                      required
+                    />
+                  </div>
+                  <div className={style.formGroup}>
+                    <InputField
+                      type="number"
+                      id="mobile"
+                      value={formData.mobile}
+                      onChange={handleInputChange}
+                      placeholder="Phone*"
+                      name="mobile"
+                    />
+                    {errors.mobile && (
+                      <div className={style.error}>{errors.mobile}</div>
+                    )}
+                  </div>
                 </div>
 
                 <div className={style.formGroup}>

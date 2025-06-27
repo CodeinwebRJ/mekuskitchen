@@ -5,6 +5,11 @@
   min-height: 100vh;
 }
 
+.phoneInputWrapper {
+  width: 100%;
+  display: flex;
+}
+
 .imageWrapper {
   flex: 1;
   display: flex;
@@ -46,7 +51,9 @@
 
 .formGroup {
   margin-bottom: 16px;
+  width: 100%;
 }
+
 
 .error {
   color: var(--error);
