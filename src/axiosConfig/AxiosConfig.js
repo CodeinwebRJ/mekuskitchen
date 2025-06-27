@@ -41,7 +41,13 @@ export const AddtoCart = async (data) => {
 
 export const getUserCart = async (data) => {
   const { id, provinceCode } = data;
-  return axiosInstance.get(`/api/v1/cart/${id}?provinceCode=${provinceCode}`);
+  if (!id) {
+    throw new Error("User ID is required");
+  }
+  const url = `/api/v1/cart/${id}?provinceCode=${encodeURIComponent(
+    provinceCode
+  )}`;
+  return axiosInstance.get(url);
 };
 
 export const UpdateUserCart = async (data) => {
@@ -122,4 +128,10 @@ export const CanadaSearch = async (search) => {
 
 export const ShippingCharges = async (data) => {
   return axiosInstance.post("/api/v1/shipping/create", data);
+};
+
+export const googleAddress = async (search) => {
+  return axiosInstance.get(
+    `/api/v1/address/suggest/googelAddress?search=${search}`
+  );
 };

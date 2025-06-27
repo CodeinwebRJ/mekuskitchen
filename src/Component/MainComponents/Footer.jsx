@@ -43,7 +43,7 @@ const Footer = () => {
             </Link>
             <Link to="/product-category">
               <FaUtensils />
-              <div className={style.listName}>Our Menu</div>
+              <div className={style.listName}>Our Product</div>
             </Link>
             {/* <Link to="/daily-tiffin">
               <MdOutlineLunchDining />

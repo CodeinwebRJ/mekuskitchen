@@ -33,7 +33,7 @@ const ReviewComponent = ({
       validationErrors.review = "Review is required.";
       isValid = false;
     } else if (review.trim().length < 10) {
-      validationErrors.review = "Review must be at least 10 characters long.";
+      validationErrors.review = "Your review should contain a minimum of 10 characters.";
       isValid = false;
     }
 

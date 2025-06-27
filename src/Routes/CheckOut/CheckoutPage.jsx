@@ -110,14 +110,27 @@ const CheckoutPage = () => {
 
   const fetchUserCart = async () => {
     try {
+      const userId = user?.userid;
+      const provinceCode = defaultAddress?.billing?.provinceCode;
+
+      if (!userId) {
+        console.error("User ID is missing");
+        return;
+      }
+      if (!provinceCode) {
+        console.error("Province code is missing");
+        return;
+      }
+
       const data = {
-        id: user?.userid,
-        provinceCode: defaultAddress?.billing?.postCode,
+        id: userId,
+        provinceCode,
       };
+
       const res = await getUserCart(data);
       dispatch(setCart(res.data.data));
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching user cart:", error);
     }
   };
 

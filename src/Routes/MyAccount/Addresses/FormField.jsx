@@ -2,8 +2,10 @@ import style from "../../../styles/FormField.module.css";
 import InputField from "../../../Component/UI-Components/InputField";
 import SelectField from "../../../Component/UI-Components/SelectField";
 import { useSelector } from "react-redux";
-import { CanadaSearch } from "../../../axiosConfig/AxiosConfig";
+import { CanadaSearch, googleAddress } from "../../../axiosConfig/AxiosConfig";
 import { useEffect, useRef, useState } from "react";
+import AddressAutocomplete from "../../../Component/Fields/Address";
+import CanadaPostAddressInput from "../../../Component/Fields/CanadaAddress";
 
 const FormField = ({ formData, handleChange, formErrors = {} }) => {
   const [addressSuggestions, setAddressSuggestions] = useState([]);
@@ -56,8 +58,10 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         setShowSuggestions(false);
         return;
       }
+
       try {
         const res = await CanadaSearch(formData.address);
+
         if (res.status === 200) {
           setAddressSuggestions(res.data);
           setShowSuggestions(true);
@@ -90,6 +94,21 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handlePlaceSelect = (place) => {
+    const address = place.formatted_address;
+    const lat = place.geometry?.location?.lat();
+    const lng = place.geometry?.location?.lng();
+
+    console.log("Full place object:", place);
+    console.log("Address:", address);
+    console.log("Latitude:", lat);
+    console.log("Longitude:", lng);
+  };
+
+  const handleAddressSelect = (data) => {
+    console.log("Address selected:", data);
+  };
 
   return (
     <>
@@ -193,6 +212,9 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
           </ul>
         )}
       </div>
+
+      <CanadaPostAddressInput onAddressSelect={handleAddressSelect} />
+      <AddressAutocomplete onPlaceSelect={handlePlaceSelect} />
 
       <div className={style.billingFormColumn2}>
         <div className={style.inputFieldContainer}>

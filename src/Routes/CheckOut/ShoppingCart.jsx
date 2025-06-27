@@ -148,20 +148,13 @@ const ShoppingCart = () => {
           items: [],
         };
 
-        const updateQuantity = (array, isProduct) =>
+        const updateQuantity = (array) =>
           array.map((item) => {
             if (item._id === id) {
               const newQuantity = item.quantity + delta;
               if (newQuantity < 1) {
                 Toast({
                   message: "Quantity cannot be less than 1",
-                  type: "error",
-                });
-                return item;
-              }
-              if (isProduct && newQuantity > (item.stock || Infinity)) {
-                Toast({
-                  message: "Stock limit reached",
                   type: "error",
                 });
                 return item;
@@ -199,19 +192,6 @@ const ShoppingCart = () => {
             return;
           }
           newQuantity = currentItem.quantity + delta;
-          if (
-            newQuantity < 1 ||
-            newQuantity > currentItem.productDetails.stock
-          ) {
-            Toast({
-              message:
-                newQuantity < 1
-                  ? "Quantity cannot be less than 1"
-                  : "Stock limit reached",
-              type: "error",
-            });
-            return;
-          }
           data = {
             user_id: user?.userid,
             type: "product",

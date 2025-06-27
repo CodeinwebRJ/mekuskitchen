@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
@@ -8,8 +8,41 @@ import PasswordInput from "../../Component/Fields/Password";
 function ForgetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    setUserId(storedUserId);
+  }, []);
+
+  const validateForm = () => {
+    const validationErrors = {};
+
+    if (!password) {
+      validationErrors.password = "Password is required.";
+    } else if (password.length < 8) {
+      validationErrors.password = "Password must be at least 8 characters.";
+    } else {
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]).{8,}$/;
+
+      if (!passwordRegex.test(password)) {
+        validationErrors.password =
+          "Use a strong password (A-Z, a-z, 0-9, !@#...)";
+      }
+    }
+
+    if (!confirmPassword) {
+      validationErrors.confirmPassword = "Please confirm your password.";
+    } else if (password !== confirmPassword) {
+      validationErrors.confirmPassword = "Passwords does not match.";
+    }
+
+    return validationErrors;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,22 +52,14 @@ function ForgetPassword() {
       return;
     }
 
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      setMessage("Passwords does not match. Please try again.");
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
-    // Password validation using regex
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}|[\]\\:";'<>?,./]).{8,}$/;
-
-    if (!passwordRegex.test(password)) {
-      setMessage(
-        "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character."
-      );
-      return;
-    }
+    const localemail = localStorage.getItem("email");
 
     try {
       const response = await axios.post(
@@ -43,16 +68,15 @@ function ForgetPassword() {
           change_pass: true,
           method: "post",
           password: password,
+          email: localemail,
         })
       );
 
-      // Check if the password was successfully changed
       if (response.data.response === "1") {
         setMessage("Password updated successfully!");
-        console.log("Password changed successfully. Navigating to login.");
-
-        // Redirect to login page or another relevant page
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         setMessage("Failed to update password: " + response.data.message);
       }
@@ -73,34 +97,39 @@ function ForgetPassword() {
                   Reset Your Password
                 </h4>
                 <form className="was-validated" onSubmit={handleSubmit}>
-                  <div className="mb-3 mt-3">
+                  <div className="mb-3">
                     <PasswordInput
                       label="Password"
                       id="password"
                       name="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Password"
+                      placeholder="Enter new password"
                     />
-                    {error.password && (
-                      <div className={styles.errorText}>{error.password}</div>
+                    {errors.password && (
+                      <div className="text-danger mt-1">{errors.password}</div>
                     )}
                   </div>
 
                   <div className="mb-3">
                     <PasswordInput
                       label="Confirm Password"
-                      id="ConfirmPassword"
-                      name="ConfirmPassword"
+                      id="confirmPassword"
+                      name="confirmPassword"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Confirm Password"
-                      error={errors.password}
+                      placeholder="Re-enter new password"
                     />
-                    {error.password && (
-                      <div className={styles.errorText}>{error.password}</div>
+                    {errors.confirmPassword && (
+                      <div className="text-danger mt-1">
+                        {errors.confirmPassword}
+                      </div>
                     )}
                   </div>
+
+                  {message && (
+                    <div className="alert alert-info py-2">{message}</div>
+                  )}
 
                   <button
                     type="submit"
@@ -114,8 +143,6 @@ function ForgetPassword() {
                     Reset Password
                   </button>
                 </form>
-                {message && <div className="mt-3 text-danger">{message}</div>}
-
                 <hr className="my-4" />
               </div>
             </div>

@@ -44,7 +44,6 @@ function VerifyEmail() {
         new URLSearchParams({
           check_email: true,
           method: "post",
-          api_token: api_token,
           email: email,
         })
       );
@@ -53,6 +52,7 @@ function VerifyEmail() {
         const userId = response.data.userid;
         localStorage.setItem("userId", userId);
         localStorage.setItem("otp", response.data.OTP);
+        localStorage.setItem("email", response.data.email);
         setMessage("OTP sent successfully!");
         navigate("/verify-otp");
       } else {

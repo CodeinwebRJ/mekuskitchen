@@ -102,7 +102,7 @@ function VerifyOtp({ formData, setFormData }) {
   const handleForgotPasswordOtpSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    const storedOtp = formData.otp;
+    const storedOtp = localStorage.getItem("otp");
     if (!otp || otp.length !== 6) {
       setErrors({ otp: "Please enter a valid OTP." });
       return;
