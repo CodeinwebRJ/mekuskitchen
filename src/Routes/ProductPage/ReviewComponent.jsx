@@ -33,7 +33,8 @@ const ReviewComponent = ({
       validationErrors.review = "Review is required.";
       isValid = false;
     } else if (review.trim().length < 10) {
-      validationErrors.review = "Your review should contain a minimum of 10 characters.";
+      validationErrors.review =
+        "Your review should contain a minimum of 10 characters.";
       isValid = false;
     }
 
@@ -70,7 +71,17 @@ const ReviewComponent = ({
           Customer Reviews ({reviews.length})
         </h2>
         <div>
-          <button className="Button sm" onClick={() => setShowForm(!showForm)}>
+          <button
+            className="Button sm"
+            onClick={() => {
+              if (showForm) {
+                setRating(0);
+                setReview("");
+                setErrors({ rating: "", review: "" });
+              }
+              setShowForm(!showForm);
+            }}
+          >
             {showForm ? "Cancel" : "Add Review"}
           </button>
         </div>
@@ -88,7 +99,16 @@ const ReviewComponent = ({
               <label htmlFor="rating" className={style.label}>
                 Your Rating<span className={style.errorMessage}>*</span>
               </label>
-              <RatingStar rating={rating} onChange={setRating} maxRating={5} />
+              <RatingStar
+                rating={rating}
+                onChange={(value) => {
+                  setRating(value);
+                  if (errors.rating) {
+                    setErrors((prev) => ({ ...prev, rating: "" }));
+                  }
+                }}
+                maxRating={5}
+              />
               {errors.rating && (
                 <p className={style.errorMessage}>{errors.rating}</p>
               )}
@@ -101,7 +121,12 @@ const ReviewComponent = ({
               <InputField
                 id="review"
                 value={review}
-                onChange={(e) => setReview(e.target.value)}
+                onChange={(e) => {
+                  setReview(e.target.value);
+                  if (errors.review) {
+                    setErrors((prev) => ({ ...prev, review: "" }));
+                  }
+                }}
                 placeholder="Share your experience with this product"
                 className={style.textarea}
               />

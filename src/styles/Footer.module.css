@@ -12,145 +12,113 @@
   gap: 40px;
   max-width: 1200px;
   margin: 0 auto;
-  text-align: left;
 }
 
 .footerColumn {
   flex: 1 1 30%;
   min-width: 250px;
-  text-align: left;
 }
 
 .footerTitle {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 15px;
-  color: var(--white);
+  color: var(--white, #fff);
 }
 
 .footerText {
   text-align: justify;
-  font-size: var(--font-md);
+  font-size: var(--font-md, 16px);
   line-height: 1.6;
-  color: var(--black);
+  color: var(--white, #fff);
 }
 
 .readMoreBtn {
-  background-color: var(--white);
-  color: var(--primary-blue);
+  display: inline-block;
+  background-color: var(--white, #fff);
+  color: var(--primary-blue, #1a3e72);
   border: none;
   padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
   margin-top: 12px;
   font-weight: 600;
-  font-size: var(--font-md);
+  font-size: var(--font-md, 16px);
+  text-decoration: none;
 }
 
 .linkList {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
 }
 
 .linkList a {
   display: flex;
   align-items: center;
-  color: var(--black);
-  text-decoration: none;
   gap: 10px;
-  font-size: var(--font-md);
-}
-
-.linkList a svg {
-  color: var(--gray-offwhite);
-}
-
-.linkList a:hover {
-  text-underline-offset: 4px;
-}
-
-.listName:hover {
-  text-decoration: underline;
   color: var(--white);
-  transition: color 0.2s ease;
+  font-size: var(--font-md, 16px);
+  text-decoration: none;
 }
 
-.highlight {
-  color: var(--black);
+.linkList a:hover .listName {
+  text-decoration: underline;
+}
+
+.listName {
+  transition: color 0.2s ease;
 }
 
 .contactLine {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: var(--font-md);
+  font-size: var(--font-md, 16px);
   margin-bottom: 8px;
-  color: var(--black);
+  color: var(--white);
 }
 
 .followUs {
   margin-top: 8px;
-  font-size: var(--font-md);
-  color: var(--black);
+  font-size: var(--font-md, 16px);
+  color: var(--white);
 }
 
 .socialIcons {
   display: flex;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.socialIcons a {
-  color: var(--black);
-  font-size: var(--font-lg);
+  gap: 12px;
+  margin-top: 10px;
 }
 
 .socialIcons img {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
+  transition: transform 0.2s ease;
 }
 
-@media (max-width: 1024px) {
-  .footerContainer {
-    padding: 40px 20px;
-  }
+.socialIcons img:hover {
+  transform: scale(1.1);
+}
 
+.mailLink {
+  color: var(--white);
+  text-decoration: none;
+}
+
+.mailLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
   .footerInner {
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 30px;
   }
 
   .footerColumn {
-    flex: 1 1 30%;
-    min-width: 200px;
-    text-align: left;
-  }
-
-  .footerTitle {
-    font-size: var(--font-xl);
-  }
-
-  .footerText {
-    font-size: var(--font-base);
-  }
-
-  .readMoreBtn {
-    padding: 8px 14px;
-    font-size: var(--font-base);
-  }
-
-  .linkList a,
-  .contactLine,
-  .followUs {
-    font-size: var(--font-base);
-  }
-
-  .socialIcons img {
-    width: 18px;
-    height: 18px;
+    min-width: 100%;
   }
 }

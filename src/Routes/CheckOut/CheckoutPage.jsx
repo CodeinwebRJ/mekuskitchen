@@ -36,76 +36,88 @@ const OrderSummary = ({
   provinceTax,
   payNow,
   isLoading,
-}) => (
-  <div className={style.cartTotals}>
-    <h3 className={style.cartTitle}>Billing Summary</h3>
-    <hr />
-    <div className={style.totalContainer}>
-      <div className={style.total}>
-        <span>Subtotal</span>
-        <span>${total || 0} CAD</span>
-      </div>
+}) => {
+  const safeNumber = (val) => {
+    const num = parseFloat(val);
+    return isNaN(num) ? 0 : num;
+  };
 
-      {discount > 0 && (
-        <div className={`${style.total} ${style.discount}`}>
-          <span>Discount</span>
-          <span>
-            -${discount.toFixed(2) || 0} CAD ({discountPercentage.toFixed(2)}%)
-          </span>
-        </div>
-      )}
+  const subtotal = safeNumber(total);
+  const discountValue = safeNumber(discount);
+  const discountPercent = safeNumber(discountPercentage);
+  const shippingChargeValue = safeNumber(SCV);
+  const provinceTaxValue = safeNumber(provinceTax);
+  const federalTaxValue = safeNumber(federalTax);
+  const totalTax = safeNumber(tax);
 
-      {selfPickup === false && (
+  const grandTotal = (
+    subtotal +
+    totalTax +
+    (selfPickup === false ? shippingChargeValue : 0)
+  ).toFixed(2);
+
+  return (
+    <div className={style.cartTotals}>
+      <h3 className={style.cartTitle}>Billing Summary</h3>
+      <hr />
+      <div className={style.totalContainer}>
         <div className={style.total}>
-          <span>Shipping charges</span>
-          <span>
-            ${SCV} {SCC || "CAD"}
-          </span>
+          <span>Subtotal</span>
+          <span>${subtotal.toFixed(2)} CAD</span>
         </div>
-      )}
-      <div className={style.total}>
-        <span>Province Tax</span>
-        <span>${Number(provinceTax).toFixed(2) || 0} CAD</span>
-      </div>
-      <div className={style.total}>
-        <span>Federal Tax</span>
-        <span>${Number(federalTax).toFixed(2) || 0} CAD</span>
-      </div>
-      <div className={style.total}>
-        <span>Total Tax</span>
-        <span>${Number(tax).toFixed(2)} CAD</span>
-      </div>
-    </div>
-    <hr />
-    <div className={`${style.total} ${style.grandTotal}`}>
-      <span>Total</span>
-      <p>
-        $
-        {(
-          Number(total) +
-          Number(tax) +
-          (selfPickup === false ? Number(SCV) : 0)
-        ).toFixed(2)}{" "}
-        CAD
-      </p>
-    </div>
 
-    <div className={style.checkoutButton}>
-      <button disabled={isLoading} onClick={payNow} className="Button md">
-        {isLoading ? "Processing..." : "Checkout"}
-      </button>
+        {discountValue > 0 && (
+          <div className={`${style.total} ${style.discount}`}>
+            <span>Discount</span>
+            <span>
+              -${discountValue.toFixed(2)} CAD ({discountPercent.toFixed(2)}%)
+            </span>
+          </div>
+        )}
+
+        {selfPickup === false && (
+          <div className={style.total}>
+            <span>Shipping charges</span>
+            <span>
+              ${shippingChargeValue.toFixed(2)} {SCC || "CAD"}
+            </span>
+          </div>
+        )}
+        <div className={style.total}>
+          <span>Province Tax</span>
+          <span>${provinceTaxValue.toFixed(2)} CAD</span>
+        </div>
+        <div className={style.total}>
+          <span>Federal Tax</span>
+          <span>${federalTaxValue.toFixed(2)} CAD</span>
+        </div>
+        <div className={style.total}>
+          <span>Total Tax</span>
+          <span>${totalTax.toFixed(2)} CAD</span>
+        </div>
+      </div>
+      <hr />
+      <div className={`${style.total} ${style.grandTotal}`}>
+        <span>Total</span>
+        <p>${grandTotal} CAD</p>
+      </div>
+
+      <div className={style.checkoutButton}>
+        <button disabled={isLoading} onClick={payNow} className="Button md">
+          {isLoading ? "Processing..." : "Checkout"}
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const CheckoutPage = () => {
   const { defaultAddress, addresses, selfPickup } = useSelector(
     (state) => state.address
   );
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const [dialog, setDialog] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [showComponent, setShowComponent] = useState("cart");
@@ -270,13 +282,12 @@ const CheckoutPage = () => {
                 SCV={SCV}
                 SCC={SCC}
               />
-              <div>
+              <div className={style.address}>
                 <div className={style.addressContainer}>
                   {addresses.length < 3 ? (
                     <AddAddressCard
                       onClick={() => {
                         dispatch(setShowAddressForm(true));
-                        setIsEdit(false);
                         setDialog(true);
                       }}
                     />

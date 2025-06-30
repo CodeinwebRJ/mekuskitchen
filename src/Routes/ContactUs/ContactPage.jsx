@@ -7,13 +7,15 @@ import Header from "../../Component/MainComponents/Header";
 import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 import Heading from "../../Component/UI-Components/Heading";
-import { Link } from "react-router-dom";
+import SelectField from "../../Component/UI-Components/SelectField";
+
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    phoneCode: "+1",
     message: "",
   });
 
@@ -23,64 +25,49 @@ const ContactPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: "",
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const validateForm = () => {
     const newErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
+    if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = "Invalid email format";
     }
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
-    } else if (!/^\d{10}$/.test(formData.phone.trim())) {
-      newErrors.phone = "Phone number must be 10 digits";
+    } else if (!/^\d{7,15}$/.test(formData.phone.trim())) {
+      newErrors.phone = "Phone number must be 7 to 15 digits";
     }
 
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    }
+    if (!formData.message.trim()) newErrors.message = "Message is required";
 
     setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-    if (Object.keys(newErrors).length > 0) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-    const data = {
-      userId: User?.userid || "",
-      ...formData,
-    };
-
+    const payload = { userId: User?.userid || "", ...formData };
     setLoading(true);
+
     try {
-      const res = await SendQuestions(data);
-      console.log("Response:", res);
+      await SendQuestions(payload);
       setFormData({
         name: "",
         email: "",
         phone: "",
+        phoneCode: "+1",
         message: "",
       });
-    } catch (err) {
-      console.error("API Error:", err);
+    } catch (error) {
+      console.error("Submission failed", error);
     } finally {
       setLoading(false);
     }
@@ -89,81 +76,95 @@ const ContactPage = () => {
   return (
     <div>
       <Header />
-      <Banner name={"Contact us"} />
-
+      <Banner name="Contact us" />
       <div className={style.ContactContainer}>
         <div className={style.ContactContainer2}>
-          {/* Left Section */}
           <div className={style.leftContainer}>
-            <Heading title=" Get in" titleColor="Touch" />
+            <Heading title="Get in" titleColor="Touch" />
             <p className={style.leftContainerDescription}>
               Have questions or special requests? We're here to assist you.
               Contact us for reservations, event inquiries, or any other
-              information you may need. We look forward to hearing from you!
+              information you may need.
             </p>
 
             <div className={style.leftContainerContact}>
-              <button className={style.leftContainerTelephonetButton}>
-                <img src="/telephone.png" alt="phone icon" />
+              <button
+                className={style.leftContainerTelephonetButton}
+                aria-label="Phone"
+              >
+                <img src="/telephone.png" alt="Phone icon" />
               </button>
               <span className={style.leftContainerContactNumber}>
-                +1(672)-377-4949
+                <a href="tel:+16723774949">+1 (672)-377-4949</a>
               </span>
             </div>
 
             <div className={style.leftContainerMail}>
-              <button className={style.leftContainerMailButton}>
-                <img src="/email.png" alt="email icon" />
+              <button
+                className={style.leftContainerMailButton}
+                aria-label="Email"
+              >
+                <img src="/email.png" alt="Email icon" />
               </button>
               <span className={style.leftContainerMailNumber}>
-                <Link
-                  to="https://mail.google.com/mail/?view=cm&fs=1&to=mekuskitchen@gmail.com"
+                <a
+                  href="mailto:mekuskitchen@gmail.com"
+                  className={style.mailLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={style.mailLink}
                 >
                   mekuskitchen@gmail.com
-                </Link>
+                </a>
               </span>
             </div>
 
             <div className={style.leftContainerSocialMedia}>
-              <button className={style.leftContainerSocialMediaButton}>
-                <img src="/facebook.png" alt="facebook icon" />
+              <button
+                className={style.leftContainerSocialMediaButton}
+                aria-label="Facebook"
+              >
+                <img src="/facebook.png" alt="Facebook icon" />
               </button>
-              <button className={style.leftContainerSocialMediaButton}>
-                <img src="/instagram.png" alt="instagram icon" />
+              <button
+                className={style.leftContainerSocialMediaButton}
+                aria-label="Instagram"
+              >
+                <img src="/instagram.png" alt="Instagram icon" />
               </button>
             </div>
           </div>
 
           <div className={style.rightContainer}>
             <Heading title="Contact Us For Any" titleColor="Questions" />
-
-            <form onSubmit={handleSubmit} className={style.rightContainerForm}>
+            <form
+              onSubmit={handleSubmit}
+              className={style.rightContainerForm}
+              noValidate
+            >
               <div className={style.formFieldsColumn2}>
                 <div className={style.inputFieldContainer}>
                   <InputField
-                    label={true}
+                    label
                     labelName="Your Name"
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    placeholder="Enter your full name"
                   />
                   {errors.name && (
                     <div className="errorMessage">{errors.name}</div>
                   )}
                 </div>
-
                 <div className={style.inputFieldContainer}>
                   <InputField
-                    label={true}
+                    label
                     labelName="Your Email"
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    placeholder="you@example.com"
                   />
                   {errors.email && (
                     <div className="errorMessage">{errors.email}</div>
@@ -171,24 +172,40 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className={style.formFieldsColumn1}>
-                <div className={style.inputFieldContainer}>
-                  <InputField
-                    label={true}
-                    labelName="Phone Number"
-                    type="number"
-                    name="phone"
-                    value={formData.phone}
+              <div>
+                <label className={style.label} htmlFor="phone">
+                  Phone Number
+                </label>
+                <div className={style.phoneNumber}>
+                  <SelectField
+                    name="phoneCode"
+                    value={formData.phoneCode}
                     onChange={handleChange}
+                    options={[
+                      { label: "+1", value: "+1" },
+                      { label: "+91", value: "+91" },
+                      { label: "+44", value: "+44" },
+                    ]}
+                    className={style.phoneCodeSelect}
                   />
-                  {errors.phone && (
-                    <div className="errorMessage">{errors.phone}</div>
-                  )}
+                  <div className={style.phoneNumberInput}>
+                    <InputField
+                      label={false}
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Enter phone number"
+                    />
+                    {errors.phone && (
+                      <div className="errorMessage">{errors.phone}</div>
+                    )}
+                  </div>
                 </div>
               </div>
 
               <div className={style.messageContainer}>
-                <label className={style.label} htmlFor="message">
+                <label htmlFor="message" className={style.label}>
                   Your Message
                 </label>
                 <textarea
@@ -198,7 +215,8 @@ const ContactPage = () => {
                   onChange={handleChange}
                   className={style.textarea}
                   rows="5"
-                ></textarea>
+                  placeholder="Type your message here..."
+                />
                 {errors.message && (
                   <div className="errorMessage">{errors.message}</div>
                 )}
@@ -213,7 +231,6 @@ const ContactPage = () => {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

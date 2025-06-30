@@ -17,11 +17,23 @@ const DialogBox = ({ isOpen, title, children, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className={style.dialogoverlay}>
+    <div
+      className={style.dialogoverlay}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="dialog-title"
+    >
       <div className={style.dialogbox}>
         <div className={style.dialogboxheader}>
-          <h2 className={style.dialogtitle}>{title}</h2>
-          <span className={style.closeicon} onClick={onClose}>
+          <h2 id="dialog-title" className={style.dialogtitle}>
+            {title}
+          </h2>
+          <span
+            className={style.closeicon}
+            onClick={onClose}
+            role="button"
+            aria-label="Close"
+          >
             <IoClose size={24} />
           </span>
         </div>

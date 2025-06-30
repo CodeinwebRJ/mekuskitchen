@@ -259,17 +259,11 @@
   }
 }
 
-/* Mobile View */
 @media (max-width: 768px) {
   .checkoutContainer {
     flex-direction: column;
     padding: 16px 8px;
     gap: 20px;
-  }
-
-  .addressContainer {
-    grid-template-columns: 1fr;
-    gap: 16px;
   }
 
   .cartTotals {

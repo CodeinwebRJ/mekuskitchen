@@ -1,4 +1,3 @@
-/* === Layout Container === */
 .ContactContainer {
   padding: 50px 16px;
   max-width: 1250px;
@@ -7,54 +6,71 @@
 
 .ContactContainer2 {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
 }
 
-/* === Left Section === */
 .leftContainer {
   width: 35%;
   display: flex;
   flex-direction: column;
-  gap: var(--gap-11);
-  padding: 30px 50px;
+  gap: 32px;
+  padding: 30px 40px;
 }
 
 .leftContainerDescription {
   text-align: justify;
+  font-size: 16px;
+  color: var(--gray-darkest);
+  line-height: 1.6;
 }
 
 .leftContainerContact,
 .leftContainerMail {
   display: flex;
   align-items: center;
-  gap: var(--gap-5);
+  gap: 12px;
   cursor: pointer;
 }
 
 .leftContainerContactNumber,
 .leftContainerMailNumber {
-  font-size: var(--font-md);
+  font-size: 16px;
+  color: var(--black);
+}
+
+.leftContainerContactNumber a,
+.mailLink {
+  text-decoration: none;
+  color: var(--black);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.leftContainerContactNumber a:hover,
+.mailLink:hover {
+  color: var(--primary-blue);
 }
 
 .leftContainerSocialMedia {
   display: flex;
   align-items: center;
-  gap: var(--gap-5);
+  gap: 12px;
 }
 
 .leftContainerSocialMediaButton,
 .leftContainerMailButton,
 .leftContainerTelephonetButton {
-  height: 30px;
-  width: 30px;
+  height: 34px;
+  width: 34px;
   border: none;
   cursor: pointer;
   background-color: transparent;
-  transition: all 0.2s ease-in-out;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease-in-out;
 }
 
 .leftContainerSocialMediaButton img,
@@ -62,82 +78,111 @@
 .leftContainerTelephonetButton img {
   height: 100%;
   width: 100%;
-  object-fit: cover;
-  object-position: top;
+  object-fit: contain;
 }
 
 .leftContainerSocialMediaButton:hover,
 .leftContainerMailButton:hover,
 .leftContainerTelephonetButton:hover {
-  opacity: 0.8;
+  transform: scale(1.1);
+  opacity: 0.85;
 }
 
-/* === Right Section === */
+/* Right Section */
 .rightContainer {
-  padding: 30px 50px;
   width: 65%;
+  padding: 30px 40px;
   display: flex;
   flex-direction: column;
-  gap: var(--gap-11);
+  gap: 32px;
   border-left: 1px solid var(--gray-shadow);
 }
 
 .rightContainerForm {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-9);
+  gap: 32px;
 }
 
-/* === Form Layout === */
 .formFieldsColumn2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--gap-9);
+  gap: 24px;
 }
 
-.formFieldsColumn1 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--gap-9);
+.inputFieldContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.phoneNumber {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.phoneNumberInput {
+  width: 100%;
+}
+
+.phoneCodeSelect {
+  min-width: 70px;
 }
 
 .messageContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-4);
+  gap: 8px;
 }
 
 .textarea {
   width: 100%;
-  min-height: 120px;
   border: 1px solid var(--gray-shadow);
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 6px;
+  padding: 12px;
   font-family: inherit;
-  font-size: var(--font-md);
+  font-size: 16px;
   resize: vertical;
-  outline: none;
+  min-height: 120px;
+  transition: border-color 0.2s ease;
 }
 
 .textarea:focus {
+  outline: none;
   border-color: var(--primary-blue);
 }
 
-/* === Error Message === */
 .errorMessage {
-  color: red;
-  font-size: var(--font-sm);
+  color: var(--error);
+  font-size: 14px;
   margin-top: 5px;
-  font-weight: 500;
 }
 
-/* === Submit Button === */
 .submitButtonContainer {
   width: fit-content;
 }
 
-/* === Responsive === */
-/* Tablet: max-width 1024px */
+.Button.md {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.Button.md:hover {
+  background-color: var(--primary-blue-dark);
+}
+
+.Button.md:disabled {
+  background-color: var(--gray-border-light);
+  cursor: not-allowed;
+}
+
 @media (max-width: 1024px) {
   .ContactContainer {
     padding: 40px 24px;
@@ -159,20 +204,10 @@
 
   .formFieldsColumn2 {
     grid-template-columns: 1fr;
-    gap: var(--gap-7);
-  }
-
-  .formFieldsColumn1 {
-    grid-template-columns: 1fr;
-    gap: var(--gap-7);
-  }
-
-  .submitButtonContainer {
-    width: 100%;
+    gap: 18px;
   }
 }
 
-/* Mobile: max-width 768px */
 @media (max-width: 768px) {
   .ContactContainer {
     padding: 30px 16px;
@@ -181,16 +216,15 @@
   .leftContainer,
   .rightContainer {
     padding: 16px;
-    gap: var(--gap-7);
+    gap: 18px;
   }
 
-  .formFieldsColumn2,
-  .formFieldsColumn1 {
-    gap: var(--gap-6);
+  .formFieldsColumn2 {
+    gap: 16px;
   }
 
   .messageContainer {
-    gap: var(--gap-3);
+    gap: 6px;
   }
 
   .submitButtonContainer {

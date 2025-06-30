@@ -15,11 +15,9 @@ const Footer = () => {
   return (
     <footer className={style.footerContainer}>
       <div className={style.footerInner}>
+        {/* About Section */}
         <div className={style.footerColumn}>
-          <h3 className={style.footerTitle}>
-            <span className={style.highlight}>About </span> Meku's{" "}
-            <span className={style.highlight}>Kitchen</span>
-          </h3>
+          <h2 className={style.footerTitle}>About Meku's Kitchen</h2>
           <p className={style.footerText}>
             Discover a culinary journey like no other at Meku’s Kitchen. Our
             passion for food and commitment to excellence are evident in every
@@ -27,82 +25,86 @@ const Footer = () => {
             simply craving a memorable dining experience, we invite you to savor
             the flavors of our carefully crafted menu.
           </p>
-          <Link to={"/about-us"}>
-            <button className={style.readMoreBtn}>Read More</button>
+          <Link to="/about-us" className={style.readMoreBtn}>
+            Read More
           </Link>
         </div>
 
+        {/* Quick Links */}
         <div className={style.footerColumn}>
-          <h3 className={style.footerTitle}>
-            Quick <span className={style.highlight}> Links</span>
-          </h3>
-          <div className={style.linkList}>
+          <h2 className={style.footerTitle}>Quick Links</h2>
+          <nav className={style.linkList} aria-label="Footer Navigation">
             <Link
               to="/"
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               <FaHome />
-              <div className={style.listName}>Home</div>
+              <span className={style.listName}>Home</span>
             </Link>
-
             <Link to="/product-category">
               <FaUtensils />
-              <div className={style.listName}>Our Product</div>
+              <span className={style.listName}>Our Product</span>
             </Link>
-            {/* <Link to="/daily-tiffin">
-              <MdOutlineLunchDining />
-              <div>Daily Tiffin</div>
-            </Link> */}
             <Link to="/about-us">
               <FaInfoCircle />
-              <div className={style.listName}>About Us</div>
+              <span className={style.listName}>About Us</span>
             </Link>
             <Link to="/contact-us">
               <FaPhoneAlt />
-              <div className={style.listName}>Contact Us</div>
+              <span className={style.listName}>Contact Us</span>
             </Link>
             <Link to="/privacy-policy">
               <FaShieldAlt />
-              <div className={style.listName}>Privacy Policy</div>
+              <span className={style.listName}>Privacy Policy</span>
             </Link>
             <Link to="/refund-policy">
-              <FaMoneyCheckAlt />{" "}
-              <div className={style.listName}>Refund Policy</div>
+              <FaMoneyCheckAlt />
+              <span className={style.listName}>Refund Policy</span>
             </Link>
-          </div>
+          </nav>
         </div>
 
+        {/* Contact & Social */}
         <div className={style.footerColumn}>
-          <h3 className={style.footerTitle}>
-            Get in <span className={style.highlight}>Touch</span>
-          </h3>
+          <h2 className={style.footerTitle}>Get in Touch</h2>
           <p className={style.contactLine}>
-            <IoMdCall size={18} /> <span>+1(672)-377-4949</span>
+            <IoMdCall size={18} />
+            <span>
+              <a href="tel:+16723774949">+1 (672)-377-4949</a>
+            </span>
           </p>
           <p className={style.contactLine}>
             <IoMail size={18} />
-            <Link
-              to="https://mail.google.com/mail/?view=cm&fs=1&to=mekuskitchen@gmail.com"
+            <a
+              href="mailto:mekuskitchen@gmail.com"
+              className={style.mailLink}
               target="_blank"
               rel="noopener noreferrer"
-              className={style.mailLink}
             >
               mekuskitchen@gmail.com
-            </Link>
+            </a>
           </p>
 
           <p className={style.followUs}>
             <strong>Follow us on:</strong>
           </p>
           <div className={style.socialIcons}>
-            <Link to="#">
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
               <img src="/facebook.png" alt="Facebook" />
-            </Link>
-            <Link to="#">
-              <img src="/instagram.png" alt="Facebook" />
-            </Link>
+            </a>
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <img src="/instagram.png" alt="Instagram" />
+            </a>
           </div>
         </div>
       </div>

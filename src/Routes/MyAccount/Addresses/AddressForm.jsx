@@ -141,6 +141,13 @@ const AddressForm = (props) => {
       ...prev,
       isDifferent: !prev.isDifferent,
     }));
+
+    if (formData.isDifferent) {
+      setErrors((prev) => ({
+        ...prev,
+        shippingErrors: {},
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {

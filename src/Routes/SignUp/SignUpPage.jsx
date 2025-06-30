@@ -132,12 +132,12 @@ function SignUpPage() {
       code: "IN",
       flag: "🇮🇳",
     },
-    {
-      name: "Canada",
-      dial_code: "+1",
-      code: "CA",
-      flag: "🇨🇦",
-    },
+    // {
+    //   name: "Canada",
+    //   dial_code: "+1",
+    //   code: "CA",
+    //   flag: "🇨🇦",
+    // },
     {
       name: "United Kingdom",
       dial_code: "+44",

@@ -9,34 +9,46 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 16px; /* Add padding for smaller screens */
+  box-sizing: border-box;
 }
 
 .dialogbox {
   background: var(--white);
-  padding: 18px;
+  padding: 16px;
   border-radius: 8px;
-  width: 90%;
+  width: 100%;
   max-width: 900px;
-  height: 90%;
+  max-height: 100%;
   overflow-y: auto;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .dialogboxheader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gray-border-light);
 }
 
 .dialogtitle {
   margin: 0;
-  font-size: var(--font-xl);
+  font-size: var(--font-lg);
   font-weight: bold;
+  word-break: break-word;
 }
 
 .closeicon {
   cursor: pointer;
   transition: transform 0.2s ease;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .closeicon:hover {
@@ -45,7 +57,7 @@
 
 .dialogmessage {
   margin: 16px 0;
-  font-size: var(--font-md);
+  font-size: var(--font-base);
   color: var(--gray-darkest);
 }
 
@@ -53,13 +65,16 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--gap-4);
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-border-light);
 }
 
 .dialogbutton {
-  padding: 8px 16px;
+  padding: 10px 16px;
   border: none;
   border-radius: 6px;
-  font-size: var(--font-base);
+  font-size: var(--font-sm);
   cursor: pointer;
   background-color: var(--gray-very-light);
   color: var(--gray-darkest);
@@ -77,4 +92,26 @@
 
 .confirmbutton:hover {
   background-color: var(--primary-blue);
+}
+
+@media (max-width: 768px) {
+  .dialogbox {
+    padding: 14px;
+    width: 100%;
+    height: auto;
+    max-height: 90%;
+  }
+
+  .dialogtitle {
+    font-size: var(--font-base);
+  }
+
+  .dialogbutton {
+    font-size: var(--font-xs);
+    padding: 8px 12px;
+  }
+
+  .closeicon {
+    padding: 6px;
+  }
 }
