@@ -7,7 +7,7 @@ import { getUserCart, validateCoupon } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice.jsx";
 
-const CouponCode = ({ onApply, isLoading, appliedCoupon, setDiscount }) => {
+const CouponCode = ({ isLoading, setDiscount }) => {
   const [coupon, setCoupon] = useState("");
   const [error, setError] = useState("");
 
@@ -30,7 +30,6 @@ const CouponCode = ({ onApply, isLoading, appliedCoupon, setDiscount }) => {
   const handleApplyCoupon = async () => {
     try {
       const items = cart?.items || [];
-
       const categories = items?.items
         ?.map((item) =>
           isAuthenticated ? item?.productDetails?.category : item?.category
@@ -103,17 +102,10 @@ const CouponCode = ({ onApply, isLoading, appliedCoupon, setDiscount }) => {
           value={coupon}
           className={style.couponInput}
           onChange={(e) => setCoupon(e.target.value)}
-          disabled={isLoading || appliedCoupon}
           icon={<RiCoupon3Fill />}
         />
-        <button
-          type="button"
-          size="sm"
-          onClick={handleApplyCoupon}
-          disabled={isLoading || appliedCoupon}
-          className={style.CouponButton}
-        >
-          {appliedCoupon ? "Applied" : isLoading ? "Applying..." : "Apply"}
+        <button onClick={handleApplyCoupon} className="Button sm">
+          {isLoading ? "Applying..." : "Apply"}
         </button>
       </div>
       {error && <p className={style.couponError}>{error}</p>}

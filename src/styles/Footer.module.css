@@ -23,20 +23,20 @@
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 15px;
-  color: var(--white, #fff);
+  color: var(--white);
 }
 
 .footerText {
   text-align: justify;
   font-size: var(--font-md, 16px);
   line-height: 1.6;
-  color: var(--white, #fff);
+  color: var(--white);
 }
 
 .readMoreBtn {
   display: inline-block;
-  background-color: var(--white, #fff);
-  color: var(--primary-blue, #1a3e72);
+  background-color: var(--white);
+  color: var(--primary-blue);
   border: none;
   padding: 8px 16px;
   border-radius: 20px;

@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AddtoCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
+import slugify from "../../Utils/URLslug";
 
 const TiffinCard = ({ item }) => {
   const dispatch = useDispatch();
@@ -112,7 +113,7 @@ const TiffinCard = ({ item }) => {
   return (
     <div className={style.tiffinCard}>
       <Link
-        to={`/product/tiffin/${String(item.day).toLowerCase()}`}
+        to={`/product/tiffin/${slugify(item.day)}`}
         state={{ id: item._id }}
       >
         <div className={style.tiffinImgContainer}>

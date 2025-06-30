@@ -1,26 +1,18 @@
 import { Link } from "react-router-dom";
+import styles from "../../styles/Banner2.module.css";
 
 function Banner2(props) {
   return (
-    <>
-      <div
-        className="container-fluid page-header py-5"
-      >
-        <div className="container py-5 text-center">
-          <h1 className="display-3 text-white mb-3 animated slideInDown">
-            {props.title}
-          </h1>
-          <div
-            style={{ textAlign: "center", width: "100%" }}
-            className="homebreadcrumb"
-          >
-            <Link className="breadcrumb-link" to={props.path}>
-              {props.name}
-            </Link>
-          </div>
+    <div className={styles.pageHeader}>
+      <div className={styles.innerContainer}>
+        <h1 className={styles.heading}>{props.title}</h1>
+        <div className={styles.breadcrumb}>
+          <Link className={styles.breadcrumbLink} to={props.path}>
+            {props.name}
+          </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

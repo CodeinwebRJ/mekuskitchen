@@ -18,6 +18,7 @@ import { Toast } from "../../Utils/Toast";
 import { useState, useEffect } from "react";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 import useProduct from "../../Hook/useProduct";
+import slugify from "../../Utils/URLslug";
 
 const ProductCard = ({ product, grid }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -186,7 +187,7 @@ const ProductCard = ({ product, grid }) => {
   return (
     <div className={style.productCard}>
       <Link
-        to={`/product/${product?.category.toLowerCase()}/${product.name.toLowerCase()}`}
+        to={`/product/${slugify(product?.category)}/${slugify(product?.name)}`}
         state={{ id: product._id }}
       >
         <div

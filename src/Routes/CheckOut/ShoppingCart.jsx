@@ -25,6 +25,8 @@ const ShoppingCart = () => {
   const { cartCount } = useSelector((state) => state.count);
   const [discount, setDiscount] = useState(0);
 
+  console.log(dialog);
+
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
       return cart?.items?.totalAmount;
@@ -111,8 +113,9 @@ const ShoppingCart = () => {
     if (isAuthenticated) {
       fetchUserCart();
     }
-  }, [isAuthenticated]);
-
+  }, [isAuthenticated, cart?.items?.items?.length]);
+  
+  console.log(cart);
   const handleShowProduct = (id) => {
     const product = cart?.items?.items?.find((item) => item._id === id);
     if (product) {

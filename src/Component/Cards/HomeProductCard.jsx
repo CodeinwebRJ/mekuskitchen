@@ -17,6 +17,7 @@ import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 import { useEffect, useState } from "react";
 import useProduct from "../../Hook/useProduct";
 import RatingStar from "../RatingStar";
+import slugify from "../../Utils/URLslug";
 
 export const HomeProductCard = ({
   data,
@@ -192,7 +193,7 @@ export const HomeProductCard = ({
 
   return (
     <Link
-      to={`/product/${data?.category?.toLowerCase()}/${data?.name?.toLowerCase()}`}
+      to={`/product/${slugify(data?.category)}/${slugify(data?.name)}`}
       state={{ id: data?._id }}
       className={style.link}
     >

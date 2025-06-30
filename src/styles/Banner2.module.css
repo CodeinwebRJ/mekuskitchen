@@ -1,0 +1,34 @@
+.pageHeader {
+  padding: 48px 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("/ecommerce-banner.jpg") center center no-repeat;
+  background-size: cover;
+}
+
+.innerContainer {
+  padding: 48px 0;
+  text-align: center;
+}
+
+.heading {
+  color: var(--white);
+  margin-bottom: 16px;
+  animation: slideInDown 1s ease-in-out;
+  font-size: 36px;
+}
+
+.breadcrumb {
+  text-align: center;
+  width: 100%;
+}
+
+.breadcrumbLink {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.breadcrumbLink:hover {
+  color: var(--primary-blue);
+}

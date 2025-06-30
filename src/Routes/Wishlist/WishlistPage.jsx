@@ -48,7 +48,7 @@ const WishlistPage = () => {
       <div className={style.wishlistContainer}>
         <div className={style.headingContainer}>
           <h3 className={style.headingTitle}>Your Wishlist</h3>
-          <div className={style.headerContainer}>
+          {/* <div className={style.headerContainer}>
             <div className={style.headerRightSide}>
               <RiShareLine className={style.icon} />
               <IoReorderThreeOutline
@@ -59,7 +59,7 @@ const WishlistPage = () => {
                 placeholder="Filter & Short"
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         {loading ? (

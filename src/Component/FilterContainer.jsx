@@ -5,6 +5,7 @@ import RatingStar from "./RatingStar";
 import SidebarFilter from "./MainComponents/SidebarFilter";
 import { useDispatch } from "react-redux";
 import { setCategories } from "../../Store/Slice/FilterDataSlice";
+import slugify from "../Utils/URLslug";
 
 const FilterContainer = ({
   priceRange,
@@ -22,6 +23,8 @@ const FilterContainer = ({
     const categoryArray = categoryParam ? categoryParam.split(",") : [];
     dispatch(setCategories(categoryArray));
   }, [dispatch, searchParams]);
+
+  console.log(data)
 
   const toggleMobileFilter = () => setIsMobileFilterOpen((prev) => !prev);
   const closeMobileFilter = () => setIsMobileFilterOpen(false);
@@ -66,11 +69,9 @@ const FilterContainer = ({
             data.map((product, index) => (
               <Link
                 key={product?._id || index}
-                to={`/product/${String(
-                  product?.category
-                ).toLowerCase()}/${String(
-                  product?.product_name
-                ).toLowerCase()}`}
+                to={`/product/${slugify(product?.category)}/${slugify(
+                  product?.name
+                )}`}
                 state={{ id: product?._id }}
               >
                 <li className={style.topRatedItem}>

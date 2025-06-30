@@ -157,8 +157,6 @@ const CheckoutPage = () => {
     }
   };
 
-  console.log(cart);
-
   const total = useMemo(
     () =>
       (cart?.items?.items?.reduce(
@@ -222,18 +220,34 @@ const CheckoutPage = () => {
     }
   };
 
+  console.log(cart);
+
   const fetchShipping = async () => {
     try {
       const data = {
         shipTo: {
-          name: defaultAddress.billing.name,
-          phone: defaultAddress.billing.phone,
+          name: defaultAddress.shipping
+            ? defaultAddress.shipping.name
+            : defaultAddress.billing.name,
+          phone: defaultAddress.shipping
+            ? defaultAddress.shipping.phone
+            : defaultAddress.billing.phone,
           address: {
-            addressLine: [defaultAddress.billing.address],
-            city: defaultAddress.billing.city,
+            addressLine: [
+              defaultAddress.shipping
+                ? defaultAddress.shipping.address
+                : defaultAddress.billing.address,
+            ],
+            city: defaultAddress.shipping
+              ? defaultAddress.shipping.city
+              : defaultAddress.billing.city,
             postalCode: defaultAddress.billing.postCode,
-            stateOrProvince: defaultAddress.billing.provinceCode,
-            countryCode: defaultAddress.billing.countryCode,
+            stateOrProvince: defaultAddress.shipping
+              ? defaultAddress.shipping.provinceCode
+              : defaultAddress.billing.provinceCode,
+            countryCode: defaultAddress.shipping
+              ? defaultAddress.shipping.countryCode
+              : defaultAddress.billing.countryCode,
           },
         },
         packages: cart?.items?.items?.map((item) => ({

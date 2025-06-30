@@ -13,8 +13,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+.desktopCartView {
+  width: 100%;
+}
+
 .cartSummary {
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -26,6 +30,66 @@
 
 .mobileCartView {
   display: none;
+}
+
+.productDetail {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.productImage {
+  flex: 1;
+  max-width: 200px;
+}
+
+.productImage img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.productInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.productInfo h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--black);
+}
+
+.productPricing {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.originalPrice {
+  text-decoration: line-through;
+  color: var(--gray);
+  font-size: 1rem;
+}
+
+.Price {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.productDescription {
+  font-size: 0.875rem;
+  color: var(--gray-dark);
+  margin: 0;
+  line-height: 1.5;
 }
 
 @media (max-width: 1250px) {
@@ -46,8 +110,9 @@
   .desktopCartView {
     display: none;
   }
-
+  
   .mobileCartView {
+    width: 100%;
     display: block;
   }
 
@@ -65,6 +130,30 @@
 
   .cartSummary {
     width: 100%;
+  }
+
+  .productDetail {
+    flex-direction: column;
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .productImage {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .productImage img {
+    max-width: 300px;
+    width: 100%;
+  }
+
+  .productInfo h2 {
+    font-size: 1.25rem;
+  }
+
+  .Price {
+    font-size: 1.125rem;
   }
 }
 
@@ -84,4 +173,34 @@
   .cartSummary {
     width: 100%;
   }
-}
+
+  .productDetail {
+    padding: 12px;
+  }
+
+  .productImage img {
+    max-width: 200px;
+  }
+
+  .productInfo h2 {
+    font-size: 1.125rem;
+  }
+
+  .productPricing {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .originalPrice {
+    font-size: 0.875rem;
+  }
+
+  .Price {
+    font-size: 1rem;
+  }
+
+  .productDescription {
+    font-size: 0.75rem;
+  }
+} 

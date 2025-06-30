@@ -17,6 +17,7 @@ import { setCart } from "../../../Store/Slice/UserCartSlice";
 import RatingStar from "../RatingStar";
 import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 import { useEffect, useState } from "react";
+import slugify from "../../Utils/URLslug";
 
 const RelatedProductCard = ({ item }) => {
   const { pathname } = useLocation();
@@ -40,10 +41,8 @@ const RelatedProductCard = ({ item }) => {
 
   const isTiffin = category[1] === "tiffin";
   const linkPath = isTiffin
-    ? `/product/tiffin/${String(item.day || "").toLowerCase()}`
-    : `/product/${(item?.category || "").toLowerCase()}/${String(
-        item?.name || ""
-      ).toLowerCase()}`;
+    ? `/product/tiffin/${slugify(item.day)}`
+    : `/product/${slugify(item?.category)}/${slugify(item?.name)}`;
 
   const imageUrl = isTiffin
     ? item?.image_url?.[0]?.url
@@ -119,7 +118,6 @@ const RelatedProductCard = ({ item }) => {
       Toast({ message: "Failed to add product in cart.", type: "error" });
     }
   };
-
 
   return (
     <Link to={linkPath} state={{ id: item?._id }}>

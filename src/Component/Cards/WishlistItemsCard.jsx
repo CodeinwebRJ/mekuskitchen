@@ -10,6 +10,7 @@ import { setWishlistCount } from "../../../Store/Slice/CountSlice";
 import { Link } from "react-router-dom";
 import { BsTrash } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
+import slugify from "../../Utils/URLslug";
 
 const WishlistItem = ({ product, fetchWishlist }) => {
   const dispatch = useDispatch();
@@ -84,7 +85,9 @@ const WishlistItem = ({ product, fetchWishlist }) => {
 
         <div className={style.itemContent}>
           <Link
-            to={`/product/${product.category.toLowerCase()}/${product.name.toLowerCase()}`}
+            to={`/product/${slugify(product.category)}/${slugify(
+              product.name
+            )}`}
             state={{ id: product._id }}
           >
             <div className={style.nameRow}>
@@ -103,7 +106,9 @@ const WishlistItem = ({ product, fetchWishlist }) => {
           </Link>
           <div className={style.itemPrice}>
             <span className="originalPrice">${product.price}</span>
-            <span className="price">${product.sellingPrice} {product?.currency || "CAD"}</span>
+            <span className="price">
+              ${product.sellingPrice} {product?.currency || "CAD"}
+            </span>
           </div>
           <span className={style.itemDescription}>{product.description}</span>
         </div>
@@ -111,7 +116,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
 
       <div className={style.itemRightSide}>
         <div className={style.stockContainer}>
-          <span className={style.stockTitle}>In Stock</span>
+          {/* <span className={style.stockTitle}>In Stock</span> */}
           <RatingStar start={0} stop={5} rating={3} disabled />
           <div className={style.controllers}>
             <RiShareLine className={style.icon} />

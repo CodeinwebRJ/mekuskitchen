@@ -8,6 +8,7 @@ import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
+import Loading from "../UI-Components/Loading";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -105,7 +106,6 @@ const Sidebar = ({ isOpen, onClose }) => {
   }, [cart, isAuthenticated]);
 
   const renderCartItem = (item, index, type) => {
-
     return (
       <div className={style.cartItem} key={item?._id || index}>
         <div className={style.cartItemImageContainer}>
@@ -195,7 +195,11 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         {cart?.items?.items?.length > 0 || cart?.items?.tiffins?.length > 0 ? (
           <div className={style.cartContainer}>
-            {isLoading && <div className={style.loading}>Loading...</div>}
+            {isLoading && (
+              <div className={style.loading}>
+                <Loading />
+              </div>
+            )}
             {cart?.items?.items?.map((item, index) =>
               renderCartItem(item, index, "product")
             )}

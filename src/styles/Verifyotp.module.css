@@ -1,6 +1,5 @@
 .container {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  margin: 48px 0;
   display: flex;
   justify-content: center;
 }
@@ -18,18 +17,18 @@
 
 .card {
   border-radius: 10px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: var(--white);
 }
 
 .cardBody {
-  padding: 2rem;
+  padding: 32px;
 }
 
 .heading {
   font-weight: bold;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
 }
 
 .form {
@@ -38,17 +37,17 @@
 }
 
 .inputError {
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  color: var(--error);
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 .resendWrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 .resendLink {
@@ -70,24 +69,24 @@
 .verifyBtn {
   width: 100%;
   background-color: var(--primary-blue);
-  color: white;
-  padding: 0.6rem 1rem;
+  color: var(--white);
+  padding: 10px 16px;
   border: none;
   border-radius: 4px;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 .error {
-  font-size: 0.9rem;
-  margin-top: 1rem;
+  font-size: 14px;
+  margin-top: 16px;
   background-color: #f8d7da;
   color: var(--error);
-  padding: 0.75rem;
+  padding: 12px;
   border-radius: 4px;
 }
 
 .timer {
-  font-size: 0.875rem;
-  color: #6c757d;
+  font-size: 14px;
+  color: var(--gray-muted);
 }

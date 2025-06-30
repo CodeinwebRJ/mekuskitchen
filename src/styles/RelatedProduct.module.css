@@ -1,5 +1,5 @@
 .relatedProductContainer {
-  max-width: 1250px;
+  max-width: 1300px;
   width: 100%;
   margin: 0 auto;
   padding: 16px;
@@ -11,13 +11,7 @@
   gap: var(--gap-6);
   padding: 8px 0;
   width: 100%;
-}
-
-.relatedProductCard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
+  overflow: hidden;
 }
 
 .customArrow {
@@ -28,9 +22,6 @@
   height: 40px;
   color: var(--black);
   cursor: pointer;
-  border-radius: 50%;
-  transition: background-color 0.3s ease;
-  background-color: var(--very-light-gray);
 }
 
 .prevArrowIcon,
@@ -42,10 +33,16 @@
   transform: rotate(180deg);
 }
 
+.relatedProductCard {
+  flex-shrink: 0;
+  max-width: 300px;
+  width: 100%;
+}
+
 @media (max-width: 1024px) {
   .sliderWrapper {
     gap: var(--gap-4);
-    padding: 8px 0;
+    padding: 6px 0;
   }
 
   .customArrow {
@@ -56,6 +53,46 @@
   .prevArrowIcon,
   .nextArrowIcon {
     font-size: var(--font-lg);
+  }
+
+  .relatedProductContainer {
+    padding: 12px;
+  }
+
+  .relatedProductCard {
+    max-width: 260px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .sliderWrapper {
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .customArrow {
+    width: 28px;
+    height: 28px;
+  }
+
+  .relatedProductCard {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .prevArrowIcon,
+  .nextArrowIcon {
+    font-size: 18px;
+  }
+
+  .relatedProductContainer {
+    padding: 10px;
   }
 }
 
@@ -69,7 +106,15 @@
     padding: 6px 0;
   }
 
+  .relatedProductContainer {
+    padding: 8px;
+  }
+
   .relatedProductCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 4px;
+    margin: 0 auto;
   }
 }

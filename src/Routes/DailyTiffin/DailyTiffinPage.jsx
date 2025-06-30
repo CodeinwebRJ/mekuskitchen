@@ -6,6 +6,7 @@ import TiffinCard from "../../Component/Cards/TiffinCard";
 import { useSelector } from "react-redux";
 import Header from "../../Component/MainComponents/Header";
 import Heading from "../../Component/UI-Components/Heading";
+import slugify from "../../Utils/URLslug";
 
 const DailyTiffinPage = () => {
   const tiffin = useSelector((state) => state.tiffin);
@@ -33,7 +34,7 @@ const DailyTiffinPage = () => {
               <TiffinCard
                 key={index}
                 item={item}
-                path={`/product/tiffin/${String(item?.day).toLowerCase()}`}
+                path={`/product/tiffin/${slugify(item?.day)}`}
               />
             ))}
           </div>
@@ -52,7 +53,7 @@ const DailyTiffinPage = () => {
               <TiffinCard
                 key={index}
                 item={item}
-                path={`/product/tiffin/${String(item?.day).toLowerCase()}`}
+                path={`/product/tiffin/${slugify(item?.day)}`}
               />
             ))}
           </div>
@@ -74,7 +75,7 @@ const DailyTiffinPage = () => {
         </div>
 
         <div className={style.SweetsContainer}>
-        <Heading
+          <Heading
             title="Sweets"
             note="Please Note: All orders will accepted a day before only. For any
               query please call admin: +1(672)-377-4949"

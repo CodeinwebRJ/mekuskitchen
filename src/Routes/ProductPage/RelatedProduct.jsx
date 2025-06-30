@@ -77,10 +77,12 @@ const RelatedProduct = () => {
             slidesPerView={getSlidesPerView()}
             breakpoints={{
               0: { slidesPerView: 1 },
-              640: { slidesPerView: Math.min(1, productCount) },
+              480: { slidesPerView: Math.min(1.5, productCount) },
+              640: { slidesPerView: Math.min(2, productCount) },
               768: { slidesPerView: Math.min(2, productCount) },
-              800: { slidesPerView: Math.min(3, productCount) },
-              1110: { slidesPerView: Math.min(4, productCount) },
+              900: { slidesPerView: Math.min(3, productCount) },
+              1024: { slidesPerView: Math.min(3.5, productCount) },
+              1240: { slidesPerView: Math.min(4, productCount) },
             }}
           >
             {relatedProduct.map((card, index) => (
