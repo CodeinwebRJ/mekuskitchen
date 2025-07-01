@@ -115,6 +115,9 @@ const ProductCard = ({ product, grid }) => {
       return;
     }
 
+    console.log(selectedSKUs);
+    console.log(selectedCombination)
+
     try {
       const data = {
         user_id: user.userid,

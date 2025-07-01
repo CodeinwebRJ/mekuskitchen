@@ -17,7 +17,7 @@ const Orders = () => {
     try {
       dispatch(setLoading(true));
       const data = {
-        id: user.userid,
+        userId: user.userid,
         orderStatus: status,
       };
       const res = await getUserOrders(data);

@@ -110,8 +110,10 @@ export const CreatePayment = async (data) => {
 };
 
 export const getUserOrders = async (data) => {
-  const { id } = data;
-  return axiosInstance.post(`/api/v1/order/user/${id}`, data);
+  const { userId, orderStatus } = data;
+  return axiosInstance.get(
+    `/api/v1/order/user/${userId}?orderStatus=${orderStatus}`
+  );
 };
 
 export const getOrderById = async (id) => {

@@ -99,6 +99,10 @@ const FoodPage = () => {
     );
   }
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [products?.page]);
+
   return (
     <div className={styles.pageWrapper}>
       <Header />

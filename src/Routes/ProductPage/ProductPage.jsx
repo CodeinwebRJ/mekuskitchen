@@ -127,41 +127,42 @@ const ProductPage = () => {
   }, [id, reviews.length]);
 
   const tabData = [
-    ...(product?.specifications &&
-    Object.values(product.specifications).some((val) => !!val)
-      ? [
-          {
-            label: "Specifications",
-            content: (
-              <div className={style.specification}>
-                {Object.entries(product.specifications).map(([key, value]) =>
-                  value ? (
-                    <div key={key}>
-                      <strong>{key}:</strong> {value}
-                    </div>
-                  ) : null
-                )}
-              </div>
-            ),
-          },
-        ]
-      : []),
     {
       label: "Product Detail",
       content: (
         <div>
-          {product?.aboutItem?.length > 0 && (
-            <div className={style.aboutItem}>
-              <div className={style.aboutItemTitle}>About This Item</div>
-              <div>
-                {product?.aboutItem?.map((item) => (
+          <div>
+            {product?.aboutItem?.length > 0 && (
+              <div className={style.aboutItem}>
+                <div className={style.aboutItemTitle}>About This Item</div>
+                <div>
                   <ul>
-                    <li>{item}</li>
+                    {product.aboutItem.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
                   </ul>
-                ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+            <hr />
+          </div>
+          {product?.specifications &&
+            Object.values(product.specifications).some((val) => !!val) && (
+              <>
+                <div className={style.specification}>
+                  <div className={style.aboutItemTitle}>Specifications</div>
+                  {Object.entries(product.specifications).map(
+                    ([key, value]) =>
+                      value && (
+                        <div key={key}>
+                          <strong>{key}:</strong> {value}
+                        </div>
+                      )
+                  )}
+                </div>
+                <hr />
+              </>
+            )}
           <div>
             <div className={style.aboutItemTitle}>Description</div>
             <div className={style.description}>
