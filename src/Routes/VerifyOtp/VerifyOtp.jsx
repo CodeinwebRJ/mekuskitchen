@@ -36,55 +36,31 @@ function VerifyOtp({ formData, setFormData }) {
     try {
       if (isSignupFlow) {
         try {
-          const response = await axios.post(
-            "https://eyemesto.com/mapp_dev/signup.php",
+          const fullMobile =
+            (formData.phoneCode || "").replace(/\+/g, "") + formData.mobile;
+          await axios.post(
+            "https://eyemesto.com/mapp_dev/verify_email.php",
             new URLSearchParams({
-              signup: true,
-              first_name: formData.first_name,
-              last_name: formData.last_name,
               email: formData.email,
-              mobile: formData.mobile,
-              password: formData.password,
-              otp,
-              refcode: formData.refcode,
+              verify_email: true,
+              mobile: fullMobile,
             })
           );
-
-          if (response.data.response === "1") {
-            setMessage("Signup successful. Please login.");
-            setFormData({
-              first_name: "",
-              last_name: "",
-              email: "",
-              mobile: "",
-              password: "",
-              confirmPassword: "",
-              refcode: "",
-              otp: "",
-            });
-            navigate("/login");
-          } else {
-            setErrors({
-              api: response.data.message || "Something went wrong.",
-            });
-          }
         } catch (error) {
           setErrors({ api: "Error signing up. Please try again later." });
         } finally {
           setLoading(false);
         }
       } else {
-        const storedOtp = localStorage.getItem("otp");
-        if (!otp || otp.length !== 6) {
-          setErrors({ otp: "Please enter a valid OTP." });
-          return;
-        }
-        if (Number(otp) === Number(storedOtp)) {
-          setMessage("OTP verified successfully.");
-          navigate("/forget-password");
-        } else {
-          setMessage("Error: OTP does not match. Please try again.");
-        }
+        const storedEmail = localStorage.getItem("email");
+        await axios.post(
+          "https://eyemesto.com/mapp_dev/check_email.php",
+          new URLSearchParams({
+            check_email: true,
+            method: "post",
+            email: storedEmail,
+          })
+        );
       }
     } catch (error) {
       setErrors({ api: "Failed to resend OTP. Please try again." });
@@ -95,8 +71,10 @@ function VerifyOtp({ formData, setFormData }) {
     e.preventDefault();
     setLoading(true);
     setErrors({});
+    setMessage("");
+
     if (!otp || otp.length !== 6) {
-      setErrors({ otp: "Please enter a valid OTP." });
+      setErrors({ otp: "Please enter a valid 6-digit OTP." });
       setLoading(false);
       return;
     }
@@ -142,16 +120,35 @@ function VerifyOtp({ formData, setFormData }) {
   const handleForgotPasswordOtpSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    const storedOtp = localStorage.getItem("otp");
+    setLoading(true);
+    setMessage("");
+
     if (!otp || otp.length !== 6) {
-      setErrors({ otp: "Please enter a valid OTP." });
+      setErrors({ otp: "Please enter a valid 6-digit OTP." });
+      setLoading(false);
       return;
     }
-    if (Number(otp) === Number(storedOtp)) {
-      setMessage("OTP verified successfully.");
-      navigate("/forget-password");
-    } else {
-      setMessage("Error: OTP does not match. Please try again.");
+
+    try {
+      const storedEmail = localStorage.getItem("email");
+      const res = await axios.post(
+        "https://eyemesto.com/mapp_dev/verify_otp.php",
+        new URLSearchParams({
+          email: storedEmail,
+          verify_otp: otp,
+        })
+      );
+
+      if (res.data.response === "1") {
+        setMessage("OTP verified successfully.");
+        navigate("/forget-password");
+      } else {
+        setMessage("Error: OTP does not match. Please try again.");
+      }
+    } catch (err) {
+      setMessage("Error verifying OTP. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -164,6 +161,10 @@ function VerifyOtp({ formData, setFormData }) {
             <div className={styles.card}>
               <div className={styles.cardBody}>
                 <h4 className={styles.heading}>Verify OTP</h4>
+                {message && <p className={styles.message}>{message}</p>}
+                {errors.api && (
+                  <p className={styles.inputError}>{errors.api}</p>
+                )}
                 <form
                   className={styles.form}
                   onSubmit={

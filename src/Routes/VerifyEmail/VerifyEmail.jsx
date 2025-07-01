@@ -49,7 +49,6 @@ function VerifyEmail() {
       if (response.data.response === "1") {
         const userId = response.data.userid;
         localStorage.setItem("userId", userId);
-        localStorage.setItem("otp", response.data.OTP);
         localStorage.setItem("email", response.data.email);
         setMessage("OTP sent successfully!");
         navigate("/verify-otp");
@@ -88,10 +87,7 @@ function VerifyEmail() {
                       <div className="text-danger">{errors.email}</div>
                     )}
                   </div>
-                  <button
-                    type="submit"
-                    className="Button sm"
-                  >
+                  <button type="submit" className="Button sm">
                     Verify
                   </button>
                 </form>

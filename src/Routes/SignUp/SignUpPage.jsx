@@ -93,7 +93,6 @@ function SignUpPage() {
       return;
     }
 
-    // ✅ Combine phoneCode and mobile before sending to backend
     const fullMobile =
       (formData.phoneCode || "").replace(/\+/g, "") + formData.mobile;
 
@@ -112,7 +111,7 @@ function SignUpPage() {
         setShow(true);
         setFormData((prev) => ({
           ...prev,
-          mobile: fullMobile, // store combined value if needed
+          mobile: fullMobile,
         }));
       } else {
         setErrors({ api: response.data.message });
