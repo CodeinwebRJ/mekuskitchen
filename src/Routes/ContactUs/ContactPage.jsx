@@ -20,7 +20,7 @@ const ContactPage = () => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const User = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,7 +53,7 @@ const ContactPage = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const payload = { userId: User?.userid || "", ...formData };
+    const payload = { ...formData };
     setLoading(true);
 
     try {
@@ -198,11 +198,11 @@ const ContactPage = () => {
                       onChange={handleChange}
                       placeholder="Enter phone number"
                     />
-                    {errors.phone && (
-                      <div className="errorMessage">{errors.phone}</div>
-                    )}
                   </div>
                 </div>
+                {errors.phone && (
+                  <div className="errorMessage">{errors.phone}</div>
+                )}
               </div>
 
               <div className={style.messageContainer}>

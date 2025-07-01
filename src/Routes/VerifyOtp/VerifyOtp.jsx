@@ -35,16 +35,56 @@ function VerifyOtp({ formData, setFormData }) {
 
     try {
       if (isSignupFlow) {
-        const response = await axios.post(
-          "https://eyemesto.com/mapp_dev/resend_otp.php",
-          new URLSearchParams({
-            email: formData.email,
-            mobile: formData.mobile,
-          })
-        );
-        setMessage(response.data.message || "OTP resent successfully.");
+        try {
+          const response = await axios.post(
+            "https://eyemesto.com/mapp_dev/signup.php",
+            new URLSearchParams({
+              signup: true,
+              first_name: formData.first_name,
+              last_name: formData.last_name,
+              email: formData.email,
+              mobile: formData.mobile,
+              password: formData.password,
+              otp,
+              refcode: formData.refcode,
+            })
+          );
+
+          if (response.data.response === "1") {
+            setMessage("Signup successful. Please login.");
+            setFormData({
+              first_name: "",
+              last_name: "",
+              email: "",
+              mobile: "",
+              password: "",
+              confirmPassword: "",
+              refcode: "",
+              otp: "",
+            });
+            navigate("/login");
+          } else {
+            setErrors({
+              api: response.data.message || "Something went wrong.",
+            });
+          }
+        } catch (error) {
+          setErrors({ api: "Error signing up. Please try again later." });
+        } finally {
+          setLoading(false);
+        }
       } else {
-        setMessage("OTP resent to your registered contact.");
+        const storedOtp = localStorage.getItem("otp");
+        if (!otp || otp.length !== 6) {
+          setErrors({ otp: "Please enter a valid OTP." });
+          return;
+        }
+        if (Number(otp) === Number(storedOtp)) {
+          setMessage("OTP verified successfully.");
+          navigate("/forget-password");
+        } else {
+          setMessage("Error: OTP does not match. Please try again.");
+        }
       }
     } catch (error) {
       setErrors({ api: "Failed to resend OTP. Please try again." });

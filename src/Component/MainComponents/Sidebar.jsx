@@ -18,7 +18,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const sidebarRef = useRef(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
-  
+
   const handleDelete = useCallback(
     async (id, type, dayName = null, skuId) => {
       setIsLoading(true);
@@ -230,10 +230,14 @@ const Sidebar = ({ isOpen, onClose }) => {
               View Cart
             </button>
             <button
-              onClick={() =>
-                cart.items.items.length > 0 ||
-                (cart.items.tiffin.length > 0 && navigate("/checkout"))
-              }
+              onClick={() => {
+                if (
+                  cart.items.items.length > 0 ||
+                  cart.items.tiffin.length > 0
+                ) {
+                  navigate("/checkout");
+                }
+              }}
               className="Button sm"
               disabled={isLoading}
             >
