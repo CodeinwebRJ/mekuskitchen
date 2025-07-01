@@ -17,11 +17,8 @@ import { IoGrid } from "react-icons/io5";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import styles from "../../styles/Food.module.css";
-import {
-  setGrid,
-  setPage,
-  setPrices,
-} from "../../../Store/Slice/FilterDataSlice.jsx";
+import { setGrid, setPage } from "../../../Store/Slice/FilterDataSlice.jsx";
+import NoDataFound from "../../Component/MainComponents/NoDataFound.jsx";
 
 const FoodPage = () => {
   const [topRated, setTopRated] = useState([]);
@@ -31,14 +28,6 @@ const FoodPage = () => {
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.product);
   const { price, grid } = useSelector((state) => state.filterData);
-
-  const handlePriceChange = useCallback(
-    (e) => {
-      const newMax = parseInt(e?.target?.value, 10);
-      dispatch(setPrices([0, newMax]));
-    },
-    [dispatch, price]
-  );
 
   const handlePageChange = useCallback(
     (pageNumber) => {
@@ -119,7 +108,6 @@ const FoodPage = () => {
         <div className={styles.container2}>
           <FilterContainer
             priceRange={price}
-            handlePriceChange={handlePriceChange}
             data={topRated}
             categoryList={categoryList}
           />
@@ -174,15 +162,17 @@ const FoodPage = () => {
                 </div>
               </div>
 
-              <div className={getGridClass()}>
+              <div>
                 {products?.data?.length > 0 ? (
-                  products.data.map((product, index) => (
-                    <ProductCard key={index} product={product} grid={grid} />
-                  ))
+                  <div className={getGridClass()}>
+                    {products.data.map((product, index) => (
+                      <ProductCard key={index} product={product} grid={grid} />
+                    ))}
+                  </div>
                 ) : (
-                  <p className={styles.noProducts}>
-                    No products found. Try adjusting your filters.
-                  </p>
+                  <div>
+                    <NoDataFound />
+                  </div>
                 )}
               </div>
             </div>

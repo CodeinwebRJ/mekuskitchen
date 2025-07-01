@@ -6,9 +6,8 @@
   font-size: var(--font-md);
   background-color: transparent;
   cursor: pointer;
-  min-width: 70px; /* ✅ Added */
+  min-width: 70px;
 }
-
 
 .Container {
   display: flex;
@@ -20,7 +19,7 @@
   width: 100%;
   height: 40px;
   border: 1px solid var(--gray-shadow);
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 0 10px;
   display: flex;
   align-items: center;
@@ -52,7 +51,7 @@
 }
 
 .errorMessage {
-  color: red;
+  color: var(-error);
   font-size: var(--font-sm);
-  margin-top: 5px;
+  margin-top: 4px;
 }

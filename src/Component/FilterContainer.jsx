@@ -24,8 +24,6 @@ const FilterContainer = ({
     dispatch(setCategories(categoryArray));
   }, [dispatch, searchParams]);
 
-  console.log(data)
-
   const toggleMobileFilter = () => setIsMobileFilterOpen((prev) => !prev);
   const closeMobileFilter = () => setIsMobileFilterOpen(false);
 
@@ -58,7 +56,6 @@ const FilterContainer = ({
             categoryList={categoryList}
             data={data}
             priceRange={priceRange}
-            handlePriceChange={handlePriceChange}
             isMobileFilterOpen={isMobileFilterOpen}
           />
         </div>
@@ -126,7 +123,6 @@ const FilterContainer = ({
               categoryList={categoryList}
               data={data}
               priceRange={priceRange}
-              handlePriceChange={handlePriceChange}
               isMobileFilterOpen={isMobileFilterOpen}
             />
           </div>

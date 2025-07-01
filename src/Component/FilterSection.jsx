@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { IoSearch, IoChevronDown, IoChevronUp } from "react-icons/io5";
-import style from "../styles/FilterSection.module.css"; 
+import style from "../styles/FilterSection.module.css";
 import InputField from "./UI-Components/InputField";
 import CheckboxField from "./UI-Components/CheckboxFeild";
 

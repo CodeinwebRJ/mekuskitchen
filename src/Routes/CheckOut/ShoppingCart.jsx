@@ -5,7 +5,6 @@ import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import DialogBox from "../../Component/MainComponents/DialogBox";
-import EmptyCartPage from "./EmptyCartPage";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
@@ -15,6 +14,7 @@ import CouponCode from "../../Component/Cards/CouponCode";
 import CartCard from "../../Component/Cards/CartCard";
 import CartTable from "../../Component/UI-Components/CartTable";
 import CartItemCardMobile from "../../Component/UI-Components/CartItemcard";
+import NoDataFound from "../../Component/MainComponents/NoDataFound";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
@@ -24,8 +24,6 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const { cartCount } = useSelector((state) => state.count);
   const [discount, setDiscount] = useState(0);
-
-  console.log(dialog);
 
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
@@ -114,8 +112,7 @@ const ShoppingCart = () => {
       fetchUserCart();
     }
   }, [isAuthenticated, cart?.items?.items?.length]);
-  
-  console.log(cart);
+
   const handleShowProduct = (id) => {
     const product = cart?.items?.items?.find((item) => item._id === id);
     if (product) {
@@ -289,7 +286,9 @@ const ShoppingCart = () => {
       <div>
         <Header />
         <Banner name="CART" />
-        <EmptyCartPage />
+        <div className={style.notFound}>
+          <NoDataFound message="Your cart is empty" />
+        </div>
         <Footer />
       </div>
     );

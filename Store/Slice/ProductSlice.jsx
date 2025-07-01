@@ -17,14 +17,15 @@ const productSlice = createSlice({
     setCombinations: (state, action) => {
       state.combinations = [];
       action?.payload?.forEach((product) => {
-        if (Array.isArray(product?.sku) && product.sku.length > 0) {
-          product.sku.forEach((sku) => {
+        if (!Array.isArray(product?.sku) || product.sku.length === 0) return;
+        product.sku.forEach((sku) => {
+          if (sku !== null && typeof sku === "object") {
             const combinations = sku.details?.combinations;
             combinations?.forEach((combination) => {
               state.combinations.push(combination);
             });
-          });
-        }
+          }
+        });
       });
     },
   },

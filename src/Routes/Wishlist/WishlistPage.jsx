@@ -11,6 +11,7 @@ import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
 import { getUserWishlist } from "../../axiosConfig/AxiosConfig";
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
 import Loading from "../../Component/UI-Components/Loading";
+import NoDataFound from "../../Component/MainComponents/NoDataFound";
 
 const WishlistPage = () => {
   const { items } = useSelector((state) => state.wishlist);
@@ -77,7 +78,9 @@ const WishlistPage = () => {
             ))}
           </div>
         ) : (
-          <p>No items in wishlist.</p>
+          <div>
+            <NoDataFound message="Your wishlist is empty"/>
+          </div>
         )}
       </div>
       <Footer />

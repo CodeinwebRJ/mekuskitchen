@@ -4,15 +4,40 @@ import style from "../../styles/FilterContainer.module.css";
 import CheckboxField from "../UI-Components/CheckboxFeild";
 import { IoSearch } from "react-icons/io5";
 import { useFilterContainer } from "../../Hook/useFilterContainer";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { setPrices } from "../../../Store/Slice/FilterDataSlice";
+import { useDispatch } from "react-redux";
 
 const SidebarFilter = ({
   categoryList,
   products,
   priceRange,
-  handlePriceChange,
   isMobileFilterOpen,
 }) => {
+  const dispatch = useDispatch();
+  const debounceRef = useRef(null);
+  const [sliderValue, setSliderValue] = useState(priceRange[1]);
+
+  useEffect(() => {
+    setSliderValue(priceRange[1]);
+  }, [priceRange]);
+
+  const handlePriceChange = useCallback(
+    (e) => {
+      const newMax = parseInt(e.target.value, 10);
+      setSliderValue(newMax);
+
+      if (!isNaN(newMax)) {
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+
+        debounceRef.current = setTimeout(() => {
+          dispatch(setPrices([0, newMax]));
+        }, 500);
+      }
+    },
+    [dispatch]
+  );
+
   const {
     searchTerm,
     setSearchTerm,
@@ -83,34 +108,23 @@ const SidebarFilter = ({
 
       <div className={style.priceRangeContainer}>
         <h6 className={style.priceLabel}>
-          Price Range: ${priceRange[0]} - ${priceRange[1]}
+          Price Range: ${priceRange[0]} - ${sliderValue}
         </h6>
         <div className={style.priceRange}>
           <input
             type="range"
             min="0"
             max="2000"
-            value={priceRange[1]}
+            value={sliderValue}
             onChange={handlePriceChange}
             id="priceRange"
-            aria-label={`Price range from $${priceRange[0]} to $${priceRange[1]}`}
+            aria-label={`Price range from $${priceRange[0]} to $${sliderValue}`}
             className={style.rangeInput}
           />
         </div>
       </div>
 
       <div className={style.filterContainer}>
-        {/* <FilterSection
-          title="Category"
-          items={categoryList}
-          searchTerm={searchCategory}
-          setSearchTerm={setSearchCategory}
-          selectedItems={selectedCategories}
-          onChange={handleCategoryChange}
-          showAll={showAllCategories}
-          setShowAll={setShowAllCategories}
-        /> */}
-
         <FilterSection
           title="Category"
           items={categoryList}
@@ -155,6 +169,7 @@ const SidebarFilter = ({
           setShowAll={setShowAllBrands}
         />
       </div>
+
       <div className={style.filterGroup}>
         <h6>Customer Ratings</h6>
         <div className={style.checkboxGroup}>

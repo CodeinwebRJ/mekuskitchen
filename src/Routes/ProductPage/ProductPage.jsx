@@ -15,6 +15,7 @@ import {
   getProductById,
 } from "../../axiosConfig/AxiosConfig";
 import { useEffect } from "react";
+import NoDataFound from "../../Component/MainComponents/NoDataFound";
 
 const getDefaultImage = (productData) => {
   return productData?.images?.[0] || "/default-image.png";
@@ -163,7 +164,9 @@ const ProductPage = () => {
           )}
           <div>
             <div className={style.aboutItemTitle}>Description</div>
-            <div className={style.description}>{product?.description || "No description available"}</div>
+            <div className={style.description}>
+              {product?.description || "No description available"}
+            </div>
           </div>
         </div>
       ),
@@ -191,7 +194,9 @@ const ProductPage = () => {
       {loading || product === null ? (
         <Loading />
       ) : product.length === 0 ? (
-        <div>No Data Found</div>
+        <div>
+          <NoDataFound />
+        </div>
       ) : (
         <div>
           <div className={style.container}>

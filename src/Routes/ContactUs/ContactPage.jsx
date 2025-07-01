@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import Heading from "../../Component/UI-Components/Heading";
 import SelectField from "../../Component/UI-Components/SelectField";
 
-
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -177,17 +176,19 @@ const ContactPage = () => {
                   Phone Number
                 </label>
                 <div className={style.phoneNumber}>
-                  <SelectField
-                    name="phoneCode"
-                    value={formData.phoneCode}
-                    onChange={handleChange}
-                    options={[
-                      { label: "+1", value: "+1" },
-                      { label: "+91", value: "+91" },
-                      { label: "+44", value: "+44" },
-                    ]}
-                    className={style.phoneCodeSelect}
-                  />
+                  <div>
+                    <SelectField
+                      name="phoneCode"
+                      value={formData.phoneCode}
+                      onChange={handleChange}
+                      options={[
+                        { label: "+1", value: "+1" },
+                        { label: "+91", value: "+91" },
+                        { label: "+44", value: "+44" },
+                      ]}
+                      className={style.phoneCodeSelect}
+                    />
+                  </div>
                   <div className={style.phoneNumberInput}>
                     <InputField
                       label={false}

@@ -56,23 +56,15 @@ import NotFound from "./Component/MainComponents/NotFound.jsx";
 const App = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const debounce = (func, delay) => {
-    let timeoutId;
-    return (...args) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func(...args), delay);
-    };
-  };
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
   const isLiked = useSelector((state) => state.wishlist?.likedMap);
+  const filterData = useSelector((state) => state.filterData);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
-
-  const filterData = useSelector((state) => state.filterData);
 
   const fetchProducts = async () => {
     try {
@@ -103,16 +95,8 @@ const App = () => {
     }
   };
 
-  const debouncedFetchProducts = useCallback(debounce(fetchProducts, 500), [
-    filterData,
-  ]);
-
   useEffect(() => {
-    if (filterData?.price) {
-      debouncedFetchProducts();
-    } else {
-      fetchProducts();
-    }
+    fetchProducts();
   }, [filterData]);
 
   const fetchTiffin = async () => {

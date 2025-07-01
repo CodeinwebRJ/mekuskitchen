@@ -1,0 +1,53 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.image {
+  width: 180px;
+  max-width: 90%;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.message {
+  font-size: 20px;
+  font-weight: 600;
+  color: #555;
+  padding: 0 10px;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 16px;
+  }
+
+  .image {
+    width: 160px;
+  }
+
+  .message {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 24px 12px;
+  }
+
+  .image {
+    width: 140px;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+}

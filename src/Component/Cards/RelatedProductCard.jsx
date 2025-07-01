@@ -150,7 +150,9 @@ const RelatedProductCard = ({ item }) => {
               ${displayPrice} {item?.currency || "CAD"}{" "}
             </p>
           </div>
-          <AddToCartButton onclick={handleAddToCart} />
+          <div>
+            <AddToCartButton onclick={handleAddToCart} />
+          </div>
         </div>
       </div>
     </Link>

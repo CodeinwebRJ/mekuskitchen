@@ -172,6 +172,32 @@ ul {
   text-decoration: line-through;
   color: var(--error);
 }
+
+@media screen and (max-width: 480px) {
+  .price {
+    font-size: 12px;
+  }
+  .originalPrice{
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .price {
+    font-size: 12px;
+  }
+  .originalPrice{
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .price {
+    font-size: 14px;
+  }
+  .originalPrice{
+    font-size: 14px;
+  }
+}
  
 .discount{
   color: var(--primary-green-alt);

@@ -9,6 +9,7 @@ import { setCartCount } from "../../../Store/Slice/CountSlice";
 import { UpdateUserCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import Loading from "../UI-Components/Loading";
+import NoDataFound from "./NoDataFound";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -17,7 +18,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const sidebarRef = useRef(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
-
+  
   const handleDelete = useCallback(
     async (id, type, dayName = null, skuId) => {
       setIsLoading(true);
@@ -209,9 +210,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         ) : (
           <div className={style.cartContainer}>
-            <div className={style.emptyCartText}>
-              <h5>Your Cart Is Empty</h5>
-            </div>
+            <NoDataFound message="Your cart is empty" />
           </div>
         )}
 
@@ -231,7 +230,10 @@ const Sidebar = ({ isOpen, onClose }) => {
               View Cart
             </button>
             <button
-              onClick={() => navigate("/checkout")}
+              onClick={() =>
+                cart.items.items.length > 0 ||
+                (cart.items.tiffin.length > 0 && navigate("/checkout"))
+              }
               className="Button sm"
               disabled={isLoading}
             >

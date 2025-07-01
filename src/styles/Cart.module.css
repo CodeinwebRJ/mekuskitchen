@@ -73,6 +73,10 @@
   align-items: center;
 }
 
+.notFound{
+  height: 50vh;
+}
+
 .originalPrice {
   text-decoration: line-through;
   color: var(--gray);

@@ -220,8 +220,6 @@ const CheckoutPage = () => {
     }
   };
 
-  console.log(cart);
-
   const fetchShipping = async () => {
     try {
       const data = {

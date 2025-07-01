@@ -101,8 +101,6 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
 
     console.log("Full place object:", place);
     console.log("Address:", address);
-    console.log("Latitude:", lat);
-    console.log("Longitude:", lng);
   };
 
   return (
