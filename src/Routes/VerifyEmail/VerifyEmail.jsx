@@ -38,7 +38,7 @@ function VerifyEmail() {
 
     try {
       const response = await axios.post(
-        "https://eyemesto.com/mapp_dev/check_email.php",
+        "https://eyemesto.com/mapp/check_email.php",
         new URLSearchParams({
           check_email: true,
           method: "post",

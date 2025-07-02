@@ -11,7 +11,7 @@ import {
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart } from "react-icons/fa6";
-import { logout } from "../../../Store/Slice/UserSlice";
+import { logout } from "../../../Store/Slice/UserAuthSlice";
 import {
   setCartCount,
   setWishlistCount,
@@ -22,6 +22,7 @@ import { FiLogIn, FiLogOut } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
 import { TfiLocationPin } from "react-icons/tfi";
 import { FaBars } from "react-icons/fa";
+import { clearUserDetail } from "../../../Store/Slice/UserDetailSlice";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -40,6 +41,7 @@ const Header = () => {
     if (!isAuthenticated) return navigate("/login");
     try {
       dispatch(logout());
+      dispatch(clearUserDetail());
       localStorage.clear();
       navigate("/login");
     } catch (error) {
@@ -100,7 +102,6 @@ const Header = () => {
         setIsMobileMenuOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileMenuOpen]);

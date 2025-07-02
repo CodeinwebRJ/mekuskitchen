@@ -253,6 +253,7 @@ const CheckoutPage = () => {
           weight: String(item.productDetails.weight),
           quantity: String(item.quantity),
         })),
+        RequestOption: "Rate",
       };
       const res = await ShippingCharges(data);
       setShippingCharges(res.data.data);

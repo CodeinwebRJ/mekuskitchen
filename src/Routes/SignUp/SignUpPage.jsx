@@ -99,7 +99,7 @@ function SignUpPage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://eyemesto.com/mapp_dev/verify_email.php",
+        "https://eyemesto.com/mapp/verify_email.php",
         new URLSearchParams({
           email: formData.email,
           verify_email: true,

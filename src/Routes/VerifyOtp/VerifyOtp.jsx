@@ -39,7 +39,7 @@ function VerifyOtp({ formData, setFormData }) {
           const fullMobile =
             (formData.phoneCode || "").replace(/\+/g, "") + formData.mobile;
           await axios.post(
-            "https://eyemesto.com/mapp_dev/verify_email.php",
+            "https://eyemesto.com/mapp/verify_email.php",
             new URLSearchParams({
               email: formData.email,
               verify_email: true,
@@ -54,7 +54,7 @@ function VerifyOtp({ formData, setFormData }) {
       } else {
         const storedEmail = localStorage.getItem("email");
         await axios.post(
-          "https://eyemesto.com/mapp_dev/check_email.php",
+          "https://eyemesto.com/mapp/check_email.php",
           new URLSearchParams({
             check_email: true,
             method: "post",
@@ -81,7 +81,7 @@ function VerifyOtp({ formData, setFormData }) {
 
     try {
       const response = await axios.post(
-        "https://eyemesto.com/mapp_dev/signup.php",
+        "https://eyemesto.com/mapp/signup.php",
         new URLSearchParams({
           signup: true,
           first_name: formData.first_name,
@@ -132,7 +132,7 @@ function VerifyOtp({ formData, setFormData }) {
     try {
       const storedEmail = localStorage.getItem("email");
       const res = await axios.post(
-        "https://eyemesto.com/mapp_dev/verify_otp.php",
+        "https://eyemesto.com/mapp/verify_otp.php",
         new URLSearchParams({
           email: storedEmail,
           verify_otp: otp,
@@ -161,10 +161,6 @@ function VerifyOtp({ formData, setFormData }) {
             <div className={styles.card}>
               <div className={styles.cardBody}>
                 <h4 className={styles.heading}>Verify OTP</h4>
-                {message && <p className={styles.message}>{message}</p>}
-                {errors.api && (
-                  <p className={styles.inputError}>{errors.api}</p>
-                )}
                 <form
                   className={styles.form}
                   onSubmit={
@@ -186,6 +182,10 @@ function VerifyOtp({ formData, setFormData }) {
                   {errors.otp && (
                     <div className={styles.inputError}>{errors.otp}</div>
                   )}
+                  {errors.api && (
+                    <p className={styles.inputError}>{errors.api}</p>
+                  )}
+                  {message && <p className={styles.inputError}>{message}</p>}
 
                   <div className={styles.resendWrapper}>
                     <div className={styles.timer}>

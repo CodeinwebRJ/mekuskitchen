@@ -52,11 +52,12 @@ import { setData } from "../Store/Slice/HomePageSlice.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import { setCountriesData } from "../Store/Slice/CountrySlice.jsx";
 import NotFound from "./Component/MainComponents/NotFound.jsx";
+import axios from "axios";
+import { setUserDetail } from "../Store/Slice/UserDetailSlice.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
   const isLiked = useSelector((state) => state.wishlist?.likedMap);
@@ -94,10 +95,6 @@ const App = () => {
       dispatch(setLoading(false));
     }
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [filterData]);
 
   const fetchTiffin = async () => {
     try {
@@ -174,6 +171,27 @@ const App = () => {
     }
   };
 
+  const fetchUserDetail = async () => {
+    try {
+      const token = localStorage.getItem("api_token");
+      const res = await axios.post(
+        "https://eyemesto.com/mapp_dev/user_profile.php",
+        new URLSearchParams({
+          api_token: token,
+          userid: user.userid,
+          user_profile: true,
+        })
+      );
+      dispatch(setUserDetail(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [filterData]);
+
   useEffect(() => {
     fetchTiffin();
     fetchHomeData();
@@ -185,6 +203,7 @@ const App = () => {
       fetchAddresses();
       fetchWishlist();
       fetchUserCart();
+      fetchUserDetail();
     }
   }, [isAuthenticated]);
 

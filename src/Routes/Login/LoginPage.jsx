@@ -7,7 +7,7 @@ import Loading from "../../Component/UI-Components/Loading";
 import Banner2 from "../../Component/MainComponents/Banner2";
 import Footer from "../../Component/MainComponents/Footer";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../../Store/Slice/UserSlice";
+import { setUser } from "../../../Store/Slice/UserAuthSlice";
 import PasswordInput from "../../Component/Fields/Password";
 import { Toast } from "../../Utils/Toast";
 import CheckboxField from "../../Component/UI-Components/CheckboxFeild";

@@ -55,7 +55,7 @@ export const UpdateUserCart = async (data) => {
 };
 
 export const SendQuestions = async (data) => {
-  return axiosInstance.post("/api/v1/contact", data);
+  return axiosInstance.post("/api/v1/contact/", data);
 };
 
 export const getUserAddress = async (id) => {

@@ -63,7 +63,7 @@ function ForgetPassword() {
 
     try {
       const response = await axios.post(
-        "https://eyemesto.com/mapp_dev/change_pass.php",
+        "https://eyemesto.com/mapp/change_pass.php",
         new URLSearchParams({
           change_pass: true,
           method: "post",
