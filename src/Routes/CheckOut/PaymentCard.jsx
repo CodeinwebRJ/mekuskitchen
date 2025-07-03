@@ -6,6 +6,7 @@ import {
   CreatePayment,
   getUserCart,
   sendOrder,
+  ShippingCharges,
 } from "../../axiosConfig/AxiosConfig";
 import OrderPlaced from "./OrderPlaced";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
@@ -31,6 +32,8 @@ const PaymentCard = ({ handleCancel }) => {
     cvv: "",
   });
 
+  console.log(selfPickup)
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -52,11 +55,11 @@ const PaymentCard = ({ handleCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateInputs()) {
-      return;
-    }
+    if (!validateInputs()) return;
+
     setApiError("");
     setIsLoading(true);
+
     try {
       const paymentData = {
         userId: user?.userid,
@@ -65,40 +68,67 @@ const PaymentCard = ({ handleCancel }) => {
         expiryDate: paymentMethod.expiryDate,
         cvv: paymentMethod.cvv,
       };
+
       const res = await CreatePayment(paymentData);
-      if (
-        res.data.data.rawResponse.ResponseCode === "027" ||
-        res.data.data.rawResponse.ResponseCode < "050" ||
-        res.data.data.rawResponse.Complete === "true"
-      ) {
-        const data = {
-          userId: user.userid,
-          orderId: res.data.data.orderId,
-          cartId: cart?.items?._id,
-          addressId: defaultAddress?._id,
-          cartAmount: cart?.items?.totalAmount || 0,
-          taxAmount: cart?.items?.totalTax || 0,
-          selfPickup: selfPickup,
-          paymentMethod: "CARD",
-        };
-        await sendOrder(data);
-        const response = await getUserCart({ id: user.userid });
-        dispatch(setCart(response.data.data));
-        setShowComponent("orderPlaced");
-      }
-      if (
-        res.data.data.ResponseCode === "null" ||
-        res.data.data.Complete === "null"
-      ) {
+      const rawResponse = res?.data?.data?.rawResponse || {};
+      const responseCode = rawResponse?.ResponseCode;
+      const isComplete = rawResponse?.Complete === "true";
+
+      const isPaymentSuccess =
+        responseCode === "027" || parseInt(responseCode) < 50 || isComplete;
+
+      if (!isPaymentSuccess) {
         setShowComponent("fail");
+        return;
       }
+
+      const orderData = {
+        userId: user.userid,
+        orderId: res.data.data.orderId,
+        cartId: cart?.items?._id,
+        addressId: defaultAddress?._id,
+        cartAmount: cart?.items?.totalAmount || 0,
+        taxAmount: cart?.items?.totalTax || 0,
+        selfPickup,
+        paymentMethod: "CARD",
+      };
+
+      if (!selfPickup) {
+        const shippingAddress =
+          defaultAddress.shipping || defaultAddress.billing;
+        const shippingData = {
+          shipTo: {
+            name: shippingAddress.name,
+            phone: shippingAddress.phone,
+            address: {
+              addressLine: [shippingAddress.address],
+              city: shippingAddress.city,
+              postalCode: defaultAddress.billing.postCode,
+              stateOrProvince: shippingAddress.provinceCode,
+              countryCode: shippingAddress.countryCode,
+            },
+          },
+          packages: cart?.items?.items?.map((item) => ({
+            unit: String(item.productDetails.weightUnit),
+            weight: String(item.productDetails.weight),
+            quantity: String(item.quantity),
+          })),
+          RequestOption: "nonvalidate",
+        };
+
+        await ShippingCharges(shippingData);
+      }
+      await sendOrder(orderData);
+      const response = await getUserCart({ id: user.userid });
+      dispatch(setCart(response.data.data));
+      setShowComponent("orderPlaced");
     } catch (error) {
-      setShowComponent("fail");
+      console.error("Payment Error:", error);
       setApiError(
         error.response?.data?.message ||
           "An error occurred while processing the payment."
       );
-      console.error("Payment Error:", error);
+      setShowComponent("fail");
     } finally {
       setIsLoading(false);
     }
