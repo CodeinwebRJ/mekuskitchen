@@ -48,18 +48,19 @@ const Banner = ({ name, path = "/" }) => {
           </Link>
           <span className={style.pageTitle}>{name}</span>
         </h1>
-
-        {showBreadcrumb && (
-          <nav className={style.bannerBreadcrumb} aria-label="Breadcrumb">
-            <Link to="/" className={style.link}>
-              Home
-            </Link>
-            <span className={style.breadcrumbSeparator}>/</span>
-            <span className={style.currentPage} aria-current="page">
-              {name}
-            </span>
-          </nav>
-        )}
+        <div className={style.bannerBreadcrumbContainer}>
+          {showBreadcrumb && (
+            <nav className={style.bannerBreadcrumb} aria-label="Breadcrumb">
+              <Link to="/" className={style.link}>
+                Home
+              </Link>
+              <span className={style.breadcrumbSeparator}>/</span>
+              <span className={style.currentPage} aria-current="page">
+                {name}
+              </span>
+            </nav>
+          )}
+        </div>
       </div>
     </section>
   );

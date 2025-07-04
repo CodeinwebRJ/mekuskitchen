@@ -122,8 +122,21 @@ const CheckoutPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showComponent, setShowComponent] = useState("cart");
   const [shippingCharges, setShippingCharges] = useState(null);
+  const [addressError, setAddressError] = useState("");
 
   const payNow = () => {
+    if (!defaultAddress) {
+      setAddressError(
+        "Please select or add a delivery address before checkout."
+      );
+      const addressSection = document.getElementById("address-section");
+      if (addressSection) {
+        addressSection.scrollIntoView({ behavior: "smooth" });
+      }
+      return;
+    }
+
+    setAddressError("");
     setShowComponent("payment");
   };
 
@@ -321,6 +334,7 @@ const CheckoutPage = () => {
                   />
                   <lable>Self PickUp</lable>
                 </div>
+                {addressError && <div className={style.error}>{addressError}</div>}
               </div>
             </>
 

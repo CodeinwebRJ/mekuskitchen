@@ -23,7 +23,6 @@ function SignUpPage() {
     confirmPassword: "",
     refcode: "",
   });
-
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 

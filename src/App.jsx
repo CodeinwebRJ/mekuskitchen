@@ -48,12 +48,13 @@ import VerifyOtp from "./Routes/VerifyOtp/VerifyOtp.jsx";
 import VerifyEmail from "./Routes/VerifyEmail/VerifyEmail.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 import { setCart } from "../Store/Slice/UserCartSlice.jsx";
-import { setData } from "../Store/Slice/HomePageSlice.jsx";
+import { setData, setHomeLoading } from "../Store/Slice/HomePageSlice.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import { setCountriesData } from "../Store/Slice/CountrySlice.jsx";
 import NotFound from "./Component/MainComponents/NotFound.jsx";
 import axios from "axios";
 import { setUserDetail } from "../Store/Slice/UserDetailSlice.jsx";
+import { Toast } from "./Utils/Toast.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -143,10 +144,15 @@ const App = () => {
 
   const fetchHomeData = async () => {
     try {
+      dispatch(setHomeLoading(true));
       const res = await getHomePageData();
       dispatch(setData(res.data.data));
+      dispatch(setHomeLoading(false));
     } catch (error) {
       console.log(error);
+      Toast({ message: "Something went wrong", type: "error" });
+    } finally {
+      dispatch(setHomeLoading(false));
     }
   };
 

@@ -131,44 +131,45 @@ export const HomeProductCard = ({
     e.stopPropagation();
 
     if (!data?._id) {
-      Toast.error("Invalid product data");
+      Toast({ message: "Invalid product data", type: "error" });
       return;
     }
 
+    const productId = data._id;
+
     if (!isAuthenticated) {
-      const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-      const exists = localWishlist.some((item) => item._id === data._id);
+      let localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+      const exists = localWishlist.some((item) => item._id === productId);
 
       if (exists) {
-        const updatedWishlist = localWishlist.filter(
-          (item) => item._id !== data._id
-        );
-        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+        localWishlist = localWishlist.filter((item) => item._id !== productId);
         setIsLikedLocal(false);
         Toast({ message: "Removed from wishlist!", type: "success" });
-        dispatch(setWishlist(updatedWishlist));
-        dispatch(setWishlistCount(updatedWishlist.length));
       } else {
         localWishlist.push(data);
-        localStorage.setItem("wishlist", JSON.stringify(localWishlist));
         setIsLikedLocal(true);
         Toast({ message: "Added to wishlist!", type: "success" });
-        dispatch(setWishlist(localWishlist));
-        dispatch(setWishlistCount(localWishlist.length));
       }
+
+      localStorage.setItem("wishlist", JSON.stringify(localWishlist));
+      dispatch(setWishlist(localWishlist));
+      dispatch(setWishlistCount(localWishlist.length));
       return;
     }
 
     try {
       if (isLikedFromStore) {
-        await RemoveWishlist({ userid: user.userid, productId: data._id });
+        await RemoveWishlist({ userid: user.userid, productId });
+        dispatch(toggleLiked(productId));
         Toast({ message: "Removed from wishlist!", type: "success" });
       } else {
-        await AddtoWishlist({ userid: user.userid, productId: data._id });
+        await AddtoWishlist({ userid: user.userid, productId });
+        dispatch(toggleLiked(productId));
         Toast({ message: "Added to wishlist!", type: "success" });
       }
-      dispatch(toggleLiked(data._id));
     } catch (error) {
+      dispatch(toggleLiked(productId));
       console.error("Wishlist operation failed:", error.message);
       Toast({
         message: "Failed to update wishlist. Please try again.",

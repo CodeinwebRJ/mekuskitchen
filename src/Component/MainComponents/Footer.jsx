@@ -15,7 +15,6 @@ const Footer = () => {
   return (
     <footer className={style.footerContainer}>
       <div className={style.footerInner}>
-        {/* About Section */}
         <div className={style.footerColumn}>
           <h2 className={style.footerTitle}>About Meku's Kitchen</h2>
           <p className={style.footerText}>
@@ -30,7 +29,6 @@ const Footer = () => {
           </Link>
         </div>
 
-        {/* Quick Links */}
         <div className={style.footerColumn}>
           <h2 className={style.footerTitle}>Quick Links</h2>
           <nav className={style.linkList} aria-label="Footer Navigation">
@@ -63,16 +61,14 @@ const Footer = () => {
             </Link>
           </nav>
         </div>
-
-        {/* Contact & Social */}
         <div className={style.footerColumn}>
           <h2 className={style.footerTitle}>Get in Touch</h2>
-          <p className={style.contactLine}>
+          {/* <p className={style.contactLine}>
             <IoMdCall size={18} />
             <span>
               <a href="tel:+16723774949">+1 (672)-377-4949</a>
             </span>
-          </p>
+          </p> */}
           <p className={style.contactLine}>
             <IoMail size={18} />
             <a

@@ -54,7 +54,6 @@
   width: 100%;
 }
 
-
 .error {
   color: var(--error);
   margin-top: 4px;
@@ -99,6 +98,12 @@
 .loginAnchor {
   color: var(--primary-blue);
   text-decoration: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .imageWrapper {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 768px) {

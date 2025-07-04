@@ -3,8 +3,12 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { HomeProductCard } from "../../Component/Cards/HomeProductCard";
 import style from "../../styles/NewArrival.module.css";
+import { useSelector } from "react-redux";
+import Loading from "../../Component/UI-Components/Loading";
 
-const NewArrivals = ({ data }) => {
+const NewArrivals = () => {
+  const { data, loading } = useSelector((state) => state.home);
+
   const products = Array.isArray(data?.NewProducts) ? data.NewProducts : [];
   const enableLoop = products.length >= 4;
   const enableAutoplay = products.length >= 4;
@@ -18,7 +22,7 @@ const NewArrivals = ({ data }) => {
         </h2>
       </div>
 
-      {products.length === 0 ? (
+      {loading ? <Loading/> : products.length === 0 ? (
         <p className={style.noProducts}>No new products available.</p>
       ) : (
         <Swiper

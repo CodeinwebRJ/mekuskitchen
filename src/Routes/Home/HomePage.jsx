@@ -14,7 +14,6 @@ import { IoArrowUpOutline } from "react-icons/io5";
 import ReviewComponent from "../../Component/MainComponents/ReviewComponent";
 
 const HomePage = () => {
-  const { data } = useSelector((state) => state.home);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
@@ -40,8 +39,8 @@ const HomePage = () => {
       <Carousel />
 
       <div className={style.container}>
-        <NewArrivals data={data} />
-        <Category data={data} />
+        <NewArrivals />
+        <Category />
 
         {/* <section className={style.dishesSection}>
           <div className={style.headingContainer}>
@@ -79,7 +78,7 @@ const HomePage = () => {
           </div>
         </section> */}
 
-        <BestSellerProduct data={data} />
+        <BestSellerProduct />
 
         <section className={style.thaliSection}>
           <div className={style.contentBox}>
@@ -113,10 +112,10 @@ const HomePage = () => {
           </div>
         </section>
 
-        <OurProduct data={data} />
+        <OurProduct />
         <Cooking />
 
-        <ReviewComponent data={data} />
+        <ReviewComponent />
 
         <section className={style.hero}>
           <div className={style.container}>
