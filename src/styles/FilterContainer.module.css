@@ -1,5 +1,5 @@
 .sidebar {
-  min-width: 18vw;
+  max-width: 18vw;
   height: 100%;
   padding: 16px;
   border-radius: 8px;

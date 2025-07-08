@@ -17,12 +17,12 @@ export const MyAccountData = [
     icon: <PiNotepadLight />,
     route: "/my-account/orders",
   },
-  {
-    id: 3,
-    title: "Downloads",
-    icon: <IoDownloadOutline />,
-    route: "/my-account/downloads",
-  },
+  // {
+  //   id: 3,
+  //   title: "Downloads",
+  //   icon: <IoDownloadOutline />,
+  //   route: "/my-account/downloads",
+  // },
   {
     id: 4,
     title: "Address",

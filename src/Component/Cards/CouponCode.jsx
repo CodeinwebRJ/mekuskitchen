@@ -11,8 +11,6 @@ const CouponCode = ({ data, isLoading, setDiscount }) => {
   const [coupon, setCoupon] = useState("");
   const [error, setError] = useState("");
 
-  console.log(data);
-
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();

@@ -84,6 +84,12 @@
   outline: none;
 }
 
+@media screen and (max-width: 1280px) {
+  .container {
+    padding: 30px;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .container {
     padding: 30px 60px;
