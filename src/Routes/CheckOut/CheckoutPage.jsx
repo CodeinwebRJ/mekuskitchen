@@ -23,6 +23,7 @@ import AddressForm from "../MyAccount/Addresses/AddressForm";
 import DialogBox from "../../Component/MainComponents/DialogBox";
 import PaymentCard from "./PaymentCard";
 import CheckboxField from "../../Component/UI-Components/CheckboxFeild";
+import Loading from "../../Component/UI-Components/Loading";
 
 const OrderSummary = ({
   total,
@@ -146,6 +147,7 @@ const CheckoutPage = () => {
 
   const fetchUserCart = async () => {
     try {
+      setIsLoading(true);
       const userId = user?.userid;
       const provinceCode = defaultAddress?.billing?.provinceCode;
 
@@ -165,8 +167,11 @@ const CheckoutPage = () => {
 
       const res = await getUserCart(data);
       dispatch(setCart(res.data.data));
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching user cart:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -206,6 +211,7 @@ const CheckoutPage = () => {
 
   const fetchAddress = async () => {
     try {
+      setIsLoading(true);
       const response = await getUserAddress(user.userid);
       if (response.status === 200) {
         const data = response?.data?.data || [];
@@ -213,8 +219,11 @@ const CheckoutPage = () => {
         const activeAddress = data.find((addr) => addr.isActive);
         if (activeAddress) dispatch(setDefaultAddress(activeAddress));
       }
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching addresses:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -293,62 +302,70 @@ const CheckoutPage = () => {
         <div>
           <Header />
           <Banner name="Checkout" path="/cart" />
-          <div className={style.checkoutContainer}>
-            <>
-              <OrderSummary
-                total={cart?.items?.grandTotal}
-                discount={discount}
-                isLoading={isLoading}
-                discountPercentage={discountPercentage}
-                payNow={payNow}
-                federalTax={cart?.items?.totalFederalTax}
-                provinceTax={cart?.items?.totalProvinceTax}
-                tax={cart?.items?.totalTax}
-                selfPickup={selfPickup}
-                SCV={SCV}
-                SCC={SCC}
-              />
-              <div className={style.address}>
-                <div className={style.addressContainer}>
-                  {addresses.length < 3 ? (
-                    <AddAddressCard
-                      onClick={() => {
-                        dispatch(setShowAddressForm(true));
-                        setDialog(true);
-                      }}
-                    />
-                  ) : null}
-                  {addresses &&
-                    addresses.map((address, index) => (
-                      <AddressCard
-                        key={index}
-                        address={address}
-                        handleSetAsDefaultAddress={handleSetAsDefaultAddress}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <div className={style.checkoutContainer}>
+              <>
+                <OrderSummary
+                  total={cart?.items?.grandTotal}
+                  discount={discount}
+                  isLoading={isLoading}
+                  discountPercentage={discountPercentage}
+                  payNow={payNow}
+                  federalTax={cart?.items?.totalFederalTax}
+                  provinceTax={cart?.items?.totalProvinceTax}
+                  tax={cart?.items?.totalTax}
+                  selfPickup={selfPickup}
+                  SCV={SCV}
+                  SCC={SCC}
+                />
+                <div className={style.address}>
+                  <div className={style.addressContainer}>
+                    {addresses.length < 3 ? (
+                      <AddAddressCard
+                        onClick={() => {
+                          dispatch(setShowAddressForm(true));
+                          setDialog(true);
+                        }}
                       />
-                    ))}
+                    ) : null}
+                    {addresses &&
+                      addresses.map((address, index) => (
+                        <AddressCard
+                          key={index}
+                          address={address}
+                          handleSetAsDefaultAddress={handleSetAsDefaultAddress}
+                        />
+                      ))}
+                  </div>
+                  <div className={style.selfPickup}>
+                    <CheckboxField
+                      checked={selfPickup}
+                      onChange={(e) =>
+                        dispatch(setSelfPickup(e.target.checked))
+                      }
+                    />
+                    <lable>Self PickUp</lable>
+                  </div>
+                  {addressError && (
+                    <div className={style.error}>{addressError}</div>
+                  )}
                 </div>
-                <div className={style.selfPickup}>
-                  <CheckboxField
-                    checked={selfPickup}
-                    onChange={(e) => dispatch(setSelfPickup(e.target.checked))}
-                  />
-                  <lable>Self PickUp</lable>
-                </div>
-                {addressError && <div className={style.error}>{addressError}</div>}
-              </div>
-            </>
+              </>
 
-            <DialogBox
-              isOpen={dialog}
-              title="Add Delivery Address"
-              onClose={() => setDialog(false)}
-            >
-              <AddressForm
+              <DialogBox
+                isOpen={dialog}
+                title="Add Delivery Address"
                 onClose={() => setDialog(false)}
-                fetchAddress={fetchAddress}
-              />
-            </DialogBox>
-          </div>
+              >
+                <AddressForm
+                  onClose={() => setDialog(false)}
+                  fetchAddress={fetchAddress}
+                />
+              </DialogBox>
+            </div>
+          )}
           <Footer />
         </div>
       )}

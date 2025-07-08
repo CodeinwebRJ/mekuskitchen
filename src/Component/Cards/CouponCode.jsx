@@ -7,9 +7,11 @@ import { getUserCart, validateCoupon } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice.jsx";
 
-const CouponCode = ({ isLoading, setDiscount }) => {
+const CouponCode = ({ data, isLoading, setDiscount }) => {
   const [coupon, setCoupon] = useState("");
   const [error, setError] = useState("");
+
+  console.log(data);
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
@@ -28,6 +30,12 @@ const CouponCode = ({ isLoading, setDiscount }) => {
   };
 
   const handleApplyCoupon = async () => {
+    if (!coupon.trim()) {
+      setError("Coupon code is required");
+      return;
+    }
+
+    setError("");
     try {
       const items = cart?.items || [];
       const categories = items?.items
@@ -101,10 +109,31 @@ const CouponCode = ({ isLoading, setDiscount }) => {
           placeholder="Apply Coupon"
           value={coupon}
           className={style.couponInput}
-          onChange={(e) => setCoupon(e.target.value)}
+          onChange={(e) => {
+            setCoupon(e.target.value);
+            if (error) setError("");
+          }}
           icon={<RiCoupon3Fill />}
         />
-        <button onClick={handleApplyCoupon} className="Button sm">
+
+        {data?.items?.couponCode && (
+          <div className={style.appliedCouponBox}>
+            <div className={style.appliedCouponDetails}>
+              <p>{data?.items?.couponCode}</p>
+              <p>
+                {data?.items?.discountValue}{" "}
+                {data.items.discountType === "percentage" ? "%" : "CAD"}
+              </p>
+            </div>
+            <button className={style.removeBtn}>Remove</button>
+          </div>
+        )}
+
+        <button
+          onClick={handleApplyCoupon}
+          className="Button sm"
+          disabled={!coupon.trim()}
+        >
           {isLoading ? "Applying..." : "Apply"}
         </button>
       </div>

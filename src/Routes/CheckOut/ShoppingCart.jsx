@@ -356,7 +356,7 @@ const ShoppingCart = () => {
         </div>
         <div className={style.cartSummary}>
           <div>
-            <CouponCode setDiscount={setDiscount} />
+            <CouponCode data={cart} setDiscount={setDiscount} />
           </div>
           <div className={style.cartTotals}>
             <CartCard

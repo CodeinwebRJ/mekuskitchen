@@ -143,7 +143,7 @@ function VerifyOtp({ formData, setFormData }) {
         setMessage("OTP verified successfully.");
         navigate("/forget-password");
       } else {
-        setMessage("Error: OTP does not match. Please try again.");
+        setMessage("OTP does not match. Please try again.");
       }
     } catch (err) {
       setMessage("Error verifying OTP. Please try again.");

@@ -35,6 +35,47 @@
   font-size: 13px;
 }
 
+/* ✅ New styles for applied coupon section */
+.appliedCouponBox {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border: 1px solid var(--cool-light-blue-gray);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.appliedCouponDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--font-base);
+  color: var(--primary-dark);
+}
+
+.appliedCouponDetails p {
+  margin: 0;
+}
+
+.removeBtn {
+  padding: 6px 12px;
+  background-color: var(--error);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: var(--font-sm);
+  transition: background-color 0.2s ease;
+}
+
+.removeBtn:hover {
+  background-color: var(--error);
+}
+
 @media (max-width: 1024px) {
   .couponTitle {
     font-size: var(--font-md);
@@ -47,6 +88,15 @@
 
   .couponInput {
     font-size: var(--font-base);
+  }
+
+  .appliedCouponBox {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .removeBtn {
+    width: auto;
   }
 }
 
@@ -73,5 +123,15 @@
 
   .couponError {
     font-size: var(--font-sm);
+  }
+
+  .appliedCouponInline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .removeBtnInline {
+    text-align: left;
+    padding-top: 6px;
   }
 }

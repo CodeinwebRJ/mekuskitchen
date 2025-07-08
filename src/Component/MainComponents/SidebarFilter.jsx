@@ -5,8 +5,8 @@ import CheckboxField from "../UI-Components/CheckboxFeild";
 import { IoSearch } from "react-icons/io5";
 import { useFilterContainer } from "../../Hook/useFilterContainer";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { setPrices } from "../../../Store/Slice/FilterDataSlice";
-import { useDispatch } from "react-redux";
+import { setPrices, setSearch } from "../../../Store/Slice/FilterDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const SidebarFilter = ({
   categoryList,
@@ -17,6 +17,8 @@ const SidebarFilter = ({
   const dispatch = useDispatch();
   const debounceRef = useRef(null);
   const [sliderValue, setSliderValue] = useState(priceRange[1]);
+
+  const { search } = useSelector((state) => state.filterData);
 
   useEffect(() => {
     setSliderValue(priceRange[1]);
@@ -99,8 +101,8 @@ const SidebarFilter = ({
       <InputField
         id="search"
         type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        value={search}
+        onChange={(e) => dispatch(setSearch(e.target.value))}
         className="form-control"
         placeholder="Search"
         icon={<IoSearch size={20} color="var(--gray-medium)" />}

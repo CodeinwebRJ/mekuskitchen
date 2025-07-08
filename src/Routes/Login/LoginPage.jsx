@@ -65,7 +65,7 @@ function LoginPage() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://eyemesto.com/mapp_dev/signin.php",
+        "https://eyemesto.com/mapp/signin.php",
         new URLSearchParams({
           signin: true,
           unique_id: credentials.unique_id,

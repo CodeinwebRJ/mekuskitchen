@@ -55,6 +55,7 @@ import NotFound from "./Component/MainComponents/NotFound.jsx";
 import axios from "axios";
 import { setUserDetail } from "../Store/Slice/UserDetailSlice.jsx";
 import { Toast } from "./Utils/Toast.jsx";
+import { useDebouncedValue } from "./Hook/useDebouced.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -67,6 +68,8 @@ const App = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
+
+  const filterSearch = useDebouncedValue(filterData?.search, 500);
 
   const fetchProducts = async () => {
     try {
@@ -181,7 +184,7 @@ const App = () => {
     try {
       const token = localStorage.getItem("api_token");
       const res = await axios.post(
-        "https://eyemesto.com/mapp_dev/user_profile.php",
+        "https://eyemesto.com/mapp/user_profile.php",
         new URLSearchParams({
           api_token: token,
           userid: user.userid,
@@ -196,7 +199,20 @@ const App = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [filterData]);
+  }, [
+    filterSearch,
+    filterData.categories,
+    filterData.subCategories,
+    filterData.productCategories,
+    filterData.Brands,
+    filterData.ratings,
+    filterData.price,
+    filterData.attributes,
+    filterData.sortBy,
+    filterData.page,
+    filterData.limit,
+    filterData.grid,
+  ]);
 
   useEffect(() => {
     fetchTiffin();

@@ -25,12 +25,13 @@ const ReviewComponent = ({
     let isValid = true;
 
     if (!rating || rating < 1 || rating > 5) {
-      validationErrors.rating = "Please select a rating between 1 and 5.";
+      validationErrors.rating =
+        "Kindly rate us from 1 to 5 — your feedback matters!";
       isValid = false;
     }
 
     if (!review.trim()) {
-      validationErrors.review = "Review is required.";
+      validationErrors.review = "This field cannot be empty.";
       isValid = false;
     } else if (review.trim().length < 10) {
       validationErrors.review =
@@ -93,7 +94,7 @@ const ReviewComponent = ({
           <form onSubmit={handleSubmitReview} className={style.form}>
             <div className={style.formGroup}>
               <label htmlFor="rating" className={style.label}>
-                Your Rating<span className={style.errorMessage}>*</span>
+                Your Rating*
               </label>
               <RatingStar
                 rating={rating}
@@ -112,7 +113,7 @@ const ReviewComponent = ({
 
             <div className={style.formGroup}>
               <label htmlFor="review" className={style.label}>
-                Your Review <span className={style.errorMessage}>*</span>
+                Your Review*
               </label>
               <InputField
                 id="review"
