@@ -86,18 +86,6 @@ const ContactPage = () => {
               information you may need.
             </p>
 
-            <div className={style.leftContainerContact}>
-              <button
-                className={style.leftContainerTelephonetButton}
-                aria-label="Phone"
-              >
-                <img src="/telephone.png" alt="Phone icon" />
-              </button>
-              {/* <span className={style.leftContainerContactNumber}>
-                <a href="tel:+16723774949">+1 (672)-377-4949</a>
-              </span> */}
-            </div>
-
             <div className={style.leftContainerMail}>
               <button
                 className={style.leftContainerMailButton}
