@@ -40,7 +40,6 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleLogout = () => {
-    if (!isAuthenticated) return navigate("/login");
     try {
       dispatch(logout());
       dispatch(clearUserDetail());
@@ -171,21 +170,25 @@ const Header = () => {
               </Link>
             ))}
 
-          <Link
-            onClick={() => {
-              handleLogout();
-              setIsMobileMenuOpen(false);
-            }}
-            className={style.mobileLink}
-          >
+          <Link className={style.mobileLink}>
             {isAuthenticated ? (
-              <>
+              <span
+                onClick={() => {
+                  handleLogout();
+                  setIsMobileMenuOpen(false);
+                }}
+                className={style.mobileLink}
+              >
                 <FiLogOut size={20} /> Logout
-              </>
+              </span>
             ) : (
-              <>
+              <Link
+                to="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={style.mobileLink}
+              >
                 <FiLogIn size={20} /> Login
-              </>
+              </Link>
             )}
           </Link>
         </nav>
