@@ -15,6 +15,10 @@ export const getTopRatedProduct = async () => {
   return axiosInstance.get("/api/v1/review/product/top-rated");
 };
 
+export const SearchProduct = async (data) => {
+  return axiosInstance.get(`/api/v1/product/category/search?search=${data}`);
+};
+
 export const getProductById = async (id) => {
   return axiosInstance.get(`/api/v1/product/${id}`);
 };

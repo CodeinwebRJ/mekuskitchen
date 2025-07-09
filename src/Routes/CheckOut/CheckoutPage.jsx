@@ -125,6 +125,8 @@ const CheckoutPage = () => {
   const [shippingCharges, setShippingCharges] = useState(null);
   const [addressError, setAddressError] = useState("");
 
+  console.log(cart);
+
   const payNow = () => {
     if (!defaultAddress) {
       setAddressError(
@@ -203,11 +205,15 @@ const CheckoutPage = () => {
     return (discount / total) * 100;
   }, [discount, total]);
 
+  console.log(cart)
   useEffect(() => {
-    if (user?.userid && defaultAddress?.billing?.postCode) {
-      fetchUserCart();
-    }
-  }, [user?.userid, defaultAddress?.billing?.postCode]);
+    fetchUserCart();
+  }, [
+    user?.userid,
+    defaultAddress?.billing?.postCode,
+    cart?.items?.length,
+    cart?.tiffin?.length,
+  ]);
 
   const fetchAddress = async () => {
     try {
@@ -285,7 +291,9 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    fetchShipping();
+    if (defaultAddress) {
+      fetchShipping();
+    }
   }, [defaultAddress, cart]);
 
   const SCV =

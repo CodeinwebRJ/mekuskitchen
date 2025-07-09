@@ -23,6 +23,7 @@ import { RxDashboard } from "react-icons/rx";
 import { TfiLocationPin } from "react-icons/tfi";
 import { FaBars } from "react-icons/fa";
 import { clearUserDetail } from "../../../Store/Slice/UserDetailSlice";
+import SearchComponent from "./SearchComponent";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -36,6 +37,7 @@ const Header = () => {
   const { cartCount, wishlistCount } = useSelector((state) => state.count);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const cart = useSelector((state) => state.cart);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleLogout = () => {
     if (!isAuthenticated) return navigate("/login");
@@ -190,7 +192,15 @@ const Header = () => {
       )}
 
       <div className={style.headerIcons}>
-        <IoSearch className={style.icon} />
+        <IoSearch
+          className={style.icon}
+          onClick={() => setIsSearchOpen(true)}
+        />
+        {isSearchOpen && (
+          <div className={style.searchOverlay}>
+            <SearchComponent onClose={() => setIsSearchOpen(false)} />
+          </div>
+        )}
 
         <div className={`${style.userDropdown} ${style.hideOnMobile}`}>
           <LuUserRound className={style.userDropdownIcon} />

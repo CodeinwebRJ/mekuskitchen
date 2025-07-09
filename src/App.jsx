@@ -191,7 +191,9 @@ const App = () => {
           user_profile: true,
         })
       );
-      dispatch(setUserDetail(res.data));
+      const userData = res.data;
+      dispatch(setUserDetail(userData));
+      localStorage.setItem("user_detail", JSON.stringify(userData));
     } catch (error) {
       console.log(error);
     }

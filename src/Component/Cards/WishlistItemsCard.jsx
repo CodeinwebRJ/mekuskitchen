@@ -116,7 +116,6 @@ const WishlistItem = ({ product, fetchWishlist }) => {
 
       <div className={style.itemRightSide}>
         <div className={style.stockContainer}>
-          {/* <span className={style.stockTitle}>In Stock</span> */}
           <RatingStar start={0} stop={5} rating={3} disabled />
           <div className={style.controllers}>
             <RiShareLine className={style.icon} />

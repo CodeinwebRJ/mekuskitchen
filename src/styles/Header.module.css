@@ -237,10 +237,9 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .logoImage{
+  .logoImage {
     height: 50px;
   }
-  
 }
 
 @media screen and (max-width: 768px) {
