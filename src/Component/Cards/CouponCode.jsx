@@ -94,7 +94,7 @@ const CouponCode = ({ data, isLoading, setDiscount }) => {
       });
     } catch (error) {
       console.log("Coupon validation failed", error);
-      Toast({ message: "Failed to apply coupon", type: "error" });
+      Toast({ message: "Coupon validation failed", type: "error" });
     }
   };
 
@@ -113,6 +113,7 @@ const CouponCode = ({ data, isLoading, setDiscount }) => {
           }}
           icon={<RiCoupon3Fill />}
         />
+        {error && <p className={style.couponError}>{error}</p>}
 
         {data?.items?.couponCode && (
           <div className={style.appliedCouponBox}>
@@ -127,15 +128,10 @@ const CouponCode = ({ data, isLoading, setDiscount }) => {
           </div>
         )}
 
-        <button
-          onClick={handleApplyCoupon}
-          className="Button sm"
-          disabled={!coupon.trim()}
-        >
+        <button onClick={handleApplyCoupon} className="Button sm">
           {isLoading ? "Applying..." : "Apply"}
         </button>
       </div>
-      {error && <p className={style.couponError}>{error}</p>}
     </div>
   );
 };

@@ -17,8 +17,7 @@
 .couponRow {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .couponInput {
@@ -31,11 +30,10 @@
 
 .couponError {
   color: var(--error);
-  margin-top: 6px;
-  font-size: 13px;
+  margin: 0;
+  font-size: 14px;
 }
 
-/* ✅ New styles for applied coupon section */
 .appliedCouponBox {
   margin-top: 16px;
   padding: 12px;

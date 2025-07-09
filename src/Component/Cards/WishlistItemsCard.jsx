@@ -118,7 +118,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
         <div className={style.stockContainer}>
           <RatingStar start={0} stop={5} rating={3} disabled />
           <div className={style.controllers}>
-            <RiShareLine className={style.icon} />
+            {/* <RiShareLine className={style.icon} /> */}
             <BsTrash onClick={handleDelete} className={style.icon} />
           </div>
         </div>
