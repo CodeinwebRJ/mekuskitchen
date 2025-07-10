@@ -1,21 +1,40 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { IoClose } from "react-icons/io5";
 import style from "../../styles/SearchCompo.module.css";
 import NoDataFound from "./NoDataFound";
 import Loading from "../UI-Components/Loading";
-import { setSearch } from "../../../Store/Slice/FilterDataSlice";
+import { useDebouncedValue } from "../../Hook/useDebouced";
+import { SearchProduct } from "../../axiosConfig/AxiosConfig";
+import WishlistItem from "../Cards/WishlistItemsCard";
 
 const SearchComponent = ({ onClose }) => {
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
 
-  const { search } = useSelector((state) => state.filterData);
-  const { loading, products } = useSelector((state) => state.product);
+  const debouncedSearch = useDebouncedValue(search, 500);
+
+  const fetchProducts = async () => {
+    if (!debouncedSearch) {
+      setData([]);
+      return;
+    }
+    try {
+      setLoading(true);
+      const res = await SearchProduct(debouncedSearch);
+      setData(res.data.data || []);
+    } catch (error) {
+      console.error("Search error:", error);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setIsOpen(true);
-  }, []);
+    fetchProducts();
+  }, [debouncedSearch]);
 
   useEffect(() => {
     setIsOpen(true);
@@ -31,7 +50,7 @@ const SearchComponent = ({ onClose }) => {
         <input
           type="text"
           value={search}
-          onChange={(e) => dispatch(setSearch(e.target.value))}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Start typing to see products you are looking for..."
           className={style.searchInput}
           autoFocus
@@ -42,13 +61,12 @@ const SearchComponent = ({ onClose }) => {
       <div className={`${style.cardsContainer} ${isOpen ? style.show : ""}`}>
         {loading ? (
           <Loading />
-        ) : products?.length > 0 ? (
-          products.map((card) => (
-            <div key={card.id} className={style.card}>
-              <h3>{card.title}</h3>
-              <p>{card.price}</p>
-            </div>
-          ))
+        ) : data && data.length > 0 ? (
+          <div className={style.gridWrapper}>
+            {data.map((card) => (
+              <WishlistItem key={card._id} product={card} />
+            ))}
+          </div>
         ) : (
           <div className={style.noResults}>
             <NoDataFound />

@@ -1,19 +1,32 @@
 import style from "../../styles/TiffinCard.module.css";
 import { Link } from "react-router-dom";
 import AddToCartButton from "../Buttons/AddToCartButton";
-import { formatDate } from "../../Utils/FormateDate";
 import DateChip from "../Buttons/DateChip";
 import { useSelector, useDispatch } from "react-redux";
 import { AddtoCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import slugify from "../../Utils/URLslug";
+import { getDatesForDayInRange } from "../../Utils/DateDayRange";
+import { useEffect, useState } from "react";
 
 const TiffinCard = ({ item }) => {
   const dispatch = useDispatch();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
+  const [validDates, setValidDates] = useState([]);
+
+  useEffect(() => {
+    if (item?.date && item?.endDate && item?.day) {
+      const matchingDates = getDatesForDayInRange(
+        item.date,
+        item.endDate,
+        item.day
+      );
+      setValidDates(matchingDates);
+    }
+  }, [item]);
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
@@ -122,12 +135,12 @@ const TiffinCard = ({ item }) => {
             alt={item?.day || "Tiffin"}
             className={style.tiffinImg}
           />
-          {item?.date && <DateChip name={formatDate(item?.date)} />}
+          {item?.date && <DateChip name={validDates[0]} />}
         </div>
 
         {item?.day && <p className={style.tiffinTitle}>{item.day}</p>}
         {item?.subTotal && (
-          <p className="price">${Number(item.subTotal).toFixed(2)}</p>
+          <p className={style.price}>${Number(item.totalAmount).toFixed(2)}</p>
         )}
       </Link>
       <AddToCartButton onclick={handleAddToCart} />

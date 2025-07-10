@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import style from "../../styles/DailyTiffinPage.module.css";
 import Footer from "../../Component/MainComponents/Footer";
 import Banner from "../../Component/MainComponents/Banner";
@@ -13,19 +12,14 @@ const DailyTiffinPage = () => {
 
   return (
     <div>
-      {/* Header */}
       <Header />
-
-      {/* Banner */}
       <Banner name={"Daily Tiffin"} />
-
-      {/* Tiffin Container */}
       <div className={style.TiffinContainer}>
         <div className={style.CustomiseTiffinContainer}>
           <Heading
             title="Customise Your Tiffin"
             note="Please Note: All orders will accepted a day before only. For any
-            query please call admin: +1(672)-377-4949"
+            query please contact admin"
             size="sm"
           />
 
@@ -44,7 +38,7 @@ const DailyTiffinPage = () => {
           <Heading
             title="Order A Regular Tiffin"
             note="Please Note: All orders will accepted a day before only. For any
-              query please call admin: +1(672)-377-4949"
+              query please contact admin"
             size="sm"
           />
 
@@ -59,11 +53,11 @@ const DailyTiffinPage = () => {
           </div>
         </div>
 
-        <div className={style.BreakfastMenuContainer}>
+        {/* <div className={style.BreakfastMenuContainer}>
           <Heading
             title="Breakfast Menu"
             note="Please Note: All orders will accepted a day before only. For any
-              query please call admin: +1(672)-377-4949"
+              query please contact admin"
             size="sm"
           />
 
@@ -72,25 +66,22 @@ const DailyTiffinPage = () => {
               <TiffinCard key={index} item={item} />
             ))}
           </div>
-        </div>
+        </div> */}
 
-        <div className={style.SweetsContainer}>
+        {/* <div className={style.SweetsContainer}>
           <Heading
             title="Sweets"
             note="Please Note: All orders will accepted a day before only. For any
-              query please call admin: +1(672)-377-4949"
+              query please contact admin"
             size="sm"
           />
-
           <div className={style.TiffinCardContainer}>
             {tiffin.tiffins?.map((item, index) => (
               <TiffinCard key={index} item={item} />
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
-
-      {/* Footer */}
       <Footer />
     </div>
   );

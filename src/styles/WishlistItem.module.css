@@ -52,6 +52,11 @@
   padding: 4px;
 }
 
+.price {
+  color: var(--black);
+  font-weight: 600;
+}
+
 .itemImage img {
   width: 100%;
   height: 100%;
@@ -148,6 +153,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .price {
+    font-size: 14px;
+    font-weight: 600;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -178,6 +188,11 @@
     width: 100%;
     max-width: 300px;
     text-align: justify;
+  }
+
+  .price {
+    font-size: 14px;
+    font-weight: 600;
   }
 
   .itemRightSide {
@@ -261,10 +276,6 @@
     text-decoration: line-through;
   }
 
-  .price {
-    color: var(--primary-green-light);
-  }
-
   .itemDescription {
     font-size: 13px;
     color: var(--gray-deep);
@@ -274,6 +285,11 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .price {
+    font-size: 12px;
+    font-weight: 600;
   }
 
   .itemRightSide {

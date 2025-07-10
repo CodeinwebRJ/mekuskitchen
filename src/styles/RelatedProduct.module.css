@@ -29,6 +29,14 @@
   font-size: var(--font-xl);
 }
 
+.gridWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--gap-4);
+  padding: 16px 0;
+  width: 100%;
+}
+
 .nextArrowIcon {
   transform: rotate(180deg);
 }

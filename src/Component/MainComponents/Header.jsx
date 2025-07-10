@@ -134,6 +134,12 @@ const Header = () => {
           OUR PRODUCT
         </Link>
         <Link
+          to="/daily-tiffin"
+          className={`${style.link} ${handleLinkActive("/daily-tiffin")}`}
+        >
+          DAILY TIFFIN
+        </Link>
+        <Link
           to="/about-us"
           className={`${style.link} ${handleLinkActive("/about-us")}`}
         >

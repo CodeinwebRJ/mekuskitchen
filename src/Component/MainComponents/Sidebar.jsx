@@ -155,7 +155,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     : item?.sku?.details?.combinations?.Price ||
                       item?.price ||
                       0
-                  : item.totalAmount || 0}{" "}
+                  : Number(item.totalAmount).toFixed(2) || 0}{" "}
                 {item?.productDetails?.currency || "CAD"}
               </span>
             </p>

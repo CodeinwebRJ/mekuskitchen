@@ -10,6 +10,7 @@ import {
   FaShieldAlt,
   FaMoneyCheckAlt,
 } from "react-icons/fa";
+import { GiMeal } from "react-icons/gi";
 
 const Footer = () => {
   return (
@@ -43,6 +44,10 @@ const Footer = () => {
               <FaUtensils />
               <span className={style.listName}>Our Product</span>
             </Link>
+            <Link to="/daily-tiffin">
+              <GiMeal />
+              <span className={style.listName}>Daily Tiffin</span>
+            </Link>
             <Link to="/about-us">
               <FaInfoCircle />
               <span className={style.listName}>About Us</span>
@@ -63,12 +68,6 @@ const Footer = () => {
         </div>
         <div className={style.footerColumn}>
           <h2 className={style.footerTitle}>Get in Touch</h2>
-          {/* <p className={style.contactLine}>
-            <IoMdCall size={18} />
-            <span>
-              <a href="tel:+16723774949">+1 (672)-377-4949</a>
-            </span>
-          </p> */}
           <p className={style.contactLine}>
             <IoMail size={18} />
             <a

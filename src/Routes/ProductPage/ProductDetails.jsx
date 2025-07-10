@@ -240,12 +240,6 @@ const ProductDetails = ({
           <Link to="#">
             <img src="/instagram.png" alt="Twitter" />
           </Link>
-          {/* <Link to="#">
-            <img src="/Twitter.png" alt="LinkedIn" />
-          </Link>
-          <Link to="#">
-            <img src="/Telegram.png" alt="LinkedIn" />
-          </Link> */}
         </div>
       </div>
     </div>

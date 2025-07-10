@@ -12,7 +12,7 @@ import { BsTrash } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
 import slugify from "../../Utils/URLslug";
 
-const WishlistItem = ({ product, fetchWishlist }) => {
+const WishlistItem = ({ product, fetchWishlist, icons = "false" }) => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cart);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -70,13 +70,17 @@ const WishlistItem = ({ product, fetchWishlist }) => {
     }
   };
 
+  console.log(product.sellingPrice);
+
   return (
     <div className={style.item}>
       <div className={style.itemLeftSide}>
         <div className={style.itemImage}>
-          <div className={style.wishlist}>
-            <FaHeart color="red" />
-          </div>
+          {icons === "true" && (
+            <div className={style.wishlist}>
+              <FaHeart color="red" />
+            </div>
+          )}
           <img
             src={product.images?.[0]?.url || "defaultImage.png"}
             alt={product.name || "wishlist item"}
@@ -106,7 +110,7 @@ const WishlistItem = ({ product, fetchWishlist }) => {
           </Link>
           <div className={style.itemPrice}>
             <span className="originalPrice">${product.price}</span>
-            <span className="price">
+            <span className={style.price}>
               ${product.sellingPrice} {product?.currency || "CAD"}
             </span>
           </div>
@@ -119,7 +123,9 @@ const WishlistItem = ({ product, fetchWishlist }) => {
           <RatingStar start={0} stop={5} rating={3} disabled />
           <div className={style.controllers}>
             {/* <RiShareLine className={style.icon} /> */}
-            <BsTrash onClick={handleDelete} className={style.icon} />
+            {icons === "true" && (
+              <BsTrash onClick={handleDelete} className={style.icon} />
+            )}
           </div>
         </div>
 

@@ -25,6 +25,8 @@ const ShoppingCart = () => {
   const { cartCount } = useSelector((state) => state.count);
   const [discount, setDiscount] = useState(0);
 
+  console.log(dialog.product);
+
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
       return cart?.items?.totalAmount;
@@ -293,7 +295,7 @@ const ShoppingCart = () => {
       </div>
     );
   }
-
+  
   return (
     <div>
       <Header />
@@ -382,9 +384,10 @@ const ShoppingCart = () => {
             <div className={style.productImage}>
               <img
                 src={
-                  isAuthenticated
+                  dialog.product?.sku?.images?.[0] ||
+                  (isAuthenticated
                     ? dialog.product?.productDetails?.images?.[0]?.url
-                    : dialog.product?.images?.[0]?.url
+                    : dialog.product?.images?.[0]?.url)
                 }
                 alt="product"
               />
@@ -396,16 +399,10 @@ const ShoppingCart = () => {
                   : dialog.product?.name}
               </h2>
               <div className={style.productPricing}>
-                <span className="originalPrice">
-                  $
-                  {isAuthenticated
-                    ? dialog.product?.productDetails?.price
-                    : dialog.product?.price}
-                </span>
                 <span className="Price">
                   $
                   {isAuthenticated
-                    ? dialog.product?.productDetails?.sellingPrice
+                    ? dialog.product?.price
                     : dialog.product?.sellingPrice}
                 </span>
               </div>
@@ -433,9 +430,6 @@ const ShoppingCart = () => {
                       : dialog.product?.ProductCategory}
                   </p>
                 ))}
-              {/* <div>
-                <Chip />
-              </div> */}
               <p className={style.productDescription}>
                 {isAuthenticated
                   ? dialog.product?.productDetails?.shortDescription

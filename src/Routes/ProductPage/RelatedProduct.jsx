@@ -32,18 +32,19 @@ const RelatedProduct = () => {
   }, [category[1]]);
 
   const productCount = relatedProduct.length;
-  const showSlider = productCount > 0;
-  const showArrows = productCount > 3;
-  const enableLoop = productCount > 3;
-  const enableAutoplay = productCount > 3;
-
+  const showSlider = productCount > 4;
+  const showArrows = productCount > 4;
+  const enableLoop = productCount > 4;
+  const enableAutoplay = productCount > 4;
   const getSlidesPerView = () => Math.min(productCount, 4);
 
   return (
     <div className={style.relatedProductContainer}>
       <Heading title="RELATED PRODUCTS" size="xs" />
 
-      {showSlider ? (
+      {productCount === 0 ? (
+        <p>No related products available.</p>
+      ) : showSlider ? (
         <div className={style.sliderWrapper}>
           {showArrows && (
             <div
@@ -53,7 +54,6 @@ const RelatedProduct = () => {
               <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />
             </div>
           )}
-
           <Swiper
             navigation={
               showArrows && {
@@ -79,7 +79,7 @@ const RelatedProduct = () => {
               0: { slidesPerView: 1 },
               480: { slidesPerView: Math.min(2, productCount) },
               768: { slidesPerView: Math.min(3, productCount) },
-              1040: { slidesPerView: Math.min(4, productCount) },
+              1160: { slidesPerView: Math.min(4, productCount) },
             }}
           >
             {relatedProduct.map((card, index) => (
@@ -101,7 +101,13 @@ const RelatedProduct = () => {
           )}
         </div>
       ) : (
-        <p>No related products available.</p>
+        <div className={style.gridWrapper}>
+          {relatedProduct.map((card, index) => (
+            <div key={index} className={style.relatedProductCard}>
+              <RelatedProductCard item={card} />
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

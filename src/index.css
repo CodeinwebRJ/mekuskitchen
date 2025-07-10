@@ -165,12 +165,14 @@ ul {
 
 .price {
   font-weight: 600;
+  margin: 0;
 }
 
 .originalPrice {
   font-weight: 600;
   text-decoration: line-through;
   color: var(--error);
+  margin: 0;
 }
 
 @media screen and (max-width: 480px) {

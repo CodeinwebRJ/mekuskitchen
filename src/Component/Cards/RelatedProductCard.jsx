@@ -120,8 +120,8 @@ const RelatedProductCard = ({ item }) => {
   };
 
   return (
-    <Link to={linkPath} state={{ id: item?._id }}>
-      <div className={style.relatedProductCard}>
+    <div className={style.relatedProductCard}>
+      <Link to={linkPath} state={{ id: item?._id }}>
         <div className={style.relatedProductImgWrapper}>
           <img
             src={imageUrl || "/defaultImage.png"}
@@ -133,9 +133,9 @@ const RelatedProductCard = ({ item }) => {
           {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
         </div>
         <div className={style.contentWrapper}>
-          <p className={style.relatedProductTitle}>
+          <span className={style.relatedProductTitle}>
             {displayTitle || "Unnamed Product"}
-          </p>
+          </span>
           <div className={style.rating}>
             <RatingStar
               rating={item?.averageRating}
@@ -154,8 +154,8 @@ const RelatedProductCard = ({ item }) => {
             <AddToCartButton onclick={handleAddToCart} />
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 
