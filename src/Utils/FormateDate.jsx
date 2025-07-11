@@ -5,7 +5,7 @@ export function formatDate(date) {
     if (!date) return "N/A";
     const parsedDate = new Date(date);
     if (isNaN(parsedDate)) return "N/A";
-    return format(parsedDate, "MM/dd/yyyy");
+    return format(parsedDate, "dd/MM/yyyy");
   } catch (error) {
     return "N/A";
   }

@@ -31,7 +31,7 @@ const Category = () => {
   };
 
   if (!data?.Category?.length) {
-    return <div>No dishes available</div>;
+    return <div>No Category available</div>;
   }
 
   return (

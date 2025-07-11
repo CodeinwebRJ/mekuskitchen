@@ -32,7 +32,7 @@ import FoodPage from "./Routes/OurMenu/FoodPage";
 import DailyTiffinPage from "./Routes/DailyTiffin/DailyTiffinPage.jsx";
 import SignUpPage from "./Routes/SignUp/SignUpPage.jsx";
 import LoginPage from "./Routes/Login/LoginPage.jsx";
-import TiffinProductPage from "./Routes/TiffinProductPage/ProductPage/TiffinProductPage.jsx";
+import TiffinProductPage from "./Routes/TiffinProductPage/TiffinProductPage.jsx";
 import Addresses from "./Routes/MyAccount/Addresses/Addresses.jsx";
 import Downloads from "./Routes/MyAccount/Downloads/Downloads.jsx";
 import Orders from "./Routes/MyAccount/Orders/Orders.jsx";
@@ -102,7 +102,8 @@ const App = () => {
 
   const fetchTiffin = async () => {
     try {
-      const res = await getAllTiffin({ Active: true });
+      const data = { Active: true };
+      const res = await getAllTiffin(data);
       dispatch(setTiffins(res.data.data));
     } catch (error) {
       console.error(error);

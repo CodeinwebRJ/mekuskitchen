@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import style from "../../../styles/RelatedProduct.module.css";
+import style from "../../styles/RelatedProduct.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -7,11 +7,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import "swiper/css/bundle";
-import RelatedProductCard from "../../../Component/Cards/RelatedProductCard";
+import RelatedProductCard from "../../Component/Cards/RelatedProductCard";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useLocation } from "react-router-dom";
-import { getRelatedProduct } from "../../../axiosConfig/AxiosConfig";
-import Heading from "../../../Component/UI-Components/Heading";
+import { getRelatedProduct } from "../../axiosConfig/AxiosConfig";
+import Heading from "../../Component/UI-Components/Heading";
 
 const TiffinRelatedProduct = () => {
   const { pathname } = useLocation();

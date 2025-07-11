@@ -38,7 +38,7 @@ ul {
   gap: 8px;
 }
 
-p {
+.content p {
   color: var(--gray-deep);
   line-height: 1.6;
   margin-bottom: 20px;

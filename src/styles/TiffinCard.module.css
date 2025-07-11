@@ -13,6 +13,19 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+.dayBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: var(--primary-blue);
+  color: var(--white);
+  padding: 4px 10px;
+  font-size: 14px;
+  border-radius: 16px;
+  z-index: 2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
 .tiffinCard:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
@@ -57,15 +70,15 @@
   }
 
   .tiffinImgContainer {
-    aspect-ratio: 3 / 2; 
+    aspect-ratio: 3 / 2;
   }
 
   .tiffinTitle {
-    font-size: 0.875rem; 
+    font-size: 0.875rem;
   }
 
   .price {
-    font-size: 0.75rem; 
+    font-size: 0.75rem;
   }
 }
 

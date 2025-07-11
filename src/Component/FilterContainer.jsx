@@ -6,6 +6,7 @@ import SidebarFilter from "./MainComponents/SidebarFilter";
 import { useDispatch } from "react-redux";
 import { setCategories } from "../../Store/Slice/FilterDataSlice";
 import slugify from "../Utils/URLslug";
+import { CiFilter } from "react-icons/ci";
 
 const FilterContainer = ({
   priceRange,

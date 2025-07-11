@@ -165,3 +165,7 @@ export const validateCoupon = async (data) => {
 
   return axiosInstance.get(`/api/v1/coupon/validate?${params.toString()}`);
 };
+
+export const addTiffinReview = async (data) => {
+  return axiosInstance.post("/api/v1/review/tiffin/add", data);
+};

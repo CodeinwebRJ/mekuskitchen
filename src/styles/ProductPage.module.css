@@ -28,11 +28,6 @@
   font-size: 14px;
 }
 
-.dateButton:hover {
-  background-color: var(--white);
-  color: var(--black);
-}
-
 .selectedDate {
   background-color: var(--primary-blue);
   color: white;

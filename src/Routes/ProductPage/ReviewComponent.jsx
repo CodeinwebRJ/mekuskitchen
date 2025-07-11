@@ -1,10 +1,14 @@
 import { useState } from "react";
 import style from "../../styles/ReviewComponent.module.css";
 import RatingStar from "../../Component/RatingStar";
-import { addProductReview } from "../../axiosConfig/AxiosConfig";
+import {
+  addProductReview,
+  addTiffinReview,
+} from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 import NoData from "../../Component/UI-Components/NoData";
 import InputField from "../../Component/UI-Components/InputField";
+import { useLocation } from "react-router-dom";
 
 const ReviewComponent = ({
   reviews,
@@ -16,6 +20,7 @@ const ReviewComponent = ({
   setRating,
   fetchReviews,
 }) => {
+  const location = useLocation();
   const [showForm, setShowForm] = useState(false);
   const [errors, setErrors] = useState({ rating: "", review: "" });
   const { user } = useSelector((state) => state.auth);
@@ -43,23 +48,36 @@ const ReviewComponent = ({
     return isValid;
   };
 
+  const category = location.pathname.split("/").filter(Boolean);
+
+  const isTiffin = category[1];
+
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     try {
-      const data = {
-        user_id: user.userid,
-        rating,
-        comment: review,
-        product_id: id,
-      };
-      await addProductReview(data);
-      await fetchReviews();
-      setRating(0);
-      setReview("");
-      setShowForm(false);
-      setErrors({ rating: "", review: "" });
+      if (isTiffin === "tiffin") {
+        const data = {
+          user_id: user.userid,
+          rating,
+          comment: review,
+          product_id: id,
+        };
+        await addTiffinReview(data);
+      } else {
+        const data = {
+          user_id: user.userid,
+          rating,
+          comment: review,
+          product_id: id,
+        };
+        await addProductReview(data);
+        await fetchReviews();
+        setRating(0);
+        setReview("");
+        setShowForm(false);
+        setErrors({ rating: "", review: "" });
+      }
     } catch (error) {
       console.error("Failed to submit review:", error);
     }

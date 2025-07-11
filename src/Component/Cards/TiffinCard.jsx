@@ -7,26 +7,14 @@ import { AddtoCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import slugify from "../../Utils/URLslug";
-import { getDatesForDayInRange } from "../../Utils/DateDayRange";
-import { useEffect, useState } from "react";
+import { formatDate } from "../../Utils/FormateDate";
+import RatingStar from "../RatingStar";
 
-const TiffinCard = ({ item }) => {
+const TiffinCard = ({ item, isRegular }) => {
   const dispatch = useDispatch();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
-  const [validDates, setValidDates] = useState([]);
-
-  useEffect(() => {
-    if (item?.date && item?.endDate && item?.day) {
-      const matchingDates = getDatesForDayInRange(
-        item.date,
-        item.endDate,
-        item.day
-      );
-      setValidDates(matchingDates);
-    }
-  }, [item]);
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
@@ -127,7 +115,7 @@ const TiffinCard = ({ item }) => {
     <div className={style.tiffinCard}>
       <Link
         to={`/product/tiffin/${slugify(item.day)}`}
-        state={{ id: item._id }}
+        state={{ id: item._id, isReg: isRegular === true ? "" : "cust" }}
       >
         <div className={style.tiffinImgContainer}>
           <img
@@ -135,10 +123,14 @@ const TiffinCard = ({ item }) => {
             alt={item?.day || "Tiffin"}
             className={style.tiffinImg}
           />
-          {item?.date && <DateChip name={validDates[0]} />}
+          {item?.date && <DateChip name={formatDate(item?.date)} />}
+          {item?.day && <div className={style.dayBadge}>{item.day}</div>}
         </div>
 
-        {item?.day && <p className={style.tiffinTitle}>{item.day}</p>}
+        {item?.name && <span>{item.name}</span>}
+        <div className={style.rating}>
+          <RatingStar rating={4} disabled />
+        </div>
         {item?.subTotal && (
           <p className={style.price}>${Number(item.totalAmount).toFixed(2)}</p>
         )}
