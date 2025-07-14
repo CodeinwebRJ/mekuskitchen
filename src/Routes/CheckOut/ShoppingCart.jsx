@@ -293,7 +293,7 @@ const ShoppingCart = () => {
       </div>
     );
   }
-  
+
   return (
     <div>
       <Header />
@@ -328,6 +328,7 @@ const ShoppingCart = () => {
                   ? item?.productDetails?.shortDescription
                   : item?.shortDescription,
               }}
+              type="product"
               onIncrease={() => updateItemQuantity(item._id, 1, "product")}
               onDecrease={() => updateItemQuantity(item._id, -1, "product")}
             />
@@ -338,13 +339,15 @@ const ShoppingCart = () => {
               key={item._id}
               item={{
                 image:
-                  item?.tiffinMenuDetails?.images?.[0]?.url ||
-                  "/placeholder.jpg",
+                  item?.tiffinMenuDetails?.image_url?.[0]?.url ||
+                  "/defaultImage.png",
                 name: item?.tiffinMenuDetails?.name,
                 price: item?.tiffinMenuDetails?.totalAmount,
+                day: item?.day,
                 quantity: item.quantity,
                 description: item?.tiffinMenuDetails?.shortDescription || "",
               }}
+              type="tiffin"
               onIncrease={() =>
                 updateItemQuantity(item._id, 1, "tiffin", item.day)
               }

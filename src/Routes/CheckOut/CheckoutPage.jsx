@@ -51,10 +51,7 @@ const OrderSummary = ({
   const federalTaxValue = safeNumber(federalTax);
   const totalTax = safeNumber(tax);
 
-  // Custom logic: $3 extra shipping if subtotal < 12
   const extraShipping = !selfPickup && subtotal < 12 ? 3 : 0;
-
-  // Use provided SCV or fallback to extraShipping
   const shippingChargeValue = selfPickup
     ? 0
     : subtotal < 12
@@ -90,23 +87,20 @@ const OrderSummary = ({
             </span>
           </div>
         )}
-
-        {!hasTiffin && (
-          <>
-            <div className={style.total}>
-              <span>Province Tax</span>
-              <span>${provinceTaxValue.toFixed(2)} CAD</span>
-            </div>
-            <div className={style.total}>
-              <span>Federal Tax</span>
-              <span>${federalTaxValue.toFixed(2)} CAD</span>
-            </div>
-            <div className={style.total}>
-              <span>Total Tax</span>
-              <span>${totalTax.toFixed(2)} CAD</span>
-            </div>
-          </>
-        )}
+        <>
+          <div className={style.total}>
+            <span>Province Tax</span>
+            <span>${provinceTaxValue.toFixed(2)} CAD</span>
+          </div>
+          <div className={style.total}>
+            <span>Federal Tax</span>
+            <span>${federalTaxValue.toFixed(2)} CAD</span>
+          </div>
+          <div className={style.total}>
+            <span>Total Tax</span>
+            <span>${totalTax.toFixed(2)} CAD</span>
+          </div>
+        </>
       </div>
       <hr />
       <div className={`${style.total} ${style.grandTotal}`}>

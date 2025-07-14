@@ -16,7 +16,7 @@ const CartItem = ({
     : item?.tiffinMenuDetails?.image_url?.[0]?.url || "/defaultImage.png";
   const name = isProduct
     ? item?.productDetails?.name?.toUpperCase()
-    : item?.day;
+    : item?.tiffinMenuDetails.name;
   const price = isProduct
     ? isAuthenticated
       ? item?.price
@@ -25,6 +25,8 @@ const CartItem = ({
         (acc, cur) => acc + Number(cur.price) * Number(cur.quantity),
         0
       );
+
+  console.log(item);
 
   return (
     <tr className={style.cartItem}>
@@ -54,6 +56,11 @@ const CartItem = ({
           <span className={style.productName}>{name}</span>
         </div>
       </td>
+      {type === "tiffin" && (
+        <td>
+          {item.day}
+        </td>
+      )}
       <td>
         ${Number(price)?.toFixed(2)} {item?.productDetails?.currency || "CAD"}
       </td>
@@ -93,6 +100,7 @@ const CartTable = ({
         <tr className={style.cartItem}>
           <th />
           <th>Product</th>
+          {tiffins.length > 0 && <th>Day</th>}
           <th>Price</th>
           <th>Quantity</th>
           <th>Total Price</th>
