@@ -10,6 +10,7 @@ import {
   getProduct,
   getUserAddress,
   getUserCart,
+  getUserOrders,
   getUserWishlist,
 } from "./axiosConfig/AxiosConfig";
 import {
@@ -56,6 +57,7 @@ import axios from "axios";
 import { setUserDetail } from "../Store/Slice/UserDetailSlice.jsx";
 import { Toast } from "./Utils/Toast.jsx";
 import { useDebouncedValue } from "./Hook/useDebouced.jsx";
+import { setOrderLoading, setOrders } from "../Store/Slice/OrderSlice.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -64,6 +66,7 @@ const App = () => {
   const Cart = useSelector((state) => state.cart);
   const isLiked = useSelector((state) => state.wishlist?.likedMap);
   const filterData = useSelector((state) => state.filterData);
+  const { statusFilter } = useSelector((state) => state.order);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -199,6 +202,27 @@ const App = () => {
       console.log(error);
     }
   };
+
+  const fetchOrders = async (status) => {
+    try {
+      dispatch(setOrderLoading(true));
+      const data = {
+        userId: user.userid,
+        orderStatus: status,
+      };
+      const res = await getUserOrders(data);
+      dispatch(setOrders(res.data.data));
+      dispatch(setOrderLoading(false));
+    } catch (error) {
+      console.log("Fetch Orders Error:", error);
+    } finally {
+      dispatch(setOrderLoading(false));
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders(statusFilter);
+  }, [statusFilter]);
 
   useEffect(() => {
     fetchProducts();

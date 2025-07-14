@@ -70,8 +70,6 @@ const WishlistItem = ({ product, fetchWishlist, icons = "false" }) => {
     }
   };
 
-  console.log(product.sellingPrice);
-
   return (
     <div className={style.item}>
       <div className={style.itemLeftSide}>

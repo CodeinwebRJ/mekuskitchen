@@ -123,6 +123,14 @@ const TiffinProductPage = () => {
     }));
   };
 
+  const customTotalPrice = useMemo(() => {
+    const itemsTotal = quantities.items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    return itemsTotal;
+  }, [quantities, product]);
+
   const handleItemInputChange = (index, value) => {
     setQuantities((prev) => ({
       ...prev,
@@ -131,6 +139,15 @@ const TiffinProductPage = () => {
       ),
     }));
   };
+
+  const isExpired = useMemo(() => {
+    if (!product?.endDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const end = new Date(product.endDate);
+    end.setHours(0, 0, 0, 0);
+    return end < today;
+  }, [product]);
 
   const handleSubmit = async () => {
     const selectedItems = quantities.items.filter((item) => item.quantity > 0);
@@ -153,12 +170,12 @@ const TiffinProductPage = () => {
         isTiffinCart: true,
         tiffinMenuId: id,
         customizedItems: selectedItems,
-        specialInstructions: "No onions",
+        specialInstructions: "NA",
         orderDate,
         day: product.day,
-        deliveryDate: selectedDate,
+        deliveryDate: product.date,
         quantity: quantities.main,
-        price: product.totalAmount,
+        price: customTotalPrice,
       };
       const res = await AddtoCart(data);
       dispatch(setCart(res?.data?.data));
@@ -191,7 +208,7 @@ const TiffinProductPage = () => {
             </div>
 
             <div className={style.priceContainer}>
-              <span className="price">${product.totalAmount}</span>
+              <span className="price">${customTotalPrice.toFixed(2)}</span>
             </div>
 
             {product.category && (
@@ -202,17 +219,25 @@ const TiffinProductPage = () => {
             )}
             {product.category && (
               <div className={style.categoryContainer}>
-                Day :{" "}
+                Day:{" "}
                 <span className={style.category}>
                   {product.day.toUpperCase()}
                 </span>
               </div>
             )}
-            {product.category && (
+            {product.date && (
               <div className={style.categoryContainer}>
                 Date:{" "}
                 <span className={style.category}>
                   {formatDate(product.date)}
+                </span>
+              </div>
+            )}
+            {product.endDate && (
+              <div className={style.categoryContainer}>
+                Booking End Date:{" "}
+                <span className={style.category}>
+                  {formatDate(product.endDate)}
                 </span>
               </div>
             )}
@@ -289,8 +314,15 @@ const TiffinProductPage = () => {
                 +
               </button>
               <div className={style.addToCartContainer}>
-                <button onClick={handleSubmit} className="Button sm">
-                  ADD TO CART
+                <button
+                  onClick={handleSubmit}
+                  className="Button sm"
+                  disabled={isExpired}
+                  style={
+                    isExpired ? { cursor: "not-allowed", opacity: 0.5 } : {}
+                  }
+                >
+                  {"ADD TO CART"}
                 </button>
               </div>
             </div>

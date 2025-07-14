@@ -48,13 +48,9 @@ const RelatedProductCard = ({ item }) => {
     ? item?.image_url?.[0]?.url
     : item?.images?.[0]?.url;
 
-  const displayTitle = isTiffin ? item?.day : item?.name;
+  const displayTitle = item?.name;
   const displayPrice = isTiffin
     ? Number(item?.totalAmount || 0).toFixed(2)
-    : Number(item?.sellingPrice || 0).toFixed(2);
-
-  const displayOrignalPrice = isTiffin
-    ? ""
     : Number(item?.sellingPrice || 0).toFixed(2);
 
   const handleWishlistToggle = async (e) => {

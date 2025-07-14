@@ -25,8 +25,6 @@ const ShoppingCart = () => {
   const { cartCount } = useSelector((state) => state.count);
   const [discount, setDiscount] = useState(0);
 
-  console.log(dialog.product);
-
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
       return cart?.items?.totalAmount;

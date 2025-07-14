@@ -135,6 +135,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
         <div className={style.cartItemDetails}>
           <div>
+            {type === "tiffin" && (
+              <p>{item.tiffinMenuDetails.name.toUpperCase()}</p>
+            )}
             <p className={style.cartItemName}>
               {type === "product"
                 ? isAuthenticated
@@ -233,7 +236,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               onClick={() => {
                 if (
                   cart.items.items.length > 0 ||
-                  cart.items.tiffin.length > 0
+                  cart.items.tiffins.length > 0
                 ) {
                   navigate("/checkout");
                 }

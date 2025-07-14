@@ -37,6 +37,7 @@ const OrderSummary = ({
   provinceTax,
   payNow,
   isLoading,
+  hasTiffin,
 }) => {
   const safeNumber = (val) => {
     const num = parseFloat(val);
@@ -46,16 +47,21 @@ const OrderSummary = ({
   const subtotal = safeNumber(total);
   const discountValue = safeNumber(discount);
   const discountPercent = safeNumber(discountPercentage);
-  const shippingChargeValue = safeNumber(SCV);
   const provinceTaxValue = safeNumber(provinceTax);
   const federalTaxValue = safeNumber(federalTax);
   const totalTax = safeNumber(tax);
 
-  const grandTotal = (
-    subtotal +
-    totalTax +
-    (selfPickup === false ? shippingChargeValue : 0)
-  ).toFixed(2);
+  // Custom logic: $3 extra shipping if subtotal < 12
+  const extraShipping = !selfPickup && subtotal < 12 ? 3 : 0;
+
+  // Use provided SCV or fallback to extraShipping
+  const shippingChargeValue = selfPickup
+    ? 0
+    : subtotal < 12
+    ? extraShipping
+    : safeNumber(SCV);
+
+  const grandTotal = (subtotal + totalTax + shippingChargeValue).toFixed(2);
 
   return (
     <div className={style.cartTotals}>
@@ -76,7 +82,7 @@ const OrderSummary = ({
           </div>
         )}
 
-        {selfPickup === false && (
+        {!selfPickup && (
           <div className={style.total}>
             <span>Shipping charges</span>
             <span>
@@ -84,18 +90,23 @@ const OrderSummary = ({
             </span>
           </div>
         )}
-        <div className={style.total}>
-          <span>Province Tax</span>
-          <span>${provinceTaxValue.toFixed(2)} CAD</span>
-        </div>
-        <div className={style.total}>
-          <span>Federal Tax</span>
-          <span>${federalTaxValue.toFixed(2)} CAD</span>
-        </div>
-        <div className={style.total}>
-          <span>Total Tax</span>
-          <span>${totalTax.toFixed(2)} CAD</span>
-        </div>
+
+        {!hasTiffin && (
+          <>
+            <div className={style.total}>
+              <span>Province Tax</span>
+              <span>${provinceTaxValue.toFixed(2)} CAD</span>
+            </div>
+            <div className={style.total}>
+              <span>Federal Tax</span>
+              <span>${federalTaxValue.toFixed(2)} CAD</span>
+            </div>
+            <div className={style.total}>
+              <span>Total Tax</span>
+              <span>${totalTax.toFixed(2)} CAD</span>
+            </div>
+          </>
+        )}
       </div>
       <hr />
       <div className={`${style.total} ${style.grandTotal}`}>
@@ -124,8 +135,6 @@ const CheckoutPage = () => {
   const [showComponent, setShowComponent] = useState("cart");
   const [shippingCharges, setShippingCharges] = useState(null);
   const [addressError, setAddressError] = useState("");
-
-  console.log(cart);
 
   const payNow = () => {
     if (!defaultAddress) {
@@ -205,7 +214,6 @@ const CheckoutPage = () => {
     return (discount / total) * 100;
   }, [discount, total]);
 
-  console.log(cart)
   useEffect(() => {
     fetchUserCart();
   }, [
@@ -291,10 +299,10 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    if (defaultAddress) {
+    if (defaultAddress && cart.items?.items.length > 0) {
       fetchShipping();
     }
-  }, [defaultAddress, cart]);
+  }, [defaultAddress, cart.items?.items]);
 
   const SCV =
     shippingCharges?.ShipmentResponse?.ShipmentResults?.ShipmentCharges
@@ -327,6 +335,7 @@ const CheckoutPage = () => {
                   selfPickup={selfPickup}
                   SCV={SCV}
                   SCC={SCC}
+                  hasTiffin={cart?.items?.tiffins?.length > 0}
                 />
                 <div className={style.address}>
                   <div className={style.addressContainer}>

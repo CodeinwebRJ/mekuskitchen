@@ -69,7 +69,7 @@ const TiffinRelatedProduct = () => {
             autoplay={
               enableAutoplay
                 ? {
-                    delay: 1500,
+                    delay: 2000,
                     disableOnInteraction: false,
                   }
                 : false

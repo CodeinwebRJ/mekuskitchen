@@ -21,7 +21,10 @@ const CartItem = ({
     ? isAuthenticated
       ? item?.price
       : item?.sku?.details?.combinations?.Price || item?.price || 0
-    : item?.tiffinMenuDetails?.totalAmount;
+    : item?.customizedItems?.reduce(
+        (acc, cur) => acc + Number(cur.price) * Number(cur.quantity),
+        0
+      );
 
   return (
     <tr className={style.cartItem}>

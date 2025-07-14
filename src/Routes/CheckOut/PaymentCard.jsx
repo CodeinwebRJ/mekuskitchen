@@ -14,6 +14,7 @@ import PaymentFail from "./PaymentFail";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
 import InputField from "../../Component/UI-Components/InputField";
+import Loading from "../../Component/UI-Components/Loading";
 
 const PaymentCard = ({ handleCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -91,7 +92,9 @@ const PaymentCard = ({ handleCancel }) => {
         paymentMethod: "CARD",
       };
 
-      if (!selfPickup) {
+      console.log(cart.items.tiffins);
+
+      if (!selfPickup && cart?.items?.tiffins?.length < 0) {
         const shippingAddress =
           defaultAddress.shipping || defaultAddress.billing;
         const shippingData = {
@@ -116,6 +119,7 @@ const PaymentCard = ({ handleCancel }) => {
 
         await ShippingCharges(shippingData);
       }
+
       await sendOrder(orderData);
       const response = await getUserCart({ id: user.userid });
       dispatch(setCart(response.data.data));
@@ -124,7 +128,7 @@ const PaymentCard = ({ handleCancel }) => {
       console.error("Payment Error:", error);
       setApiError(
         error.response?.data?.message ||
-          "An error occurred while processing the payment."
+          "An error occurred while processing the payment Please try again."
       );
       setShowComponent("fail");
     } finally {
@@ -166,7 +170,7 @@ const PaymentCard = ({ handleCancel }) => {
         <div>
           <Header />
           {isLoading ? (
-            <Loader />
+            <Loading />
           ) : (
             <div className={style.paymentContainer}>
               {showComponent === "payment" && (

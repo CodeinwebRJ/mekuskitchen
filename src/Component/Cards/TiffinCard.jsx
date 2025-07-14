@@ -16,6 +16,17 @@ const TiffinCard = ({ item, isRegular }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
 
+  const isExpired = (() => {
+    if (!item?.endDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(item.endDate);
+    endDate.setHours(0, 0, 0, 0);
+
+    return endDate < today;
+  })();
+
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
       const localCartData = JSON.parse(localStorage.getItem("cart")) || {
@@ -27,87 +38,75 @@ const TiffinCard = ({ item, isRegular }) => {
       const localCartTiffin = localCartData.tiffins || [];
 
       if (localCartItems.length > 0) {
-        Toast({
-          message: "Tiffin is already added to cart!",
-          type: "error",
-        });
+        Toast({ message: "Cart already contains items.", type: "error" });
         return;
       }
 
-      const exists = localCartTiffin.find((items) => items._id === item._id);
+      const exists = localCartTiffin.find((t) => t._id === item._id);
 
       if (exists) {
-        const updatedTiffin = localCartTiffin.map((items) => {
-          if (items._id === item._id) {
-            return { ...items, quantity: items.quantity + 1 };
-          }
-          return items;
-        });
-
+        const updatedTiffins = localCartTiffin.map((t) =>
+          t._id === item._id ? { ...t, quantity: t.quantity + 1 } : t
+        );
         const updatedCart = {
           items: localCartItems,
-          tiffins: updatedTiffin,
+          tiffins: updatedTiffins,
         };
-
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({
-          message: "Tiffin quantity updated in cart!",
-          type: "success",
-        });
         dispatch(setCart(updatedCart));
+        Toast({ message: "Tiffin quantity updated in cart!", type: "success" });
       } else {
-        const updatedTiffin = [
+        const updatedTiffins = [
           ...localCartTiffin,
-          { ...item, quantity: 1, price: item.price },
+          {
+            ...item,
+            quantity: 1,
+            price: item.totalAmount,
+          },
         ];
-
         const updatedCart = {
           items: localCartItems,
-          tiffins: updatedTiffin,
+          tiffins: updatedTiffins,
         };
-
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({
-          message: "Tiffin added to cart!",
-          type: "success",
-        });
         dispatch(setCart(updatedCart));
+        Toast({ message: "Tiffin added to cart!", type: "success" });
       }
 
       return;
     }
 
+    // For authenticated users
     if (Cart?.items?.items?.length > 0) {
       Toast({
-        message: "Tiffin is already added to cart!",
+        message: "Cart already contains items.",
         type: "error",
       });
       return;
     }
 
+    const orderDate = new Date().toISOString().split("T")[0];
+
     try {
-      const res = await AddtoCart({
+      const payload = {
         user_id: user.userid,
         isTiffinCart: true,
         tiffinMenuId: item._id,
         customizedItems: item.items || [],
-        specialInstructions: item.specialInstructions || "",
-        orderDate: Date.now(),
+        specialInstructions: item.specialInstructions || "No onions",
+        orderDate,
         day: item.day,
+        deliveryDate: item.date,
         quantity: 1,
-        price: item.subTotal,
-      });
-      dispatch(setCart(res.data.data));
-      Toast({
-        message: "Tiffin added to cart successfully!",
-        type: "success",
-      });
+        price: item.totalAmount,
+      };
+
+      const res = await AddtoCart(payload);
+      dispatch(setCart(res?.data?.data));
+      Toast({ message: "Tiffin added to cart successfully!", type: "success" });
     } catch (error) {
-      console.error("Error adding to cart:", error);
-      Toast({
-        message: "Something went wrong!",
-        type: "error",
-      });
+      console.error("Error adding tiffin to cart:", error);
+      Toast({ message: "Failed to add tiffin to cart", type: "error" });
     }
   };
 
@@ -135,7 +134,10 @@ const TiffinCard = ({ item, isRegular }) => {
           <p className={style.price}>${Number(item.totalAmount).toFixed(2)}</p>
         )}
       </Link>
-      <AddToCartButton onclick={handleAddToCart} />
+      <AddToCartButton
+        onclick={handleAddToCart}
+        disabled={isExpired ? true : false}
+      />
     </div>
   );
 };

@@ -5,17 +5,21 @@ const OrderSlice = createSlice({
   initialState: {
     Order: [],
     loading: false,
+    statusFilter: "",
   },
   reducers: {
     setOrders: (state, action) => {
       state.Order = action.payload;
     },
-    setLoading: (state, action) => {
+    setOrderLoading: (state, action) => {
       state.loading = action.payload;
+    },
+    setStatusFilter: (state, action) => {
+      state.statusFilter = action.payload;
     },
   },
 });
 
-export const { setOrders, setLoading } = OrderSlice.actions;
+export const { setOrders, setOrderLoading, setStatusFilter } = OrderSlice.actions;
 
 export default OrderSlice.reducer;

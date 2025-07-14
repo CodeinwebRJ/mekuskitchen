@@ -13,6 +13,7 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+
 .dayBadge {
   position: absolute;
   top: 8px;
