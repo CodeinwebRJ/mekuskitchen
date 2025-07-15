@@ -1,32 +1,61 @@
 import { useEffect, useRef, useState } from "react";
 import style from "../../styles/InvoiceCard.module.css";
-import html2pdf from "html2pdf.js";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import { FaEye, FaFileInvoice } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 
 const InvoiceCard = ({ order }) => {
   const invoiceRef = useRef();
   const [open, setOpen] = useState(false);
+  const [generatePDF, setGeneratePDF] = useState(false);
 
-  const handleDownload = () => {
-    html2pdf()
-      .set({
-        margin: 0,
-        filename: `Invoice_${order.orderId}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-      })
-      .from(invoiceRef.current)
-      .save();
+  const handleDownload = async (e) => {
+    e.stopPropagation();
+    setOpen(true);
+    setGeneratePDF(true);
   };
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+    if (open && generatePDF && invoiceRef.current) {
+      const timer = setTimeout(async () => {
+        try {
+          const input = invoiceRef.current;
+          const canvas = await html2canvas(input, {
+            scale: 2,
+            useCORS: true,
+          });
+
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("p", "mm", "a4");
+
+          const pageWidth = pdf.internal.pageSize.getWidth();
+
+          const margin = 10;
+          const availableWidth = pageWidth - margin * 2;
+
+          const imgWidth = canvas.width;
+          const imgHeight = canvas.height;
+
+          const scale = availableWidth / imgWidth;
+          const finalWidth = imgWidth * scale;
+          const finalHeight = imgHeight * scale;
+
+          const x = margin;
+          const y = margin;
+          pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
+          pdf.save(`Invoice_${order.orderId}.pdf`);
+        } catch (err) {
+          console.error("Failed to generate PDF:", err);
+        } finally {
+          setGeneratePDF(false);
+          setOpen(false);
+        }
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [open, generatePDF]);
 
   const totalItems = order?.tiffinItems?.length
     ? order.tiffinItems.reduce(
@@ -82,9 +111,7 @@ const InvoiceCard = ({ order }) => {
 
 const InvoiceDialog = ({ onClose, order, invoiceRef }) => {
   const { billing } = order?.address || {};
-
   const isTiffin = order?.tiffinItems?.length > 0;
-  console.log(order);
 
   return (
     <div className={style.overlay}>
@@ -149,10 +176,9 @@ const InvoiceDialog = ({ onClose, order, invoiceRef }) => {
             <tbody>
               {order.tiffinItems?.length > 0 ? (
                 order.tiffinItems.flatMap((tiffin, i) => (
-                  <tr>
+                  <tr key={`tiffin-${i}`}>
                     <td>{tiffin?.tiffinMenuDetails?.name}</td>
                     <td>{tiffin?.day}</td>
-                    <td>{tiffin?.tiffinMenuDetails?.name}</td>
                     <td>
                       {tiffin?.customizedItems.map((item, index) => (
                         <div key={index}>
@@ -161,9 +187,15 @@ const InvoiceDialog = ({ onClose, order, invoiceRef }) => {
                       ))}
                     </td>
                     <td>
+                      {tiffin?.customizedItems.reduce(
+                        (sum, item) => sum + parseInt(item.quantity),
+                        0
+                      )}
+                    </td>
+                    <td>
                       $
                       {tiffin?.customizedItems
-                        ?.reduce(
+                        .reduce(
                           (total, item) =>
                             total +
                             parseFloat(item.price) * parseFloat(item.quantity),
@@ -171,7 +203,7 @@ const InvoiceDialog = ({ onClose, order, invoiceRef }) => {
                         )
                         .toFixed(2)}
                     </td>
-                    <td>${tiffin?.totalAmount}</td>
+                    <td>${parseFloat(tiffin?.totalAmount).toFixed(2)}</td>
                   </tr>
                 ))
               ) : order.cartItems?.length > 0 ? (
@@ -181,6 +213,7 @@ const InvoiceDialog = ({ onClose, order, invoiceRef }) => {
                     <td>{item.quantity}</td>
                     <td>${parseFloat(item.price).toFixed(2)}</td>
                     <td>
+                      $
                       {(
                         parseFloat(item.price) * parseInt(item.quantity)
                       ).toFixed(2)}
@@ -189,7 +222,7 @@ const InvoiceDialog = ({ onClose, order, invoiceRef }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4">No items found</td>
+                  <td colSpan="6">No items found</td>
                 </tr>
               )}
             </tbody>
