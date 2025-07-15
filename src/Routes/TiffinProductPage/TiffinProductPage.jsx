@@ -339,12 +339,8 @@ const TiffinProductPage = () => {
             <div className={style.share}>
               Share:
               <div className={style.socialIcons}>
-                <Link to="#">
-                  <img src="/facebook.png" alt="Facebook" />
-                </Link>
-                <Link to="#">
-                  <img src="/instagram.png" alt="Instagram" />
-                </Link>
+                <img src="/facebook.png" alt="Facebook" />
+                <img src="/instagram.png" alt="Instagram" />
               </div>
             </div>
           </div>

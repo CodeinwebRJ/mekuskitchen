@@ -222,7 +222,7 @@ const App = () => {
 
   useEffect(() => {
     fetchOrders(statusFilter);
-  }, [statusFilter]);
+  }, [statusFilter, isAuthenticated]);
 
   useEffect(() => {
     fetchProducts();

@@ -75,10 +75,8 @@ function LoginPage() {
 
       if (response.data.response === "1") {
         dispatch(setUser(response.data));
-        if (rememberMe) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          localStorage.setItem("api_token", response.data.api_token);
-        }
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("api_token", response.data.api_token);
         Toast({ message: "Login Successfully", type: "success" });
         navigate("/");
       } else {

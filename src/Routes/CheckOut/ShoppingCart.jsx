@@ -161,7 +161,7 @@ const ShoppingCart = () => {
         dispatch(
           setCartCount(updatedCart?.Tiffin?.length + updatedCart.items.length)
         );
-        Toast({ message: "Quantity updated!", type: "success" });
+        Toast({ message: "Quantity updated SuccessFully!", type: "success" });
       } else {
         let currentItem;
         let newQuantity;
@@ -196,7 +196,8 @@ const ShoppingCart = () => {
             type: "tiffin",
             tiffinMenuId: currentItem.tiffinMenuId,
             quantity: newQuantity,
-            day: dayName,
+            day: currentItem.day,
+            customizedItems: currentItem.customizedItems || [],
           };
         } else {
           Toast({ message: "Invalid item type!", type: "error" });

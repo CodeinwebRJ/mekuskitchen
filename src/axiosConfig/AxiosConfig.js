@@ -169,3 +169,7 @@ export const validateCoupon = async (data) => {
 export const addTiffinReview = async (data) => {
   return axiosInstance.post("/api/v1/review/tiffin/add", data);
 };
+
+export const ValidateTiffinCoupon = async (data) => {
+  return axiosInstance.post("/api/v1/coupon/tiffin/validate", data);
+}

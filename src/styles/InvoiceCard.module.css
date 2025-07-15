@@ -13,6 +13,10 @@
   transition: transform 0.2s ease;
 }
 
+.name {
+  max-width: 50%;
+}
+
 .iconWrapper {
   background-color: #e0e7ff;
   padding: 10px;
@@ -212,6 +216,5 @@
   font-size: 1.2rem;
   font-weight: 600;
   color: #1f2937;
-  border-top: 2px solid #e5e7eb;
   padding-top: 0.75rem;
 }

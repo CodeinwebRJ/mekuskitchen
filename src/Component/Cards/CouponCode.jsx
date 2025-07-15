@@ -3,14 +3,13 @@ import style from "../../styles/CouponCode.module.css";
 import InputField from "../UI-Components/InputField";
 import { RiCoupon3Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserCart, validateCoupon } from "../../axiosConfig/AxiosConfig";
+import { getUserCart, validateCoupon, ValidateTiffinCoupon } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice.jsx";
 
 const CouponCode = ({ data, isLoading, setDiscount }) => {
   const [coupon, setCoupon] = useState("");
   const [error, setError] = useState("");
-
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -34,35 +33,11 @@ const CouponCode = ({ data, isLoading, setDiscount }) => {
     }
 
     setError("");
+
     try {
-      const items = cart?.items || [];
-      const categories = items?.items
-        ?.map((item) =>
-          isAuthenticated ? item?.productDetails?.category : item?.category
-        )
-        .filter(Boolean);
-
-      const subCategories = items?.items
-        ?.map((item) =>
-          isAuthenticated
-            ? item?.productDetails?.subCategory
-            : item?.subCategory
-        )
-        .filter(Boolean);
-
-      const productCategories = items?.items
-        ?.map((item) =>
-          isAuthenticated
-            ? item?.productDetails?.ProductCategory
-            : item?.ProductCategory
-        )
-        .filter(Boolean);
-
-      const category = [...new Set(categories)].join(",");
-      const subCategory = [...new Set(subCategories)].join(",");
-      const ProductCategory = [...new Set(productCategories)].join(",");
-
-      const orderTotal = items.totalAmount;
+      const items = cart?.items || {};
+      const productCartItems = items?.items || [];
+      const orderTotal = items?.totalAmount || 0;
 
       const today = new Date();
       const formattedDate = `${String(today.getDate()).padStart(
@@ -73,17 +48,51 @@ const CouponCode = ({ data, isLoading, setDiscount }) => {
         "0"
       )}-${today.getFullYear()}`;
 
-      const data = {
+      const commonData = {
         userId: user.userid,
         code: coupon,
         orderTotal,
         date: formattedDate,
-        category,
-        subCategory,
-        ProductCategory,
       };
 
-      const res = await validateCoupon(data);
+      let res;
+
+      if (productCartItems.length > 0) {
+        const categories = productCartItems
+          ?.map((item) =>
+            isAuthenticated ? item?.productDetails?.category : item?.category
+          )
+          .filter(Boolean);
+
+        const subCategories = productCartItems
+          ?.map((item) =>
+            isAuthenticated
+              ? item?.productDetails?.subCategory
+              : item?.subCategory
+          )
+          .filter(Boolean);
+
+        const productCategories = productCartItems
+          ?.map((item) =>
+            isAuthenticated
+              ? item?.productDetails?.ProductCategory
+              : item?.ProductCategory
+          )
+          .filter(Boolean);
+
+        const category = [...new Set(categories)].join(",");
+        const subCategory = [...new Set(subCategories)].join(",");
+        const ProductCategory = [...new Set(productCategories)].join(",");
+
+        res = await validateCoupon({
+          ...commonData,
+          category,
+          subCategory,
+          ProductCategory,
+        });
+      } else {
+        res = await ValidateTiffinCoupon(commonData);
+      }
       setDiscount(res?.data?.data);
       if (res?.data?.statusCode === 200) {
         fetchUserCart();

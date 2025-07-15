@@ -125,9 +125,11 @@ const RelatedProductCard = ({ item }) => {
             className={style.relatedProductImg}
           />
         </div>
-        <div className={style.wishlist} onClick={handleWishlistToggle}>
-          {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
-        </div>
+        {!isTiffin && (
+          <div className={style.wishlist} onClick={handleWishlistToggle}>
+            {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
+          </div>
+        )}
         <div className={style.contentWrapper}>
           <span className={style.relatedProductTitle}>
             {displayTitle || "Unnamed Product"}

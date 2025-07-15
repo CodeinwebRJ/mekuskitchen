@@ -6,7 +6,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
-import "swiper/css/bundle";
 import RelatedProductCard from "../../Component/Cards/RelatedProductCard";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useLocation } from "react-router-dom";
@@ -20,10 +19,7 @@ const TiffinRelatedProduct = () => {
 
   const fetchProduct = async () => {
     try {
-      const data = {
-        category: category[1],
-      };
-      const res = await getRelatedProduct(data);
+      const res = await getRelatedProduct({ category: category[1] });
       setRelatedProduct(res.data.data || []);
     } catch (error) {
       console.error("Error fetching related products:", error);
@@ -49,22 +45,19 @@ const TiffinRelatedProduct = () => {
         <p>No related products available.</p>
       ) : showSlider ? (
         <div className={style.sliderWrapper}>
-          {showArrows && (
-            <div
-              className={`${style.customArrow} ${style.prevArrow}`}
-              aria-label="Previous slide"
-            >
-              <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />
-            </div>
-          )}
+          {/* Custom Prev Arrow */}
+          <div
+            className={`${style.customArrow} ${style.prevArrow}`}
+            aria-label="Previous slide"
+          >
+            <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />
+          </div>
 
           <Swiper
-            navigation={
-              showArrows && {
-                prevEl: `.${style.prevArrow}`,
-                nextEl: `.${style.nextArrow}`,
-              }
-            }
+            navigation={{
+              prevEl: `.${style.prevArrow}`,
+              nextEl: `.${style.nextArrow}`,
+            }}
             loop={enableLoop}
             autoplay={
               enableAutoplay
@@ -83,7 +76,7 @@ const TiffinRelatedProduct = () => {
               0: { slidesPerView: 1 },
               480: { slidesPerView: Math.min(2, productCount) },
               768: { slidesPerView: Math.min(3, productCount) },
-              1110: { slidesPerView: Math.min(4, productCount) },
+              1160: { slidesPerView: Math.min(4, productCount) },
             }}
           >
             {relatedProduct.map((card, index) => (
@@ -95,14 +88,12 @@ const TiffinRelatedProduct = () => {
             ))}
           </Swiper>
 
-          {showArrows && (
-            <div
-              className={`${style.customArrow} ${style.nextArrow}`}
-              aria-label="Next slide"
-            >
-              <MdKeyboardDoubleArrowLeft className={style.nextArrowIcon} />
-            </div>
-          )}
+          <div
+            className={`${style.customArrow} ${style.nextArrow}`}
+            aria-label="Next slide"
+          >
+            <MdKeyboardDoubleArrowLeft className={style.nextArrowIcon} />
+          </div>
         </div>
       ) : (
         <div className={style.gridWrapper}>

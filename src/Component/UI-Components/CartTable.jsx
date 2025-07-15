@@ -56,11 +56,7 @@ const CartItem = ({
           <span className={style.productName}>{name}</span>
         </div>
       </td>
-      {type === "tiffin" && (
-        <td>
-          {item.day}
-        </td>
-      )}
+      {type === "tiffin" && <td>{item.day}</td>}
       <td>
         ${Number(price)?.toFixed(2)} {item?.productDetails?.currency || "CAD"}
       </td>
@@ -154,7 +150,10 @@ const CartTable = ({
                 </div>
               </td>
               <td>
-                ${item?.sku?.details?.combinations?.Price || item?.price || 0}
+                $
+                {(item?.sku?.details?.combinations?.Price) ||
+                  item?.price ||
+                  0}
               </td>
               <td>
                 <div className={style.quantityControl}>

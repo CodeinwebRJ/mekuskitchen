@@ -234,12 +234,8 @@ const ProductDetails = ({
       <div className={style.share}>
         Share:
         <div className={style.socialIcons}>
-          <Link to="#">
-            <img src="/facebook.png" alt="FaceBook" />
-          </Link>
-          <Link to="#">
-            <img src="/instagram.png" alt="Twitter" />
-          </Link>
+          <img src="/facebook.png" alt="FaceBook" />
+          <img src="/instagram.png" alt="Twitter" />
         </div>
       </div>
     </div>
