@@ -19,8 +19,24 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const areCustomizedItemsEqual = (a = [], b = []) => {
+    if (a.length !== b.length) return false;
+    return a.every((itemA) =>
+      b.some(
+        (itemB) =>
+          itemA.name === itemB.name &&
+          itemA.price === itemB.price &&
+          itemA.quantity === itemB.quantity &&
+          itemA.included === itemB.included &&
+          itemA.weight === itemB.weight &&
+          itemA.weightUnit === itemB.weightUnit &&
+          itemA.description === itemB.description
+      )
+    );
+  };
+
   const handleDelete = useCallback(
-    async (id, type, dayName = null, skuId) => {
+    async (id, type, dayName = null, skuId = null, customizedItems = []) => {
       setIsLoading(true);
       try {
         if (!isAuthenticated) {
@@ -30,8 +46,24 @@ const Sidebar = ({ isOpen, onClose }) => {
           };
 
           const updatedCart = {
-            tiffins: localCart.tiffins.filter((item) => item._id !== id),
-            items: localCart.items.filter((item) => item._id !== id),
+            tiffins:
+              type === "tiffin"
+                ? localCart.tiffins.filter(
+                    (item) =>
+                      !(
+                        item.tiffinMenuId === id &&
+                        item.day === dayName &&
+                        areCustomizedItemsEqual(
+                          item.customizedItems || [],
+                          customizedItems || []
+                        )
+                      )
+                  )
+                : localCart.tiffins,
+            items:
+              type === "product"
+                ? localCart.items.filter((item) => item._id !== id)
+                : localCart.items,
           };
 
           localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -46,10 +78,18 @@ const Sidebar = ({ isOpen, onClose }) => {
             type,
             quantity: 0,
             skuId: skuId ?? undefined,
-            product_id: type === "product" ? id : undefined,
-            tiffinMenuId: type === "tiffin" ? id : undefined,
-            day: type === "tiffin" ? dayName : undefined,
           };
+
+          if (type === "product") {
+            data.product_id = id;
+          } else if (type === "tiffin") {
+            data.tiffinMenuId = id;
+            data.day = dayName;
+            data.customizedItems = customizedItems || [];
+          } else {
+            Toast({ message: "Invalid item type!", type: "error" });
+            return;
+          }
 
           const res = await UpdateUserCart(data);
           dispatch(setCart(res.data.data));
@@ -136,7 +176,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={style.cartItemDetails}>
           <div>
             {type === "tiffin" && (
-              <p>{item.tiffinMenuDetails.name.toUpperCase()}</p>
+              <p>{item?.tiffinMenuDetails?.name.toUpperCase()}</p>
             )}
             <p className={style.cartItemName}>
               {type === "product"
@@ -174,7 +214,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                   : item._id,
                 type,
                 type === "tiffin" ? item.day : null,
-                type === "product" ? item?.sku?.skuId : undefined
+                type === "product" ? item?.sku?.skuId : undefined,
+                type === "tiffin" ? item?.customizedItems : undefined
               )
             }
           >

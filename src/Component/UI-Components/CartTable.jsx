@@ -26,8 +26,6 @@ const CartItem = ({
         0
       );
 
-  console.log(item);
-
   return (
     <tr className={style.cartItem}>
       <td>
@@ -37,7 +35,8 @@ const CartItem = ({
               onDelete(
                 isProduct ? item.product_id : item.tiffinMenuId,
                 type,
-                item.day
+                item.day,
+                item.customizedItems
               )
             }
           >

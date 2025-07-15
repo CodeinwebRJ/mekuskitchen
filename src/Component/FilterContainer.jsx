@@ -6,7 +6,6 @@ import SidebarFilter from "./MainComponents/SidebarFilter";
 import { useDispatch } from "react-redux";
 import { setCategories } from "../../Store/Slice/FilterDataSlice";
 import slugify from "../Utils/URLslug";
-import { CiFilter } from "react-icons/ci";
 
 const FilterContainer = ({
   priceRange,
@@ -81,7 +80,7 @@ const FilterContainer = ({
                     />
                   </div>
                   <div className={style.topRatedInfo}>
-                    <p>{product?.name || "N/A"}</p>
+                    <p className={style.top_name}>{product?.name || "N/A"}</p>
                     <div className={style.rating}>
                       <RatingStar
                         rating={product?.averageRating || 0}

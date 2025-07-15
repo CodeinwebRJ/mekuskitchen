@@ -8,6 +8,7 @@ import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 import Heading from "../../Component/UI-Components/Heading";
 import SelectField from "../../Component/UI-Components/SelectField";
+import { Toast } from "../../Utils/Toast";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -65,6 +66,7 @@ const ContactPage = () => {
         phoneCode: "+1",
         message: "",
       });
+      Toast({ message: "Message sent successfully", type: "success" });
     } catch (error) {
       console.error("Submission failed", error);
     } finally {

@@ -122,7 +122,7 @@ const ShoppingCart = () => {
     }
   };
 
-  const updateItemQuantity = async (id, delta, type, dayName = null) => {
+  const updateItemQuantity = async (id, delta, type) => {
     try {
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
@@ -220,38 +220,105 @@ const ShoppingCart = () => {
     }
   };
 
-  const handleDelete = async (id, type, dayName = null) => {
+  const areCustomizedItemsEqual = (a = [], b = []) => {
+    if (a.length !== b.length) return false;
+
+    return a.every((itemA) =>
+      b.some(
+        (itemB) =>
+          itemA.name === itemB.name &&
+          itemA.price === itemB.price &&
+          itemA.quantity === itemB.quantity &&
+          itemA.included === itemB.included &&
+          itemA.weight === itemB.weight &&
+          itemA.weightUnit === itemB.weightUnit &&
+          itemA.description === itemB.description
+      )
+    );
+  };
+
+  const handleDelete = async (
+    identifier,
+    type,
+    day = null,
+    customizedItems = []
+  ) => {
     try {
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
           Tiffin: [],
           items: [],
         };
-        let updatedTiffin = localCart.Tiffin;
-        let updatedItems = localCart.items;
-        if (localCart.items.length > 0) {
-          updatedItems = localCart.items.filter((item) => item._id !== id);
-        } else if (localCart.Tiffin.length > 0) {
-          updatedTiffin = localCart.Tiffin.filter((item) => item._id !== id);
+
+        let updatedCart = { ...localCart };
+
+        if (type === "product") {
+          updatedCart.items = localCart.items.filter(
+            (item) => item._id !== identifier
+          );
+        } else if (type === "tiffin") {
+          updatedCart.Tiffin = localCart.Tiffin.filter(
+            (item) =>
+              !(
+                item.tiffinMenuId === identifier &&
+                item.day === day &&
+                areCustomizedItemsEqual(
+                  item.customizedItems || [],
+                  customizedItems || []
+                )
+              )
+          );
+        } else {
+          Toast({ message: "Invalid item type!", type: "error" });
+          return;
         }
-        const updatedCart = {
-          Tiffin: updatedTiffin,
-          items: updatedItems,
-        };
+
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({ message: "Removed from cart!", type: "success" });
         dispatch(setCart(updatedCart));
-        dispatch(setCartCount(updatedTiffin.length + updatedItems.length));
-        return;
+        dispatch(
+          setCartCount(updatedCart.Tiffin.length + updatedCart.items.length)
+        );
+        Toast({ message: "Removed from cart!", type: "success" });
       } else {
-        const data = {
+        let data = {
           user_id: user?.userid,
           type,
           quantity: 0,
-          product_id: type === "product" ? id : undefined,
-          tiffinMenuId: type === "tiffin" ? id : undefined,
-          day: type === "tiffin" ? dayName : undefined,
         };
+
+        if (type === "product") {
+          const productItem = cart?.items?.items?.find(
+            (item) => item._id === identifier
+          );
+          if (!productItem) {
+            Toast({ message: "Product not found!", type: "error" });
+            return;
+          }
+          data.product_id = productItem.product_id;
+        } else if (type === "tiffin") {
+          const tiffinItem = cart?.items?.tiffins?.find(
+            (item) =>
+              item.tiffinMenuId === identifier &&
+              item.day === day &&
+              areCustomizedItemsEqual(
+                item.customizedItems || [],
+                customizedItems || []
+              )
+          );
+
+          if (!tiffinItem) {
+            Toast({ message: "Tiffin not found!", type: "error" });
+            return;
+          }
+
+          data.tiffinMenuId = tiffinItem.tiffinMenuId;
+          data.day = tiffinItem.day;
+          data.customizedItems = tiffinItem.customizedItems || [];
+        } else {
+          Toast({ message: "Invalid item type!", type: "error" });
+          return;
+        }
+
         const res = await UpdateUserCart(data);
         dispatch(setCart(res.data.data));
         dispatch(
