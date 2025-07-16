@@ -96,7 +96,7 @@ const useProduct = (id) => {
       if (exists) {
         const updatedItems = localCartItems.map((item) => {
           if (item._id === product._id) {
-            return { ...item, quantity: item.quantity + 1 };
+            return { ...item, quantity: item.quantity + quantity };
           }
           return item;
         });
@@ -127,7 +127,7 @@ const useProduct = (id) => {
           ...localCartItems,
           {
             ...productWithoutSKU,
-            quantity: 1,
+            quantity: quantity,
             price: selectedCombination?.Price || product.sellingPrice,
             sku: modifiedSKU,
             ...(selectedCombination

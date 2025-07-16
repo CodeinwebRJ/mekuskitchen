@@ -2,7 +2,6 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import OptionSelector from "./OptionSelector";
 import Chip from "../../Component/Buttons/Chip";
 import style from "../../styles/ProductPage.module.css";
-import { Link } from "react-router-dom";
 import RatingStar from "../../Component/RatingStar";
 import Features from "../../Component/UI-Components/Features";
 

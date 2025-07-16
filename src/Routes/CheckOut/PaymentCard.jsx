@@ -92,8 +92,6 @@ const PaymentCard = ({ handleCancel }) => {
         paymentMethod: "CARD",
       };
 
-      console.log(cart.items.tiffins);
-
       if (!selfPickup && cart?.items?.tiffins?.length < 0) {
         const shippingAddress =
           defaultAddress.shipping || defaultAddress.billing;

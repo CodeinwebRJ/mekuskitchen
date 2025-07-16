@@ -39,7 +39,7 @@ const ShoppingCart = () => {
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
           (acc, item) =>
-            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+            acc + parseFloat(item.price || 0) * (item.quantity || 1),
           0
         ) || 0)
       );
@@ -60,7 +60,7 @@ const ShoppingCart = () => {
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
           (acc, item) =>
-            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+            acc + parseFloat(item.price || 0) * (item.quantity || 1),
           0
         ) || 0)
       );
@@ -126,7 +126,7 @@ const ShoppingCart = () => {
     try {
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
-          Tiffin: [],
+          tiffins: [],
           items: [],
         };
 
@@ -150,7 +150,7 @@ const ShoppingCart = () => {
         if (type === "product") {
           updatedCart.items = updateQuantity(localCart.items, true);
         } else if (type === "tiffin") {
-          updatedCart.Tiffin = updateQuantity(localCart.Tiffin, false);
+          updatedCart.tiffins = updateQuantity(localCart.tiffins, false);
         } else {
           Toast({ message: "Invalid item type!", type: "error" });
           return;
@@ -159,7 +159,7 @@ const ShoppingCart = () => {
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         dispatch(setCart(updatedCart));
         dispatch(
-          setCartCount(updatedCart?.Tiffin?.length + updatedCart.items.length)
+          setCartCount(updatedCart?.tiffins?.length + updatedCart.items.length)
         );
         Toast({ message: "Quantity updated SuccessFully!", type: "success" });
       } else {
@@ -187,10 +187,6 @@ const ShoppingCart = () => {
             return;
           }
           newQuantity = currentItem.quantity + delta;
-          if (newQuantity < 1) {
-            Toast({ message: "Quantity cannot be less than 1", type: "error" });
-            return;
-          }
           data = {
             user_id: user?.userid,
             type: "tiffin",
@@ -212,7 +208,7 @@ const ShoppingCart = () => {
               (res.data.data.items?.tiffins?.length || 0)
           )
         );
-        Toast({ message: "Quantity updated!", type: "success" });
+        Toast({ message: "Tiffin Quantity updated Successfully!", type: "success" });
       }
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -246,7 +242,7 @@ const ShoppingCart = () => {
     try {
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
-          Tiffin: [],
+          tiffins: [],
           items: [],
         };
 
@@ -257,7 +253,7 @@ const ShoppingCart = () => {
             (item) => item._id !== identifier
           );
         } else if (type === "tiffin") {
-          updatedCart.Tiffin = localCart.Tiffin.filter(
+          updatedCart.tiffins = localCart.tiffins.filter(
             (item) =>
               !(
                 item.tiffinMenuId === identifier &&
@@ -276,7 +272,7 @@ const ShoppingCart = () => {
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         dispatch(setCart(updatedCart));
         dispatch(
-          setCartCount(updatedCart.Tiffin.length + updatedCart.items.length)
+          setCartCount(updatedCart.tiffins.length + updatedCart.items.length)
         );
         Toast({ message: "Removed from cart!", type: "success" });
       } else {
@@ -348,7 +344,9 @@ const ShoppingCart = () => {
     (isAuthenticated &&
       !cart?.items?.items?.length &&
       !cart?.items?.tiffins?.length) ||
-    (!isAuthenticated && (!cart?.items?.items || !cart.items.items.length))
+    (!isAuthenticated &&
+      !cart?.items?.items?.length &&
+      !cart?.items?.tiffins?.length)
   ) {
     return (
       <div>

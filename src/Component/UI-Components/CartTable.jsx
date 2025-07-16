@@ -11,20 +11,29 @@ const CartItem = ({
   onShowProduct,
 }) => {
   const isProduct = type === "product";
+
   const imageUrl = isProduct
     ? item?.sku?.images?.[0] || item?.productDetails?.images?.[0]?.url
-    : item?.tiffinMenuDetails?.image_url?.[0]?.url || "/defaultImage.png";
+    : isAuthenticated
+    ? item?.tiffinMenuDetails?.image_url?.[0]?.url
+    : item?.image_url?.[0]?.url || "/defaultImage.png";
+
   const name = isProduct
     ? item?.productDetails?.name?.toUpperCase()
-    : item?.tiffinMenuDetails.name;
+    : isAuthenticated
+    ? item?.tiffinMenuDetails.name
+    : item?.name;
+
   const price = isProduct
     ? isAuthenticated
       ? item?.price
       : item?.sku?.details?.combinations?.Price || item?.price || 0
-    : item?.customizedItems?.reduce(
+    : isAuthenticated
+    ? item?.customizedItems?.reduce(
         (acc, cur) => acc + Number(cur.price) * Number(cur.quantity),
         0
-      );
+      )
+    : item?.price || 0;
 
   return (
     <tr className={style.cartItem}>
@@ -114,72 +123,71 @@ const CartTable = ({
               onShowProduct={onShowProduct}
             />
           ))}
-        {tiffins.map((tiffin) => (
-          <CartItem
-            key={tiffin._id}
-            item={tiffin}
-            type="tiffin"
-            isAuthenticated={isAuthenticated}
-            onDelete={onDelete}
-            onUpdateQuantity={onUpdateQuantity}
-            onShowProduct={onShowProduct}
-          />
-        ))}
-        {!isAuthenticated &&
-          items?.map((item) => (
-            <tr className={style.cartItem}>
-              <td>
-                <div className={style.removeCell}>
-                  <button onClick={() => onDelete(item._id, "product")}>
-                    <BsTrash className={style.removeIcon} />
-                  </button>
-                  <button onClick={() => onShowProduct(item._id)}>
-                    <FaEye />
-                  </button>
-                </div>
-              </td>
-              <td>
-                <div className={style.productCell}>
-                  <img
-                    src={item?.images?.[0]?.url || "/defaultImage.png"}
-                    alt={item.name}
-                    className={style.cartItemImage}
-                  />
-                  <span>{item.name}</span>
-                </div>
-              </td>
-              <td>
-                $
-                {(item?.sku?.details?.combinations?.Price) ||
-                  item?.price ||
-                  0}
-              </td>
-              <td>
-                <div className={style.quantityControl}>
-                  <button
-                    onClick={() => onUpdateQuantity(item._id, -1, "product")}
-                    disabled={item.quantity <= 1}
-                  >
-                    <FaMinus size={14} />
-                  </button>
-                  <span className={style.quantity}>{item.quantity}</span>
-                  <button
-                    onClick={() => onUpdateQuantity(item._id, 1, "product")}
-                  >
-                    <FaPlus size={14} />
-                  </button>
-                </div>
-              </td>
-              <td className={style.totalPrice}>
-                $
-                {(
-                  item?.sku?.details?.combinations?.Price ||
-                  item?.price ||
-                  0 * item.quantity
-                ).toFixed(2)}
-              </td>
-            </tr>
+        {isAuthenticated &&
+          tiffins.map((tiffin) => (
+            <CartItem
+              key={tiffin._id}
+              item={tiffin}
+              type="tiffin"
+              isAuthenticated={isAuthenticated}
+              onDelete={onDelete}
+              onUpdateQuantity={onUpdateQuantity}
+              onShowProduct={onShowProduct}
+            />
           ))}
+        {!isAuthenticated &&
+          items?.map((item) => {
+            const unitPrice =
+              item?.sku?.details?.combinations?.Price ?? item?.price ?? 0;
+            const totalPrice = unitPrice * (item.quantity ?? 1);
+
+            return (
+              <tr key={item._id} className={style.cartItem}>
+                <td>
+                  <div className={style.removeCell}>
+                    <button onClick={() => onDelete(item._id, "product")}>
+                      <BsTrash className={style.removeIcon} />
+                    </button>
+                    <button onClick={() => onShowProduct(item._id)}>
+                      <FaEye />
+                    </button>
+                  </div>
+                </td>
+
+                <td>
+                  <div className={style.productCell}>
+                    <img
+                      src={item?.images?.[0]?.url || "/defaultImage.png"}
+                      alt={item.name}
+                      className={style.cartItemImage}
+                    />
+                    <span>{item.name}</span>
+                  </div>
+                </td>
+
+                <td>${unitPrice.toFixed(2)}</td>
+
+                <td>
+                  <div className={style.quantityControl}>
+                    <button
+                      onClick={() => onUpdateQuantity(item._id, -1, "product")}
+                      disabled={item.quantity <= 1}
+                    >
+                      <FaMinus size={14} />
+                    </button>
+                    <span className={style.quantity}>{item.quantity}</span>
+                    <button
+                      onClick={() => onUpdateQuantity(item._id, 1, "product")}
+                    >
+                      <FaPlus size={14} />
+                    </button>
+                  </div>
+                </td>
+
+                <td className={style.totalPrice}>${totalPrice.toFixed(2)}</td>
+              </tr>
+            );
+          })}
       </tbody>
     </table>
   );

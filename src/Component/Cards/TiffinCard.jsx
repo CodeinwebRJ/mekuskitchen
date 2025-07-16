@@ -33,7 +33,6 @@ const TiffinCard = ({ item, isRegular }) => {
         items: [],
         tiffins: [],
       };
-
       const localCartItems = localCartData.items || [];
       const localCartTiffin = localCartData.tiffins || [];
 

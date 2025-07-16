@@ -133,16 +133,11 @@ const Sidebar = ({ isOpen, onClose }) => {
           (item?.quantity || 1),
       0
     );
-    const tiffinTotal = tiffinItems.reduce(
-      (acc, item) =>
-        acc +
-        (isAuthenticated
-          ? item?.tiffinMenuDetails?.totalAmount
-          : item?.totalAmount || 0) *
-          (item?.quantity || 1),
-      0
-    );
-
+    const tiffinTotal = tiffinItems?.reduce((acc, item) => {
+      const price = parseFloat(item?.price || 0);
+      const qty = parseInt(item?.quantity || 1, 10);
+      return acc + price * qty;
+    }, 0);
     return (productTotal + tiffinTotal).toFixed(2);
   }, [cart, isAuthenticated]);
 
@@ -198,7 +193,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                     : item?.sku?.details?.combinations?.Price ||
                       item?.price ||
                       0
-                  : Number(item.totalAmount).toFixed(2) || 0}{" "}
+                  : isAuthenticated
+                  ? Number(item.totalAmount).toFixed(2) || 0
+                  : parseFloat(item?.price || 0).toFixed(2)}{" "}
                 {item?.productDetails?.currency || "CAD"}
               </span>
             </p>
