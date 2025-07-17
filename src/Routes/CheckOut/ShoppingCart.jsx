@@ -208,7 +208,10 @@ const ShoppingCart = () => {
               (res.data.data.items?.tiffins?.length || 0)
           )
         );
-        Toast({ message: "Tiffin Quantity updated Successfully!", type: "success" });
+        Toast({
+          message: "Tiffin Quantity updated Successfully!",
+          type: "success",
+        });
       }
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -286,6 +289,7 @@ const ShoppingCart = () => {
           const productItem = cart?.items?.items?.find(
             (item) => item._id === identifier
           );
+
           if (!productItem) {
             Toast({ message: "Product not found!", type: "error" });
             return;

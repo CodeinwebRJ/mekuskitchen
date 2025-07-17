@@ -42,7 +42,7 @@ const CartItem = ({
           <button
             onClick={() =>
               onDelete(
-                isProduct ? item.product_id : item.tiffinMenuId,
+                isProduct ? item._id : item.tiffinMenuId,
                 type,
                 item.day,
                 item.customizedItems
