@@ -184,8 +184,16 @@ const ProductCard = ({ product, grid }) => {
     }
   }, []);
 
+  console.log(product);
+
+  const OutOfStock = product.manageInvantory === true && product.stock === 0;
+
   return (
-    <div className={style.productCard}>
+    <div
+      className={`${style.productCard} ${
+        OutOfStock ? style.outOfStockOverlay : ""
+      }`}
+    >
       <Link
         to={`/product/${slugify(product?.category)}/${slugify(product?.name)}`}
         state={{ id: product._id }}
@@ -201,6 +209,9 @@ const ProductCard = ({ product, grid }) => {
               : style.productImg3
           }
         >
+          {OutOfStock && (
+            <div className={style.outOfStockBadge}>Out of Stock</div>
+          )}
           <img
             src={product?.images?.[0]?.url || "/defaultImage.png"}
             alt={product?.name}
