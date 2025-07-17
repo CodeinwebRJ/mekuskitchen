@@ -37,8 +37,6 @@ const CartItem = ({
       )
     : item?.price || 0;
 
-  console.log(item);
-
   return (
     <tr className={style.cartItem}>
       <td>
@@ -49,7 +47,9 @@ const CartItem = ({
                 isProduct ? item._id : item.tiffinMenuId,
                 type,
                 item.day,
-                item.customizedItems
+                item.customizedItems,
+                item?.sku?._id,
+                item?.combination
               )
             }
           >

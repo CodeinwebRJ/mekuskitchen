@@ -275,7 +275,9 @@ const ShoppingCart = () => {
     identifier,
     type,
     day = null,
-    customizedItems = []
+    customizedItems = [],
+    skuId = null,
+    combination = null
   ) => {
     try {
       if (!isAuthenticated) {
@@ -288,7 +290,14 @@ const ShoppingCart = () => {
 
         if (type === "product") {
           updatedCart.items = localCart.items.filter(
-            (item) => item._id !== identifier
+            (item) =>
+              !(
+                item._id === identifier &&
+                (!skuId || item?.sku?._id === skuId) &&
+                (!combination ||
+                  JSON.stringify(item?.combination) ===
+                    JSON.stringify(combination))
+              )
           );
         } else if (type === "tiffin") {
           updatedCart.tiffins = localCart.tiffins.filter(

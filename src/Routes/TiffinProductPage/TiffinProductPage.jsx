@@ -152,6 +152,7 @@ const TiffinProductPage = () => {
   const areItemsEqual = (items1, items2) => {
     if (items1.length !== items2.length) return false;
 
+    console.log(items1, items2);
     const sorted1 = [...items1].sort((a, b) =>
       a.itemId.localeCompare(b.itemId)
     );

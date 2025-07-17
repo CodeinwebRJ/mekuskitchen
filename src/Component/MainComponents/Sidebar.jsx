@@ -36,7 +36,14 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   const handleDelete = useCallback(
-    async (id, type, dayName = null, skuId = null, customizedItems = []) => {
+    async (
+      id,
+      type,
+      day = null,
+      customizedItems = [],
+      skuId = null,
+      combination = null
+    ) => {
       setIsLoading(true);
       try {
         if (!isAuthenticated) {
@@ -52,7 +59,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     (item) =>
                       !(
                         item.tiffinMenuId === id &&
-                        item.day === dayName &&
+                        item.day === day &&
                         areCustomizedItemsEqual(
                           item.customizedItems || [],
                           customizedItems || []
@@ -62,7 +69,16 @@ const Sidebar = ({ isOpen, onClose }) => {
                 : localCart.tiffins,
             items:
               type === "product"
-                ? localCart.items.filter((item) => item._id !== id)
+                ? localCart.items.filter(
+                    (item) =>
+                      !(
+                        item._id === id &&
+                        (!skuId || item?.sku?._id === skuId) &&
+                        (!combination ||
+                          JSON.stringify(item?.combination) ===
+                            JSON.stringify(combination))
+                      )
+                  )
                 : localCart.items,
           };
 
@@ -73,19 +89,45 @@ const Sidebar = ({ isOpen, onClose }) => {
           );
           Toast({ message: "Removed from cart!", type: "success" });
         } else {
-          const data = {
+          let data = {
             user_id: user?.userid,
             type,
             quantity: 0,
-            skuId: skuId ?? undefined,
           };
 
           if (type === "product") {
-            data.product_id = id;
+            const productItem = cart?.items?.items?.find(
+              (item) => item._id === id // Fixed: Use 'id' instead of 'identifier'
+            );
+
+            if (!productItem) {
+              Toast({ message: "Product not found!", type: "error" });
+              return;
+            }
+            data.product_id = productItem.product_id;
+            data.skuId = skuId;
+            data.combination = combination;
           } else if (type === "tiffin") {
-            data.tiffinMenuId = id;
-            data.day = dayName;
-            data.customizedItems = customizedItems || [];
+            const tiffinItem = cart?.items?.tiffins?.find(
+              (item) =>
+                item.tiffinMenuId === id &&
+                item.day === day &&
+                areCustomizedItemsEqual(
+                  item.customizedItems || [],
+                  customizedItems || []
+                )
+            );
+
+            console.log(tiffinItem);
+
+            if (!tiffinItem) {
+              Toast({ message: "Tiffin not found!", type: "error" });
+              return;
+            }
+
+            data.tiffinMenuId = tiffinItem.tiffinMenuId;
+            data.day = tiffinItem.day;
+            data.customizedItems = tiffinItem.customizedItems || [];
           } else {
             Toast({ message: "Invalid item type!", type: "error" });
             return;
@@ -93,6 +135,12 @@ const Sidebar = ({ isOpen, onClose }) => {
 
           const res = await UpdateUserCart(data);
           dispatch(setCart(res.data.data));
+          dispatch(
+            setCartCount(
+              (res.data.data.items?.items?.length || 0) +
+                (res.data.data.items?.tiffins?.length || 0)
+            )
+          );
           Toast({ message: "Removed from cart!", type: "success" });
         }
       } catch (error) {
@@ -102,7 +150,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         setIsLoading(false);
       }
     },
-    [isAuthenticated, user, dispatch]
+    [isAuthenticated, user, dispatch, cart]
   );
 
   useEffect(() => {
@@ -194,7 +242,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                       item?.price ||
                       0
                   : isAuthenticated
-                  ? Number(item.totalAmount).toFixed(2) || 0
+                  ? item?.customizedItems?.reduce(
+                      (acc, cur) =>
+                        acc + Number(cur.price) * Number(cur.quantity),
+                      0
+                    ) || 0
                   : parseFloat(item?.price || 0).toFixed(2)}{" "}
                 {item?.productDetails?.currency || "CAD"}
               </span>
@@ -211,8 +263,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                   : item._id,
                 type,
                 type === "tiffin" ? item.day : null,
-                type === "product" ? item?.sku?.skuId : undefined,
-                type === "tiffin" ? item?.customizedItems : undefined
+                type === "tiffin" ? item.customizedItems : undefined,
+                type === "product" ? item?.sku?._id : undefined,
+                type === "product" ? item?.combination : undefined
               )
             }
           >
