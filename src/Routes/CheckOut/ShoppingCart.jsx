@@ -122,8 +122,10 @@ const ShoppingCart = () => {
     }
   };
 
-  const updateItemQuantity = async (id, delta, type) => {
+  const updateItemQuantity = async (id, delta, type, options = {}) => {
     try {
+      const { day, customizedItems, skuId, combination } = options;
+
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
           tiffins: [],
@@ -132,25 +134,58 @@ const ShoppingCart = () => {
 
         const updateQuantity = (array) =>
           array.map((item) => {
-            if (item._id === id) {
-              const newQuantity = item.quantity + delta;
-              if (newQuantity < 1) {
-                Toast({
-                  message: "Quantity cannot be less than 1",
-                  type: "error",
-                });
-                return item;
+            if (type === "tiffin") {
+              const isSameTiffin =
+                item._id === id &&
+                item.day === day &&
+                JSON.stringify(item.customizedItems) ===
+                  JSON.stringify(customizedItems);
+
+              if (isSameTiffin) {
+                const newQuantity = item.quantity + delta;
+
+                if (newQuantity < 1) {
+                  Toast({
+                    message: "Quantity cannot be less than 1",
+                    type: "error",
+                  });
+                  return item;
+                }
+
+                return { ...item, quantity: newQuantity };
               }
-              return { ...item, quantity: newQuantity };
+            } else if (type === "product") {
+              const isSameProduct =
+                item._id === id &&
+                (!skuId || item?.sku?._id === skuId) &&
+                (!combination ||
+                  JSON.stringify(item?.combination) ===
+                    JSON.stringify(combination));
+
+              if (isSameProduct) {
+                const newQuantity = item.quantity + delta;
+
+                if (newQuantity < 1) {
+                  Toast({
+                    message: "Quantity cannot be less than 1",
+                    type: "error",
+                  });
+                  return item;
+                }
+
+                return { ...item, quantity: newQuantity };
+              }
             }
+
             return item;
           });
 
         let updatedCart = { ...localCart };
+
         if (type === "product") {
-          updatedCart.items = updateQuantity(localCart.items, true);
+          updatedCart.items = updateQuantity(localCart.items);
         } else if (type === "tiffin") {
-          updatedCart.tiffins = updateQuantity(localCart.tiffins, false);
+          updatedCart.tiffins = updateQuantity(localCart.tiffins);
         } else {
           Toast({ message: "Invalid item type!", type: "error" });
           return;
@@ -161,7 +196,7 @@ const ShoppingCart = () => {
         dispatch(
           setCartCount(updatedCart?.tiffins?.length + updatedCart.items.length)
         );
-        Toast({ message: "Quantity updated SuccessFully!", type: "success" });
+        Toast({ message: "Quantity updated Successfully!", type: "success" });
       } else {
         let currentItem;
         let newQuantity;
@@ -381,9 +416,9 @@ const ShoppingCart = () => {
         </div>
 
         <div className={style.mobileCartView}>
-          {(cart?.items?.items || []).map((item) => (
+          {(cart?.items?.items || []).map((item, index) => (
             <CartItemCardMobile
-              key={item._id}
+              key={index}
               item={{
                 image: isAuthenticated
                   ? item?.productDetails?.images?.[0]?.url
@@ -399,14 +434,24 @@ const ShoppingCart = () => {
                   : item?.shortDescription,
               }}
               type="product"
-              onIncrease={() => updateItemQuantity(item._id, 1, "product")}
-              onDecrease={() => updateItemQuantity(item._id, -1, "product")}
+              onIncrease={() =>
+                updateItemQuantity(item._id, 1, "product", {
+                  skuId: item?.sku?._id,
+                  combination: item?.combination,
+                })
+              }
+              onDecrease={() =>
+                updateItemQuantity(item._id, -1, "product", {
+                  skuId: item?.sku?._id,
+                  combination: item?.combination,
+                })
+              }
             />
           ))}
 
-          {(cart?.items?.tiffins || []).map((item) => (
+          {(cart?.items?.tiffins || []).map((item, index) => (
             <CartItemCardMobile
-              key={item._id}
+              key={index}
               item={{
                 image:
                   item?.tiffinMenuDetails?.image_url?.[0]?.url ||
@@ -419,10 +464,16 @@ const ShoppingCart = () => {
               }}
               type="tiffin"
               onIncrease={() =>
-                updateItemQuantity(item._id, 1, "tiffin", item.day)
+                updateItemQuantity(item._id, 1, "tiffin", {
+                  day: item.day,
+                  customizedItems: item.customizedItems,
+                })
               }
               onDecrease={() =>
-                updateItemQuantity(item._id, -1, "tiffin", item.day)
+                updateItemQuantity(item._id, -1, "tiffin", {
+                  day: item.day,
+                  customizedItems: item.customizedItems,
+                })
               }
             />
           ))}

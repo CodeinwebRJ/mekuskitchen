@@ -207,7 +207,7 @@ const App = () => {
     try {
       dispatch(setOrderLoading(true));
       const data = {
-        userId: user.userid,
+        userId: user?.userid,
         orderStatus: status,
       };
       const res = await getUserOrders(data);

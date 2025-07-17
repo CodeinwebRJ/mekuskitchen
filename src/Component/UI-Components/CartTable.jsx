@@ -13,7 +13,9 @@ const CartItem = ({
   const isProduct = type === "product";
 
   const imageUrl = isProduct
-    ? item?.sku?.images?.[0] || item?.productDetails?.images?.[0]?.url
+    ? isAuthenticated
+      ? item?.sku?.images?.[0] || item?.productDetails?.images?.[0]?.url
+      : (item.sku && item?.sku?.details?.SKUImages[0]) || item?.images?.[0]?.url
     : isAuthenticated
     ? item?.tiffinMenuDetails?.image_url?.[0]?.url
     : item?.image_url?.[0]?.url || "/defaultImage.png";
@@ -34,6 +36,8 @@ const CartItem = ({
         0
       )
     : item?.price || 0;
+
+  console.log(item);
 
   return (
     <tr className={style.cartItem}>
@@ -71,13 +75,29 @@ const CartItem = ({
       <td>
         <div className={style.quantityControl}>
           <button
-            onClick={() => onUpdateQuantity(item._id, -1, type, item.day)}
+            onClick={() =>
+              onUpdateQuantity(item._id, -1, type, {
+                day: item.day,
+                customizedItems: item.customizedItems,
+                skuId: item?.sku?._id,
+                combination: item?.combination,
+              })
+            }
             disabled={item.quantity <= 1}
           >
             <FaMinus size={14} />
           </button>
           <span className={style.quantity}>{item.quantity}</span>
-          <button onClick={() => onUpdateQuantity(item._id, 1, type, item.day)}>
+          <button
+            onClick={() =>
+              onUpdateQuantity(item._id, 1, type, {
+                day: item.day,
+                customizedItems: item.customizedItems,
+                skuId: item?.sku?._id,
+                combination: item?.combination,
+              })
+            }
+          >
             <FaPlus size={14} />
           </button>
         </div>
@@ -111,31 +131,29 @@ const CartTable = ({
         </tr>
       </thead>
       <tbody>
-        {isAuthenticated &&
-          items?.map((item) => (
-            <CartItem
-              key={item._id}
-              item={item}
-              type="product"
-              isAuthenticated={isAuthenticated}
-              onDelete={onDelete}
-              onUpdateQuantity={onUpdateQuantity}
-              onShowProduct={onShowProduct}
-            />
-          ))}
-        {isAuthenticated &&
-          tiffins.map((tiffin) => (
-            <CartItem
-              key={tiffin._id}
-              item={tiffin}
-              type="tiffin"
-              isAuthenticated={isAuthenticated}
-              onDelete={onDelete}
-              onUpdateQuantity={onUpdateQuantity}
-              onShowProduct={onShowProduct}
-            />
-          ))}
-        {!isAuthenticated &&
+        {items?.map((item, index) => (
+          <CartItem
+            key={index}
+            item={item}
+            type="product"
+            isAuthenticated={isAuthenticated}
+            onDelete={onDelete}
+            onUpdateQuantity={onUpdateQuantity}
+            onShowProduct={onShowProduct}
+          />
+        ))}
+        {tiffins.map((tiffin, index) => (
+          <CartItem
+            key={index}
+            item={tiffin}
+            type="tiffin"
+            isAuthenticated={isAuthenticated}
+            onDelete={onDelete}
+            onUpdateQuantity={onUpdateQuantity}
+            onShowProduct={onShowProduct}
+          />
+        ))}
+        {/* {!isAuthenticated &&
           items?.map((item) => {
             const unitPrice =
               item?.sku?.details?.combinations?.Price ?? item?.price ?? 0;
@@ -157,7 +175,15 @@ const CartTable = ({
                 <td>
                   <div className={style.productCell}>
                     <img
-                      src={item?.images?.[0]?.url || "/defaultImage.png"}
+                      src={
+                        isAuthenticated
+                          ? item?.sku?.images?.[0] ||
+                            item?.productDetails?.images?.[0]?.url ||
+                            "/defaultImage.png"
+                          : (item.sku && item?.sku?.details?.SKUImages[0]) ||
+                            item?.images?.[0]?.url ||
+                            "/defaultImage.png"
+                      }
                       alt={item.name}
                       className={style.cartItemImage}
                     />
@@ -187,7 +213,7 @@ const CartTable = ({
                 <td className={style.totalPrice}>${totalPrice.toFixed(2)}</td>
               </tr>
             );
-          })}
+          })} */}
       </tbody>
     </table>
   );

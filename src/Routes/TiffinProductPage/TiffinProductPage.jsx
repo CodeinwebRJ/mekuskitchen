@@ -152,8 +152,12 @@ const TiffinProductPage = () => {
   const areItemsEqual = (items1, items2) => {
     if (items1.length !== items2.length) return false;
 
-    const sorted1 = [...items1].sort((a, b) => a._id.localeCompare(b._id));
-    const sorted2 = [...items2].sort((a, b) => a._id.localeCompare(b._id));
+    const sorted1 = [...items1].sort((a, b) =>
+      a.itemId.localeCompare(b.itemId)
+    );
+    const sorted2 = [...items2].sort((a, b) =>
+      a.itemId.localeCompare(b.itemId)
+    );
 
     return sorted1.every((item, i) => {
       const other = sorted2[i];
@@ -204,10 +208,9 @@ const TiffinProductPage = () => {
             return {
               ...tiffin,
               quantity: tiffin.quantity + quantities.main,
-              price: (
-                parseFloat(tiffin.price || 0) +
-                parseFloat(customTotalPrice || 0)
-              ).toFixed(2),
+              price: parseFloat(tiffin.price || 0)
+                // parseFloat( || 0)
+                .toFixed(2),
             };
           }
           return tiffin;

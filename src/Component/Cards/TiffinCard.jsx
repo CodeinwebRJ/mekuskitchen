@@ -27,6 +27,28 @@ const TiffinCard = ({ item, isRegular }) => {
     return endDate < today;
   })();
 
+  const areItemsEqual = (items1, items2) => {
+    if (items1.length !== items2.length) return false;
+
+    const normalize = (items) =>
+      items
+        .map((i) => ({
+          id: i._id || i.itemId,
+          quantity: parseInt(i.quantity || 1),
+        }))
+        .sort((a, b) => a.id.localeCompare(b.id));
+
+    const normalized1 = normalize(items1);
+    const normalized2 = normalize(items2);
+
+    return normalized1.every((item, i) => {
+      return (
+        item.id === normalized2[i].id &&
+        item.quantity === normalized2[i].quantity
+      );
+    });
+  };
+
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
       const localCartData = JSON.parse(localStorage.getItem("cart")) || {
@@ -34,48 +56,76 @@ const TiffinCard = ({ item, isRegular }) => {
         tiffins: [],
       };
       const localCartItems = localCartData.items || [];
-      const localCartTiffin = localCartData.tiffins || [];
+      const localCartTiffins = localCartData.tiffins || [];
 
       if (localCartItems.length > 0) {
         Toast({ message: "Cart already contains items.", type: "error" });
         return;
       }
 
-      const exists = localCartTiffin.find((t) => t._id === item._id);
+      const orderDate = new Date().toISOString().split("T")[0];
 
-      if (exists) {
-        const updatedTiffins = localCartTiffin.map((t) =>
-          t._id === item._id ? { ...t, quantity: t.quantity + 1 } : t
-        );
-        const updatedCart = {
-          items: localCartItems,
-          tiffins: updatedTiffins,
-        };
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-        dispatch(setCart(updatedCart));
+      const customizedItems =
+        (item.items || []).map((i) => ({
+          _id: i._id,
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity || 1,
+          weight: i.weight || "",
+          weightUnit: i.weightUnit || "",
+          description: i.description || "",
+        })) || [];
+
+      const tiffinData = {
+        _id: item._id,
+        tiffinMenuId: item._id,
+        name: item.name,
+        image_url: item.image_url,
+        day: item.day,
+        deliveryDate: item.date,
+        isCustomized: false,
+        customizedItems,
+        quantity: 1,
+        price: item.totalAmount,
+        specialInstructions: item.specialInstructions || "No onions",
+        orderDate,
+      };
+
+      const existingIndex = localCartTiffins.findIndex(
+        (t) =>
+          t.tiffinMenuId === item._id &&
+          areItemsEqual(t.customizedItems || [], customizedItems)
+      );
+
+      let updatedTiffins;
+
+      if (existingIndex !== -1) {
+        updatedTiffins = localCartTiffins.map((tiffin, index) => {
+          if (index === existingIndex) {
+            return {
+              ...tiffin,
+              quantity: tiffin.quantity + 1,
+              price: parseFloat(tiffin.price || 0).toFixed(2),
+            };
+          }
+          return tiffin;
+        });
         Toast({ message: "Tiffin quantity updated in cart!", type: "success" });
       } else {
-        const updatedTiffins = [
-          ...localCartTiffin,
-          {
-            ...item,
-            quantity: 1,
-            price: item.totalAmount,
-          },
-        ];
-        const updatedCart = {
-          items: localCartItems,
-          tiffins: updatedTiffins,
-        };
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-        dispatch(setCart(updatedCart));
+        updatedTiffins = [...localCartTiffins, tiffinData];
         Toast({ message: "Tiffin added to cart!", type: "success" });
       }
 
+      const updatedCart = {
+        items: localCartItems,
+        tiffins: updatedTiffins,
+      };
+
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      dispatch(setCart(updatedCart));
       return;
     }
 
-    // For authenticated users
     if (Cart?.items?.items?.length > 0) {
       Toast({
         message: "Cart already contains items.",

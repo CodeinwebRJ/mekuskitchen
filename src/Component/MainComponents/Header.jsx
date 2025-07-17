@@ -41,10 +41,14 @@ const Header = () => {
 
   const handleLogout = () => {
     try {
-      dispatch(logout());
-      dispatch(clearUserDetail());
-      localStorage.clear();
-      navigate("/login");
+      if (isAuthenticated) {
+        dispatch(logout());
+        dispatch(clearUserDetail());
+        localStorage.clear();
+        navigate("/login");
+      } else {
+        navigate("/login");
+      }
     } catch (error) {
       console.error("Logout failed:", error);
     }

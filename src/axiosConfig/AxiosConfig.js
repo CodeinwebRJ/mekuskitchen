@@ -177,3 +177,11 @@ export const ValidateTiffinCoupon = async (data) => {
 export const RemoveCoupon = async (data) => {
   return axiosInstance.post("/api/v1/coupon/remove", data);
 }
+
+export const BulkUploadCart = async (data) => {
+  return axiosInstance.post("/api/v1/cart/product/bulk", data);
+}
+
+export const BulkUploadTiffinCart = async (data) => {
+  return axiosInstance.post("/api/v1/cart/tiffin/bulk", data);
+}

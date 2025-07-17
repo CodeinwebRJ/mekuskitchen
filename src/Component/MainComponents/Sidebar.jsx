@@ -143,7 +143,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const renderCartItem = (item, index, type) => {
     return (
-      <div className={style.cartItem} key={item?._id || index}>
+      <div className={style.cartItem} key={index}>
         <div className={style.cartItemImageContainer}>
           <img
             src={
@@ -152,7 +152,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   ? item?.sku?.images?.[0] ||
                     item?.productDetails?.images?.[0]?.url ||
                     "/defaultImage.png"
-                  : (item.sku && item?.sku[0]?.SKUImages?.[0]) ||
+                  : (item.sku && item?.sku?.details?.SKUImages[0]) ||
                     item?.images?.[0]?.url ||
                     "/defaultImage.png"
                 : isAuthenticated

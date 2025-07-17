@@ -69,7 +69,6 @@ const AddressForm = (props) => {
       provinceCode: "Province code is required",
     };
 
-    // Check required fields
     for (const [field, message] of Object.entries(requiredFields)) {
       if (
         !data[field] ||
@@ -79,12 +78,10 @@ const AddressForm = (props) => {
       }
     }
 
-    // Phone number validation (only if provided)
     if (data.phone && !/^\d{10}$/.test(data.phone)) {
       validationErrors.phone = "Please enter a valid 10-digit phone number";
     }
 
-    // Email validation
     if (
       data.email &&
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(data.email)
