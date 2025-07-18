@@ -173,7 +173,7 @@ const SidebarFilter = ({
       </div>
 
       <div className={style.filterGroup}>
-        <h6>Customer Ratings</h6>
+        <h6>Ratings</h6>
         <div className={style.checkboxGroup}>
           {[5, 4, 3, 2].map((rating) => (
             <div key={rating} className={style.checkboxItem}>
@@ -185,7 +185,9 @@ const SidebarFilter = ({
                 id={`rating-${rating}`}
                 aria-label={`Rating ${rating} stars and above`}
               />
-              <label htmlFor={`rating-${rating}`}>{rating}★ & above</label>
+              <label htmlFor={`rating-${rating}`}>
+                {rating} ★{rating < 5 && ` & above`}
+              </label>
             </div>
           ))}
         </div>

@@ -271,7 +271,7 @@ const TiffinProductPage = () => {
 
             <div className={style.ratingContainer}>
               <RatingStar rating={4} disabled />
-              <span>({reviews?.length || 0})</span>
+              <span>({reviews?.length || 0} ratings)</span>
             </div>
 
             <div className={style.priceContainer}>

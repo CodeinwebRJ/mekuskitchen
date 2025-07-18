@@ -35,11 +35,11 @@ const DailyTiffinPage = () => {
       <Banner name={"Daily Tiffin"} />
       <div className={style.TiffinContainer}>
         <div className={style.CustomiseTiffinContainer}>
-          <Heading
+          {/* <Heading
             title="Customise Your Tiffin"
             note="Please Note: All orders will accepted a day before only. For any query please contact admin"
             size="sm"
-          />
+          /> */}
           <div>
             <span>Week {regularPage}</span>
           </div>
@@ -57,11 +57,11 @@ const DailyTiffinPage = () => {
           )}
         </div>
         <div className={style.RegularTiffinContainer}>
-          <Heading
+          {/* <Heading
             title="Order A Regular Tiffin"
             note="Please Note: All orders will accepted a day before only. For any query please contact admin"
             size="sm"
-          />
+          /> */}
           <div>
             <span>Week {regularPage}</span>
           </div>

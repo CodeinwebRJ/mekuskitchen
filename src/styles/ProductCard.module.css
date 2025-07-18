@@ -104,8 +104,8 @@
   width: 36px;
   background: var(--semi-transparent-pale-gray);
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 2px;
+  right: 2px;
   z-index: 1;
   font-size: var(--font-2xl);
   cursor: pointer;

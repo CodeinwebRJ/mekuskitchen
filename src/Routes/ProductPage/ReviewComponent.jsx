@@ -23,15 +23,20 @@ const ReviewComponent = ({
   const location = useLocation();
   const [showForm, setShowForm] = useState(false);
   const [errors, setErrors] = useState({ rating: "", review: "" });
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   const validateForm = () => {
     let validationErrors = { rating: "", review: "" };
     let isValid = true;
 
+    if (!isAuthenticated) {
+      validationErrors.review = "Please log in to submit a review.";
+      isValid = false;
+    }
+
     if (!rating) {
       validationErrors.rating =
-        "Kindly rate us from 1 to 5 — your feedback matters!";
+        "Please select a rating before submitting a review!";
       isValid = false;
     }
 
