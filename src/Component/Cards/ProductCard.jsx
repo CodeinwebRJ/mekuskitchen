@@ -184,8 +184,6 @@ const ProductCard = ({ product, grid }) => {
     }
   }, []);
 
-  console.log(product);
-
   const OutOfStock = product.manageInvantory === true && product.stock === 0;
 
   return (
@@ -209,14 +207,17 @@ const ProductCard = ({ product, grid }) => {
               : style.productImg3
           }
         >
-          {OutOfStock && (
-            <div className={style.outOfStockBadge}>Out of Stock</div>
-          )}
           <img
             src={product?.images?.[0]?.url || "/defaultImage.png"}
             alt={product?.name}
             className={style.images}
           />
+          {OutOfStock && (
+            <div className={style.outOfStockBadge}>Out of Stock</div>
+          )}
+          <div className={style.wishlist} onClick={handleWishlistToggle}>
+            {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
+          </div>
         </div>
         <div className={style.productDetails}>
           <p className={style.productName}>{product?.name}</p>
@@ -237,10 +238,6 @@ const ProductCard = ({ product, grid }) => {
           </div>
         </div>
       </Link>
-
-      <div className={style.wishlist} onClick={handleWishlistToggle}>
-        {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
-      </div>
 
       <AddToCartButton onclick={handleAddToCart} />
     </div>

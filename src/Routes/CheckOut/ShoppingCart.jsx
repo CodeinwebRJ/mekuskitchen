@@ -328,7 +328,6 @@ const ShoppingCart = () => {
           type,
           quantity: 0,
         };
-
         if (type === "product") {
           const productItem = cart?.items?.items?.find(
             (item) => item._id === identifier
