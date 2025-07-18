@@ -152,18 +152,19 @@ const TiffinProductPage = () => {
   const areItemsEqual = (items1, items2) => {
     if (items1.length !== items2.length) return false;
 
-    console.log(items1, items2);
+    const getComparableId = (item) => item.itemId || item._id;
+
     const sorted1 = [...items1].sort((a, b) =>
-      a.itemId.localeCompare(b.itemId)
+      getComparableId(a).localeCompare(getComparableId(b))
     );
     const sorted2 = [...items2].sort((a, b) =>
-      a.itemId.localeCompare(b.itemId)
+      getComparableId(a).localeCompare(getComparableId(b))
     );
 
     return sorted1.every((item, i) => {
       const other = sorted2[i];
       return (
-        item._id === other._id &&
+        getComparableId(item) === getComparableId(other) &&
         parseInt(item.quantity) === parseInt(other.quantity)
       );
     });

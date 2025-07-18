@@ -29,7 +29,7 @@ const ReviewComponent = ({
     let validationErrors = { rating: "", review: "" };
     let isValid = true;
 
-    if (!rating || rating < 1 || rating > 5) {
+    if (!rating) {
       validationErrors.rating =
         "Kindly rate us from 1 to 5 — your feedback matters!";
       isValid = false;
