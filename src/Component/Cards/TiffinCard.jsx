@@ -1,5 +1,5 @@
 import style from "../../styles/TiffinCard.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AddToCartButton from "../Buttons/AddToCartButton";
 import DateChip from "../Buttons/DateChip";
 import { useSelector, useDispatch } from "react-redux";
@@ -159,6 +159,12 @@ const TiffinCard = ({ item, isRegular }) => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleView = () => {
+    navigate(`/product/tiffin/${slugify(item.day)}`);
+  };
+
   return (
     <div className={style.tiffinCard}>
       <Link
@@ -183,10 +189,20 @@ const TiffinCard = ({ item, isRegular }) => {
           <p className={style.price}>${Number(item.totalAmount).toFixed(2)}</p>
         )}
       </Link>
-      <AddToCartButton
-        onclick={handleAddToCart}
-        disabled={isExpired ? true : false}
-      />
+      {isRegular ? (
+        <AddToCartButton
+          onclick={handleAddToCart}
+          disabled={isExpired ? true : false}
+        />
+      ) : (
+        <button
+          className="Button sm"
+          onClick={handleView}
+          disabled={isExpired ? true : false}
+        >
+          VIEW TIFFIN
+        </button>
+      )}
     </div>
   );
 };

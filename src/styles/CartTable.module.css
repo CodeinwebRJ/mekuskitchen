@@ -7,6 +7,10 @@
   border-bottom: 1px solid var(--gray-border);
 }
 
+.customizedItems{
+  font-size: 14px;
+}
+
 .cartItem th,
 .cartItem td {
   padding: 16px;

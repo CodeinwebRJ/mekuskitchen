@@ -68,6 +68,15 @@ const CartItem = ({
           <span className={style.productName}>{name}</span>
         </div>
       </td>
+      {type === "tiffin" && (
+        <td>
+          {item.customizedItems.map((customItem, index) => (
+            <div className={style.customizedItems} key={index}>
+              {customItem.name} - {customItem.quantity}
+            </div>
+          ))}
+        </td>
+      )}
       {type === "tiffin" && <td>{item.day}</td>}
       <td>
         ${Number(price)?.toFixed(2)} {item?.productDetails?.currency || "CAD"}
@@ -124,6 +133,7 @@ const CartTable = ({
         <tr className={style.cartItem}>
           <th />
           <th>Product</th>
+          {tiffins.length > 0 && <th>Items</th>}
           {tiffins.length > 0 && <th>Day</th>}
           <th>Price</th>
           <th>Quantity</th>

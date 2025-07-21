@@ -186,6 +186,8 @@ const ProductCard = ({ product, grid }) => {
 
   const OutOfStock = product.manageInvantory === true && product.stock === 0;
 
+  console.log(product);
+
   return (
     <div
       className={`${style.productCard} ${
@@ -208,7 +210,11 @@ const ProductCard = ({ product, grid }) => {
           }
         >
           <img
-            src={product?.images?.[0]?.url || "/defaultImage.png"}
+            src={
+              (product?.sku && product?.sku[0]?.details?.SKUImages?.[0]) ||
+              product?.images?.[0]?.url ||
+              "/defaultImage.png"
+            }
             alt={product?.name}
             className={style.images}
           />

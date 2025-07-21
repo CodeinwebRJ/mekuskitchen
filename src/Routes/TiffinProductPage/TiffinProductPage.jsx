@@ -268,16 +268,13 @@ const TiffinProductPage = () => {
 
           <div className={style.productDetails}>
             <h5>{product.name}</h5>
-
             <div className={style.ratingContainer}>
               <RatingStar rating={4} disabled />
               <span>({reviews?.length || 0} ratings)</span>
             </div>
-
             <div className={style.priceContainer}>
               <span className="price">${customTotalPrice.toFixed(2)}</span>
             </div>
-
             {product.category && (
               <div className={style.categoryContainer}>
                 Category:{" "}
@@ -309,49 +306,47 @@ const TiffinProductPage = () => {
               </div>
             )}
 
-            {product.isCustomized === true && (
-              <div className={style.itemsContainer}>
-                {product.items?.map((item, index) => (
-                  <div className={style.items} key={item._id}>
-                    <div>{index + 1}.</div>
-                    <div>{item.name}</div>
-                    <div>${item.price}</div>
-                    {location.state.isReg === "" && <div>{item.quantity}</div>}
-                    <div>
-                      {item.weight} {item.weightUnit || ""}
-                    </div>
-                    {location.state.isReg === "cust" && (
-                      <div className={style.quantity}>
-                        <button
-                          onClick={() => updateItemQuantity(index, -1)}
-                          className={style.quantityButton}
-                        >
-                          -
-                        </button>
-                        <input
-                          type="number"
-                          value={quantities.items[index]?.quantity || 0}
-                          onChange={(e) =>
-                            handleItemInputChange(
-                              index,
-                              parseInt(e.target.value, 10) || 0
-                            )
-                          }
-                          className={style.quantityInput}
-                          min={0}
-                        />
-                        <button
-                          onClick={() => updateItemQuantity(index, 1)}
-                          className={style.quantityButton}
-                        >
-                          +
-                        </button>
-                      </div>
-                    )}
+            <div className={style.itemsContainer}>
+              {product.items?.map((item, index) => (
+                <div className={style.items} key={item._id}>
+                  <div>{index + 1}.</div>
+                  <div>{item.name}</div>
+                  <div>${item.price}</div>
+                  {location.state.isReg === "" && <div>{item.quantity}</div>}
+                  <div>
+                    {item.weight} {item.weightUnit || ""}
                   </div>
-                ))}
-              </div>
-            )}
+                  {location.state.isReg === "cust" && (
+                    <div className={style.quantity}>
+                      <button
+                        onClick={() => updateItemQuantity(index, -1)}
+                        className={style.quantityButton}
+                      >
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        value={quantities.items[index]?.quantity || 0}
+                        onChange={(e) =>
+                          handleItemInputChange(
+                            index,
+                            parseInt(e.target.value, 10) || 0
+                          )
+                        }
+                        className={style.quantityInput}
+                        min={0}
+                      />
+                      <button
+                        onClick={() => updateItemQuantity(index, 1)}
+                        className={style.quantityButton}
+                      >
+                        +
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
 
             <div className={style.quantity}>
               <button
@@ -393,7 +388,6 @@ const TiffinProductPage = () => {
                 </button>
               </div>
             </div>
-
             {product.tags?.length > 0 && (
               <div className={style.Chip}>
                 <h6>Tags:</h6>
@@ -402,7 +396,6 @@ const TiffinProductPage = () => {
                 ))}
               </div>
             )}
-
             <div className={style.share}>
               Share:
               <div className={style.socialIcons}>

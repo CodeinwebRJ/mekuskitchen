@@ -97,10 +97,8 @@ const Sidebar = ({ isOpen, onClose }) => {
 
           if (type === "product") {
             const productItem = cart?.items?.items?.find(
-              (item) => item.product_id === id 
-              
+              (item) => item.product_id === id
             );
-
 
             if (!productItem) {
               Toast({ message: "Product not found!", type: "error" });

@@ -7,6 +7,7 @@ const ImageGallery = ({
   selectedImage,
   setSelectedImage,
   selectedSKUs,
+  selectedCombination,
 }) => {
   const defaultImage = "/defaultImage.png";
   const thumbnailImages =
@@ -49,6 +50,8 @@ const ImageGallery = ({
     }
   }, [touchEndX]);
 
+  console.log(selectedCombination);
+
   return (
     <div className={style.imageContainer}>
       <div className={style.breadcrumb}>
@@ -69,6 +72,9 @@ const ImageGallery = ({
           alt={product.name}
           className={`${style.productImage} ${style.fadeIn}`}
         />
+        {selectedCombination?.Stock === 0 && (
+          <span className={style.outOfStockBadge}>Out of Stock</span>
+        )}
       </div>
 
       <div className={style.thumbnailsContainer}>
