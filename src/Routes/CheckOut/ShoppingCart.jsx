@@ -7,7 +7,11 @@ import Footer from "../../Component/MainComponents/Footer";
 import DialogBox from "../../Component/MainComponents/DialogBox";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
-import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
+import {
+  getUserCart,
+  UpdateCartTiffins,
+  UpdateUserCart,
+} from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { useNavigate } from "react-router-dom";
 import CouponCode from "../../Component/Cards/CouponCode";
@@ -114,7 +118,9 @@ const ShoppingCart = () => {
   }, [isAuthenticated, cart?.items?.items?.length]);
 
   const handleShowProduct = (id) => {
-    const product = cart?.items?.items?.find((item) => item._id === id);
+    const product =
+      cart?.items?.items?.find((item) => item._id === id) ||
+      cart?.items?.tiffins?.find((item) => item._id === id);
     if (product) {
       setDialog({ isOpen: true, product });
     } else {
@@ -407,6 +413,22 @@ const ShoppingCart = () => {
     );
   }
 
+  const isCustomized = dialog.product?.isCustomized;
+
+  const UpdateCustomizeTiffinItems = async (data) => {
+    try {
+      const data = {
+        user_id: user?.userid,
+        tiffinMenuId: dialog.product?.tiffinMenuId,
+        day: dialog.product?.day,
+        customizedItems: dialog.product?.customizedItems,
+      }
+      const res = await UpdateCartTiffins(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -517,54 +539,113 @@ const ShoppingCart = () => {
                   dialog.product?.sku?.images?.[0] ||
                   (isAuthenticated
                     ? dialog.product?.productDetails?.images?.[0]?.url
-                    : dialog.product?.images?.[0]?.url)
+                    : dialog.product?.images?.[0]?.url ||
+                      dialog.product?.image_url?.[0]?.url)
                 }
                 alt="product"
               />
             </div>
+
             <div className={style.productInfo}>
               <h2>
                 {isAuthenticated
                   ? dialog.product?.productDetails?.name
                   : dialog.product?.name}
               </h2>
+
               <div className={style.productPricing}>
                 <span className="Price">
                   $
                   {isAuthenticated
                     ? dialog.product?.price
-                    : dialog.product?.sellingPrice}
+                    : dialog.product?.sellingPrice ||
+                      dialog.product?.price}{" "}
+                  CAD
                 </span>
               </div>
-              <p className={style.productDescription}>
-                Category:{" "}
-                {isAuthenticated
-                  ? dialog.product?.productDetails?.category
-                  : dialog.product?.category}
-              </p>
-              {dialog.product?.productDetails?.subCategory ||
-                (dialog.product?.subCategory && (
+
+              {(dialog.product?.productDetails?.category ||
+                dialog.product?.category) && (
+                <p className={style.productDescription}>
+                  Category:{" "}
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.category
+                    : dialog.product?.category}
+                </p>
+              )}
+
+              {(dialog.product?.productDetails?.subCategory ||
+                dialog.product?.subCategory) && (
+                <p className={style.productDescription}>
+                  SubCategory:{" "}
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.subCategory
+                    : dialog.product?.subCategory}
+                </p>
+              )}
+
+              {(dialog.product?.productDetails?.ProductCategory ||
+                dialog.product?.ProductCategory) && (
+                <p className={style.productDescription}>
+                  Product:{" "}
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.ProductCategory
+                    : dialog.product?.ProductCategory}
+                </p>
+              )}
+
+              {(dialog.product?.productDetails?.shortDescription ||
+                dialog.product?.shortDescription) && (
+                <p className={style.productDescription}>
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.shortDescription
+                    : dialog.product?.shortDescription}
+                </p>
+              )}
+
+              {dialog.product?.customizedItems && (
+                <>
                   <p className={style.productDescription}>
-                    SubCategory:{" "}
-                    {isAuthenticated
-                      ? dialog.product?.productDetails?.subCategory
-                      : dialog.product?.subCategory}
+                    Day: {dialog.product.day}
                   </p>
-                ))}
-              {dialog.product?.productDetails?.subSubCategory ||
-                (dialog.product?.ProductCategory && (
+
                   <p className={style.productDescription}>
-                    Product:{" "}
-                    {isAuthenticated
-                      ? dialog.product?.productDetails?.ProductCategory
-                      : dialog.product?.ProductCategory}
+                    Quantity: {dialog.product.quantity}
                   </p>
-                ))}
-              <p className={style.productDescription}>
-                {isAuthenticated
-                  ? dialog.product?.productDetails?.shortDescription
-                  : dialog.product?.shortDescription}
-              </p>
+
+                  <div>
+                    <span>ITEMS:</span>
+                    <ul>
+                      {dialog.product.customizedItems.map((item) => (
+                        <li className={style.customizedItems} key={item._id}>
+                          {item.name}
+                          {isCustomized ? (
+                            <div className={style.quantity}>
+                              <button className={style.quantityButton}>
+                                -
+                              </button>
+                              <input
+                                type="number"
+                                value={item.quantity}
+                                className={style.quantityInput}
+                                min={0}
+                              />
+                              <button className={style.quantityButton}>
+                                +
+                              </button>
+                            </div>
+                          ) : (
+                            <span className={style.quantity}>
+                              {item.quantity}
+                            </span>
+                          )}{" "}
+                          {item.weight} {item.weightUnit} - ${item.price} CAD
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}

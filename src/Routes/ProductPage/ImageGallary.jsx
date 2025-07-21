@@ -8,6 +8,8 @@ const ImageGallery = ({
   setSelectedImage,
   selectedSKUs,
   selectedCombination,
+  type,
+  item,
 }) => {
   const defaultImage = "/defaultImage.png";
   const thumbnailImages =
@@ -18,7 +20,6 @@ const ImageGallery = ({
   const imageList = thumbnailImages.map((img) =>
     typeof img === "string" ? img : img?.url || defaultImage
   );
-
   const currentIndex = imageList.findIndex((img) => img === selectedImage);
   const imageRef = useRef(null);
   const [touchStartX, setTouchStartX] = useState(null);
@@ -50,7 +51,7 @@ const ImageGallery = ({
     }
   }, [touchEndX]);
 
-  console.log(selectedCombination);
+  const OutOfStock = selectedCombination?.Stock === 0 || product.stock === 0;
 
   return (
     <div className={style.imageContainer}>
@@ -72,8 +73,13 @@ const ImageGallery = ({
           alt={product.name}
           className={`${style.productImage} ${style.fadeIn}`}
         />
-        {selectedCombination?.Stock === 0 && (
+        {OutOfStock && (
           <span className={style.outOfStockBadge}>Out of Stock</span>
+        )}
+        {type === "tiffin" && (
+          <span className={style.customizedBadge}>
+            {item.isCustomized ? "Customized" : "Regular"}
+          </span>
         )}
       </div>
 

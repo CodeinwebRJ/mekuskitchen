@@ -138,7 +138,8 @@ const ProductCard = ({ product, grid }) => {
     }
   };
 
-  const handleWishlistToggle = async () => {
+  const handleWishlistToggle = async (e) => {
+    e.preventDefault();
     if (!isAuthenticated) {
       const localWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
       const exists = localWishlist.some((item) => item._id === product._id);
@@ -186,7 +187,6 @@ const ProductCard = ({ product, grid }) => {
 
   const OutOfStock = product.manageInvantory === true && product.stock === 0;
 
-  console.log(product);
 
   return (
     <div
@@ -245,7 +245,7 @@ const ProductCard = ({ product, grid }) => {
         </div>
       </Link>
 
-      <AddToCartButton onclick={handleAddToCart} />
+      <AddToCartButton disabled={OutOfStock} onclick={handleAddToCart} />
     </div>
   );
 };

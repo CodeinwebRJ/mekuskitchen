@@ -10,7 +10,7 @@ import slugify from "../../Utils/URLslug";
 import { formatDate } from "../../Utils/FormateDate";
 import RatingStar from "../RatingStar";
 
-const TiffinCard = ({ item, isRegular }) => {
+const TiffinCard = ({ item }) => {
   const dispatch = useDispatch();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -164,12 +164,12 @@ const TiffinCard = ({ item, isRegular }) => {
   const handleView = () => {
     navigate(`/product/tiffin/${slugify(item.day)}`);
   };
-
+  
   return (
     <div className={style.tiffinCard}>
       <Link
         to={`/product/tiffin/${slugify(item.day)}`}
-        state={{ id: item._id, isReg: isRegular === true ? "" : "cust" }}
+        state={{ id: item._id }}
       >
         <div className={style.tiffinImgContainer}>
           <img
@@ -183,18 +183,13 @@ const TiffinCard = ({ item, isRegular }) => {
 
         {item?.name && <span>{item.name}</span>}
         <div className={style.rating}>
-          <RatingStar rating={4} disabled />
+          <RatingStar rating={item?.averageRating} disabled />
         </div>
         {item?.subTotal && (
           <p className={style.price}>${Number(item.totalAmount).toFixed(2)}</p>
         )}
       </Link>
-      {isRegular ? (
-        <AddToCartButton
-          onclick={handleAddToCart}
-          disabled={isExpired ? true : false}
-        />
-      ) : (
+      {item.isCustomized ? (
         <button
           className="Button sm"
           onClick={handleView}
@@ -202,6 +197,11 @@ const TiffinCard = ({ item, isRegular }) => {
         >
           VIEW TIFFIN
         </button>
+      ) : (
+        <AddToCartButton
+          onclick={handleAddToCart}
+          disabled={isExpired ? true : false}
+        />
       )}
     </div>
   );

@@ -72,6 +72,8 @@ const ProductDetails = ({
     }
   };
 
+  const OutofStock = selectedCombination?.Stock === 0 || product.stock === 0;
+
   return (
     <div className={style.productDetails}>
       <div>
@@ -155,17 +157,19 @@ const ProductDetails = ({
         <div className={style.addToCartContainer}>
           <button
             onClick={handleAddToCart}
-            className="Button sm"
-            disabled={product.sku.length > 1 && !selectedCombination}
+            className={`Button sm ${OutofStock ? "disabled" : ""}`}
+            disabled={
+              (product.sku.length > 1 && !selectedCombination) || OutofStock
+            }
           >
-            ADD TO CART
+            {"ADD TO CART"}
           </button>
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <Features />
-      </div>
+      </div> */}
 
       {product?.sku?.length > 0 &&
         product?.sku[0]?.details?.combinations?.length > 0 && (

@@ -185,3 +185,7 @@ export const BulkUploadCart = async (data) => {
 export const BulkUploadTiffinCart = async (data) => {
   return axiosInstance.post("/api/v1/cart/tiffin/bulk", data);
 }
+
+export const UpdateCartTiffins = async (data) => {
+  return axiosInstance.patch("/api/v1/cart/tiffin/update", data);
+}

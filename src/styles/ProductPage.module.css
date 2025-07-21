@@ -116,6 +116,10 @@
   padding: 8px 0px;
 }
 
+.Chip h6 {
+  margin: 0;
+}
+
 .colorContainer {
   display: flex;
   gap: var(--gap-6);
@@ -131,7 +135,7 @@
 
 .navigation {
   display: flex;
-  gap: var(--gap-3);
+  gap: var(--gap-6);
 }
 
 .navButton {

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState } from "react";
 import style from "../../styles/ProductPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Footer from "../../Component/MainComponents/Footer";
 import TiffinRelatedProduct from "./TiffinRelatedProduct";
 import Header from "../../Component/MainComponents/Header";
@@ -14,7 +14,6 @@ import ImageGallery from "../ProductPage/ImageGallary";
 import ReviewComponent from "../ProductPage/ReviewComponent";
 import Loading from "../../Component/UI-Components/Loading";
 import RatingStar from "../../Component/RatingStar";
-import { getDatesForDayInRange } from "../../Utils/DateDayRange";
 import { formatDate } from "../../Utils/FormateDate";
 
 const getTabData = (
@@ -74,7 +73,6 @@ const TiffinProductPage = () => {
   const { tiffins: products = [], loading } = useSelector(
     (state) => state.tiffin
   );
-  const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const product = useMemo(
@@ -255,6 +253,8 @@ const TiffinProductPage = () => {
 
   if (loading || !product) return <Loading />;
 
+  const isCustomized = product.isCustomized;
+
   return (
     <div>
       <Header />
@@ -264,36 +264,24 @@ const TiffinProductPage = () => {
             product={{ images: product.image_url }}
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
+            type={"tiffin"}
+            item={product}
           />
 
           <div className={style.productDetails}>
             <h5>{product.name}</h5>
             <div className={style.ratingContainer}>
-              <RatingStar rating={4} disabled />
-              <span>({reviews?.length || 0} ratings)</span>
+              <RatingStar rating={product?.averageRating} disabled />
+              <span>({product?.totalReviews || 0} ratings)</span>
             </div>
             <div className={style.priceContainer}>
               <span className="price">${customTotalPrice.toFixed(2)}</span>
             </div>
-            {product.category && (
-              <div className={style.categoryContainer}>
-                Category:{" "}
-                <span className={style.category}>{product.category}</span>
-              </div>
-            )}
-            {product.category && (
-              <div className={style.categoryContainer}>
-                Day:{" "}
-                <span className={style.category}>
-                  {product.day.toUpperCase()}
-                </span>
-              </div>
-            )}
             {product.date && (
               <div className={style.categoryContainer}>
                 Date:{" "}
                 <span className={style.category}>
-                  {formatDate(product.date)}
+                  {formatDate(product.date)} - {product.day.toUpperCase()}
                 </span>
               </div>
             )}
@@ -312,11 +300,11 @@ const TiffinProductPage = () => {
                   <div>{index + 1}.</div>
                   <div>{item.name}</div>
                   <div>${item.price}</div>
-                  {location.state.isReg === "" && <div>{item.quantity}</div>}
+                  {isCustomized && <div>{item.quantity}</div>}
                   <div>
                     {item.weight} {item.weightUnit || ""}
                   </div>
-                  {location.state.isReg === "cust" && (
+                  {isCustomized && (
                     <div className={style.quantity}>
                       <button
                         onClick={() => updateItemQuantity(index, -1)}

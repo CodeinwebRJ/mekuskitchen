@@ -1,6 +1,7 @@
 import { BsTrash } from "react-icons/bs";
 import { FaEye, FaMinus, FaPlus } from "react-icons/fa";
 import style from "../../styles/CartTable.module.css";
+import { MdEdit } from "react-icons/md";
 
 const CartItem = ({
   item,
@@ -40,32 +41,18 @@ const CartItem = ({
   return (
     <tr className={style.cartItem}>
       <td>
-        <div className={style.removeCell}>
-          <button
-            onClick={() =>
-              onDelete(
-                isProduct ? item._id : item.tiffinMenuId,
-                type,
-                item.day,
-                item.customizedItems,
-                item?.sku?._id,
-                item?.combination
-              )
-            }
-          >
-            <BsTrash className={style.removeIcon} />
-          </button>
-          {isProduct && (
-            <button onClick={() => onShowProduct(item._id)}>
-              <FaEye />
-            </button>
-          )}
-        </div>
-      </td>
-      <td>
         <div className={style.productCell}>
-          <img src={imageUrl} alt={type} className={style.cartItemImage} />
-          <span className={style.productName}>{name}</span>
+          <div className={style.productImageContainer}>
+            <img src={imageUrl} alt={type} className={style.cartItemImage} />
+          </div>
+          <span className={style.productName}>
+            {name}{" "}
+            {type === "tiffin" && item?.isCustomized ? (
+              <span className={style.customizedBadge}>Customized</span>
+            ) : (
+              <span className={style.customizedBadge}>Regular</span>
+            )}
+          </span>
         </div>
       </td>
       {type === "tiffin" && (
@@ -78,6 +65,7 @@ const CartItem = ({
         </td>
       )}
       {type === "tiffin" && <td>{item.day}</td>}
+
       <td>
         ${Number(price)?.toFixed(2)} {item?.productDetails?.currency || "CAD"}
       </td>
@@ -115,6 +103,27 @@ const CartItem = ({
         ${(price * item.quantity).toFixed(2)}{" "}
         {item?.productDetails?.currency || "CAD"}
       </td>
+      <td>
+        <div className={style.removeCell}>
+          <button onClick={() => onShowProduct(item._id)}>
+            {type === "tiffin" && item?.isCustomized ? <MdEdit /> : <FaEye />}
+          </button>
+          <button
+            onClick={() =>
+              onDelete(
+                isProduct ? item._id : item.tiffinMenuId,
+                type,
+                item.day,
+                item.customizedItems,
+                item?.sku?._id,
+                item?.combination
+              )
+            }
+          >
+            <BsTrash className={style.removeIcon} />
+          </button>
+        </div>
+      </td>
     </tr>
   );
 };
@@ -131,13 +140,13 @@ const CartTable = ({
     <table className={style.cartTable}>
       <thead>
         <tr className={style.cartItem}>
-          <th />
           <th>Product</th>
           {tiffins.length > 0 && <th>Items</th>}
           {tiffins.length > 0 && <th>Day</th>}
           <th>Price</th>
           <th>Quantity</th>
           <th>Total Price</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -163,67 +172,6 @@ const CartTable = ({
             onShowProduct={onShowProduct}
           />
         ))}
-        {/* {!isAuthenticated &&
-          items?.map((item) => {
-            const unitPrice =
-              item?.sku?.details?.combinations?.Price ?? item?.price ?? 0;
-            const totalPrice = unitPrice * (item.quantity ?? 1);
-
-            return (
-              <tr key={item._id} className={style.cartItem}>
-                <td>
-                  <div className={style.removeCell}>
-                    <button onClick={() => onDelete(item._id, "product")}>
-                      <BsTrash className={style.removeIcon} />
-                    </button>
-                    <button onClick={() => onShowProduct(item._id)}>
-                      <FaEye />
-                    </button>
-                  </div>
-                </td>
-
-                <td>
-                  <div className={style.productCell}>
-                    <img
-                      src={
-                        isAuthenticated
-                          ? item?.sku?.images?.[0] ||
-                            item?.productDetails?.images?.[0]?.url ||
-                            "/defaultImage.png"
-                          : (item.sku && item?.sku?.details?.SKUImages[0]) ||
-                            item?.images?.[0]?.url ||
-                            "/defaultImage.png"
-                      }
-                      alt={item.name}
-                      className={style.cartItemImage}
-                    />
-                    <span>{item.name}</span>
-                  </div>
-                </td>
-
-                <td>${unitPrice.toFixed(2)}</td>
-
-                <td>
-                  <div className={style.quantityControl}>
-                    <button
-                      onClick={() => onUpdateQuantity(item._id, -1, "product")}
-                      disabled={item.quantity <= 1}
-                    >
-                      <FaMinus size={14} />
-                    </button>
-                    <span className={style.quantity}>{item.quantity}</span>
-                    <button
-                      onClick={() => onUpdateQuantity(item._id, 1, "product")}
-                    >
-                      <FaPlus size={14} />
-                    </button>
-                  </div>
-                </td>
-
-                <td className={style.totalPrice}>${totalPrice.toFixed(2)}</td>
-              </tr>
-            );
-          })} */}
       </tbody>
     </table>
   );

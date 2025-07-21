@@ -18,7 +18,7 @@ import {
   setLoading,
   setProducts,
 } from "../Store/Slice/ProductSlice.jsx";
-import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
+import { setTiffinLoading, setTiffins } from "../Store/Slice/TiffinSlice.jsx";
 import {
   setAddresses,
   setDefaultAddress,
@@ -105,9 +105,11 @@ const App = () => {
 
   const fetchTiffin = async () => {
     try {
+      dispatch(setTiffinLoading(true));
       const data = { Active: true };
       const res = await getAllTiffin(data);
       dispatch(setTiffins(res.data.data));
+      dispatch(setTiffinLoading(false));
     } catch (error) {
       console.error(error);
     }
