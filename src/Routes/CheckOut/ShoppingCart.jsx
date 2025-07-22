@@ -5,7 +5,7 @@ import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import DialogBox from "../../Component/MainComponents/DialogBox";
-import { setCart } from "../../../Store/Slice/UserCartSlice";
+import { setCart, setCartLoading } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
 import {
   getUserCart,
@@ -19,15 +19,19 @@ import CartCard from "../../Component/Cards/CartCard";
 import CartTable from "../../Component/UI-Components/CartTable";
 import CartItemCardMobile from "../../Component/UI-Components/CartItemcard";
 import NoDataFound from "../../Component/MainComponents/NoDataFound";
+import Loading from "../../Component/UI-Components/Loading";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
+  const { loading } = useSelector((state) => state.cart);
   const [dialog, setDialog] = useState({ isOpen: false, product: null });
   const navigate = useNavigate();
   const { cartCount } = useSelector((state) => state.count);
-  const [discount, setDiscount] = useState(0);
+  const [] = useState([]);
+
+  console.log(dialog.product)
 
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
@@ -71,33 +75,9 @@ const ShoppingCart = () => {
     }
   }, [cart, isAuthenticated]);
 
-  // const discount = useMemo(() => {
-  //   if (isAuthenticated) {
-  //     return (
-  //       cart?.items?.items?.reduce(
-  //         (acc, item) => acc + (item.price - item.price) * item.quantity,
-  //         0
-  //       ) || 0
-  //     );
-  //   } else {
-  //     return cart?.items?.items?.reduce((acc, item) => {
-  //       const originalPrice =
-  //         item?.sku?.details?.combinations?.Price || item?.price || 0;
-  //       const discountedPrice = item?.sellingPrice || 0;
-  //       const itemDiscount =
-  //         (discountedPrice - originalPrice) * (item?.quantity || 0);
-  //       return acc + itemDiscount;
-  //     }, 0);
-  //   }
-  // }, [cart]);
-
-  const discountPercentage = useMemo(() => {
-    if (total === 0) return 0;
-    return (discount / total) * 100;
-  }, [discount, total]);
-
   const fetchUserCart = async () => {
     try {
+      dispatch(setCartLoading(true));
       if (user?.userid) {
         const data = {
           id: user.userid,
@@ -105,6 +85,7 @@ const ShoppingCart = () => {
         const res = await getUserCart(data);
         dispatch(setCart(res.data.data));
       }
+      dispatch(setCartLoading(false));
     } catch (error) {
       console.error("Error fetching user cart:", error);
       Toast({ message: "Failed to load cart!", type: "error" });
@@ -413,21 +394,151 @@ const ShoppingCart = () => {
     );
   }
 
-  const isCustomized = dialog.product?.isCustomized;
+  const CustomizedItemforLocal = (a = [], b = []) => {
+    if (a.length !== b.length) return false;
 
-  const UpdateCustomizeTiffinItems = async (data) => {
+    const sortById = (arr) =>
+      [...arr].sort((x, y) => x.itemId.localeCompare(y.itemId));
+
+    const sortedA = sortById(a);
+    const sortedB = sortById(b);
+
+    return sortedA.every((itemA, index) => {
+      const itemB = sortedB[index];
+      return (
+        itemA.itemId === itemB.itemId &&
+        itemA.name === itemB.name &&
+        String(itemA.price) === String(itemB.price) &&
+        Number(itemA.quantity) === Number(itemB.quantity)
+      );
+    });
+  };
+
+  const UpdateCustomizeTiffinItems = async () => {
     try {
-      const data = {
-        user_id: user?.userid,
-        tiffinMenuId: dialog.product?.tiffinMenuId,
-        day: dialog.product?.day,
-        customizedItems: dialog.product?.customizedItems,
+      if (!isAuthenticated) {
+        const localCart = JSON.parse(localStorage.getItem("cart")) || {
+          tiffins: [],
+          items: [],
+        };
+
+        const updatedTiffins = localCart.tiffins.map((item) => {
+          const isSameTiffin =
+            item.tiffinMenuId === dialog.product?.tiffinMenuId &&
+            item.day === dialog.product?.day &&
+            areCustomizedItemsEqual(
+              item.customizedItems,
+              dialog.product?.originalCustomizedItems || []
+            );
+
+          if (isSameTiffin) {
+            const updatedCustomizedItems =
+              dialog.product?.customizedItems || [];
+
+            const newPrice = updatedCustomizedItems
+              .reduce((acc, curr) => {
+                return (
+                  acc +
+                  parseFloat(curr.price || 0) * (parseInt(curr.quantity) || 1)
+                );
+              }, 0)
+              .toFixed(2);
+
+            return {
+              ...item,
+              customizedItems: updatedCustomizedItems,
+              price: newPrice,
+            };
+          }
+
+          return item;
+        });
+
+        const updatedCart = {
+          ...localCart,
+          tiffins: updatedTiffins,
+        };
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        dispatch(setCart(updatedCart));
+        dispatch(
+          setCartCount(updatedCart.items.length + updatedCart.tiffins.length)
+        );
+
+        Toast({
+          message: "Customized items updated locally!",
+          type: "success",
+        });
+
+        setDialog({ isOpen: false, product: null });
+      } else {
+        dispatch(setCartLoading(true));
+        const data = {
+          user_id: user?.userid,
+          tiffinMenuId: dialog.product?.tiffinMenuId,
+          day: dialog.product?.day,
+          customizedItems: dialog.product?.customizedItems,
+        };
+        const res = await UpdateCartTiffins(data);
+        dispatch(setCart(res.data.data));
+        dispatch(
+          setCartCount(
+            (res.data.data.items?.items?.length || 0) +
+              (res.data.data.items?.tiffins?.length || 0)
+          )
+        );
+
+        setDialog({ isOpen: false, product: null });
+        Toast({
+          message: "Customized items updated successfully!",
+          type: "success",
+        });
+        dispatch(setCartLoading(false));
       }
-      const res = await UpdateCartTiffins(data);
     } catch (error) {
       console.log(error);
+      Toast({
+        message: "Failed to update customized tiffin items",
+        type: "error",
+      });
     }
   };
+
+  const handleCustomizedItemQuantityChange = async (index, delta) => {
+    const updatedItems = [...dialog.product.customizedItems];
+    let newQty = parseInt(updatedItems[index].quantity || 1) + delta;
+
+    if (newQty < 0) {
+      Toast({ message: "Quantity cannot be less than 0", type: "error" });
+      return;
+    }
+
+    updatedItems[index] = {
+      ...updatedItems[index],
+      quantity: newQty.toString(),
+    };
+
+    const updatedProduct = {
+      ...dialog.product,
+      customizedItems: updatedItems,
+    };
+
+    setDialog((prev) => ({
+      ...prev,
+      product: updatedProduct,
+    }));
+  };
+
+  const isCustomized =
+    dialog?.product?.tiffinMenuDetails?.isCustomized ||
+    dialog?.product?.isCustomized;
+
+  if (loading)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
 
   return (
     <div>
@@ -510,7 +621,7 @@ const ShoppingCart = () => {
         </div>
         <div className={style.cartSummary}>
           <div>
-            <CouponCode data={cart} setDiscount={setDiscount} />
+            <CouponCode data={cart} />
           </div>
           <div className={style.cartTotals}>
             <CartCard
@@ -537,10 +648,9 @@ const ShoppingCart = () => {
               <img
                 src={
                   dialog.product?.sku?.images?.[0] ||
-                  (isAuthenticated
-                    ? dialog.product?.productDetails?.images?.[0]?.url
-                    : dialog.product?.images?.[0]?.url ||
-                      dialog.product?.image_url?.[0]?.url)
+                  dialog.product?.tiffinMenuDetails?.image_url?.[0]?.url ||
+                  dialog.product?.image_url?.[0]?.url ||
+                  "/defaultImage.png"
                 }
                 alt="product"
               />
@@ -548,18 +658,20 @@ const ShoppingCart = () => {
 
             <div className={style.productInfo}>
               <h2>
-                {isAuthenticated
-                  ? dialog.product?.productDetails?.name
-                  : dialog.product?.name}
+                {dialog.product?.productDetails?.name ||
+                  dialog.product?.name ||
+                  dialog.product?.tiffinMenuDetails?.name ||
+                  "Tiffin Item"}
               </h2>
 
               <div className={style.productPricing}>
                 <span className="Price">
                   $
-                  {isAuthenticated
-                    ? dialog.product?.price
-                    : dialog.product?.sellingPrice ||
-                      dialog.product?.price}{" "}
+                  {dialog.product?.price ||
+                    dialog.product?.sellingPrice ||
+                    dialog.product?.totalAmount ||
+                    dialog.product?.tiffinMenuDetails?.totalAmount ||
+                    0}{" "}
                   CAD
                 </span>
               </div>
@@ -594,57 +706,108 @@ const ShoppingCart = () => {
                 </p>
               )}
 
-              {(dialog.product?.productDetails?.shortDescription ||
-                dialog.product?.shortDescription) && (
+              {dialog.product?.tiffinMenuDetails?.description && (
                 <p className={style.productDescription}>
-                  {isAuthenticated
-                    ? dialog.product?.productDetails?.shortDescription
-                    : dialog.product?.shortDescription}
+                  {dialog.product?.tiffinMenuDetails?.description}
                 </p>
               )}
 
-              {dialog.product?.customizedItems && (
+              {dialog.product?.day && (
+                <p className={style.productDescription}>
+                  Day: {dialog.product.day}
+                </p>
+              )}
+
+              {dialog.product?.quantity && (
+                <p className={style.productDescription}>
+                  Quantity: {dialog.product.quantity}
+                </p>
+              )}
+
+              {isCustomized > 0 ? (
                 <>
-                  <p className={style.productDescription}>
-                    Day: {dialog.product.day}
-                  </p>
-
-                  <p className={style.productDescription}>
-                    Quantity: {dialog.product.quantity}
-                  </p>
-
                   <div>
-                    <span>ITEMS:</span>
                     <ul>
-                      {dialog.product.customizedItems.map((item) => (
-                        <li className={style.customizedItems} key={item._id}>
-                          {item.name}
-                          {isCustomized ? (
-                            <div className={style.quantity}>
-                              <button className={style.quantityButton}>
-                                -
-                              </button>
-                              <input
-                                type="number"
-                                value={item.quantity}
-                                className={style.quantityInput}
-                                min={0}
-                              />
-                              <button className={style.quantityButton}>
-                                +
-                              </button>
-                            </div>
-                          ) : (
-                            <span className={style.quantity}>
-                              {item.quantity}
-                            </span>
-                          )}{" "}
-                          {item.weight} {item.weightUnit} - ${item.price} CAD
-                        </li>
-                      ))}
+                      {dialog.product?.customizedItems?.length > 0 && (
+                        <>
+                          <div>
+                            <span>Items:</span>
+                            <ul>
+                              {dialog.product.customizedItems.map(
+                                (item, index) => (
+                                  <li
+                                    className={style.customizedItems}
+                                    key={item._id || index}
+                                  >
+                                    {item.name}
+                                    <div className={style.quantity}>
+                                      <button
+                                        className={style.quantityButton}
+                                        onClick={() =>
+                                          handleCustomizedItemQuantityChange(
+                                            index,
+                                            -1
+                                          )
+                                        }
+                                      >
+                                        -
+                                      </button>
+
+                                      <input
+                                        type="number"
+                                        min={1}
+                                        className={style.quantityInput}
+                                        value={item.quantity}
+                                        readOnly
+                                      />
+
+                                      <button
+                                        className={style.quantityButton}
+                                        onClick={() =>
+                                          handleCustomizedItemQuantityChange(
+                                            index,
+                                            1
+                                          )
+                                        }
+                                      >
+                                        +
+                                      </button>
+                                    </div>
+
+                                    {item.weight && item.weightUnit && (
+                                      <span>
+                                        {" "}
+                                        {item.weight} {item.weightUnit}
+                                      </span>
+                                    )}
+                                    <span> - ${item.price} CAD</span>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+                        </>
+                      )}
                     </ul>
                   </div>
+
+                  <div className={style.updateButtonWrap}>
+                    <button
+                      className="Button sm"
+                      onClick={UpdateCustomizeTiffinItems}
+                    >
+                      Update Tiffin Items
+                    </button>
+                  </div>
                 </>
+              ) : (
+                <ul>
+                  {dialog?.product?.customizedItems?.map((item, index) => (
+                    <li className={style.customizedItems} key={index}>
+                      {item.name} - {item.quantity} - ${item.price} CAD
+                    </li>
+                  ))}
+                </ul>
               )}
             </div>
           </div>

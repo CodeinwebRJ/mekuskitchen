@@ -12,7 +12,7 @@ import RatingStar from "../RatingStar";
 
 const TiffinCard = ({ item }) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
 
@@ -20,11 +20,9 @@ const TiffinCard = ({ item }) => {
     if (!item?.endDate) return false;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    const endDate = new Date(item.endDate);
-    endDate.setHours(0, 0, 0, 0);
-
-    return endDate < today;
+    const tiffinEndDate = new Date(item?.endDate);
+    tiffinEndDate.setHours(0, 0, 0, 0);
+    return tiffinEndDate < today;
   })();
 
   const areItemsEqual = (items1, items2) => {
@@ -159,12 +157,13 @@ const TiffinCard = ({ item }) => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const handleView = () => {
-    navigate(`/product/tiffin/${slugify(item.day)}`);
+  const handleView = (e) => {
+    e.preventDefault();
+    navigate(`/product/tiffin/${slugify(item.day)}`, {
+      state: { id: item._id },
+    });
   };
-  
+
   return (
     <div className={style.tiffinCard}>
       <Link
@@ -190,18 +189,11 @@ const TiffinCard = ({ item }) => {
         )}
       </Link>
       {item.isCustomized ? (
-        <button
-          className="Button sm"
-          onClick={handleView}
-          disabled={isExpired ? true : false}
-        >
+        <button className="Button sm" onClick={handleView} disabled={isExpired}>
           VIEW TIFFIN
         </button>
       ) : (
-        <AddToCartButton
-          onclick={handleAddToCart}
-          disabled={isExpired ? true : false}
-        />
+        <AddToCartButton onclick={handleAddToCart} disabled={isExpired} />
       )}
     </div>
   );

@@ -12,7 +12,7 @@ import {
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice.jsx";
 
-const CouponCode = ({ data, isLoading, setDiscount }) => {
+const CouponCode = ({ data, isLoading }) => {
   const [coupon, setCoupon] = useState("");
   const [error, setError] = useState("");
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -84,10 +84,10 @@ const CouponCode = ({ data, isLoading, setDiscount }) => {
         ? await ValidateTiffinCoupon(payload)
         : await validateCoupon(payload);
 
-      const discountData = res?.data?.data;
+      // const discountData = res?.data?.data;
 
       if (res?.data?.statusCode === 200) {
-        setDiscount(discountData);
+        // setDiscount(discountData);
         Toast({
           message: res.data.message || "Coupon applied!",
           type: "success",

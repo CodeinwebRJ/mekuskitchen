@@ -290,11 +290,11 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         {cart?.items?.items?.length > 0 || cart?.items?.tiffins?.length > 0 ? (
           <div className={style.cartContainer}>
-            {isLoading && (
+            {/* {isLoading && (
               <div className={style.loading}>
                 <Loading />
               </div>
-            )}
+            )} */}
             {cart?.items?.items?.map((item, index) =>
               renderCartItem(item, index, "product")
             )}

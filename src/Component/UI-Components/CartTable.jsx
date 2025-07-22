@@ -45,18 +45,26 @@ const CartItem = ({
           <div className={style.productImageContainer}>
             <img src={imageUrl} alt={type} className={style.cartItemImage} />
           </div>
-          <span className={style.productName}>
-            {name}{" "}
-            {type === "tiffin" && item?.isCustomized ? (
-              <span className={style.customizedBadge}>Customized</span>
-            ) : (
-              <span className={style.customizedBadge}>Regular</span>
-            )}
-          </span>
+          <div className={style.productName}>
+            <span>{name} </span>
+            <span>
+              {type === "tiffin" && isAuthenticated ? (
+                item?.tiffinMenuDetails?.isCustomized ? (
+                  <span className={style.customizedBadge}>Customized</span>
+                ) : (
+                  <span className={style.customizedBadge}>Regular</span>
+                )
+              ) : item?.isCustomized ? (
+                <span className={style.customizedBadge}>Customized</span>
+              ) : (
+                <span className={style.customizedBadge}>Regular</span>
+              )}
+            </span>
+          </div>
         </div>
       </td>
       {type === "tiffin" && (
-        <td>
+        <td className={style.customizedItemsCell}>
           {item.customizedItems.map((customItem, index) => (
             <div className={style.customizedItems} key={index}>
               {customItem.name} - {customItem.quantity}
@@ -106,7 +114,12 @@ const CartItem = ({
       <td>
         <div className={style.removeCell}>
           <button onClick={() => onShowProduct(item._id)}>
-            {type === "tiffin" && item?.isCustomized ? <MdEdit /> : <FaEye />}
+            {(type === "tiffin" && item?.tiffinMenuDetails?.isCustomized) ||
+            item?.isCustomized ? (
+              <MdEdit />
+            ) : (
+              <FaEye />
+            )}
           </button>
           <button
             onClick={() =>

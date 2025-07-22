@@ -169,8 +169,7 @@ const TiffinProductPage = () => {
   };
 
   const handleSubmit = async () => {
-    const selectedItems = quantities.items.filter((item) => item.quantity > 0);
-    if (selectedItems.length === 0) {
+    if (quantities.items.length === 0) {
       Toast({ message: "Please select at least one item", type: "warn" });
       return;
     }
@@ -183,7 +182,7 @@ const TiffinProductPage = () => {
       day: product.day,
       deliveryDate: product.date,
       isCustomized: true,
-      customizedItems: selectedItems,
+      customizedItems: quantities.items,
       quantity: quantities.main,
       price: customTotalPrice,
       specialInstructions: "NA",
@@ -198,7 +197,7 @@ const TiffinProductPage = () => {
       const existingIndex = localCart.tiffins.findIndex(
         (t) =>
           t.tiffinMenuId === id &&
-          areItemsEqual(t.customizedItems, selectedItems)
+          areItemsEqual(t.customizedItems, quantities.items)
       );
       let updatedTiffins;
 
@@ -233,7 +232,7 @@ const TiffinProductPage = () => {
         user_id: user.userid,
         isTiffinCart: true,
         tiffinMenuId: id,
-        customizedItems: selectedItems,
+        customizedItems: quantities.items,
         specialInstructions: "NA",
         orderDate,
         day: product.day,

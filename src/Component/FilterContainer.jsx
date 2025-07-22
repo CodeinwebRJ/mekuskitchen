@@ -7,12 +7,7 @@ import { useDispatch } from "react-redux";
 import { setCategories } from "../../Store/Slice/FilterDataSlice";
 import slugify from "../Utils/URLslug";
 
-const FilterContainer = ({
-  priceRange,
-  handlePriceChange,
-  data = [],
-  categoryList = [],
-}) => {
+const FilterContainer = ({ priceRange, data = [], categoryList = [] }) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const mobileSidebarRef = useRef(null);
   const [searchParams] = useSearchParams();
@@ -48,6 +43,8 @@ const FilterContainer = ({
     };
   }, [isMobileFilterOpen]);
 
+  console.log(data);
+
   return (
     <>
       <aside className={style.sidebar}>
@@ -63,38 +60,53 @@ const FilterContainer = ({
         <h5>Top Rated Products</h5>
         <ul>
           {Array.isArray(data) && data.length > 0 ? (
-            data.map((product, index) => (
-              <Link
-                key={product?._id || index}
-                to={`/product/${slugify(product?.category)}/${slugify(
-                  product?.name
-                )}`}
-                state={{ id: product?._id }}
-              >
-                <li className={style.topRatedItem}>
-                  <div className={style.imageContainer}>
-                    <img
-                      src={product?.images[0]?.url || "/defaultImage.png"}
-                      alt={product?.product_name || "Product"}
-                      className={style.topRatedImg}
-                    />
-                  </div>
-                  <div className={style.topRatedInfo}>
-                    <p className={style.top_name}>{product?.name || "N/A"}</p>
-                    <div className={style.rating}>
-                      <RatingStar
-                        rating={product?.averageRating || 0}
-                        start={0}
-                        stop={5}
+            data.map((product, index) => {
+              const hasSku =
+                Array.isArray(product?.sku) && product.sku.length > 0;
+              const skuDetails = hasSku ? product.sku[0]?.details : null;
+
+              const imageUrl =
+                skuDetails?.SKUImages?.[0] ||
+                product?.images?.[0]?.url ||
+                "/defaultImage.png";
+
+              const price =
+                skuDetails?.Price ||
+                product?.sellingPrice ||
+                product?.price ||
+                0;
+
+              return (
+                <Link
+                  key={product?._id || index}
+                  to={`/product/${slugify(product?.category)}/${slugify(
+                    product?.name
+                  )}`}
+                  state={{ id: product?._id }}
+                >
+                  <li className={style.topRatedItem}>
+                    <div className={style.imageContainer}>
+                      <img
+                        src={imageUrl}
+                        alt={product?.name || "Product"}
+                        className={style.topRatedImg}
                       />
                     </div>
-                    <p className="price">
-                      ${product?.price?.toFixed(2) || "0.00"} CAD
-                    </p>
-                  </div>
-                </li>
-              </Link>
-            ))
+                    <div className={style.topRatedInfo}>
+                      <p className={style.top_name}>{product?.name || "N/A"}</p>
+                      <div className={style.rating}>
+                        <RatingStar
+                          rating={product?.averageRating || 0}
+                          start={0}
+                          stop={5}
+                        />
+                      </div>
+                      <p className="price">${price.toFixed(2)} CAD</p>
+                    </div>
+                  </li>
+                </Link>
+              );
+            })
           ) : (
             <p>No top-rated products available.</p>
           )}

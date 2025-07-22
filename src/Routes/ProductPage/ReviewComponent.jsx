@@ -30,7 +30,7 @@ const ReviewComponent = ({
     let isValid = true;
 
     if (!isAuthenticated) {
-      validationErrors.review = "Please log in to submit a review.";
+      validationErrors.review = "Please Login to submit a review.";
       isValid = false;
     }
 

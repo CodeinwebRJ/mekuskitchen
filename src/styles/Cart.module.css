@@ -41,8 +41,10 @@
 
 .customizedItems {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 16px;
+  padding: 8px 12px;
 }
 
 .desktopCartView {
@@ -68,7 +70,6 @@
   display: flex;
   gap: 24px;
   padding: 24px;
-  max-width: 600px;
   width: 100%;
   box-sizing: border-box;
 }
