@@ -548,6 +548,8 @@ const ShoppingCart = () => {
     dialog?.product?.tiffinMenuDetails?.isCustomized ||
     dialog?.product?.isCustomized;
 
+  console.log(dialog.product);
+
   return (
     <div>
       <Header />
@@ -671,6 +673,7 @@ const ShoppingCart = () => {
               <img
                 src={
                   dialog.product?.sku?.images?.[0] ||
+                  dialog.product.productDetails.images[0].url ||
                   dialog.product?.tiffinMenuDetails?.image_url?.[0]?.url ||
                   dialog.product?.image_url?.[0]?.url ||
                   "/defaultImage.png"
