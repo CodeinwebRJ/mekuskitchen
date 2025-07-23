@@ -103,8 +103,9 @@ const ShoppingCart = () => {
     skuId = null,
     combination = null
   ) => {
+    console.log(identifier, type, day, customizedItems, skuId, combination);
     let product;
-    let tiffinIndex = -1; // Store the index of the tiffin
+    let tiffinIndex = -1;
     if (type === "product") {
       product = cart?.items?.items?.find(
         (item) =>
@@ -607,6 +608,7 @@ const ShoppingCart = () => {
             <CartItemCardMobile
               key={index}
               item={{
+                items: item,
                 image: isAuthenticated
                   ? item?.tiffinMenuDetails?.image_url?.[0]?.url ||
                     "/defaultImage.png"
@@ -616,11 +618,14 @@ const ShoppingCart = () => {
                   : item.name,
                 price: isAuthenticated
                   ? item?.tiffinMenuDetails?.totalAmount
-                  : "",
+                  : item?.price,
                 day: item?.day,
                 quantity: item.quantity,
+                type: "tiffin",
                 description: item?.tiffinMenuDetails?.shortDescription || "",
               }}
+              onDelete={handleDelete}
+              onShowProduct={handleShowProduct}
               type="tiffin"
               onIncrease={() =>
                 updateItemQuantity(item._id, 1, "tiffin", {

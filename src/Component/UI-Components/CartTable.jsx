@@ -141,7 +141,6 @@ const CartItem = ({
                 item?.customizedItems,
                 item?.sku?._id,
                 item?.combination,
-                JSON.stringify(item?.customizedItems)
               )
             }
           >
