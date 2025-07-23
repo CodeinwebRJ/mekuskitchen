@@ -5,10 +5,7 @@ import CheckboxFeild from "../../../Component/UI-Components/CheckboxFeild";
 import { useDispatch, useSelector } from "react-redux";
 import { GoArrowLeft } from "react-icons/go";
 import { setShowAddressForm } from "../../../../Store/Slice/AddressSlice";
-import {
-  addUserAddress,
-  UpdateUserAddress,
-} from "../../../axiosConfig/AxiosConfig";
+import { addUserAddress } from "../../../axiosConfig/AxiosConfig";
 import { useLocation } from "react-router-dom";
 
 const AddressForm = (props) => {
@@ -168,7 +165,7 @@ const AddressForm = (props) => {
 
     try {
       const res = isEdit
-        ? await UpdateUserAddress({
+        ? await addUserAddress({
             addressId: editData._id,
             userId: user.userid,
             isDifferent: formData.isDifferent,

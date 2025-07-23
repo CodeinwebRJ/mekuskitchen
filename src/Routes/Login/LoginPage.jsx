@@ -254,7 +254,7 @@ function LoginPage() {
 
                 <button
                   type="submit"
-                  className={styles.loginButton}
+                  className="Button sm"
                   disabled={loading}
                 >
                   {loading ? "Logging in..." : "Login"}

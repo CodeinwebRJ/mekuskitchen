@@ -70,10 +70,6 @@ export const addUserAddress = async (data) => {
   return axiosInstance.post("/api/v1/address/create", data);
 };
 
-export const UpdateUserAddress = async (data) => {
-  return axiosInstance.put("/api/v1/address/update", data);
-};
-
 export const ActiveUserAddress = async (data) => {
   return axiosInstance.post("/api/v1/address/active", data);
 };
@@ -172,20 +168,24 @@ export const addTiffinReview = async (data) => {
 
 export const ValidateTiffinCoupon = async (data) => {
   return axiosInstance.post("/api/v1/coupon/tiffin/validate", data);
-}
+};
 
 export const RemoveCoupon = async (data) => {
   return axiosInstance.post("/api/v1/coupon/remove", data);
-}
+};
 
 export const BulkUploadCart = async (data) => {
   return axiosInstance.post("/api/v1/cart/product/bulk", data);
-}
+};
 
 export const BulkUploadTiffinCart = async (data) => {
   return axiosInstance.post("/api/v1/cart/tiffin/bulk", data);
-}
+};
 
 export const UpdateCartTiffins = async (data) => {
   return axiosInstance.patch("/api/v1/cart/tiffin/update", data);
-}
+};
+
+export const forgotPassword = async (data) => {
+  return axiosInstance.post("https://eyemesto.com/mapp/forgot_pass.php", data);
+};

@@ -66,17 +66,6 @@
   text-decoration: underline;
 }
 
-.verifyBtn {
-  width: 100%;
-  background-color: var(--primary-blue);
-  color: var(--white);
-  padding: 10px 16px;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 16px;
-}
-
 .error {
   font-size: 14px;
   margin-top: 16px;

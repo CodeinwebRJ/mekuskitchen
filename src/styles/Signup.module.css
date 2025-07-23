@@ -76,17 +76,6 @@
   font-size: var(--font-base);
 }
 
-.signupButton {
-  width: 100%;
-  background-color: var(--primary-blue);
-  color: var(--white);
-  border: none;
-  border-radius: 14px;
-  padding: 10px;
-  font-size: var(--font-md);
-  cursor: pointer;
-}
-
 .divider {
   margin: 24px 0;
 }

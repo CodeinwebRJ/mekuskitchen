@@ -63,20 +63,17 @@ function ForgetPassword() {
 
     try {
       const response = await axios.post(
-        "https://eyemesto.com/mapp/change_pass.php",
+        "https://eyemesto.com/mapp/forgot_pass.php",
         new URLSearchParams({
-          change_pass: true,
           method: "post",
+          forgot_pass: true,
           password: password,
           email: localemail,
         })
       );
 
-      if (response.data.response === "1") {
-        navigate("/login");
-      } else {
-        setMessage("Failed to update password: " + response.data.message);
-      }
+      navigate("/login");
+      setMessage("Failed to update password: " + response.data.message);
     } catch (error) {
       setMessage("Error updating password. Please try again later.");
     }

@@ -96,18 +96,6 @@
   font-size: 16px;
 }
 
-.loginButton {
-  background-color: var(--primary-blue);
-  color: var(--white);
-  border-radius: 14px;
-  width: 100%;
-  padding: 10px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
 .loginButton:disabled {
   opacity: 0.7;
   cursor: not-allowed;
