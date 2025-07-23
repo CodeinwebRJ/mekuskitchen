@@ -293,7 +293,7 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    if (defaultAddress && cart.items?.items.length > 0) {
+    if (defaultAddress && cart?.items?.items?.length > 0) {
       fetchShipping();
     }
   }, [defaultAddress, cart.items?.items]);

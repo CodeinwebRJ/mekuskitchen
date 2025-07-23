@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "../../styles/RelatedProduct.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -17,6 +17,10 @@ const RelatedProduct = () => {
   const category = pathname.split("/").filter((segment) => segment);
   const [relatedProduct, setRelatedProduct] = useState([]);
 
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
+  const swiperRef = useRef(null);
+
   const fetchProduct = async () => {
     try {
       const data = { category: category[1] };
@@ -30,6 +34,23 @@ const RelatedProduct = () => {
   useEffect(() => {
     fetchProduct();
   }, [category[1]]);
+
+  // 🔁 Setup navigation after refs are mounted
+  useEffect(() => {
+    if (
+      swiperRef.current &&
+      swiperRef.current.params &&
+      prevRef.current &&
+      nextRef.current
+    ) {
+      swiperRef.current.params.navigation.prevEl = prevRef.current;
+      swiperRef.current.params.navigation.nextEl = nextRef.current;
+
+      swiperRef.current.navigation.destroy(); // cleanup previous
+      swiperRef.current.navigation.init(); // re-init
+      swiperRef.current.navigation.update(); // ensure buttons work
+    }
+  }, [relatedProduct]);
 
   const productCount = relatedProduct.length;
   const showSlider = productCount > 4;
@@ -46,21 +67,19 @@ const RelatedProduct = () => {
         <p>No related products available.</p>
       ) : showSlider ? (
         <div className={style.sliderWrapper}>
-          {showArrows && (
-            <div
-              className={`${style.customArrow} ${style.prevArrow}`}
-              aria-label="Previous slide"
-            >
-              <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />
-            </div>
-          )}
+          {/* Prev Arrow */}
+          <div
+            className={`${style.customArrow} ${style.prevArrow}`}
+            aria-label="Previous slide"
+            ref={prevRef}
+          >
+            <MdKeyboardDoubleArrowLeft className={style.arrowIcon} />
+          </div>
+
           <Swiper
-            navigation={
-              showArrows && {
-                prevEl: `.${style.prevArrow}`,
-                nextEl: `.${style.nextArrow}`,
-              }
-            }
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper; // ✅ save instance
+            }}
             loop={enableLoop}
             autoplay={
               enableAutoplay
@@ -91,14 +110,17 @@ const RelatedProduct = () => {
             ))}
           </Swiper>
 
-          {showArrows && (
-            <div
-              className={`${style.customArrow} ${style.nextArrow}`}
-              aria-label="Next slide"
-            >
-              <MdKeyboardDoubleArrowLeft className={style.nextArrowIcon} />
-            </div>
-          )}
+          {/* Next Arrow */}
+          <div
+            className={`${style.customArrow} ${style.nextArrow}`}
+            aria-label="Next slide"
+            ref={nextRef}
+          >
+            <MdKeyboardDoubleArrowLeft
+              className={style.arrowIcon}
+              style={{ transform: "rotate(180deg)" }}
+            />
+          </div>
         </div>
       ) : (
         <div className={style.gridWrapper}>

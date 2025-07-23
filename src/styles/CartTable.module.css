@@ -68,19 +68,10 @@
   justify-content: center;
 }
 
-.removeCell button {
-  background-color: var(--gray-surface);
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  border: none;
+.editIcon {
+  font-size: var(--font-md);
   cursor: pointer;
-}
-
-.removeCell button:hover {
-  background-color: var(--light-gray);
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .removeIcon {
@@ -118,7 +109,6 @@
 }
 
 .totalPrice {
-  font-weight: 600;
   color: var(--gray-darkest);
 }
 

@@ -163,6 +163,7 @@ const Header = () => {
             { to: "/", label: "HOME" },
             { to: "/product-category", label: "OUR PRODUCT" },
             { to: "/about-us", label: "ABOUT US" },
+            { to: "/daily-tiffin", label: "DAILY TIFFIN" },
             { to: "/contact-us", label: "CONTACT US" },
             isAuthenticated && { to: "/my-account", label: "DASHBOARD" },
             { to: "/cart", label: "CART" },

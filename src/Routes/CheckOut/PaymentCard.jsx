@@ -81,18 +81,9 @@ const PaymentCard = ({ handleCancel }) => {
         return;
       }
 
-      const orderData = {
-        userId: user.userid,
-        orderId: res.data.data.orderId,
-        cartId: cart?.items?._id,
-        addressId: defaultAddress?._id,
-        cartAmount: cart?.items?.totalAmount || 0,
-        taxAmount: cart?.items?.totalTax || 0,
-        selfPickup,
-        paymentMethod: "CARD",
-      };
+      let trackingNumber;
 
-      if (!selfPickup && cart?.items?.tiffins?.length < 0) {
+      if (!selfPickup && cart?.items?.items?.length > 0) {
         const shippingAddress =
           defaultAddress.shipping || defaultAddress.billing;
         const shippingData = {
@@ -114,9 +105,27 @@ const PaymentCard = ({ handleCancel }) => {
           })),
           RequestOption: "nonvalidate",
         };
-
-        await ShippingCharges(shippingData);
+        const data = await ShippingCharges(shippingData);
+        console.log(data.data.data);
+        trackingNumber =
+          data?.data?.data?.ShipmentResponse?.ShipmentResults
+            ?.ShipmentIdentificationNumber ||
+          data?.data?.data?.ShipmentResponse?.ShipmentResults?.PackageResults[0]
+            ?.TrackingNumber;
       }
+
+      console.log(trackingNumber);
+      const orderData = {
+        userId: user.userid,
+        orderId: res.data.data.orderId,
+        cartId: cart?.items?._id,
+        addressId: defaultAddress?._id,
+        cartAmount: cart?.items?.totalAmount || 0,
+        taxAmount: cart?.items?.totalTax || 0,
+        selfPickup,
+        trackingNumber,
+        paymentMethod: "CARD",
+      };
 
       await sendOrder(orderData);
       const response = await getUserCart({ id: user.userid });

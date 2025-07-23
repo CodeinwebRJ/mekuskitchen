@@ -22,7 +22,11 @@ const CartItem = ({
     : item?.image_url?.[0]?.url || "/defaultImage.png";
 
   const name = isProduct
-    ? item?.productDetails?.name?.toUpperCase()
+    ? isAuthenticated
+      ? (item.sku && item?.sku?.skuName) ||
+        item?.productDetails?.name ||
+        item?.name
+      : item?.name || "Unnamed Product"
     : isAuthenticated
     ? item?.tiffinMenuDetails.name
     : item?.name;
@@ -38,6 +42,9 @@ const CartItem = ({
       )
     : item?.price || 0;
 
+  const combination = isAuthenticated
+    ? item?.combination
+    : item?.sku?.details?.combinations;
   return (
     <tr className={style.cartItem}>
       <td>
@@ -47,22 +54,36 @@ const CartItem = ({
           </div>
           <div className={style.productName}>
             <span>{name} </span>
-            <span>
-              {type === "tiffin" && isAuthenticated ? (
-                item?.tiffinMenuDetails?.isCustomized ? (
+            {type === "tiffin" && (
+              <span>
+                {isAuthenticated ? (
+                  item?.tiffinMenuDetails?.isCustomized ? (
+                    <span className={style.customizedBadge}>Customized</span>
+                  ) : (
+                    <span className={style.customizedBadge}>Regular</span>
+                  )
+                ) : item?.isCustomized ? (
                   <span className={style.customizedBadge}>Customized</span>
                 ) : (
                   <span className={style.customizedBadge}>Regular</span>
-                )
-              ) : item?.isCustomized ? (
-                <span className={style.customizedBadge}>Customized</span>
-              ) : (
-                <span className={style.customizedBadge}>Regular</span>
-              )}
-            </span>
+                )}
+              </span>
+            )}
           </div>
+          {type === "product" && combination && (
+            <div>
+              {Object.entries(combination)
+                .filter(([key]) => key !== "Stock" && key !== "Price")
+                .map(([key, value]) => (
+                  <div key={key}>
+                    <strong>{key}:</strong> {value}
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       </td>
+
       {type === "tiffin" && (
         <td className={style.customizedItemsCell}>
           {item.customizedItems.map((customItem, index) => (
@@ -74,21 +95,19 @@ const CartItem = ({
       )}
       {type === "tiffin" && <td>{item.day}</td>}
 
-      <td>
-        ${Number(price)?.toFixed(2)} {item?.productDetails?.currency || "CAD"}
-      </td>
+      <td>${Number(price)?.toFixed(2)}</td>
       <td>
         <div className={style.quantityControl}>
           <button
             onClick={() =>
               onUpdateQuantity(item._id, -1, type, {
-                day: item.day,
-                customizedItems: item.customizedItems,
-                skuId: item?.sku?._id,
+                day: item?.day,
+                customizedItems: item?.customizedItems,
+                skuId: item?.sku?.skuId,
                 combination: item?.combination,
               })
             }
-            disabled={item.quantity <= 1}
+            disabled={item?.quantity <= 1}
           >
             <FaMinus size={14} />
           </button>
@@ -96,9 +115,9 @@ const CartItem = ({
           <button
             onClick={() =>
               onUpdateQuantity(item._id, 1, type, {
-                day: item.day,
-                customizedItems: item.customizedItems,
-                skuId: item?.sku?._id,
+                day: item?.day,
+                customizedItems: item?.customizedItems,
+                skuId: item?.sku?.skuId,
                 combination: item?.combination,
               })
             }
@@ -108,20 +127,32 @@ const CartItem = ({
         </div>
       </td>
       <td className={style.totalPrice}>
-        ${(price * item.quantity).toFixed(2)}{" "}
-        {item?.productDetails?.currency || "CAD"}
+        ${(price * item?.quantity).toFixed(2)}{" "}
       </td>
       <td>
         <div className={style.removeCell}>
-          <button onClick={() => onShowProduct(item._id)}>
+          <div
+            className=""
+            onClick={() =>
+              onShowProduct(
+                type === "product" ? item._id : item.tiffinMenuId,
+                type,
+                item?.day,
+                item?.customizedItems,
+                item?.sku?._id,
+                item?.combination,
+                JSON.stringify(item?.customizedItems)
+              )
+            }
+          >
             {(type === "tiffin" && item?.tiffinMenuDetails?.isCustomized) ||
             item?.isCustomized ? (
-              <MdEdit />
+              <MdEdit className={style.editIcon} />
             ) : (
-              <FaEye />
+              <FaEye className={style.editIcon} />
             )}
-          </button>
-          <button
+          </div>
+          <div
             onClick={() =>
               onDelete(
                 isProduct ? item._id : item.tiffinMenuId,
@@ -134,7 +165,7 @@ const CartItem = ({
             }
           >
             <BsTrash className={style.removeIcon} />
-          </button>
+          </div>
         </div>
       </td>
     </tr>
@@ -156,9 +187,9 @@ const CartTable = ({
           <th>Product</th>
           {tiffins.length > 0 && <th>Items</th>}
           {tiffins.length > 0 && <th>Day</th>}
-          <th>Price</th>
+          <th>Price (CAD)</th>
           <th>Quantity</th>
-          <th>Total Price</th>
+          <th>Total Price (CAD)</th>
           <th>Action</th>
         </tr>
       </thead>

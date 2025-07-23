@@ -30,9 +30,6 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const { cartCount } = useSelector((state) => state.count);
   const [] = useState([]);
-
-  console.log(dialog.product)
-
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
       return cart?.items?.totalAmount;
@@ -98,10 +95,43 @@ const ShoppingCart = () => {
     }
   }, [isAuthenticated, cart?.items?.items?.length]);
 
-  const handleShowProduct = (id) => {
-    const product =
-      cart?.items?.items?.find((item) => item._id === id) ||
-      cart?.items?.tiffins?.find((item) => item._id === id);
+  const handleShowProduct = (
+    identifier,
+    type,
+    day = null,
+    customizedItems = [],
+    skuId = null,
+    combination = null
+  ) => {
+    let product;
+    let tiffinIndex = -1; // Store the index of the tiffin
+    if (type === "product") {
+      product = cart?.items?.items?.find(
+        (item) =>
+          item._id === identifier &&
+          (!skuId || item?.sku?._id === skuId) &&
+          (!combination ||
+            JSON.stringify(item?.combination) === JSON.stringify(combination))
+      );
+    } else if (type === "tiffin") {
+      tiffinIndex = cart?.items?.tiffins?.findIndex(
+        (item) =>
+          item.tiffinMenuId === identifier &&
+          item.day === day &&
+          areCustomizedItemsEqual(
+            item.customizedItems || [],
+            customizedItems || []
+          )
+      );
+      product = cart?.items?.tiffins?.[tiffinIndex];
+      if (product) {
+        product = {
+          ...product,
+          tiffinIndex,
+        };
+      }
+    }
+
     if (product) {
       setDialog({ isOpen: true, product });
     } else {
@@ -201,6 +231,8 @@ const ShoppingCart = () => {
             type: "product",
             product_id: currentItem.product_id,
             quantity: newQuantity,
+            skuId: skuId,
+            combination,
           };
         } else if (type === "tiffin") {
           currentItem = cart?.items?.tiffins?.find((item) => item._id === id);
@@ -314,6 +346,8 @@ const ShoppingCart = () => {
           user_id: user?.userid,
           type,
           quantity: 0,
+          skuId,
+          combination,
         };
         if (type === "product") {
           const productItem = cart?.items?.items?.find(
@@ -394,60 +428,42 @@ const ShoppingCart = () => {
     );
   }
 
-  const CustomizedItemforLocal = (a = [], b = []) => {
-    if (a.length !== b.length) return false;
-
-    const sortById = (arr) =>
-      [...arr].sort((x, y) => x.itemId.localeCompare(y.itemId));
-
-    const sortedA = sortById(a);
-    const sortedB = sortById(b);
-
-    return sortedA.every((itemA, index) => {
-      const itemB = sortedB[index];
-      return (
-        itemA.itemId === itemB.itemId &&
-        itemA.name === itemB.name &&
-        String(itemA.price) === String(itemB.price) &&
-        Number(itemA.quantity) === Number(itemB.quantity)
-      );
-    });
-  };
-
   const UpdateCustomizeTiffinItems = async () => {
     try {
+      const updatedProduct = dialog.product;
+      const isEqual = (a = [], b = []) => {
+        if (a.length !== b.length) return false;
+        return a.every((itemA) =>
+          b.some(
+            (itemB) =>
+              itemA.itemId === itemB.itemId &&
+              itemA.name === itemB.name &&
+              itemA.price === itemB.price
+          )
+        );
+      };
+
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
           tiffins: [],
           items: [],
         };
 
-        const updatedTiffins = localCart.tiffins.map((item) => {
-          const isSameTiffin =
-            item.tiffinMenuId === dialog.product?.tiffinMenuId &&
-            item.day === dialog.product?.day &&
-            areCustomizedItemsEqual(
-              item.customizedItems,
-              dialog.product?.originalCustomizedItems || []
-            );
+        const updatedTiffins = localCart.tiffins.map((item, index) => {
+          // Update only the tiffin at the specific index
+          if (index === updatedProduct.tiffinIndex) {
+            const updatedCustomizedItems = updatedProduct.customizedItems || [];
 
-          if (isSameTiffin) {
-            const updatedCustomizedItems =
-              dialog.product?.customizedItems || [];
-
-            const newPrice = updatedCustomizedItems
-              .reduce((acc, curr) => {
-                return (
-                  acc +
-                  parseFloat(curr.price || 0) * (parseInt(curr.quantity) || 1)
-                );
-              }, 0)
-              .toFixed(2);
+            const newPrice = updatedCustomizedItems.reduce((acc, curr) => {
+              const price = parseFloat(curr.price || 0);
+              const quantity = parseInt(curr.quantity || 1);
+              return acc + price * quantity;
+            }, 0);
 
             return {
               ...item,
               customizedItems: updatedCustomizedItems,
-              price: newPrice,
+              price: newPrice.toFixed(2),
             };
           }
 
@@ -504,7 +520,7 @@ const ShoppingCart = () => {
     }
   };
 
-  const handleCustomizedItemQuantityChange = async (index, delta) => {
+  const handleCustomizedItemQuantityChange = (index, delta) => {
     const updatedItems = [...dialog.product.customizedItems];
     let newQty = parseInt(updatedItems[index].quantity || 1) + delta;
 
@@ -518,14 +534,12 @@ const ShoppingCart = () => {
       quantity: newQty.toString(),
     };
 
-    const updatedProduct = {
-      ...dialog.product,
-      customizedItems: updatedItems,
-    };
-
     setDialog((prev) => ({
       ...prev,
-      product: updatedProduct,
+      product: {
+        ...prev.product,
+        customizedItems: updatedItems,
+      },
     }));
   };
 
@@ -533,27 +547,26 @@ const ShoppingCart = () => {
     dialog?.product?.tiffinMenuDetails?.isCustomized ||
     dialog?.product?.isCustomized;
 
-  if (loading)
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-
   return (
     <div>
       <Header />
       <Banner name="CART" />
       <div className={style.cartContainer}>
         <div className={style.desktopCartView}>
-          <CartTable
-            items={cart?.items?.items || []}
-            tiffins={cart?.items?.tiffins || []}
-            isAuthenticated={isAuthenticated}
-            onDelete={handleDelete}
-            onUpdateQuantity={updateItemQuantity}
-            onShowProduct={handleShowProduct}
-          />
+          {loading ? (
+            <div>
+              <Loading />
+            </div>
+          ) : (
+            <CartTable
+              items={cart?.items?.items || []}
+              tiffins={cart?.items?.tiffins || []}
+              isAuthenticated={isAuthenticated}
+              onDelete={handleDelete}
+              onUpdateQuantity={updateItemQuantity}
+              onShowProduct={handleShowProduct}
+            />
+          )}
         </div>
 
         <div className={style.mobileCartView}>
@@ -594,11 +607,16 @@ const ShoppingCart = () => {
             <CartItemCardMobile
               key={index}
               item={{
-                image:
-                  item?.tiffinMenuDetails?.image_url?.[0]?.url ||
-                  "/defaultImage.png",
-                name: item?.tiffinMenuDetails?.name,
-                price: item?.tiffinMenuDetails?.totalAmount,
+                image: isAuthenticated
+                  ? item?.tiffinMenuDetails?.image_url?.[0]?.url ||
+                    "/defaultImage.png"
+                  : item?.image_url[0]?.url || "/defaultImage.png",
+                name: isAuthenticated
+                  ? item?.tiffinMenuDetails?.name
+                  : item.name,
+                price: isAuthenticated
+                  ? item?.tiffinMenuDetails?.totalAmount
+                  : "",
                 day: item?.day,
                 quantity: item.quantity,
                 description: item?.tiffinMenuDetails?.shortDescription || "",
