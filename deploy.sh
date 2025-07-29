@@ -10,12 +10,12 @@ echo "📍 Working from: $REPO_DIR"
 echo "🔁 Pulling latest changes..."
 sudo git pull origin main
 
-echo "📦 Installing dependencies with700MB RAM limit..."
-sudo NODE_OPTIONS="--max-old-space-size=700" npm install
+echo "📦 Installing dependencies with 1GB RAM limit..."
+sudo NODE_OPTIONS="--max-old-space-size=1024" npm install
 
 
-echo "🏗 Building project with 700MB RAM limit..."
-sudo NODE_OPTIONS="--max-old-space-size=700" npm run build
+echo "🏗 Building project with 1GB RAM limit..."
+sudo NODE_OPTIONS="--max-old-space-size=1024" npm run build
 
 echo "🧹 Cleaning old files in $DEPLOY_DIR..."
 sudo rm -rf "$DEPLOY_DIR"
