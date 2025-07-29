@@ -10,6 +10,7 @@ import {
   getProduct,
   getUserAddress,
   getUserCart,
+  getUserOrders,
   getUserWishlist,
 } from "./axiosConfig/AxiosConfig";
 import {
@@ -17,7 +18,7 @@ import {
   setLoading,
   setProducts,
 } from "../Store/Slice/ProductSlice.jsx";
-import { setTiffins } from "../Store/Slice/TiffinSlice.jsx";
+import { setTiffinLoading, setTiffins } from "../Store/Slice/TiffinSlice.jsx";
 import {
   setAddresses,
   setDefaultAddress,
@@ -32,7 +33,7 @@ import FoodPage from "./Routes/OurMenu/FoodPage";
 import DailyTiffinPage from "./Routes/DailyTiffin/DailyTiffinPage.jsx";
 import SignUpPage from "./Routes/SignUp/SignUpPage.jsx";
 import LoginPage from "./Routes/Login/LoginPage.jsx";
-import TiffinProductPage from "./Routes/TiffinProductPage/ProductPage/TiffinProductPage.jsx";
+import TiffinProductPage from "./Routes/TiffinProductPage/TiffinProductPage.jsx";
 import Addresses from "./Routes/MyAccount/Addresses/Addresses.jsx";
 import Downloads from "./Routes/MyAccount/Downloads/Downloads.jsx";
 import Orders from "./Routes/MyAccount/Orders/Orders.jsx";
@@ -48,12 +49,15 @@ import VerifyOtp from "./Routes/VerifyOtp/VerifyOtp.jsx";
 import VerifyEmail from "./Routes/VerifyEmail/VerifyEmail.jsx";
 import { setWishlist } from "../Store/Slice/UserWishlistSlice.jsx";
 import { setCart } from "../Store/Slice/UserCartSlice.jsx";
-import { setData } from "../Store/Slice/HomePageSlice.jsx";
+import { setData, setHomeLoading } from "../Store/Slice/HomePageSlice.jsx";
 import ProtectedRoute from "./Protectedroute/ProtectedRoute.jsx";
 import { setCountriesData } from "../Store/Slice/CountrySlice.jsx";
 import NotFound from "./Component/MainComponents/NotFound.jsx";
 import axios from "axios";
 import { setUserDetail } from "../Store/Slice/UserDetailSlice.jsx";
+import { Toast } from "./Utils/Toast.jsx";
+import { useDebouncedValue } from "./Hook/useDebouced.jsx";
+import { setOrderLoading, setOrders } from "../Store/Slice/OrderSlice.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -62,10 +66,13 @@ const App = () => {
   const Cart = useSelector((state) => state.cart);
   const isLiked = useSelector((state) => state.wishlist?.likedMap);
   const filterData = useSelector((state) => state.filterData);
+  const { statusFilter } = useSelector((state) => state.order);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
+
+  const filterSearch = useDebouncedValue(filterData?.search, 500);
 
   const fetchProducts = async () => {
     try {
@@ -98,8 +105,11 @@ const App = () => {
 
   const fetchTiffin = async () => {
     try {
-      const res = await getAllTiffin({ Active: true });
+      dispatch(setTiffinLoading(true));
+      const data = { Active: true };
+      const res = await getAllTiffin(data);
       dispatch(setTiffins(res.data.data));
+      dispatch(setTiffinLoading(false));
     } catch (error) {
       console.error(error);
     }
@@ -143,10 +153,15 @@ const App = () => {
 
   const fetchHomeData = async () => {
     try {
+      dispatch(setHomeLoading(true));
       const res = await getHomePageData();
       dispatch(setData(res.data.data));
+      dispatch(setHomeLoading(false));
     } catch (error) {
       console.log(error);
+      Toast({ message: "Something went wrong", type: "error" });
+    } finally {
+      dispatch(setHomeLoading(false));
     }
   };
 
@@ -175,22 +190,58 @@ const App = () => {
     try {
       const token = localStorage.getItem("api_token");
       const res = await axios.post(
-        "https://eyemesto.com/mapp_dev/user_profile.php",
+        "https://eyemesto.com/mapp/user_profile.php",
         new URLSearchParams({
           api_token: token,
           userid: user.userid,
           user_profile: true,
         })
       );
-      dispatch(setUserDetail(res.data));
+      const userData = res.data;
+      dispatch(setUserDetail(userData));
+      localStorage.setItem("user_detail", JSON.stringify(userData));
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fetchOrders = async (status) => {
+    try {
+      dispatch(setOrderLoading(true));
+      const data = {
+        userId: user?.userid,
+        orderStatus: status,
+      };
+      const res = await getUserOrders(data);
+      dispatch(setOrders(res.data.data));
+      dispatch(setOrderLoading(false));
+    } catch (error) {
+      console.log("Fetch Orders Error:", error);
+    } finally {
+      dispatch(setOrderLoading(false));
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders(statusFilter);
+  }, [statusFilter, isAuthenticated]);
+
   useEffect(() => {
     fetchProducts();
-  }, [filterData]);
+  }, [
+    filterSearch,
+    filterData.categories,
+    filterData.subCategories,
+    filterData.productCategories,
+    filterData.Brands,
+    filterData.ratings,
+    filterData.price,
+    filterData.attributes,
+    filterData.sortBy,
+    filterData.page,
+    filterData.limit,
+    filterData.grid,
+  ]);
 
   useEffect(() => {
     fetchTiffin();

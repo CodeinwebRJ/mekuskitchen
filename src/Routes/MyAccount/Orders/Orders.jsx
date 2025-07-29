@@ -1,37 +1,15 @@
 import MyAccountContainer from "../MyAccountContainer";
 import OrderCard from "../../../Component/Cards/OrderCard";
-import { useEffect, useState } from "react";
-import { getUserOrders } from "../../../axiosConfig/AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setOrders } from "../../../../Store/Slice/OrderSlice";
+import { setStatusFilter } from "../../../../Store/Slice/OrderSlice";
 import style from "../../../styles/Orders.module.css";
 import Pagination from "../../../Component/Pagination";
+import NoDataFound from "../../../Component/MainComponents/NoDataFound";
+import Loading from "../../../Component/UI-Components/Loading";
 
 const Orders = () => {
-  const { user } = useSelector((state) => state.auth);
-  const { Order } = useSelector((state) => state.order);
+  const { Order, statusFilter , loading } = useSelector((state) => state.order);
   const dispatch = useDispatch();
-  const [statusFilter, setStatusFilter] = useState("");
-
-  const fetchOrders = async (status) => {
-    try {
-      dispatch(setLoading(true));
-      const data = {
-        userId: user.userid,
-        orderStatus: status,
-      };
-      const res = await getUserOrders(data);
-      dispatch(setOrders(res.data.data));
-    } catch (error) {
-      console.log("Fetch Orders Error:", error);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
-
-  useEffect(() => {
-    fetchOrders(statusFilter);
-  }, [statusFilter]);
 
   return (
     <MyAccountContainer>
@@ -39,7 +17,9 @@ const Orders = () => {
         {["All", "Pending", "Delivered", "Cancelled"].map((status) => (
           <button
             key={status}
-            onClick={() => setStatusFilter(status === "All" ? "" : status)}
+            onClick={() =>
+              dispatch(setStatusFilter(status === "All" ? "" : status))
+            }
             className={`${style.Button} ${
               statusFilter === (status === "All" ? "" : status)
                 ? style.Selected
@@ -52,10 +32,14 @@ const Orders = () => {
       </div>
 
       <div className={style.orderContainer}>
-        {Order?.length > 0 ? (
+        {loading ? (
+          <Loading />
+        ) : Order?.length > 0 ? (
           Order.map((order, i) => <OrderCard key={i} order={order} />)
         ) : (
-          <p className="text-gray-600">No orders found.</p>
+          <div className="text-gray-600">
+            <NoDataFound />
+          </div>
         )}
       </div>
       {Order?.pages > 1 && <Pagination />}

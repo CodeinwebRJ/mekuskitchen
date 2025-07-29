@@ -1,19 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const user = localStorage.getItem("user_detail");
+const userDetail = user ? JSON.parse(user) : {};
+
 const initialState = {
   user: {
-    userid: "",
-    unique_id: "",
-    first_name: "",
-    last_name: "",
-    mobile: "",
-    email: "",
-    refcode: "",
-    et_coins: "",
-    user_image: null,
-    user_status: "",
-    created_at: "",
-    subscription_details: [],
+    userid: userDetail.userid || "",
+    unique_id: userDetail.unique_id || "",
+    first_name: userDetail.first_name || "",
+    last_name: userDetail.last_name || "",
+    mobile: userDetail.mobile || "",
+    email: userDetail.email || "",
+    refcode: userDetail.refcode || "",
+    et_coins: userDetail.et_coins || "",
+    user_image: userDetail.user_image || null,
+    user_status: userDetail.user_status || "",
   },
   response: "",
   message: "",

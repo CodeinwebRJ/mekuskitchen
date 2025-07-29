@@ -82,6 +82,13 @@
   opacity: 0.6;
 }
 
+.bannerBreadcrumbContainer{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .bannerBreadcrumb {
   margin-top: 0.5rem;
   display: flex;

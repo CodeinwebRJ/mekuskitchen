@@ -1,10 +1,14 @@
 import { useState } from "react";
 import style from "../../styles/ReviewComponent.module.css";
 import RatingStar from "../../Component/RatingStar";
-import { addProductReview } from "../../axiosConfig/AxiosConfig";
+import {
+  addProductReview,
+  addTiffinReview,
+} from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 import NoData from "../../Component/UI-Components/NoData";
 import InputField from "../../Component/UI-Components/InputField";
+import { useLocation } from "react-router-dom";
 
 const ReviewComponent = ({
   reviews,
@@ -16,21 +20,28 @@ const ReviewComponent = ({
   setRating,
   fetchReviews,
 }) => {
+  const location = useLocation();
   const [showForm, setShowForm] = useState(false);
   const [errors, setErrors] = useState({ rating: "", review: "" });
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   const validateForm = () => {
     let validationErrors = { rating: "", review: "" };
     let isValid = true;
 
-    if (!rating || rating < 1 || rating > 5) {
-      validationErrors.rating = "Please select a rating between 1 and 5.";
+    if (!isAuthenticated) {
+      validationErrors.review = "Please Login to submit a review.";
+      isValid = false;
+    }
+
+    if (!rating) {
+      validationErrors.rating =
+        "Please select a rating before submitting a review!";
       isValid = false;
     }
 
     if (!review.trim()) {
-      validationErrors.review = "Review is required.";
+      validationErrors.review = "This field cannot be empty.";
       isValid = false;
     } else if (review.trim().length < 10) {
       validationErrors.review =
@@ -42,23 +53,36 @@ const ReviewComponent = ({
     return isValid;
   };
 
+  const category = location.pathname.split("/").filter(Boolean);
+
+  const isTiffin = category[1];
+
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     try {
-      const data = {
-        user_id: user.userid,
-        rating,
-        comment: review,
-        product_id: id,
-      };
-      await addProductReview(data);
-      await fetchReviews();
-      setRating(0);
-      setReview("");
-      setShowForm(false);
-      setErrors({ rating: "", review: "" });
+      if (isTiffin === "tiffin") {
+        const data = {
+          user_id: user.userid,
+          rating,
+          comment: review,
+          product_id: id,
+        };
+        await addTiffinReview(data);
+      } else {
+        const data = {
+          user_id: user.userid,
+          rating,
+          comment: review,
+          product_id: id,
+        };
+        await addProductReview(data);
+        await fetchReviews();
+        setRating(0);
+        setReview("");
+        setShowForm(false);
+        setErrors({ rating: "", review: "" });
+      }
     } catch (error) {
       console.error("Failed to submit review:", error);
     }
@@ -93,7 +117,7 @@ const ReviewComponent = ({
           <form onSubmit={handleSubmitReview} className={style.form}>
             <div className={style.formGroup}>
               <label htmlFor="rating" className={style.label}>
-                Your Rating<span className={style.errorMessage}>*</span>
+                Your Rating*
               </label>
               <RatingStar
                 rating={rating}
@@ -112,7 +136,7 @@ const ReviewComponent = ({
 
             <div className={style.formGroup}>
               <label htmlFor="review" className={style.label}>
-                Your Review <span className={style.errorMessage}>*</span>
+                Your Review*
               </label>
               <InputField
                 id="review"

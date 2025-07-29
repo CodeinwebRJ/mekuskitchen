@@ -48,13 +48,9 @@ const RelatedProductCard = ({ item }) => {
     ? item?.image_url?.[0]?.url
     : item?.images?.[0]?.url;
 
-  const displayTitle = isTiffin ? item?.day : item?.name;
+  const displayTitle = item?.name;
   const displayPrice = isTiffin
-    ? Number(item?.subTotal || 0).toFixed(2)
-    : Number(item?.sellingPrice || 0).toFixed(2);
-
-  const displayOrignalPrice = isTiffin
-    ? ""
+    ? Number(item?.totalAmount || 0).toFixed(2)
     : Number(item?.sellingPrice || 0).toFixed(2);
 
   const handleWishlistToggle = async (e) => {
@@ -120,8 +116,8 @@ const RelatedProductCard = ({ item }) => {
   };
 
   return (
-    <Link to={linkPath} state={{ id: item?._id }}>
-      <div className={style.relatedProductCard}>
+    <div className={style.relatedProductCard}>
+      <Link to={linkPath} state={{ id: item?._id }}>
         <div className={style.relatedProductImgWrapper}>
           <img
             src={imageUrl || "/defaultImage.png"}
@@ -129,13 +125,15 @@ const RelatedProductCard = ({ item }) => {
             className={style.relatedProductImg}
           />
         </div>
-        <div className={style.wishlist} onClick={handleWishlistToggle}>
-          {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
-        </div>
+        {!isTiffin && (
+          <div className={style.wishlist} onClick={handleWishlistToggle}>
+            {isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
+          </div>
+        )}
         <div className={style.contentWrapper}>
-          <p className={style.relatedProductTitle}>
+          <span className={style.relatedProductTitle}>
             {displayTitle || "Unnamed Product"}
-          </p>
+          </span>
           <div className={style.rating}>
             <RatingStar
               rating={item?.averageRating}
@@ -145,7 +143,7 @@ const RelatedProductCard = ({ item }) => {
             />
           </div>
           <div className={style.PriceContainer}>
-            <p className="originalPrice">${displayPrice}</p>
+            {!isTiffin && <p className="originalPrice">${displayPrice}</p>}
             <p className="price">
               ${displayPrice} {item?.currency || "CAD"}{" "}
             </p>
@@ -154,8 +152,8 @@ const RelatedProductCard = ({ item }) => {
             <AddToCartButton onclick={handleAddToCart} />
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

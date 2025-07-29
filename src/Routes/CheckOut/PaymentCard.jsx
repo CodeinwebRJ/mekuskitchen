@@ -6,6 +6,7 @@ import {
   CreatePayment,
   getUserCart,
   sendOrder,
+  ShippingCharges,
 } from "../../axiosConfig/AxiosConfig";
 import OrderPlaced from "./OrderPlaced";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
@@ -13,6 +14,7 @@ import PaymentFail from "./PaymentFail";
 import Footer from "../../Component/MainComponents/Footer";
 import Header from "../../Component/MainComponents/Header";
 import InputField from "../../Component/UI-Components/InputField";
+import Loading from "../../Component/UI-Components/Loading";
 
 const PaymentCard = ({ handleCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,11 +54,11 @@ const PaymentCard = ({ handleCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateInputs()) {
-      return;
-    }
+    if (!validateInputs()) return;
+
     setApiError("");
     setIsLoading(true);
+
     try {
       const paymentData = {
         userId: user?.userid,
@@ -65,40 +67,77 @@ const PaymentCard = ({ handleCancel }) => {
         expiryDate: paymentMethod.expiryDate,
         cvv: paymentMethod.cvv,
       };
+
       const res = await CreatePayment(paymentData);
-      if (
-        res.data.data.rawResponse.ResponseCode === "027" ||
-        res.data.data.rawResponse.ResponseCode < "050" ||
-        res.data.data.rawResponse.Complete === "true"
-      ) {
-        const data = {
-          userId: user.userid,
-          orderId: res.data.data.orderId,
-          cartId: cart?.items?._id,
-          addressId: defaultAddress?._id,
-          cartAmount: cart?.items?.totalAmount || 0,
-          taxAmount: cart?.items?.totalTax || 0,
-          selfPickup: selfPickup,
-          paymentMethod: "CARD",
-        };
-        await sendOrder(data);
-        const response = await getUserCart({ id: user.userid });
-        dispatch(setCart(response.data.data));
-        setShowComponent("orderPlaced");
-      }
-      if (
-        res.data.data.ResponseCode === "null" ||
-        res.data.data.Complete === "null"
-      ) {
+      const rawResponse = res?.data?.data?.rawResponse || {};
+      const responseCode = rawResponse?.ResponseCode;
+      const isComplete = rawResponse?.Complete === "true";
+
+      const isPaymentSuccess =
+        responseCode === "027" || parseInt(responseCode) < 50 || isComplete;
+
+      if (!isPaymentSuccess) {
         setShowComponent("fail");
+        return;
       }
+
+      let trackingNumber;
+
+      if (!selfPickup && cart?.items?.items?.length > 0) {
+        const shippingAddress =
+          defaultAddress.shipping || defaultAddress.billing;
+        const shippingData = {
+          shipTo: {
+            name: shippingAddress.name,
+            phone: shippingAddress.phone,
+            address: {
+              addressLine: [shippingAddress.address],
+              city: shippingAddress.city,
+              postalCode: defaultAddress.billing.postCode,
+              stateOrProvince: shippingAddress.provinceCode,
+              countryCode: shippingAddress.countryCode,
+            },
+          },
+          packages: cart?.items?.items?.map((item) => ({
+            unit: String(item.productDetails.weightUnit),
+            weight: String(item.productDetails.weight),
+            quantity: String(item.quantity),
+          })),
+          RequestOption: "nonvalidate",
+        };
+        const data = await ShippingCharges(shippingData);
+        console.log(data.data.data);
+        trackingNumber =
+          data?.data?.data?.ShipmentResponse?.ShipmentResults
+            ?.ShipmentIdentificationNumber ||
+          data?.data?.data?.ShipmentResponse?.ShipmentResults?.PackageResults[0]
+            ?.TrackingNumber;
+      }
+
+      console.log(trackingNumber);
+      const orderData = {
+        userId: user.userid,
+        orderId: res.data.data.orderId,
+        cartId: cart?.items?._id,
+        addressId: defaultAddress?._id,
+        cartAmount: cart?.items?.totalAmount || 0,
+        taxAmount: cart?.items?.totalTax || 0,
+        selfPickup,
+        trackingNumber,
+        paymentMethod: "CARD",
+      };
+
+      await sendOrder(orderData);
+      const response = await getUserCart({ id: user.userid });
+      dispatch(setCart(response.data.data));
+      setShowComponent("orderPlaced");
     } catch (error) {
-      setShowComponent("fail");
+      console.error("Payment Error:", error);
       setApiError(
         error.response?.data?.message ||
-          "An error occurred while processing the payment."
+          "An error occurred while processing the payment Please try again."
       );
-      console.error("Payment Error:", error);
+      setShowComponent("fail");
     } finally {
       setIsLoading(false);
     }
@@ -137,103 +176,104 @@ const PaymentCard = ({ handleCancel }) => {
       {showComponent === "payment" && (
         <div>
           <Header />
-          <div className={style.paymentContainer}>
-            {showComponent === "payment" && (
-              <div className={style.cardContainer}>
-                <div className={style.cardHeader}>
-                  <FaCreditCard className={style.cardIcon} />
-                  <h2 className={style.cardTitle}>Payment Details</h2>
-                </div>
-                <form className={style.form} onSubmit={handleSubmit}>
-                  <div className={style.formGroup}>
-                    <label htmlFor="cardNumber">Card Number</label>
-                    <InputField
-                      type="text"
-                      id="cardNumber"
-                      name="cardNumber"
-                      placeholder="1234 5678 9012 3456"
-                      maxLength="19"
-                      className={style.inputField}
-                      value={paymentMethod.cardNumber}
-                      onChange={handleChange}
-                      required
-                    />
-                    {validationErrors.cardNumber && (
-                      <p className={style.error}>
-                        {validationErrors.cardNumber}
-                      </p>
-                    )}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <div className={style.paymentContainer}>
+              {showComponent === "payment" && (
+                <div className={style.cardContainer}>
+                  <div className={style.cardHeader}>
+                    <FaCreditCard className={style.cardIcon} />
+                    <h2 className={style.cardTitle}>Payment Details</h2>
                   </div>
-
-                  <div className={style.row}>
+                  <form className={style.form} onSubmit={handleSubmit}>
                     <div className={style.formGroup}>
-                      <label htmlFor="expiryDate">Expiry Date</label>
+                      <label htmlFor="cardNumber">Card Number</label>
                       <InputField
                         type="text"
-                        id="expiryDate"
-                        name="expiryDate"
-                        placeholder="MM/YY"
-                        maxLength="5"
+                        id="cardNumber"
+                        name="cardNumber"
+                        placeholder="1234 5678 9012 3456"
+                        maxLength="19"
                         className={style.inputField}
-                        value={paymentMethod.expiryDate}
+                        value={paymentMethod.cardNumber}
                         onChange={handleChange}
                         required
                       />
-                      {validationErrors.expiryDate && (
+                      {validationErrors.cardNumber && (
                         <p className={style.error}>
-                          {validationErrors.expiryDate}
+                          {validationErrors.cardNumber}
                         </p>
                       )}
                     </div>
 
-                    <div className={style.formGroup}>
-                      <label htmlFor="cvv">CVV</label>
-                      <InputField
-                        type="password"
-                        id="cvv"
-                        name="cvv"
-                        placeholder="123"
-                        maxLength="4"
-                        className={style.inputField}
-                        value={paymentMethod.cvv}
-                        onChange={handleChange}
-                        required
-                      />
-                      {validationErrors.cvv && (
-                        <p className={style.error}>{validationErrors.cvv}</p>
-                      )}
+                    <div className={style.row}>
+                      <div className={style.formGroup}>
+                        <label htmlFor="expiryDate">Expiry Date</label>
+                        <InputField
+                          type="text"
+                          id="expiryDate"
+                          name="expiryDate"
+                          placeholder="MM/YY"
+                          maxLength="5"
+                          className={style.inputField}
+                          value={paymentMethod.expiryDate}
+                          onChange={handleChange}
+                          required
+                        />
+                        {validationErrors.expiryDate && (
+                          <p className={style.error}>
+                            {validationErrors.expiryDate}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className={style.formGroup}>
+                        <label htmlFor="cvv">CVV</label>
+                        <InputField
+                          type="password"
+                          id="cvv"
+                          name="cvv"
+                          placeholder="123"
+                          maxLength="4"
+                          className={style.inputField}
+                          value={paymentMethod.cvv}
+                          onChange={handleChange}
+                          required
+                        />
+                        {validationErrors.cvv && (
+                          <p className={style.error}>{validationErrors.cvv}</p>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {apiError && <div className={style.error}>{apiError}</div>}
+                    {apiError && <div className={style.error}>{apiError}</div>}
 
-                  <div className={style.buttonContainer}>
-                    <button
-                      type="button"
-                      className={style.cancelBtn}
-                      onClick={handleCancel}
-                      disabled={isLoading}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className={`${style.submitBtn} ${
-                        isLoading ? style.loading : ""
-                      }`}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <span className={style.loader}></span>
-                      ) : (
-                        "Pay Now"
-                      )}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
-          </div>
+                    <div className={style.buttonContainer}>
+                      <button
+                        type="button"
+                        className={style.cancelBtn}
+                        onClick={handleCancel}
+                        disabled={isLoading}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className={`${style.submitBtn} ${
+                          isLoading ? style.loading : ""
+                        }`}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Processing..." : "Pay Now"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+            </div>
+          )}
+
           <Footer />
         </div>
       )}

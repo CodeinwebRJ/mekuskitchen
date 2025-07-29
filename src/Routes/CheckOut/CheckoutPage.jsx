@@ -23,6 +23,7 @@ import AddressForm from "../MyAccount/Addresses/AddressForm";
 import DialogBox from "../../Component/MainComponents/DialogBox";
 import PaymentCard from "./PaymentCard";
 import CheckboxField from "../../Component/UI-Components/CheckboxFeild";
+import Loading from "../../Component/UI-Components/Loading";
 
 const OrderSummary = ({
   total,
@@ -36,6 +37,7 @@ const OrderSummary = ({
   provinceTax,
   payNow,
   isLoading,
+  hasTiffin,
 }) => {
   const safeNumber = (val) => {
     const num = parseFloat(val);
@@ -45,16 +47,18 @@ const OrderSummary = ({
   const subtotal = safeNumber(total);
   const discountValue = safeNumber(discount);
   const discountPercent = safeNumber(discountPercentage);
-  const shippingChargeValue = safeNumber(SCV);
   const provinceTaxValue = safeNumber(provinceTax);
   const federalTaxValue = safeNumber(federalTax);
   const totalTax = safeNumber(tax);
 
-  const grandTotal = (
-    subtotal +
-    totalTax +
-    (selfPickup === false ? shippingChargeValue : 0)
-  ).toFixed(2);
+  const extraShipping = !selfPickup && subtotal < 12 ? 3 : 0;
+  const shippingChargeValue = selfPickup
+    ? 0
+    : subtotal < 12
+    ? extraShipping
+    : safeNumber(SCV);
+
+  const grandTotal = (subtotal + totalTax + shippingChargeValue).toFixed(2);
 
   return (
     <div className={style.cartTotals}>
@@ -75,7 +79,7 @@ const OrderSummary = ({
           </div>
         )}
 
-        {selfPickup === false && (
+        {!selfPickup && (
           <div className={style.total}>
             <span>Shipping charges</span>
             <span>
@@ -83,18 +87,20 @@ const OrderSummary = ({
             </span>
           </div>
         )}
-        <div className={style.total}>
-          <span>Province Tax</span>
-          <span>${provinceTaxValue.toFixed(2)} CAD</span>
-        </div>
-        <div className={style.total}>
-          <span>Federal Tax</span>
-          <span>${federalTaxValue.toFixed(2)} CAD</span>
-        </div>
-        <div className={style.total}>
-          <span>Total Tax</span>
-          <span>${totalTax.toFixed(2)} CAD</span>
-        </div>
+        <>
+          <div className={style.total}>
+            <span>Province Tax</span>
+            <span>${provinceTaxValue.toFixed(2)} CAD</span>
+          </div>
+          <div className={style.total}>
+            <span>Federal Tax</span>
+            <span>${federalTaxValue.toFixed(2)} CAD</span>
+          </div>
+          <div className={style.total}>
+            <span>Total Tax</span>
+            <span>${totalTax.toFixed(2)} CAD</span>
+          </div>
+        </>
       </div>
       <hr />
       <div className={`${style.total} ${style.grandTotal}`}>
@@ -122,8 +128,21 @@ const CheckoutPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showComponent, setShowComponent] = useState("cart");
   const [shippingCharges, setShippingCharges] = useState(null);
+  const [addressError, setAddressError] = useState("");
 
   const payNow = () => {
+    if (!defaultAddress) {
+      setAddressError(
+        "Please select or add a delivery address before checkout."
+      );
+      const addressSection = document.getElementById("address-section");
+      if (addressSection) {
+        addressSection.scrollIntoView({ behavior: "smooth" });
+      }
+      return;
+    }
+
+    setAddressError("");
     setShowComponent("payment");
   };
 
@@ -133,6 +152,7 @@ const CheckoutPage = () => {
 
   const fetchUserCart = async () => {
     try {
+      setIsLoading(true);
       const userId = user?.userid;
       const provinceCode = defaultAddress?.billing?.provinceCode;
 
@@ -152,8 +172,11 @@ const CheckoutPage = () => {
 
       const res = await getUserCart(data);
       dispatch(setCart(res.data.data));
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching user cart:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -186,13 +209,17 @@ const CheckoutPage = () => {
   }, [discount, total]);
 
   useEffect(() => {
-    if (user?.userid && defaultAddress?.billing?.postCode) {
-      fetchUserCart();
-    }
-  }, [user?.userid, defaultAddress?.billing?.postCode]);
+    fetchUserCart();
+  }, [
+    user?.userid,
+    defaultAddress?.billing?.postCode,
+    cart?.items?.length,
+    cart?.tiffin?.length,
+  ]);
 
   const fetchAddress = async () => {
     try {
+      setIsLoading(true);
       const response = await getUserAddress(user.userid);
       if (response.status === 200) {
         const data = response?.data?.data || [];
@@ -200,8 +227,11 @@ const CheckoutPage = () => {
         const activeAddress = data.find((addr) => addr.isActive);
         if (activeAddress) dispatch(setDefaultAddress(activeAddress));
       }
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching addresses:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -263,8 +293,10 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    fetchShipping();
-  }, [defaultAddress, cart]);
+    if (defaultAddress && cart?.items?.items?.length > 0) {
+      fetchShipping();
+    }
+  }, [defaultAddress, cart.items?.items]);
 
   const SCV =
     shippingCharges?.ShipmentResponse?.ShipmentResults?.ShipmentCharges
@@ -280,61 +312,71 @@ const CheckoutPage = () => {
         <div>
           <Header />
           <Banner name="Checkout" path="/cart" />
-          <div className={style.checkoutContainer}>
-            <>
-              <OrderSummary
-                total={cart?.items?.grandTotal}
-                discount={discount}
-                isLoading={isLoading}
-                discountPercentage={discountPercentage}
-                payNow={payNow}
-                federalTax={cart?.items?.totalFederalTax}
-                provinceTax={cart?.items?.totalProvinceTax}
-                tax={cart?.items?.totalTax}
-                selfPickup={selfPickup}
-                SCV={SCV}
-                SCC={SCC}
-              />
-              <div className={style.address}>
-                <div className={style.addressContainer}>
-                  {addresses.length < 3 ? (
-                    <AddAddressCard
-                      onClick={() => {
-                        dispatch(setShowAddressForm(true));
-                        setDialog(true);
-                      }}
-                    />
-                  ) : null}
-                  {addresses &&
-                    addresses.map((address, index) => (
-                      <AddressCard
-                        key={index}
-                        address={address}
-                        handleSetAsDefaultAddress={handleSetAsDefaultAddress}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <div className={style.checkoutContainer}>
+              <>
+                <OrderSummary
+                  total={cart?.items?.grandTotal}
+                  discount={discount}
+                  isLoading={isLoading}
+                  discountPercentage={discountPercentage}
+                  payNow={payNow}
+                  federalTax={cart?.items?.totalFederalTax}
+                  provinceTax={cart?.items?.totalProvinceTax}
+                  tax={cart?.items?.totalTax}
+                  selfPickup={selfPickup}
+                  SCV={SCV}
+                  SCC={SCC}
+                  hasTiffin={cart?.items?.tiffins?.length > 0}
+                />
+                <div className={style.address}>
+                  <div className={style.addressContainer}>
+                    {addresses.length < 3 ? (
+                      <AddAddressCard
+                        onClick={() => {
+                          dispatch(setShowAddressForm(true));
+                          setDialog(true);
+                        }}
                       />
-                    ))}
+                    ) : null}
+                    {addresses &&
+                      addresses.map((address, index) => (
+                        <AddressCard
+                          key={index}
+                          address={address}
+                          handleSetAsDefaultAddress={handleSetAsDefaultAddress}
+                        />
+                      ))}
+                  </div>
+                  <div className={style.selfPickup}>
+                    <CheckboxField
+                      checked={selfPickup}
+                      onChange={(e) =>
+                        dispatch(setSelfPickup(e.target.checked))
+                      }
+                    />
+                    <lable>Self PickUp</lable>
+                  </div>
+                  {addressError && (
+                    <div className={style.error}>{addressError}</div>
+                  )}
                 </div>
-                <div className={style.selfPickup}>
-                  <CheckboxField
-                    checked={selfPickup}
-                    onChange={(e) => dispatch(setSelfPickup(e.target.checked))}
-                  />
-                  <lable>Self PickUp</lable>
-                </div>
-              </div>
-            </>
+              </>
 
-            <DialogBox
-              isOpen={dialog}
-              title="Add Delivery Address"
-              onClose={() => setDialog(false)}
-            >
-              <AddressForm
+              <DialogBox
+                isOpen={dialog}
+                title="Add Delivery Address"
                 onClose={() => setDialog(false)}
-                fetchAddress={fetchAddress}
-              />
-            </DialogBox>
-          </div>
+              >
+                <AddressForm
+                  onClose={() => setDialog(false)}
+                  fetchAddress={fetchAddress}
+                />
+              </DialogBox>
+            </div>
+          )}
           <Footer />
         </div>
       )}

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   data: {},
+  loading: false,
 };
 
 const HomePageSlice = createSlice({
@@ -11,9 +12,12 @@ const HomePageSlice = createSlice({
     setData: (state, action) => {
       state.data = action.payload;
     },
+    setHomeLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-export const { setData } = HomePageSlice.actions;
+export const { setData, setHomeLoading } = HomePageSlice.actions;
 
 export default HomePageSlice.reducer;

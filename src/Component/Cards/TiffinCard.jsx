@@ -1,19 +1,51 @@
 import style from "../../styles/TiffinCard.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AddToCartButton from "../Buttons/AddToCartButton";
-import { formatDate } from "../../Utils/FormateDate";
 import DateChip from "../Buttons/DateChip";
 import { useSelector, useDispatch } from "react-redux";
 import { AddtoCart } from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { setCart } from "../../../Store/Slice/UserCartSlice";
 import slugify from "../../Utils/URLslug";
+import { formatDate } from "../../Utils/FormateDate";
+import RatingStar from "../RatingStar";
 
 const TiffinCard = ({ item }) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const Cart = useSelector((state) => state.cart);
+
+  const isExpired = (() => {
+    if (!item?.endDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tiffinEndDate = new Date(item?.endDate);
+    tiffinEndDate.setHours(0, 0, 0, 0);
+    return tiffinEndDate < today;
+  })();
+
+  const areItemsEqual = (items1, items2) => {
+    if (items1.length !== items2.length) return false;
+
+    const normalize = (items) =>
+      items
+        .map((i) => ({
+          id: i._id || i.itemId,
+          quantity: parseInt(i.quantity || 1),
+        }))
+        .sort((a, b) => a.id.localeCompare(b.id));
+
+    const normalized1 = normalize(items1);
+    const normalized2 = normalize(items2);
+
+    return normalized1.every((item, i) => {
+      return (
+        item.id === normalized2[i].id &&
+        item.quantity === normalized2[i].quantity
+      );
+    });
+  };
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
@@ -21,93 +53,115 @@ const TiffinCard = ({ item }) => {
         items: [],
         tiffins: [],
       };
-
       const localCartItems = localCartData.items || [];
-      const localCartTiffin = localCartData.tiffins || [];
+      const localCartTiffins = localCartData.tiffins || [];
 
       if (localCartItems.length > 0) {
-        Toast({
-          message: "Tiffin is already added to cart!",
-          type: "error",
-        });
+        Toast({ message: "Cart already contains items.", type: "error" });
         return;
       }
 
-      const exists = localCartTiffin.find((items) => items._id === item._id);
+      const orderDate = new Date().toISOString().split("T")[0];
 
-      if (exists) {
-        const updatedTiffin = localCartTiffin.map((items) => {
-          if (items._id === item._id) {
-            return { ...items, quantity: items.quantity + 1 };
+      const customizedItems =
+        (item.items || []).map((i) => ({
+          _id: i._id,
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity || 1,
+          weight: i.weight || "",
+          weightUnit: i.weightUnit || "",
+          description: i.description || "",
+        })) || [];
+
+      const tiffinData = {
+        _id: item._id,
+        tiffinMenuId: item._id,
+        name: item.name,
+        image_url: item.image_url,
+        day: item.day,
+        deliveryDate: item.date,
+        isCustomized: false,
+        customizedItems,
+        quantity: 1,
+        price: item.totalAmount,
+        specialInstructions: item.specialInstructions || "No onions",
+        orderDate,
+      };
+
+      const existingIndex = localCartTiffins.findIndex(
+        (t) =>
+          t.tiffinMenuId === item._id &&
+          areItemsEqual(t.customizedItems || [], customizedItems)
+      );
+
+      let updatedTiffins;
+
+      if (existingIndex !== -1) {
+        updatedTiffins = localCartTiffins.map((tiffin, index) => {
+          if (index === existingIndex) {
+            return {
+              ...tiffin,
+              quantity: tiffin.quantity + 1,
+              price: parseFloat(tiffin.price || 0).toFixed(2),
+            };
           }
-          return items;
+          return tiffin;
         });
-
-        const updatedCart = {
-          items: localCartItems,
-          tiffins: updatedTiffin,
-        };
-
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({
-          message: "Tiffin quantity updated in cart!",
-          type: "success",
-        });
-        dispatch(setCart(updatedCart));
+        Toast({ message: "Tiffin quantity updated in cart!", type: "success" });
       } else {
-        const updatedTiffin = [
-          ...localCartTiffin,
-          { ...item, quantity: 1, price: item.price },
-        ];
-
-        const updatedCart = {
-          items: localCartItems,
-          tiffins: updatedTiffin,
-        };
-
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({
-          message: "Tiffin added to cart!",
-          type: "success",
-        });
-        dispatch(setCart(updatedCart));
+        updatedTiffins = [...localCartTiffins, tiffinData];
+        Toast({ message: "Tiffin added to cart!", type: "success" });
       }
 
+      const updatedCart = {
+        items: localCartItems,
+        tiffins: updatedTiffins,
+      };
+
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      dispatch(setCart(updatedCart));
       return;
     }
 
     if (Cart?.items?.items?.length > 0) {
       Toast({
-        message: "Tiffin is already added to cart!",
+        message: "Cart already contains items.",
         type: "error",
       });
       return;
     }
 
+    const orderDate = new Date().toISOString().split("T")[0];
+
     try {
-      const res = await AddtoCart({
+      const payload = {
         user_id: user.userid,
         isTiffinCart: true,
         tiffinMenuId: item._id,
         customizedItems: item.items || [],
-        specialInstructions: item.specialInstructions || "",
-        orderDate: Date.now(),
+        specialInstructions: item.specialInstructions || "No onions",
+        orderDate,
         day: item.day,
+        deliveryDate: item.date,
         quantity: 1,
-        price: item.subTotal,
-      });
-      dispatch(setCart(res.data.data));
-      Toast({
-        message: "Tiffin added to cart successfully!",
-        type: "success",
-      });
+        price: item.totalAmount,
+      };
+
+      const res = await AddtoCart(payload);
+      dispatch(setCart(res?.data?.data));
+      Toast({ message: "Tiffin added to cart successfully!", type: "success" });
     } catch (error) {
-      console.error("Error adding to cart:", error);
-      Toast({
-        message: "Something went wrong!",
-        type: "error",
-      });
+      console.error("Error adding tiffin to cart:", error);
+      Toast({ message: "Failed to add tiffin to cart", type: "error" });
     }
+  };
+
+  const handleView = (e) => {
+    e.preventDefault();
+    navigate(`/product/tiffin/${slugify(item.day)}`, {
+      state: { id: item._id },
+    });
   };
 
   return (
@@ -123,14 +177,24 @@ const TiffinCard = ({ item }) => {
             className={style.tiffinImg}
           />
           {item?.date && <DateChip name={formatDate(item?.date)} />}
+          {item?.day && <div className={style.dayBadge}>{item.day}</div>}
         </div>
 
-        {item?.day && <p className={style.tiffinTitle}>{item.day}</p>}
+        {item?.name && <span>{item.name}</span>}
+        <div className={style.rating}>
+          <RatingStar rating={item?.averageRating} disabled />
+        </div>
         {item?.subTotal && (
-          <p className="price">${Number(item.subTotal).toFixed(2)}</p>
+          <p className={style.price}>${Number(item.totalAmount).toFixed(2)}</p>
         )}
       </Link>
-      <AddToCartButton onclick={handleAddToCart} />
+      {item.isCustomized ? (
+        <button className="Button sm" onClick={handleView} disabled={isExpired}>
+          VIEW TIFFIN
+        </button>
+      ) : (
+        <AddToCartButton onclick={handleAddToCart} disabled={isExpired} />
+      )}
     </div>
   );
 };

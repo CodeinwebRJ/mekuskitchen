@@ -8,6 +8,7 @@ import { SendQuestions } from "../../axiosConfig/AxiosConfig";
 import { useSelector } from "react-redux";
 import Heading from "../../Component/UI-Components/Heading";
 import SelectField from "../../Component/UI-Components/SelectField";
+import { Toast } from "../../Utils/Toast";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -65,6 +66,7 @@ const ContactPage = () => {
         phoneCode: "+1",
         message: "",
       });
+      Toast({ message: "Message sent successfully", type: "success" });
     } catch (error) {
       console.error("Submission failed", error);
     } finally {
@@ -85,18 +87,6 @@ const ContactPage = () => {
               Contact us for reservations, event inquiries, or any other
               information you may need.
             </p>
-
-            <div className={style.leftContainerContact}>
-              <button
-                className={style.leftContainerTelephonetButton}
-                aria-label="Phone"
-              >
-                <img src="/telephone.png" alt="Phone icon" />
-              </button>
-              <span className={style.leftContainerContactNumber}>
-                <a href="tel:+16723774949">+1 (672)-377-4949</a>
-              </span>
-            </div>
 
             <div className={style.leftContainerMail}>
               <button
@@ -185,6 +175,7 @@ const ContactPage = () => {
                         { label: "+1", value: "+1" },
                         { label: "+91", value: "+91" },
                         { label: "+44", value: "+44" },
+                        { label: "+61", value: "+61" },
                       ]}
                       className={style.phoneCodeSelect}
                     />

@@ -5,9 +5,13 @@ import Header from "../../Component/MainComponents/Header";
 import Banner from "../../Component/MainComponents/Banner";
 import Footer from "../../Component/MainComponents/Footer";
 import DialogBox from "../../Component/MainComponents/DialogBox";
-import { setCart } from "../../../Store/Slice/UserCartSlice";
+import { setCart, setCartLoading } from "../../../Store/Slice/UserCartSlice";
 import { setCartCount } from "../../../Store/Slice/CountSlice";
-import { getUserCart, UpdateUserCart } from "../../axiosConfig/AxiosConfig";
+import {
+  getUserCart,
+  UpdateCartTiffins,
+  UpdateUserCart,
+} from "../../axiosConfig/AxiosConfig";
 import { Toast } from "../../Utils/Toast";
 import { useNavigate } from "react-router-dom";
 import CouponCode from "../../Component/Cards/CouponCode";
@@ -15,16 +19,17 @@ import CartCard from "../../Component/Cards/CartCard";
 import CartTable from "../../Component/UI-Components/CartTable";
 import CartItemCardMobile from "../../Component/UI-Components/CartItemcard";
 import NoDataFound from "../../Component/MainComponents/NoDataFound";
+import Loading from "../../Component/UI-Components/Loading";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
+  const { loading } = useSelector((state) => state.cart);
   const [dialog, setDialog] = useState({ isOpen: false, product: null });
   const navigate = useNavigate();
   const { cartCount } = useSelector((state) => state.count);
-  const [discount, setDiscount] = useState(0);
-
+  const [] = useState([]);
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
       return cart?.items?.totalAmount;
@@ -39,7 +44,7 @@ const ShoppingCart = () => {
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
           (acc, item) =>
-            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+            acc + parseFloat(item.price || 0) * (item.quantity || 1),
           0
         ) || 0)
       );
@@ -60,40 +65,16 @@ const ShoppingCart = () => {
         ) || 0) +
         (cart?.items?.tiffins?.reduce(
           (acc, item) =>
-            acc + (item.tiffinMenuDetails?.totalAmount || 0) * item.quantity,
+            acc + parseFloat(item.price || 0) * (item.quantity || 1),
           0
         ) || 0)
       );
     }
   }, [cart, isAuthenticated]);
 
-  // const discount = useMemo(() => {
-  //   if (isAuthenticated) {
-  //     return (
-  //       cart?.items?.items?.reduce(
-  //         (acc, item) => acc + (item.price - item.price) * item.quantity,
-  //         0
-  //       ) || 0
-  //     );
-  //   } else {
-  //     return cart?.items?.items?.reduce((acc, item) => {
-  //       const originalPrice =
-  //         item?.sku?.details?.combinations?.Price || item?.price || 0;
-  //       const discountedPrice = item?.sellingPrice || 0;
-  //       const itemDiscount =
-  //         (discountedPrice - originalPrice) * (item?.quantity || 0);
-  //       return acc + itemDiscount;
-  //     }, 0);
-  //   }
-  // }, [cart]);
-
-  const discountPercentage = useMemo(() => {
-    if (total === 0) return 0;
-    return (discount / total) * 100;
-  }, [discount, total]);
-
   const fetchUserCart = async () => {
     try {
+      dispatch(setCartLoading(true));
       if (user?.userid) {
         const data = {
           id: user.userid,
@@ -101,6 +82,7 @@ const ShoppingCart = () => {
         const res = await getUserCart(data);
         dispatch(setCart(res.data.data));
       }
+      dispatch(setCartLoading(false));
     } catch (error) {
       console.error("Error fetching user cart:", error);
       Toast({ message: "Failed to load cart!", type: "error" });
@@ -113,8 +95,44 @@ const ShoppingCart = () => {
     }
   }, [isAuthenticated, cart?.items?.items?.length]);
 
-  const handleShowProduct = (id) => {
-    const product = cart?.items?.items?.find((item) => item._id === id);
+  const handleShowProduct = (
+    identifier,
+    type,
+    day = null,
+    customizedItems = [],
+    skuId = null,
+    combination = null
+  ) => {
+    console.log(identifier, type, day, customizedItems, skuId, combination);
+    let product;
+    let tiffinIndex = -1;
+    if (type === "product") {
+      product = cart?.items?.items?.find(
+        (item) =>
+          item._id === identifier &&
+          (!skuId || item?.sku?._id === skuId) &&
+          (!combination ||
+            JSON.stringify(item?.combination) === JSON.stringify(combination))
+      );
+    } else if (type === "tiffin") {
+      tiffinIndex = cart?.items?.tiffins?.findIndex(
+        (item) =>
+          item.tiffinMenuId === identifier &&
+          item.day === day &&
+          areCustomizedItemsEqual(
+            item.customizedItems || [],
+            customizedItems || []
+          )
+      );
+      product = cart?.items?.tiffins?.[tiffinIndex];
+      if (product) {
+        product = {
+          ...product,
+          tiffinIndex,
+        };
+      }
+    }
+
     if (product) {
       setDialog({ isOpen: true, product });
     } else {
@@ -122,35 +140,70 @@ const ShoppingCart = () => {
     }
   };
 
-  const updateItemQuantity = async (id, delta, type, dayName = null) => {
+  const updateItemQuantity = async (id, delta, type, options = {}) => {
     try {
+      const { day, customizedItems, skuId, combination } = options;
+
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
-          Tiffin: [],
+          tiffins: [],
           items: [],
         };
 
         const updateQuantity = (array) =>
           array.map((item) => {
-            if (item._id === id) {
-              const newQuantity = item.quantity + delta;
-              if (newQuantity < 1) {
-                Toast({
-                  message: "Quantity cannot be less than 1",
-                  type: "error",
-                });
-                return item;
+            if (type === "tiffin") {
+              const isSameTiffin =
+                item._id === id &&
+                item.day === day &&
+                JSON.stringify(item.customizedItems) ===
+                  JSON.stringify(customizedItems);
+
+              if (isSameTiffin) {
+                const newQuantity = item.quantity + delta;
+
+                if (newQuantity < 1) {
+                  Toast({
+                    message: "Quantity cannot be less than 1",
+                    type: "error",
+                  });
+                  return item;
+                }
+
+                return { ...item, quantity: newQuantity };
               }
-              return { ...item, quantity: newQuantity };
+            } else if (type === "product") {
+              const isSameProduct =
+                item._id === id &&
+                (!skuId || item?.sku?._id === skuId) &&
+                (!combination ||
+                  JSON.stringify(item?.combination) ===
+                    JSON.stringify(combination));
+
+              if (isSameProduct) {
+                const newQuantity = item.quantity + delta;
+
+                if (newQuantity < 1) {
+                  Toast({
+                    message: "Quantity cannot be less than 1",
+                    type: "error",
+                  });
+                  return item;
+                }
+
+                return { ...item, quantity: newQuantity };
+              }
             }
+
             return item;
           });
 
         let updatedCart = { ...localCart };
+
         if (type === "product") {
-          updatedCart.items = updateQuantity(localCart.items, true);
+          updatedCart.items = updateQuantity(localCart.items);
         } else if (type === "tiffin") {
-          updatedCart.Tiffin = updateQuantity(localCart.Tiffin, false);
+          updatedCart.tiffins = updateQuantity(localCart.tiffins);
         } else {
           Toast({ message: "Invalid item type!", type: "error" });
           return;
@@ -159,9 +212,9 @@ const ShoppingCart = () => {
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         dispatch(setCart(updatedCart));
         dispatch(
-          setCartCount(updatedCart?.Tiffin?.length + updatedCart.items.length)
+          setCartCount(updatedCart?.tiffins?.length + updatedCart.items.length)
         );
-        Toast({ message: "Quantity updated!", type: "success" });
+        Toast({ message: "Quantity updated Successfully!", type: "success" });
       } else {
         let currentItem;
         let newQuantity;
@@ -179,6 +232,8 @@ const ShoppingCart = () => {
             type: "product",
             product_id: currentItem.product_id,
             quantity: newQuantity,
+            skuId: skuId,
+            combination,
           };
         } else if (type === "tiffin") {
           currentItem = cart?.items?.tiffins?.find((item) => item._id === id);
@@ -187,16 +242,13 @@ const ShoppingCart = () => {
             return;
           }
           newQuantity = currentItem.quantity + delta;
-          if (newQuantity < 1) {
-            Toast({ message: "Quantity cannot be less than 1", type: "error" });
-            return;
-          }
           data = {
             user_id: user?.userid,
             type: "tiffin",
             tiffinMenuId: currentItem.tiffinMenuId,
             quantity: newQuantity,
-            day: dayName,
+            day: currentItem.day,
+            customizedItems: currentItem.customizedItems || [],
           };
         } else {
           Toast({ message: "Invalid item type!", type: "error" });
@@ -211,7 +263,10 @@ const ShoppingCart = () => {
               (res.data.data.items?.tiffins?.length || 0)
           )
         );
-        Toast({ message: "Quantity updated!", type: "success" });
+        Toast({
+          message: "Tiffin Quantity updated Successfully!",
+          type: "success",
+        });
       }
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -219,38 +274,116 @@ const ShoppingCart = () => {
     }
   };
 
-  const handleDelete = async (id, type, dayName = null) => {
+  const areCustomizedItemsEqual = (a = [], b = []) => {
+    if (a.length !== b.length) return false;
+
+    return a.every((itemA) =>
+      b.some(
+        (itemB) =>
+          itemA.name === itemB.name &&
+          itemA.price === itemB.price &&
+          itemA.quantity === itemB.quantity &&
+          itemA.included === itemB.included &&
+          itemA.weight === itemB.weight &&
+          itemA.weightUnit === itemB.weightUnit &&
+          itemA.description === itemB.description
+      )
+    );
+  };
+
+  const handleDelete = async (
+    identifier,
+    type,
+    day = null,
+    customizedItems = [],
+    skuId = null,
+    combination = null
+  ) => {
     try {
       if (!isAuthenticated) {
         const localCart = JSON.parse(localStorage.getItem("cart")) || {
-          Tiffin: [],
+          tiffins: [],
           items: [],
         };
-        let updatedTiffin = localCart.Tiffin;
-        let updatedItems = localCart.items;
-        if (localCart.items.length > 0) {
-          updatedItems = localCart.items.filter((item) => item._id !== id);
-        } else if (localCart.Tiffin.length > 0) {
-          updatedTiffin = localCart.Tiffin.filter((item) => item._id !== id);
+
+        let updatedCart = { ...localCart };
+
+        if (type === "product") {
+          updatedCart.items = localCart.items.filter(
+            (item) =>
+              !(
+                item._id === identifier &&
+                (!skuId || item?.sku?._id === skuId) &&
+                (!combination ||
+                  JSON.stringify(item?.combination) ===
+                    JSON.stringify(combination))
+              )
+          );
+        } else if (type === "tiffin") {
+          updatedCart.tiffins = localCart.tiffins.filter(
+            (item) =>
+              !(
+                item.tiffinMenuId === identifier &&
+                item.day === day &&
+                areCustomizedItemsEqual(
+                  item.customizedItems || [],
+                  customizedItems || []
+                )
+              )
+          );
+        } else {
+          Toast({ message: "Invalid item type!", type: "error" });
+          return;
         }
-        const updatedCart = {
-          Tiffin: updatedTiffin,
-          items: updatedItems,
-        };
+
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        Toast({ message: "Removed from cart!", type: "success" });
         dispatch(setCart(updatedCart));
-        dispatch(setCartCount(updatedTiffin.length + updatedItems.length));
-        return;
+        dispatch(
+          setCartCount(updatedCart.tiffins.length + updatedCart.items.length)
+        );
+        Toast({ message: "Removed from cart!", type: "success" });
       } else {
-        const data = {
+        let data = {
           user_id: user?.userid,
           type,
           quantity: 0,
-          product_id: type === "product" ? id : undefined,
-          tiffinMenuId: type === "tiffin" ? id : undefined,
-          day: type === "tiffin" ? dayName : undefined,
+          skuId,
+          combination,
         };
+        if (type === "product") {
+          const productItem = cart?.items?.items?.find(
+            (item) => item._id === identifier
+          );
+
+          if (!productItem) {
+            Toast({ message: "Product not found!", type: "error" });
+            return;
+          }
+          data.product_id = productItem.product_id;
+        } else if (type === "tiffin") {
+          const tiffinItem = cart?.items?.tiffins?.find(
+            (item) =>
+              item.tiffinMenuId === identifier &&
+              item.day === day &&
+              areCustomizedItemsEqual(
+                item.customizedItems || [],
+                customizedItems || []
+              )
+          );
+
+          if (!tiffinItem) {
+            Toast({ message: "Tiffin not found!", type: "error" });
+            return;
+          }
+
+          data.tiffinMenuId = tiffinItem.tiffinMenuId;
+          data.day = tiffinItem.day;
+          data.customizedItems = tiffinItem.customizedItems || [];
+        } else {
+          Toast({ message: "Invalid item type!", type: "error" });
+          return;
+        }
+
         const res = await UpdateUserCart(data);
         dispatch(setCart(res.data.data));
         dispatch(
@@ -280,7 +413,9 @@ const ShoppingCart = () => {
     (isAuthenticated &&
       !cart?.items?.items?.length &&
       !cart?.items?.tiffins?.length) ||
-    (!isAuthenticated && (!cart?.items?.items || !cart.items.items.length))
+    (!isAuthenticated &&
+      !cart?.items?.items?.length &&
+      !cart?.items?.tiffins?.length)
   ) {
     return (
       <div>
@@ -294,26 +429,153 @@ const ShoppingCart = () => {
     );
   }
 
+  const UpdateCustomizeTiffinItems = async () => {
+    try {
+      const updatedProduct = dialog.product;
+      const isEqual = (a = [], b = []) => {
+        if (a.length !== b.length) return false;
+        return a.every((itemA) =>
+          b.some(
+            (itemB) =>
+              itemA.itemId === itemB.itemId &&
+              itemA.name === itemB.name &&
+              itemA.price === itemB.price
+          )
+        );
+      };
+
+      if (!isAuthenticated) {
+        const localCart = JSON.parse(localStorage.getItem("cart")) || {
+          tiffins: [],
+          items: [],
+        };
+
+        const updatedTiffins = localCart.tiffins.map((item, index) => {
+          // Update only the tiffin at the specific index
+          if (index === updatedProduct.tiffinIndex) {
+            const updatedCustomizedItems = updatedProduct.customizedItems || [];
+
+            const newPrice = updatedCustomizedItems.reduce((acc, curr) => {
+              const price = parseFloat(curr.price || 0);
+              const quantity = parseInt(curr.quantity || 1);
+              return acc + price * quantity;
+            }, 0);
+
+            return {
+              ...item,
+              customizedItems: updatedCustomizedItems,
+              price: newPrice.toFixed(2),
+            };
+          }
+
+          return item;
+        });
+
+        const updatedCart = {
+          ...localCart,
+          tiffins: updatedTiffins,
+        };
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        dispatch(setCart(updatedCart));
+        dispatch(
+          setCartCount(updatedCart.items.length + updatedCart.tiffins.length)
+        );
+
+        Toast({
+          message: "Customized items updated locally!",
+          type: "success",
+        });
+
+        setDialog({ isOpen: false, product: null });
+      } else {
+        dispatch(setCartLoading(true));
+        const data = {
+          user_id: user?.userid,
+          tiffinMenuId: dialog.product?.tiffinMenuId,
+          day: dialog.product?.day,
+          customizedItems: dialog.product?.customizedItems,
+        };
+        const res = await UpdateCartTiffins(data);
+        dispatch(setCart(res.data.data));
+        dispatch(
+          setCartCount(
+            (res.data.data.items?.items?.length || 0) +
+              (res.data.data.items?.tiffins?.length || 0)
+          )
+        );
+
+        setDialog({ isOpen: false, product: null });
+        Toast({
+          message: "Customized items updated successfully!",
+          type: "success",
+        });
+        dispatch(setCartLoading(false));
+      }
+    } catch (error) {
+      console.log(error);
+      Toast({
+        message: "Failed to update customized tiffin items",
+        type: "error",
+      });
+    }
+  };
+
+  const handleCustomizedItemQuantityChange = (index, delta) => {
+    const updatedItems = [...dialog.product.customizedItems];
+    let newQty = parseInt(updatedItems[index].quantity || 1) + delta;
+
+    if (newQty < 0) {
+      Toast({ message: "Quantity cannot be less than 0", type: "error" });
+      return;
+    }
+
+    updatedItems[index] = {
+      ...updatedItems[index],
+      quantity: newQty.toString(),
+    };
+
+    setDialog((prev) => ({
+      ...prev,
+      product: {
+        ...prev.product,
+        customizedItems: updatedItems,
+      },
+    }));
+  };
+
+  const isCustomized =
+    dialog?.product?.tiffinMenuDetails?.isCustomized ||
+    dialog?.product?.isCustomized;
+
+  console.log(dialog.product);
+
   return (
     <div>
       <Header />
       <Banner name="CART" />
       <div className={style.cartContainer}>
         <div className={style.desktopCartView}>
-          <CartTable
-            items={cart?.items?.items || []}
-            tiffins={cart?.items?.tiffins || []}
-            isAuthenticated={isAuthenticated}
-            onDelete={handleDelete}
-            onUpdateQuantity={updateItemQuantity}
-            onShowProduct={handleShowProduct}
-          />
+          {loading ? (
+            <div>
+              <Loading />
+            </div>
+          ) : (
+            <CartTable
+              items={cart?.items?.items || []}
+              tiffins={cart?.items?.tiffins || []}
+              isAuthenticated={isAuthenticated}
+              onDelete={handleDelete}
+              onUpdateQuantity={updateItemQuantity}
+              onShowProduct={handleShowProduct}
+            />
+          )}
         </div>
 
         <div className={style.mobileCartView}>
-          {(cart?.items?.items || []).map((item) => (
+          {(cart?.items?.items || []).map((item, index) => (
             <CartItemCardMobile
-              key={item._id}
+              key={index}
               item={{
                 image: isAuthenticated
                   ? item?.productDetails?.images?.[0]?.url
@@ -328,35 +590,63 @@ const ShoppingCart = () => {
                   ? item?.productDetails?.shortDescription
                   : item?.shortDescription,
               }}
-              onIncrease={() => updateItemQuantity(item._id, 1, "product")}
-              onDecrease={() => updateItemQuantity(item._id, -1, "product")}
+              type="product"
+              onIncrease={() =>
+                updateItemQuantity(item._id, 1, "product", {
+                  skuId: item?.sku?._id,
+                  combination: item?.combination,
+                })
+              }
+              onDecrease={() =>
+                updateItemQuantity(item._id, -1, "product", {
+                  skuId: item?.sku?._id,
+                  combination: item?.combination,
+                })
+              }
             />
           ))}
 
-          {(cart?.items?.tiffins || []).map((item) => (
+          {(cart?.items?.tiffins || []).map((item, index) => (
             <CartItemCardMobile
-              key={item._id}
+              key={index}
               item={{
-                image:
-                  item?.tiffinMenuDetails?.images?.[0]?.url ||
-                  "/placeholder.jpg",
-                name: item?.tiffinMenuDetails?.name,
-                price: item?.tiffinMenuDetails?.totalAmount,
+                items: item,
+                image: isAuthenticated
+                  ? item?.tiffinMenuDetails?.image_url?.[0]?.url ||
+                    "/defaultImage.png"
+                  : item?.image_url[0]?.url || "/defaultImage.png",
+                name: isAuthenticated
+                  ? item?.tiffinMenuDetails?.name
+                  : item.name,
+                price: isAuthenticated
+                  ? item?.tiffinMenuDetails?.totalAmount
+                  : item?.price,
+                day: item?.day,
                 quantity: item.quantity,
+                type: "tiffin",
                 description: item?.tiffinMenuDetails?.shortDescription || "",
               }}
+              onDelete={handleDelete}
+              onShowProduct={handleShowProduct}
+              type="tiffin"
               onIncrease={() =>
-                updateItemQuantity(item._id, 1, "tiffin", item.day)
+                updateItemQuantity(item._id, 1, "tiffin", {
+                  day: item.day,
+                  customizedItems: item.customizedItems,
+                })
               }
               onDecrease={() =>
-                updateItemQuantity(item._id, -1, "tiffin", item.day)
+                updateItemQuantity(item._id, -1, "tiffin", {
+                  day: item.day,
+                  customizedItems: item.customizedItems,
+                })
               }
             />
           ))}
         </div>
         <div className={style.cartSummary}>
           <div>
-            <CouponCode setDiscount={setDiscount} />
+            <CouponCode data={cart} />
           </div>
           <div className={style.cartTotals}>
             <CartCard
@@ -382,65 +672,169 @@ const ShoppingCart = () => {
             <div className={style.productImage}>
               <img
                 src={
-                  isAuthenticated
-                    ? dialog.product?.productDetails?.images?.[0]?.url
-                    : dialog.product?.images?.[0]?.url
+                  dialog.product?.sku?.images?.[0] ||
+                  dialog.product.productDetails.images[0].url ||
+                  dialog.product?.tiffinMenuDetails?.image_url?.[0]?.url ||
+                  dialog.product?.image_url?.[0]?.url ||
+                  "/defaultImage.png"
                 }
                 alt="product"
               />
             </div>
+
             <div className={style.productInfo}>
               <h2>
-                {isAuthenticated
-                  ? dialog.product?.productDetails?.name
-                  : dialog.product?.name}
+                {dialog.product?.productDetails?.name ||
+                  dialog.product?.name ||
+                  dialog.product?.tiffinMenuDetails?.name ||
+                  "Tiffin Item"}
               </h2>
+
               <div className={style.productPricing}>
-                <span className="originalPrice">
-                  $
-                  {isAuthenticated
-                    ? dialog.product?.productDetails?.price
-                    : dialog.product?.price}
-                </span>
                 <span className="Price">
                   $
-                  {isAuthenticated
-                    ? dialog.product?.productDetails?.sellingPrice
-                    : dialog.product?.sellingPrice}
+                  {dialog.product?.price ||
+                    dialog.product?.sellingPrice ||
+                    dialog.product?.totalAmount ||
+                    dialog.product?.tiffinMenuDetails?.totalAmount ||
+                    0}{" "}
+                  CAD
                 </span>
               </div>
-              <p className={style.productDescription}>
-                Category:{" "}
-                {isAuthenticated
-                  ? dialog.product?.productDetails?.category
-                  : dialog.product?.category}
-              </p>
-              {dialog.product?.productDetails?.subCategory ||
-                (dialog.product?.subCategory && (
-                  <p className={style.productDescription}>
-                    SubCategory:{" "}
-                    {isAuthenticated
-                      ? dialog.product?.productDetails?.subCategory
-                      : dialog.product?.subCategory}
-                  </p>
-                ))}
-              {dialog.product?.productDetails?.subSubCategory ||
-                (dialog.product?.ProductCategory && (
-                  <p className={style.productDescription}>
-                    Product:{" "}
-                    {isAuthenticated
-                      ? dialog.product?.productDetails?.ProductCategory
-                      : dialog.product?.ProductCategory}
-                  </p>
-                ))}
-              {/* <div>
-                <Chip />
-              </div> */}
-              <p className={style.productDescription}>
-                {isAuthenticated
-                  ? dialog.product?.productDetails?.shortDescription
-                  : dialog.product?.shortDescription}
-              </p>
+
+              {(dialog.product?.productDetails?.category ||
+                dialog.product?.category) && (
+                <p className={style.productDescription}>
+                  Category:{" "}
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.category
+                    : dialog.product?.category}
+                </p>
+              )}
+
+              {(dialog.product?.productDetails?.subCategory ||
+                dialog.product?.subCategory) && (
+                <p className={style.productDescription}>
+                  SubCategory:{" "}
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.subCategory
+                    : dialog.product?.subCategory}
+                </p>
+              )}
+
+              {(dialog.product?.productDetails?.ProductCategory ||
+                dialog.product?.ProductCategory) && (
+                <p className={style.productDescription}>
+                  Product:{" "}
+                  {isAuthenticated
+                    ? dialog.product?.productDetails?.ProductCategory
+                    : dialog.product?.ProductCategory}
+                </p>
+              )}
+
+              {dialog.product?.tiffinMenuDetails?.description && (
+                <p className={style.productDescription}>
+                  {dialog.product?.tiffinMenuDetails?.description}
+                </p>
+              )}
+
+              {dialog.product?.day && (
+                <p className={style.productDescription}>
+                  Day: {dialog.product.day}
+                </p>
+              )}
+
+              {dialog.product?.quantity && (
+                <p className={style.productDescription}>
+                  Quantity: {dialog.product.quantity}
+                </p>
+              )}
+
+              {isCustomized > 0 ? (
+                <>
+                  <div>
+                    <ul>
+                      {dialog.product?.customizedItems?.length > 0 && (
+                        <>
+                          <div>
+                            <span>Items:</span>
+                            <ul>
+                              {dialog.product.customizedItems.map(
+                                (item, index) => (
+                                  <li
+                                    className={style.customizedItems}
+                                    key={item._id || index}
+                                  >
+                                    {item.name}
+                                    <div className={style.quantity}>
+                                      <button
+                                        className={style.quantityButton}
+                                        onClick={() =>
+                                          handleCustomizedItemQuantityChange(
+                                            index,
+                                            -1
+                                          )
+                                        }
+                                      >
+                                        -
+                                      </button>
+
+                                      <input
+                                        type="number"
+                                        min={1}
+                                        className={style.quantityInput}
+                                        value={item.quantity}
+                                        readOnly
+                                      />
+
+                                      <button
+                                        className={style.quantityButton}
+                                        onClick={() =>
+                                          handleCustomizedItemQuantityChange(
+                                            index,
+                                            1
+                                          )
+                                        }
+                                      >
+                                        +
+                                      </button>
+                                    </div>
+
+                                    {item.weight && item.weightUnit && (
+                                      <span>
+                                        {" "}
+                                        {item.weight} {item.weightUnit}
+                                      </span>
+                                    )}
+                                    <span> - ${item.price} CAD</span>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+
+                  <div className={style.updateButtonWrap}>
+                    <button
+                      className="Button sm"
+                      onClick={UpdateCustomizeTiffinItems}
+                    >
+                      Update Tiffin Items
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <ul>
+                  {dialog?.product?.customizedItems?.map((item, index) => (
+                    <li className={style.customizedItems} key={index}>
+                      {item.name} - {item.quantity} - ${item.price} CAD
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         )}

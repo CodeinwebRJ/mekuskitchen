@@ -3,11 +3,8 @@ import style from "../../styles/WishlistPage.module.css";
 import Header from "../../Component/MainComponents/Header";
 import Footer from "../../Component/MainComponents/Footer";
 import Banner from "../../Component/MainComponents/Banner";
-import { RiShareLine } from "react-icons/ri";
-import { IoReorderThreeOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import WishlistItem from "../../Component/Cards/WishlistItemsCard";
-import FilterAndShorting from "../../Component/UI-Components/FilterAndShorting";
 import { getUserWishlist } from "../../axiosConfig/AxiosConfig";
 import { setWishlist } from "../../../Store/Slice/UserWishlistSlice";
 import Loading from "../../Component/UI-Components/Loading";
@@ -74,12 +71,13 @@ const WishlistPage = () => {
                 key={product._id || index}
                 product={product}
                 fetchWishlist={fetchWishlist}
+                icons="true"
               />
             ))}
           </div>
         ) : (
           <div>
-            <NoDataFound message="Your wishlist is empty"/>
+            <NoDataFound message="Your wishlist is empty" />
           </div>
         )}
       </div>

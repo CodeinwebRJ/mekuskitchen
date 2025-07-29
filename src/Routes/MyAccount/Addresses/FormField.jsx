@@ -9,6 +9,7 @@ import AddressAutocomplete from "../../../Component/Fields/Address";
 const FormField = ({ formData, handleChange, formErrors = {} }) => {
   const [addressSuggestions, setAddressSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [addressDisplay, setAddressDisplay] = useState("");
   const { countriesData } = useSelector((state) => state.country);
   const suggestionRef = useRef(null);
 
@@ -49,6 +50,12 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
       value: code,
     };
   });
+
+  useEffect(() => {
+    if (formData.address && addressDisplay === "") {
+      setAddressDisplay(formData.address);
+    }
+  }, [formData.address]);
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -95,12 +102,17 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
   }, []);
 
   const handlePlaceSelect = (place) => {
-    const address = place.formatted_address;
-    const lat = place.geometry?.location?.lat();
-    const lng = place.geometry?.location?.lng();
+    const fullAddress = place.formatted_address || "";
+    const streetOnly = fullAddress.split(",")[0]?.trim() || "";
 
-    console.log("Full place object:", place);
-    console.log("Address:", address);
+    setAddressDisplay(fullAddress);
+
+    handleChange({
+      target: {
+        name: "address",
+        value: streetOnly,
+      },
+    });
   };
 
   return (
@@ -212,8 +224,16 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         <label className={style.label}>Address</label>
         <AddressAutocomplete
           name="address"
-          value={formData.address || ""}
-          onChange={handleChange}
+          value={addressDisplay}
+          onChange={(e) => {
+            setAddressDisplay(e.target.value); 
+            handleChange({
+              target: {
+                name: "address",
+                value: e.target.value.split(",")[0]?.trim(), 
+              },
+            });
+          }}
           onPlaceSelect={handlePlaceSelect}
         />
         {formErrors.address && (

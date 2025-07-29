@@ -2,7 +2,6 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import OptionSelector from "./OptionSelector";
 import Chip from "../../Component/Buttons/Chip";
 import style from "../../styles/ProductPage.module.css";
-import { Link } from "react-router-dom";
 import RatingStar from "../../Component/RatingStar";
 import Features from "../../Component/UI-Components/Features";
 
@@ -72,6 +71,8 @@ const ProductDetails = ({
       setSelectedOptions({});
     }
   };
+
+  const OutofStock = selectedCombination?.Stock === 0 || product.stock === 0;
 
   return (
     <div className={style.productDetails}>
@@ -156,17 +157,19 @@ const ProductDetails = ({
         <div className={style.addToCartContainer}>
           <button
             onClick={handleAddToCart}
-            className="Button sm"
-            disabled={product.sku.length > 1 && !selectedCombination}
+            className={`Button sm ${OutofStock ? "disabled" : ""}`}
+            disabled={
+              (product.sku.length > 1 && !selectedCombination) || OutofStock
+            }
           >
-            ADD TO CART
+            {"ADD TO CART"}
           </button>
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <Features />
-      </div>
+      </div> */}
 
       {product?.sku?.length > 0 &&
         product?.sku[0]?.details?.combinations?.length > 0 && (
@@ -234,18 +237,8 @@ const ProductDetails = ({
       <div className={style.share}>
         Share:
         <div className={style.socialIcons}>
-          <Link to="#">
-            <img src="/facebook.png" alt="FaceBook" />
-          </Link>
-          <Link to="#">
-            <img src="/instagram.png" alt="Twitter" />
-          </Link>
-          {/* <Link to="#">
-            <img src="/Twitter.png" alt="LinkedIn" />
-          </Link>
-          <Link to="#">
-            <img src="/Telegram.png" alt="LinkedIn" />
-          </Link> */}
+          <img src="/facebook.png" alt="FaceBook" />
+          <img src="/instagram.png" alt="Twitter" />
         </div>
       </div>
     </div>

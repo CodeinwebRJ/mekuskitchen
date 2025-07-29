@@ -239,6 +239,7 @@ const ProductPage = () => {
                 selectedImage={selectedImage}
                 setSelectedImage={setSelectedImage}
                 selectedSKUs={selectedSKUs}
+                selectedCombination={selectedCombination}
               />
               <ProductDetails
                 product={product}

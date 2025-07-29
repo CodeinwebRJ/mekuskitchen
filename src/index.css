@@ -165,12 +165,14 @@ ul {
 
 .price {
   font-weight: 600;
+  margin: 0;
 }
 
 .originalPrice {
   font-weight: 600;
   text-decoration: line-through;
   color: var(--error);
+  margin: 0;
 }
 
 @media screen and (max-width: 480px) {
@@ -230,6 +232,16 @@ ul {
   cursor: pointer;
   border-radius: 12px;
   transition: all 0.2s ease-in-out;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.Button:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .sm {

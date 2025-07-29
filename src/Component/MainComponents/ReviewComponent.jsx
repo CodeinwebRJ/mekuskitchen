@@ -3,11 +3,15 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import style from "../../styles/NewArrival.module.css";
 import ReviewCard from "../Cards/Review";
+import { useSelector } from "react-redux";
 
-const ReviewComponent = ({ data }) => {
+const ReviewComponent = () => {
+  const { data } = useSelector((state) => state.home);
+
   const products = Array.isArray(data?.TopReviews) ? data.TopReviews : [];
   const enableLoop = products.length >= 4;
   const enableAutoplay = products.length >= 4;
+
   return (
     <div className={style.wrapper}>
       <h2 className={style.newArrival}>

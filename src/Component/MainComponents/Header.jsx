@@ -23,6 +23,7 @@ import { RxDashboard } from "react-icons/rx";
 import { TfiLocationPin } from "react-icons/tfi";
 import { FaBars } from "react-icons/fa";
 import { clearUserDetail } from "../../../Store/Slice/UserDetailSlice";
+import SearchComponent from "./SearchComponent";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -36,14 +37,18 @@ const Header = () => {
   const { cartCount, wishlistCount } = useSelector((state) => state.count);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const cart = useSelector((state) => state.cart);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleLogout = () => {
-    if (!isAuthenticated) return navigate("/login");
     try {
-      dispatch(logout());
-      dispatch(clearUserDetail());
-      localStorage.clear();
-      navigate("/login");
+      if (isAuthenticated) {
+        dispatch(logout());
+        dispatch(clearUserDetail());
+        localStorage.clear();
+        navigate("/login");
+      } else {
+        navigate("/login");
+      }
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -133,6 +138,12 @@ const Header = () => {
           OUR PRODUCT
         </Link>
         <Link
+          to="/daily-tiffin"
+          className={`${style.link} ${handleLinkActive("/daily-tiffin")}`}
+        >
+          DAILY TIFFIN
+        </Link>
+        <Link
           to="/about-us"
           className={`${style.link} ${handleLinkActive("/about-us")}`}
         >
@@ -152,6 +163,7 @@ const Header = () => {
             { to: "/", label: "HOME" },
             { to: "/product-category", label: "OUR PRODUCT" },
             { to: "/about-us", label: "ABOUT US" },
+            { to: "/daily-tiffin", label: "DAILY TIFFIN" },
             { to: "/contact-us", label: "CONTACT US" },
             isAuthenticated && { to: "/my-account", label: "DASHBOARD" },
             { to: "/cart", label: "CART" },
@@ -169,28 +181,40 @@ const Header = () => {
               </Link>
             ))}
 
-          <Link
-            onClick={() => {
-              handleLogout();
-              setIsMobileMenuOpen(false);
-            }}
-            className={style.mobileLink}
-          >
+          <Link className={style.mobileLink}>
             {isAuthenticated ? (
-              <>
+              <span
+                onClick={() => {
+                  handleLogout();
+                  setIsMobileMenuOpen(false);
+                }}
+                className={style.mobileLink}
+              >
                 <FiLogOut size={20} /> Logout
-              </>
+              </span>
             ) : (
-              <>
+              <Link
+                to="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={style.mobileLink}
+              >
                 <FiLogIn size={20} /> Login
-              </>
+              </Link>
             )}
           </Link>
         </nav>
       )}
 
       <div className={style.headerIcons}>
-        <IoSearch className={style.icon} />
+        <IoSearch
+          className={style.icon}
+          onClick={() => setIsSearchOpen(true)}
+        />
+        {isSearchOpen && (
+          <div className={style.searchOverlay}>
+            <SearchComponent onClose={() => setIsSearchOpen(false)} />
+          </div>
+        )}
 
         <div className={`${style.userDropdown} ${style.hideOnMobile}`}>
           <LuUserRound className={style.userDropdownIcon} />

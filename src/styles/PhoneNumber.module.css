@@ -1,0 +1,62 @@
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.phoneNumber {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--gray-shadow);
+  border-radius: 6px;
+  overflow: hidden;
+  gap: 8px;
+}
+
+.codeSelect {
+  padding: 8px;
+  border: none;
+  background-color: white;
+  font-size: 1rem;
+}
+
+.phoneNumberInput:focus {
+  border: none;
+  outline: none;
+}
+
+.phoneNumberInput:active {
+  border: none;
+  outline: none;
+}
+
+.divider {
+  width: 1px;
+  height: 100%;
+  background-color: #000000;
+  margin: 0 8px;
+}
+
+.codeSelect:focus {
+  border: none;
+  outline: none;
+}
+.codeSelect:active {
+  border: none;
+  outline: none;
+}
+
+.phoneNumberInput {
+  flex: 1;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.errorMessage {
+  margin-top: 0.3rem;
+  color: red;
+  font-size: 0.875rem;
+}

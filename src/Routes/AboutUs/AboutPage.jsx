@@ -131,7 +131,7 @@ const AboutPage = () => {
               </div>
               <div className={style.happyCustomersCount}>
                 <h1 className={style.countNumber}>{happyCustomers} +</h1>
-                <p className={style.countText}>HAPPY COSTUMERS</p>
+                <p className={style.countText}>HAPPY CUSTOMERS</p>
               </div>
             </div>
 

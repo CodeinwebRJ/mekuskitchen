@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar2 from "../../Component/MainComponents/Navbar2";
@@ -143,7 +143,7 @@ function VerifyOtp({ formData, setFormData }) {
         setMessage("OTP verified successfully.");
         navigate("/forget-password");
       } else {
-        setMessage("Error: OTP does not match. Please try again.");
+        setMessage("OTP does not match. Please try again.");
       }
     } catch (err) {
       setMessage("Error verifying OTP. Please try again.");
@@ -201,7 +201,7 @@ function VerifyOtp({ formData, setFormData }) {
                     </div>
                   </div>
 
-                  <button type="submit" className={styles.verifyBtn}>
+                  <button type="submit" className="Button sm">
                     {loading ? "Verifying..." : "Verify"}
                   </button>
                 </form>

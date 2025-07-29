@@ -19,8 +19,31 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const areCustomizedItemsEqual = (a = [], b = []) => {
+    if (a.length !== b.length) return false;
+    return a.every((itemA) =>
+      b.some(
+        (itemB) =>
+          itemA.name === itemB.name &&
+          itemA.price === itemB.price &&
+          itemA.quantity === itemB.quantity &&
+          itemA.included === itemB.included &&
+          itemA.weight === itemB.weight &&
+          itemA.weightUnit === itemB.weightUnit &&
+          itemA.description === itemB.description
+      )
+    );
+  };
+
   const handleDelete = useCallback(
-    async (id, type, dayName = null, skuId) => {
+    async (
+      id,
+      type,
+      day = null,
+      customizedItems = [],
+      skuId = null,
+      combination = null
+    ) => {
       setIsLoading(true);
       try {
         if (!isAuthenticated) {
@@ -30,8 +53,33 @@ const Sidebar = ({ isOpen, onClose }) => {
           };
 
           const updatedCart = {
-            tiffins: localCart.tiffins.filter((item) => item._id !== id),
-            items: localCart.items.filter((item) => item._id !== id),
+            tiffins:
+              type === "tiffin"
+                ? localCart.tiffins.filter(
+                    (item) =>
+                      !(
+                        item.tiffinMenuId === id &&
+                        item.day === day &&
+                        areCustomizedItemsEqual(
+                          item.customizedItems || [],
+                          customizedItems || []
+                        )
+                      )
+                  )
+                : localCart.tiffins,
+            items:
+              type === "product"
+                ? localCart.items.filter(
+                    (item) =>
+                      !(
+                        item._id === id &&
+                        (!skuId || item?.sku?._id === skuId) &&
+                        (!combination ||
+                          JSON.stringify(item?.combination) ===
+                            JSON.stringify(combination))
+                      )
+                  )
+                : localCart.items,
           };
 
           localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -41,18 +89,56 @@ const Sidebar = ({ isOpen, onClose }) => {
           );
           Toast({ message: "Removed from cart!", type: "success" });
         } else {
-          const data = {
+          let data = {
             user_id: user?.userid,
             type,
             quantity: 0,
-            skuId: skuId ?? undefined,
-            product_id: type === "product" ? id : undefined,
-            tiffinMenuId: type === "tiffin" ? id : undefined,
-            day: type === "tiffin" ? dayName : undefined,
           };
+
+          if (type === "product") {
+            const productItem = cart?.items?.items?.find(
+              (item) => item.product_id === id
+            );
+
+            if (!productItem) {
+              Toast({ message: "Product not found!", type: "error" });
+              return;
+            }
+            data.product_id = productItem.product_id;
+            data.skuId = skuId;
+            data.combination = combination;
+          } else if (type === "tiffin") {
+            const tiffinItem = cart?.items?.tiffins?.find(
+              (item) =>
+                item.tiffinMenuId === id &&
+                item.day === day &&
+                areCustomizedItemsEqual(
+                  item.customizedItems || [],
+                  customizedItems || []
+                )
+            );
+
+            if (!tiffinItem) {
+              Toast({ message: "Tiffin not found!", type: "error" });
+              return;
+            }
+
+            data.tiffinMenuId = tiffinItem.tiffinMenuId;
+            data.day = tiffinItem.day;
+            data.customizedItems = tiffinItem.customizedItems || [];
+          } else {
+            Toast({ message: "Invalid item type!", type: "error" });
+            return;
+          }
 
           const res = await UpdateUserCart(data);
           dispatch(setCart(res.data.data));
+          dispatch(
+            setCartCount(
+              (res.data.data.items?.items?.length || 0) +
+                (res.data.data.items?.tiffins?.length || 0)
+            )
+          );
           Toast({ message: "Removed from cart!", type: "success" });
         }
       } catch (error) {
@@ -62,7 +148,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         setIsLoading(false);
       }
     },
-    [isAuthenticated, user, dispatch]
+    [isAuthenticated, user, dispatch, cart]
   );
 
   useEffect(() => {
@@ -93,22 +179,17 @@ const Sidebar = ({ isOpen, onClose }) => {
           (item?.quantity || 1),
       0
     );
-    const tiffinTotal = tiffinItems.reduce(
-      (acc, item) =>
-        acc +
-        (isAuthenticated
-          ? item?.tiffinMenuDetails?.totalAmount
-          : item?.totalAmount || 0) *
-          (item?.quantity || 1),
-      0
-    );
-
+    const tiffinTotal = tiffinItems?.reduce((acc, item) => {
+      const price = parseFloat(item?.price || 0);
+      const qty = parseInt(item?.quantity || 1, 10);
+      return acc + price * qty;
+    }, 0);
     return (productTotal + tiffinTotal).toFixed(2);
   }, [cart, isAuthenticated]);
 
   const renderCartItem = (item, index, type) => {
     return (
-      <div className={style.cartItem} key={item?._id || index}>
+      <div className={style.cartItem} key={index}>
         <div className={style.cartItemImageContainer}>
           <img
             src={
@@ -117,7 +198,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                   ? item?.sku?.images?.[0] ||
                     item?.productDetails?.images?.[0]?.url ||
                     "/defaultImage.png"
-                  : (item.sku && item?.sku[0]?.SKUImages?.[0]) ||
+                  : (item?.sku?.details &&
+                      typeof item.sku.details === "object" &&
+                      item.sku.details?.SKUImages?.[0]) ||
                     item?.images?.[0]?.url ||
                     "/defaultImage.png"
                 : isAuthenticated
@@ -135,6 +218,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
         <div className={style.cartItemDetails}>
           <div>
+            {type === "tiffin" && (
+              <p>{item?.tiffinMenuDetails?.name.toUpperCase()}</p>
+            )}
             <p className={style.cartItemName}>
               {type === "product"
                 ? isAuthenticated
@@ -155,7 +241,13 @@ const Sidebar = ({ isOpen, onClose }) => {
                     : item?.sku?.details?.combinations?.Price ||
                       item?.price ||
                       0
-                  : item.totalAmount || 0}{" "}
+                  : isAuthenticated
+                  ? item?.customizedItems?.reduce(
+                      (acc, cur) =>
+                        acc + Number(cur.price) * Number(cur.quantity),
+                      0
+                    ) || 0
+                  : parseFloat(item?.price || 0).toFixed(2)}{" "}
                 {item?.productDetails?.currency || "CAD"}
               </span>
             </p>
@@ -171,7 +263,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                   : item._id,
                 type,
                 type === "tiffin" ? item.day : null,
-                type === "product" ? item?.sku?.skuId : undefined
+                type === "tiffin" ? item.customizedItems : undefined,
+                type === "product" ? item?.sku?._id : undefined,
+                type === "product" ? item?.combination : undefined
               )
             }
           >
@@ -196,11 +290,11 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         {cart?.items?.items?.length > 0 || cart?.items?.tiffins?.length > 0 ? (
           <div className={style.cartContainer}>
-            {isLoading && (
+            {/* {isLoading && (
               <div className={style.loading}>
                 <Loading />
               </div>
-            )}
+            )} */}
             {cart?.items?.items?.map((item, index) =>
               renderCartItem(item, index, "product")
             )}
@@ -233,7 +327,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               onClick={() => {
                 if (
                   cart.items.items.length > 0 ||
-                  cart.items.tiffin.length > 0
+                  cart.items.tiffins.length > 0
                 ) {
                   navigate("/checkout");
                 }

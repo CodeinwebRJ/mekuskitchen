@@ -22,7 +22,6 @@ const AddressAutocomplete = ({ onPlaceSelect, value, onChange, name }) => {
           onPlaceSelect(place);
         }
 
-        // Also update field with formatted address
         if (onChange && place?.formatted_address) {
           onChange({
             target: {

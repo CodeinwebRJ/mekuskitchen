@@ -137,37 +137,31 @@
   line-height: 1.6;
 }
 
-/* Tablet View (max-width: 1024px) */
 @media (max-width: 1024px) {
   .reviewsSection {
-    padding: 16px;
+    padding: 20px;
   }
 
   .sectionTitle {
-    font-size: 1.5rem;
-  }
-
-  .reviewForm {
-    padding: 20px 0;
-  }
-
-  .formTitle {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
   }
 
   .form {
     flex-direction: column;
-    gap: var(--gap-12);
+    gap: 20px;
   }
 
   .submitContainer {
     align-self: flex-start;
+    margin-top: 8px;
   }
 
   .textarea {
-    font-size: 15px;
+    font-size: 14px;
     padding: 10px;
+    min-height: 100px;
   }
+
   .reviewItem {
     padding: 14px;
   }
@@ -179,7 +173,7 @@
   }
 
   .reviewUser {
-    font-size: 15px;
+    font-size: 0.95rem;
   }
 
   .reviewComment {
@@ -187,69 +181,46 @@
   }
 }
 
-/* Mobile View (max-width: 768px) */
+/* For mobile and smaller tablets (max-width: 768px) */
 @media (max-width: 768px) {
   .reviewsSection {
-    padding: 12px;
+    padding: 16px;
   }
 
   .sectionTitleContainer {
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .sectionTitle {
-    font-size: 1.25rem;
-  }
-
-  .reviewForm {
-    padding: 16px 0;
+    font-size: 1.1rem;
   }
 
   .formTitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .form {
     flex-direction: column;
-    align-items: stretch;
-    gap: var(--gap-10);
+    gap: 16px;
   }
 
   .formGroup {
-    gap: var(--gap-6);
-  }
-
-  .label {
-    font-size: 0.9rem;
-  }
-
-  .textarea {
-    font-size: var(--font-base);
-    padding: 10px;
-    min-height: 100px;
+    width: 100%;
   }
 
   .submitContainer {
     align-self: stretch;
-    margin: 0;
   }
 
-  .noReviews {
-    padding: 16px;
+  .textarea {
     font-size: 0.9rem;
-  }
-
-  .reviewList {
-    gap: var(--gap-4);
+    padding: 10px;
   }
 
   .reviewItem {
     padding: 12px;
-  }
-
-  .reviewHeader {
-    gap: var(--gap-6);
   }
 
   .reviewAvatar {
@@ -259,35 +230,26 @@
   }
 
   .reviewUser {
-    font-size: var(--font-base);
-  }
-
-  .reviewRating {
-    margin-top: 2px;
+    font-size: 0.9rem;
   }
 
   .reviewComment {
     font-size: 0.85rem;
-    line-height: 1.5;
   }
 }
 
-/* Extra Small Mobile View (max-width: 480px) */
+/* Smallest mobile screens */
 @media (max-width: 480px) {
   .reviewsSection {
-    padding: 8px;
+    padding: 12px;
   }
 
-  .sectionTitle {
-    font-size: 1.1rem;
-  }
-
-  .reviewForm {
-    padding: 12px 0;
+  .form {
+    gap: 14px;
   }
 
   .formTitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .label {
@@ -306,11 +268,11 @@
   .reviewAvatar {
     width: 36px;
     height: 36px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .reviewUser {
-    font-size: 13px;
+    font-size: 0.85rem;
   }
 
   .reviewComment {

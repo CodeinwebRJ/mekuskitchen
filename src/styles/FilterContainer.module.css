@@ -1,5 +1,5 @@
 .sidebar {
-  min-width: 18vw;
+  max-width: 18vw;
   height: 100%;
   padding: 16px;
   border-radius: 8px;
@@ -8,6 +8,14 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap-10);
+}
+
+.top_name {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .filterHeader {

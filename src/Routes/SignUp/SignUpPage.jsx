@@ -23,7 +23,6 @@ function SignUpPage() {
     confirmPassword: "",
     refcode: "",
   });
-
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -306,11 +305,7 @@ function SignUpPage() {
                   <div className={style.error}>{errors.terms}</div>
                 )}
 
-                <button
-                  type="submit"
-                  className={style.signupButton}
-                  disabled={loading}
-                >
+                <button type="submit" className="Button sm" disabled={loading}>
                   {loading ? "Signing up..." : "Signup"}
                 </button>
               </form>

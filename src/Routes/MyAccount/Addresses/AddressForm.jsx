@@ -5,10 +5,7 @@ import CheckboxFeild from "../../../Component/UI-Components/CheckboxFeild";
 import { useDispatch, useSelector } from "react-redux";
 import { GoArrowLeft } from "react-icons/go";
 import { setShowAddressForm } from "../../../../Store/Slice/AddressSlice";
-import {
-  addUserAddress,
-  UpdateUserAddress,
-} from "../../../axiosConfig/AxiosConfig";
+import { addUserAddress } from "../../../axiosConfig/AxiosConfig";
 import { useLocation } from "react-router-dom";
 
 const AddressForm = (props) => {
@@ -69,7 +66,6 @@ const AddressForm = (props) => {
       provinceCode: "Province code is required",
     };
 
-    // Check required fields
     for (const [field, message] of Object.entries(requiredFields)) {
       if (
         !data[field] ||
@@ -79,12 +75,10 @@ const AddressForm = (props) => {
       }
     }
 
-    // Phone number validation (only if provided)
     if (data.phone && !/^\d{10}$/.test(data.phone)) {
       validationErrors.phone = "Please enter a valid 10-digit phone number";
     }
 
-    // Email validation
     if (
       data.email &&
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(data.email)
@@ -171,7 +165,7 @@ const AddressForm = (props) => {
 
     try {
       const res = isEdit
-        ? await UpdateUserAddress({
+        ? await addUserAddress({
             addressId: editData._id,
             userId: user.userid,
             isDifferent: formData.isDifferent,

@@ -15,6 +15,10 @@ export const getTopRatedProduct = async () => {
   return axiosInstance.get("/api/v1/review/product/top-rated");
 };
 
+export const SearchProduct = async (data) => {
+  return axiosInstance.get(`/api/v1/product/category/search?search=${data}`);
+};
+
 export const getProductById = async (id) => {
   return axiosInstance.get(`/api/v1/product/${id}`);
 };
@@ -64,10 +68,6 @@ export const getUserAddress = async (id) => {
 
 export const addUserAddress = async (data) => {
   return axiosInstance.post("/api/v1/address/create", data);
-};
-
-export const UpdateUserAddress = async (data) => {
-  return axiosInstance.put("/api/v1/address/update", data);
 };
 
 export const ActiveUserAddress = async (data) => {
@@ -160,4 +160,32 @@ export const validateCoupon = async (data) => {
   });
 
   return axiosInstance.get(`/api/v1/coupon/validate?${params.toString()}`);
+};
+
+export const addTiffinReview = async (data) => {
+  return axiosInstance.post("/api/v1/review/tiffin/add", data);
+};
+
+export const ValidateTiffinCoupon = async (data) => {
+  return axiosInstance.post("/api/v1/coupon/tiffin/validate", data);
+};
+
+export const RemoveCoupon = async (data) => {
+  return axiosInstance.post("/api/v1/coupon/remove", data);
+};
+
+export const BulkUploadCart = async (data) => {
+  return axiosInstance.post("/api/v1/cart/product/bulk", data);
+};
+
+export const BulkUploadTiffinCart = async (data) => {
+  return axiosInstance.post("/api/v1/cart/tiffin/bulk", data);
+};
+
+export const UpdateCartTiffins = async (data) => {
+  return axiosInstance.patch("/api/v1/cart/tiffin/update", data);
+};
+
+export const forgotPassword = async (data) => {
+  return axiosInstance.post("https://eyemesto.com/mapp/forgot_pass.php", data);
 };

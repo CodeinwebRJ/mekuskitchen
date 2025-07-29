@@ -50,7 +50,7 @@ const MyAccount = () => {
 
           {active === "Orders" && <Orders setActive={setActive} />}
 
-          {active === "Downloads" && <Downloads setActive={setActive} />}
+          {/* {active === "Downloads" && <Downloads setActive={setActive} />} */}
 
           {active === "Addresses" && <Addresses setActive={setActive} />}
 

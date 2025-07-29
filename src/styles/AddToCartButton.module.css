@@ -5,12 +5,17 @@
   border: none;
   cursor: pointer;
   border-radius: 8px;
-  font-weight: var(--font-semibold);
   letter-spacing: 0.5px;
   overflow: hidden;
   transition: all 0.2s ease-in-out;
   display: flex;
   flex-direction: row-reverse;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .addToCart:active {
@@ -22,30 +27,66 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--gap-5);
+  gap: 12px;
   width: 100%;
   padding: 8px;
   transition: transform 0.2s ease-in-out;
-  transform: translateX(-5%);
 }
 
 .addToCartIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-xl);
-  font-weight: var(--font-bold);
-  transition: 0.2s ease-in-out;
-  transform: translateX(-500%);
-  opacity: 0;
+  transition: all 0.2s ease-in-out;
 }
 
-.addToCart:hover .addToCartIcon {
-  opacity: 1;
-  transform: translateX(35%);
-  transform: translateY(-8%);
+@media (min-width: 769px) {
+  .addToCartText {
+    transform: translateX(-5%);
+  }
+
+  .addToCartIcon {
+    transform: translateX(-500%);
+    opacity: 0;
+  }
+
+  .addToCart:hover .addToCartIcon {
+    opacity: 1;
+    transform: translateX(35%) translateY(-8%);
+  }
+
+  .addToCart:hover .addToCartText {
+    opacity: 1;
+    transform: translateX(0%);
+  }
 }
-.addToCart:hover .addToCartText {
-  opacity: 1;
-  transform: translateX(0%);
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .addToCart {
+    border-radius: 6px;
+  }
+
+  .addToCartText {
+    padding: 6px;
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  .addToCartIcon {
+    font-size: 1.125rem;
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .addToCart {
+    border-radius: 6px;
+  }
+
+  .addToCartText {
+    padding: 4px;
+    font-size: 0.875rem;
+    gap: 8px;
+  }
 }

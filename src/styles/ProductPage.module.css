@@ -8,6 +8,32 @@
   margin: 0 0 8px 0;
 }
 
+.dateList {
+  margin-top: 1rem;
+}
+
+.dateButtonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.dateButton {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.selectedDate {
+  background-color: var(--primary-blue);
+  color: white;
+  border-color: var(--primary-blue);
+}
+
 .specification {
   display: flex;
   flex-direction: column;
@@ -90,6 +116,10 @@
   padding: 8px 0px;
 }
 
+.Chip h6 {
+  margin: 0;
+}
+
 .colorContainer {
   display: flex;
   gap: var(--gap-6);
@@ -105,7 +135,7 @@
 
 .navigation {
   display: flex;
-  gap: var(--gap-3);
+  gap: var(--gap-6);
 }
 
 .navButton {
@@ -128,8 +158,8 @@
 
 .navIconPrev,
 .navIconNext {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
 }
 
 .navIconPrev {
@@ -245,11 +275,9 @@
   align-items: center;
   gap: var(--gap-5);
   padding: 10px 0;
-  color: var(--gray-deep);
 }
 
 .itemPrice {
-  color: var(--primary-green-alt);
   font-weight: var(--font-semibold);
   letter-spacing: 0.6px;
 }
@@ -310,7 +338,6 @@
 
   .items {
     display: flex;
-    flex-direction: column;
     gap: 12px;
   }
 }
@@ -385,7 +412,6 @@
 
   .items {
     display: flex;
-    flex-direction: column;
     gap: 12px;
   }
 

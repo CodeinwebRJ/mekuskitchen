@@ -139,7 +139,6 @@
   border: 1px solid var(--gray-shadow);
   border-radius: 6px;
   padding: 12px;
-  font-family: inherit;
   font-size: 16px;
   resize: vertical;
   min-height: 120px;

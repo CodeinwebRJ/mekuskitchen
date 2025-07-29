@@ -10,19 +10,19 @@ const userWishlistSlice = createSlice({
   initialState,
   reducers: {
     setWishlist(state, action) {
-      const payloadItems = Array.isArray(action.payload)
+      const items = Array.isArray(action.payload)
         ? action.payload
         : action.payload?.items || [];
-      state.items = payloadItems;
-      const map = {};
-      payloadItems.forEach((item) => {
-        const productId = item._id || item;
-        if (productId) {
-          map[productId] = true;
-        }
-      });
-      state.likedMap = map;
+
+      state.items = items;
+
+      state.likedMap = items.reduce((acc, item) => {
+        const id = item._id || item;
+        if (id) acc[id] = true;
+        return acc;
+      }, {});
     },
+
     toggleLiked(state, action) {
       const productId = action.payload;
       if (state.likedMap[productId]) {

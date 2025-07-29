@@ -3,8 +3,11 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { HomeProductCard } from "../../Component/Cards/HomeProductCard";
 import style from "../../styles/NewArrival.module.css";
+import { useSelector } from "react-redux";
 
-const OurProduct = ({ data }) => {
+const OurProduct = () => {
+  const { data, loading } = useSelector((state) => state.home);
+
   const products = Array.isArray(data?.OurProduct) ? data.OurProduct : [];
   const enableLoop = products.length >= 4;
   const enableAutoplay = products.length >= 4;
@@ -33,7 +36,7 @@ const OurProduct = ({ data }) => {
             480: { slidesPerView: 2 },
             768: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
-            1280: { slidesPerView: 5 }, 
+            1280: { slidesPerView: 5 },
           }}
           className={style.swiperContainer}
         >

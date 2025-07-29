@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../styles/RelatedProduct.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -12,19 +12,14 @@ import { useLocation } from "react-router-dom";
 import { getRelatedProduct } from "../../axiosConfig/AxiosConfig";
 import Heading from "../../Component/UI-Components/Heading";
 
-const RelatedProduct = () => {
+const TiffinRelatedProduct = () => {
   const { pathname } = useLocation();
   const category = pathname.split("/").filter((segment) => segment);
   const [relatedProduct, setRelatedProduct] = useState([]);
 
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-  const swiperRef = useRef(null);
-
   const fetchProduct = async () => {
     try {
-      const data = { category: category[1] };
-      const res = await getRelatedProduct(data);
+      const res = await getRelatedProduct({ category: category[1] });
       setRelatedProduct(res.data.data || []);
     } catch (error) {
       console.error("Error fetching related products:", error);
@@ -34,23 +29,6 @@ const RelatedProduct = () => {
   useEffect(() => {
     fetchProduct();
   }, [category[1]]);
-
-  // 🔁 Setup navigation after refs are mounted
-  useEffect(() => {
-    if (
-      swiperRef.current &&
-      swiperRef.current.params &&
-      prevRef.current &&
-      nextRef.current
-    ) {
-      swiperRef.current.params.navigation.prevEl = prevRef.current;
-      swiperRef.current.params.navigation.nextEl = nextRef.current;
-
-      swiperRef.current.navigation.destroy(); // cleanup previous
-      swiperRef.current.navigation.init(); // re-init
-      swiperRef.current.navigation.update(); // ensure buttons work
-    }
-  }, [relatedProduct]);
 
   const productCount = relatedProduct.length;
   const showSlider = productCount > 4;
@@ -67,18 +45,18 @@ const RelatedProduct = () => {
         <p>No related products available.</p>
       ) : showSlider ? (
         <div className={style.sliderWrapper}>
-          {/* Prev Arrow */}
+          {/* Custom Prev Arrow */}
           <div
             className={`${style.customArrow} ${style.prevArrow}`}
             aria-label="Previous slide"
-            ref={prevRef}
           >
-            <MdKeyboardDoubleArrowLeft className={style.arrowIcon} />
+            <MdKeyboardDoubleArrowLeft className={style.prevArrowIcon} />
           </div>
 
           <Swiper
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper; // ✅ save instance
+            navigation={{
+              prevEl: `.${style.prevArrow}`,
+              nextEl: `.${style.nextArrow}`,
             }}
             loop={enableLoop}
             autoplay={
@@ -110,16 +88,11 @@ const RelatedProduct = () => {
             ))}
           </Swiper>
 
-          {/* Next Arrow */}
           <div
             className={`${style.customArrow} ${style.nextArrow}`}
             aria-label="Next slide"
-            ref={nextRef}
           >
-            <MdKeyboardDoubleArrowLeft
-              className={style.arrowIcon}
-              style={{ transform: "rotate(180deg)" }}
-            />
+            <MdKeyboardDoubleArrowLeft className={style.nextArrowIcon} />
           </div>
         </div>
       ) : (
@@ -135,4 +108,4 @@ const RelatedProduct = () => {
   );
 };
 
-export default RelatedProduct;
+export default TiffinRelatedProduct;

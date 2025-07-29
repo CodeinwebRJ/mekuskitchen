@@ -12,6 +12,11 @@ import PasswordInput from "../../Component/Fields/Password";
 import { Toast } from "../../Utils/Toast";
 import CheckboxField from "../../Component/UI-Components/CheckboxFeild";
 import InputField from "../../Component/UI-Components/InputField";
+import {
+  BulkUploadCart,
+  BulkUploadTiffinCart,
+} from "../../axiosConfig/AxiosConfig";
+import { setCart } from "../../../Store/Slice/UserCartSlice";
 
 function LoginPage() {
   const [credentials, setCredentials] = useState({
@@ -65,7 +70,7 @@ function LoginPage() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://eyemesto.com/mapp_dev/signin.php",
+        "https://eyemesto.com/mapp/signin.php",
         new URLSearchParams({
           signin: true,
           unique_id: credentials.unique_id,
@@ -75,11 +80,10 @@ function LoginPage() {
 
       if (response.data.response === "1") {
         dispatch(setUser(response.data));
-        if (rememberMe) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          localStorage.setItem("api_token", response.data.api_token);
-        }
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("api_token", response.data.api_token);
         Toast({ message: "Login Successfully", type: "success" });
+        await UploadBulkCart();
         navigate("/");
       } else {
         setError((prev) => ({
@@ -95,6 +99,79 @@ function LoginPage() {
       }));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const UploadBulkCart = async () => {
+    try {
+      const localCart = JSON.parse(localStorage.getItem("cart"));
+      const userData = JSON.parse(localStorage.getItem("user"));
+      if (!userData.userid) {
+        return;
+      }
+      if (localCart?.items?.length > 0) {
+        const items = localCart.items.map((item) => {
+          const skuDetails = item.sku?.details || {};
+          const combination =
+            item?.combination || skuDetails?.combinations || {};
+
+          return {
+            product_id: item._id,
+            quantity: parseInt(item.quantity || 1),
+            price: parseFloat(combination.Price || item.price || 0),
+            skuId: item.sku?._id || null,
+            combination,
+          };
+        });
+        if (items.length > 0) {
+          const payload = {
+            user_id: userData.userid,
+            items,
+          };
+          const res = await BulkUploadCart(payload);
+          dispatch(setCart(res.data.data));
+          localStorage.removeItem("cart");
+        }
+      } else {
+        const tiffins = localCart.tiffins?.map((tiffin) => {
+          return {
+            tiffinMenuId: tiffin.tiffinMenuId || tiffin._id,
+            day: tiffin.day,
+            deliveryDate: tiffin.deliveryDate || tiffin.date,
+            orderDate:
+              tiffin.orderDate ||
+              new Date().getFullYear() +
+                "-" +
+                (new Date().getMonth() + 1) +
+                "-" +
+                new Date().getDate(),
+            customizedItems: (tiffin.customizedItems || tiffin.items).map(
+              (item) => ({
+                name: item.name,
+                price: item.price,
+                quantity: parseInt(item.quantity) || 1,
+                weight: item.weight || "",
+                weightUnit: item.weightUnit || "",
+                description: item.description || "",
+              })
+            ),
+            quantity: parseInt(tiffin.quantity || 1),
+            price: parseFloat(tiffin.price || 0),
+            specialInstructions: tiffin.specialInstructions || "NA",
+          };
+        });
+        if (tiffins.length > 0) {
+          const payload = {
+            user_id: userData.userid,
+            tiffins,
+          };
+          const res = await BulkUploadTiffinCart(payload);
+          dispatch(setCart(res.data.data));
+          localStorage.removeItem("cart");
+        }
+      }
+    } catch (error) {
+      console.error("Error uploading bulk cart:", error);
     }
   };
 
@@ -177,7 +254,7 @@ function LoginPage() {
 
                 <button
                   type="submit"
-                  className={styles.loginButton}
+                  className="Button sm"
                   disabled={loading}
                 >
                   {loading ? "Logging in..." : "Login"}

@@ -1,0 +1,7 @@
+.invoiceGrid {
+  display: grid;
+  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+}

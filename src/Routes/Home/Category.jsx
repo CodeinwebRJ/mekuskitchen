@@ -6,8 +6,11 @@ import { useRef, useState, useEffect } from "react";
 import style from "../../styles/Category.module.css";
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const Category = ({ data }) => {
+const Category = () => {
+  const { data, loading } = useSelector((state) => state.home);
+
   const swiperRef = useRef(null);
   const [showArrows, setShowArrows] = useState(false);
 
@@ -28,7 +31,7 @@ const Category = ({ data }) => {
   };
 
   if (!data?.Category?.length) {
-    return <div>No dishes available</div>;
+    return <div>No Category available</div>;
   }
 
   return (
