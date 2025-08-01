@@ -106,7 +106,6 @@ const PaymentCard = ({ handleCancel }) => {
           RequestOption: "nonvalidate",
         };
         const data = await ShippingCharges(shippingData);
-        console.log(data.data.data);
         trackingNumber =
           data?.data?.data?.ShipmentResponse?.ShipmentResults
             ?.ShipmentIdentificationNumber ||
@@ -114,7 +113,6 @@ const PaymentCard = ({ handleCancel }) => {
             ?.TrackingNumber;
       }
 
-      console.log(trackingNumber);
       const orderData = {
         userId: user.userid,
         orderId: res.data.data.orderId,
