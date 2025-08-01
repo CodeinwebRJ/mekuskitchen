@@ -48,7 +48,11 @@ const FoodPage = () => {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const categoryRes = await getCategory();
+      const categoryRes = await getCategory({
+        categorySearch: "",
+        subCategorySearch: "",
+        productCategorySearch: ""
+      });
       setCategoryList(categoryRes.data.data);
     } catch (error) {
       setFetchError("Failed to fetch categories.");

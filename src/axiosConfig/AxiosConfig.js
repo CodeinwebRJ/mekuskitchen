@@ -93,8 +93,13 @@ export const RemoveWishlist = async (data) => {
   return axiosInstance.put("/api/v1/wishlist/remove", data);
 };
 
-export const getCategory = async () => {
-  return axiosInstance.get("/api/v1/categories/get/category");
+export const getCategory = async (params) => {
+  const { categorySearch,
+    subCategorySearch,
+    productCategorySearch } = params
+  return axiosInstance.get(
+    `/api/v1/categories/get/category?categorySearch=${categorySearch}&subCategorySearch=${subCategorySearch}&productCategorySearch=${productCategorySearch}`,
+  );
 };
 
 export const sendOrder = async (data) => {

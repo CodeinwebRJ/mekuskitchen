@@ -87,6 +87,8 @@ const SidebarFilter = ({
     };
   }, [isMobileFilterOpen]);
 
+  console.log(categoryList)
+
   return (
     <>
       <div className={style.filterHeader}>
