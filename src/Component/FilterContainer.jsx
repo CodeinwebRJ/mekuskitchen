@@ -43,6 +43,8 @@ const FilterContainer = ({ priceRange, data = [], categoryList = [] }) => {
     };
   }, [isMobileFilterOpen]);
 
+  console.log(data);
+
   return (
     <>
       <aside className={style.sidebar}>

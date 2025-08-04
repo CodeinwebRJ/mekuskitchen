@@ -184,6 +184,11 @@ const ProductCard = ({ product, grid }) => {
       setSelectedSKUs(product?.sku[0]);
     }
   }, []);
+  console.log(product);
+
+  const OutOfStock =
+    (product.manageInvantory === true && product.stock === 0) ||
+    selectedCombination?.Stock === 0;
 
   const OutOfStock =
     (product.manageInvantory === true && product.stock === 0) ||
