@@ -103,7 +103,6 @@ const ShoppingCart = () => {
     skuId = null,
     combination = null
   ) => {
-    console.log(identifier, type, day, customizedItems, skuId, combination);
     let product;
     let tiffinIndex = -1;
     if (type === "product") {
@@ -548,7 +547,6 @@ const ShoppingCart = () => {
     dialog?.product?.tiffinMenuDetails?.isCustomized ||
     dialog?.product?.isCustomized;
 
-  console.log(dialog.product);
 
   return (
     <div>
