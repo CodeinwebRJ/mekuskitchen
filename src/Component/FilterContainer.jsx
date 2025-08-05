@@ -42,7 +42,7 @@ const FilterContainer = ({ priceRange, data = [], categoryList = [] }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMobileFilterOpen]);
-
+  
   return (
     <>
       <aside className={style.sidebar}>
