@@ -72,9 +72,11 @@ const PaymentCard = ({ handleCancel }) => {
       const rawResponse = res?.data?.data?.rawResponse || {};
       const responseCode = rawResponse?.ResponseCode;
       const isComplete = rawResponse?.Complete === "true";
-
+      if(res.data.data.status ==='failed') 
+        throw new Error(response.data.message);
+      
       const isPaymentSuccess =
-        responseCode === "027" || parseInt(responseCode) < 50 || isComplete;
+      responseCode === "027" || parseInt(responseCode) < 50 || isComplete;
 
       if (!isPaymentSuccess) {
         setShowComponent("fail");
