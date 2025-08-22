@@ -293,16 +293,25 @@ const TiffinProductPage = () => {
               </div>
             )}
 
-            <div className={style.itemsContainer}>
+            <div>
+              <div className={`${style.items} ${style.itemsHeader}`}>
+                <div>#</div>
+                <div>Name</div>
+                <div>Price</div>
+                {isCustomized && <div>Quantity</div>}
+                <div>Weight</div>
+                <div>Unit</div>
+                {isCustomized && <div>Adjust</div>}
+              </div>
+
               {product.items?.map((item, index) => (
                 <div className={style.items} key={item._id}>
                   <div>{index + 1}.</div>
                   <div>{item.name}</div>
                   <div>${item.price}</div>
                   {isCustomized && <div>{item.quantity}</div>}
-                  <div>
-                    {item.weight} {item.weightUnit || ""}
-                  </div>
+                  <div>{item.weight}</div>
+                  <div>{item.weightUnit || ""}</div>
                   {isCustomized && (
                     <div className={style.quantity}>
                       <button

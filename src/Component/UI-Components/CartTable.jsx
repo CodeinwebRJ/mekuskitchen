@@ -126,9 +126,23 @@ const CartItem = ({
           </button>
         </div>
       </td>
-      <td className={style.totalPrice}>
+      {/* <td className={style.totalPrice}>
         ${(price * item?.quantity).toFixed(2)}{" "}
+      </td> */}
+      {/* <td className={style.totalPrice}>
+        ${(price * item?.quantity).toFixed(2)}
+        {price * item?.quantity < 12 && (
+          <div className={style.deliveryCharge}>+ $3 Delivery Charge</div>
+        )}
+      </td> */}
+      <td className={style.totalPrice}>
+        ${(price * item?.quantity).toFixed(2)}
+        {type === "tiffin" &&
+          price * item?.quantity < 12 && ( // Only show for tiffins
+            <div className={style.deliveryCharge}>+ $3 Delivery Charge</div>
+          )}
       </td>
+
       <td>
         <div className={style.removeCell}>
           <div
@@ -140,7 +154,7 @@ const CartItem = ({
                 item?.day,
                 item?.customizedItems,
                 item?.sku?._id,
-                item?.combination,
+                item?.combination
               )
             }
           >

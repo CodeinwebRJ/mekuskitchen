@@ -82,6 +82,7 @@ function LoginPage() {
         dispatch(setUser(response.data));
         localStorage.setItem("user", JSON.stringify(response.data));
         localStorage.setItem("api_token", response.data.api_token);
+        localStorage.setItem("isLoggedIn", "true");
         Toast({ message: "Login Successfully", type: "success" });
         await UploadBulkCart();
         navigate("/");
@@ -252,11 +253,7 @@ function LoginPage() {
                   </Link>
                 </div>
 
-                <button
-                  type="submit"
-                  className="Button sm"
-                  disabled={loading}
-                >
+                <button type="submit" className="Button sm" disabled={loading}>
                   {loading ? "Logging in..." : "Login"}
                 </button>
               </form>

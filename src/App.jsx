@@ -271,7 +271,15 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/product-category" element={<FoodPage />} />
-        <Route path="/daily-tiffin" element={<DailyTiffinPage />} />
+        {/* <Route path="/daily-tiffin" element={<DailyTiffinPage />} /> */}
+        <Route
+          path="/daily-tiffin"
+          element={
+            <ProtectedRoute>
+              <DailyTiffinPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
         <Route path="/product/:category/:id" element={<ProductPage />} />

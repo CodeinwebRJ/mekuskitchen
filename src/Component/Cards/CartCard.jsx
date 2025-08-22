@@ -4,7 +4,7 @@ const CartCard = ({
   itemCount,
   subtotal,
   discount,
-  total, 
+  total,
   couponCode,
   handleClick,
 }) => (

@@ -182,7 +182,7 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         </div>
       </div>
 
-      {/* <div className={style.inputFieldContainer} ref={suggestionRef}>
+      <div className={style.inputFieldContainer} ref={suggestionRef}>
         <InputField
           type="text"
           name="address"
@@ -195,7 +195,7 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         {formErrors.address && (
           <div className={style.errorMessage}>{formErrors.address}</div>
         )}
-        {showSuggestions && addressSuggestions.length > 0 && (
+        {/* {showSuggestions && addressSuggestions.length > 0 && (
           <ul className={style.suggestionList}>
             {addressSuggestions.map((suggestion, idx) => (
               <li
@@ -215,22 +215,22 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
               </li>
             ))}
           </ul>
-        )}
-      </div> */}
+        )} */}
+      </div>
 
       {/* <CanadaPostAddressInput onAddressSelect={handleAddressSelect} /> */}
 
-      <div className={style.inputFieldContainer}>
+      {/* <div className={style.inputFieldContainer}>
         <label className={style.label}>Address</label>
         <AddressAutocomplete
           name="address"
           value={addressDisplay}
           onChange={(e) => {
-            setAddressDisplay(e.target.value); 
+            setAddressDisplay(e.target.value);
             handleChange({
               target: {
                 name: "address",
-                value: e.target.value.split(",")[0]?.trim(), 
+                value: e.target.value.split(",")[0]?.trim(),
               },
             });
           }}
@@ -239,7 +239,7 @@ const FormField = ({ formData, handleChange, formErrors = {} }) => {
         {formErrors.address && (
           <div className={style.errorMessage}>{formErrors.address}</div>
         )}
-      </div>
+      </div> */}
 
       <div className={style.billingFormColumn2}>
         <div className={style.inputFieldContainer}>

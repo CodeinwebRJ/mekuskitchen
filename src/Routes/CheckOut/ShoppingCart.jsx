@@ -547,7 +547,6 @@ const ShoppingCart = () => {
     dialog?.product?.tiffinMenuDetails?.isCustomized ||
     dialog?.product?.isCustomized;
 
-
   return (
     <div>
       <Header />
