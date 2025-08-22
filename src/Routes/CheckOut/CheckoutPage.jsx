@@ -130,8 +130,24 @@ const CheckoutPage = () => {
   const [shippingCharges, setShippingCharges] = useState(null);
   const [addressError, setAddressError] = useState("");
 
+  // const payNow = () => {
+  //   if (!defaultAddress) {
+  //     setAddressError(
+  //       "Please select or add a delivery address before checkout."
+  //     );
+  //     const addressSection = document.getElementById("address-section");
+  //     if (addressSection) {
+  //       addressSection.scrollIntoView({ behavior: "smooth" });
+  //     }
+  //     return;
+  //   }
+
+  //   setAddressError("");
+  //   setShowComponent("payment");
+  // };
+
   const payNow = () => {
-    if (!defaultAddress) {
+    if (!selfPickup && !defaultAddress) {
       setAddressError(
         "Please select or add a delivery address before checkout."
       );
@@ -331,7 +347,7 @@ const CheckoutPage = () => {
                   SCC={SCC}
                   hasTiffin={cart?.items?.tiffins?.length > 0}
                 />
-                <div className={style.address}>
+                <div id="address-section" className={style.address}>
                   <div className={style.addressContainer}>
                     {addresses.length < 3 ? (
                       <AddAddressCard
@@ -359,6 +375,16 @@ const CheckoutPage = () => {
                     />
                     <lable>Self PickUp</lable>
                   </div>
+                  {selfPickup && (
+                    <div className={style.addressCard}>
+                      <div className={style.addressHeader}>
+                        <h4 className={style.fullname}>Mekus Kitchen</h4>
+                      </div>
+                      <div className={style.addressBody}>
+                        <p>277 Falshire Dr NE, Calgary, Alberta T3J 1T9</p>
+                      </div>
+                    </div>
+                  )}
                   {addressError && (
                     <div className={style.error}>{addressError}</div>
                   )}

@@ -15,14 +15,16 @@ const NewArrivals = () => {
 
   return (
     <div className={style.wrapper}>
-      <div>
+      <div className={style.headingContainer}>
         <h2 className={style.newArrival}>
           <span className={style.blueText}>New </span>
           <span>Arrival</span>
         </h2>
       </div>
 
-      {loading ? <Loading/> : products.length === 0 ? (
+      {loading ? (
+        <Loading />
+      ) : products.length === 0 ? (
         <p className={style.noProducts}>No new products available.</p>
       ) : (
         <Swiper

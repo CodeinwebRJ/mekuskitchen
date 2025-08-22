@@ -137,12 +137,21 @@ const Header = () => {
         >
           OUR PRODUCT
         </Link>
-        <Link
+        {/* <Link
           to="/daily-tiffin"
           className={`${style.link} ${handleLinkActive("/daily-tiffin")}`}
         >
           DAILY TIFFIN
-        </Link>
+        </Link> */}
+        {isAuthenticated && (
+          <Link
+            to="/daily-tiffin"
+            className={`${style.link} ${handleLinkActive("/daily-tiffin")}`}
+          >
+            DAILY TIFFIN
+          </Link>
+        )}
+
         <Link
           to="/about-us"
           className={`${style.link} ${handleLinkActive("/about-us")}`}
@@ -163,7 +172,8 @@ const Header = () => {
             { to: "/", label: "HOME" },
             { to: "/product-category", label: "OUR PRODUCT" },
             { to: "/about-us", label: "ABOUT US" },
-            { to: "/daily-tiffin", label: "DAILY TIFFIN" },
+            // { to: "/daily-tiffin", label: "DAILY TIFFIN" },
+            isAuthenticated && { to: "/daily-tiffin", label: "DAILY TIFFIN" },
             { to: "/contact-us", label: "CONTACT US" },
             isAuthenticated && { to: "/my-account", label: "DASHBOARD" },
             { to: "/cart", label: "CART" },

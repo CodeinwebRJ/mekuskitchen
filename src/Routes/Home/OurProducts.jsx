@@ -14,10 +14,12 @@ const OurProduct = () => {
 
   return (
     <div className={style.wrapper}>
-      <h2 className={style.newArrival}>
-        <span className={style.blueText}>Our </span>
-        <span>Products</span>
-      </h2>
+      <div className={style.headingContainer}>
+        <h2 className={style.newArrival}>
+          <span className={style.blueText}>Our </span>
+          <span>Products</span>
+        </h2>
+      </div>
 
       {products.length === 0 ? (
         <p className={style.noProducts}>No new products available.</p>
