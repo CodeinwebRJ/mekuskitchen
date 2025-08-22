@@ -243,6 +243,33 @@
   color: var(--primary-dark);
   margin-bottom: 8px;
 }
+/* Address card for self pickup */
+.addressCard {
+  background-color: var(--white);
+  border: 1px solid #252525;
+  border-radius: var(--border-radius);
+  padding: 12px;
+  width: 100%;
+  max-width: 250px;
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.addressCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* dark shadow only on hover */
+}
+
+.addressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addressBody {
+  font-size: var(--font-base);
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-top: 6px;
+}
 
 @media (max-width: 1024px) {
   .addressContainer {

@@ -51,7 +51,7 @@ const FoodPage = () => {
       const categoryRes = await getCategory({
         categorySearch: "",
         subCategorySearch: "",
-        productCategorySearch: ""
+        productCategorySearch: "",
       });
       setCategoryList(categoryRes.data.data);
     } catch (error) {
@@ -131,7 +131,7 @@ const FoodPage = () => {
                   <Link to={"/"} className={styles.homeLink}>
                     Home /{" "}
                   </Link>
-                  <span>Food</span>
+                  <span>Grocery</span>
                 </div>
                 <div className={styles.sortingOptions}>
                   <div className={styles.showProducts}>
