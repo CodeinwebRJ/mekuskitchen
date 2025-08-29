@@ -190,7 +190,6 @@ const ProductCard = ({ product, grid }) => {
     (product.manageInvantory === true && product.stock === 0) ||
     selectedCombination?.Stock === 0;
 
-
   return (
     <div
       className={`${style.productCard} ${

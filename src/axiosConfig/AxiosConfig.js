@@ -194,3 +194,8 @@ export const UpdateCartTiffins = async (data) => {
 export const forgotPassword = async (data) => {
   return axiosInstance.post("https://eyemesto.com/mapp/forgot_pass.php", data);
 };
+
+// Checkout picode 
+export const checkPincode = async (pincode) => {
+  return await axiosInstance.get(`/api/v1/pincode-master/check/pincode/${pincode}`);
+};

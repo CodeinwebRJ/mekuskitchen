@@ -30,47 +30,205 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const { cartCount } = useSelector((state) => state.count);
   const [] = useState([]);
+  const [isDeliveryAvailable, setIsDeliveryAvailable] = useState(true);
+
   const subtotal = useMemo(() => {
     if (isAuthenticated) {
-      return cart?.items?.totalAmount;
+      return Number(cart?.items?.totalAmount) || 0;
     } else {
-      return (
-        (cart?.items?.items?.reduce(
+      const itemsTotal =
+        cart?.items?.items?.reduce(
           (acc, item) =>
             acc +
-            (item?.sku?.details?.combinations?.Price || item?.price || 0) *
-              item.quantity,
+            Number(
+              item?.sku?.details?.combinations?.Price || item?.price || 0
+            ) *
+              Number(item.quantity),
           0
-        ) || 0) +
-        (cart?.items?.tiffins?.reduce(
+        ) || 0;
+
+      const tiffinsTotal =
+        cart?.items?.tiffins?.reduce(
           (acc, item) =>
-            acc + parseFloat(item.price || 0) * (item.quantity || 1),
+            acc + Number(item.price || 0) * Number(item.quantity || 1),
           0
-        ) || 0)
-      );
+        ) || 0;
+
+      return itemsTotal + tiffinsTotal;
     }
   }, [cart, isAuthenticated]);
 
+  // const subtotal = useMemo(() => {
+  //   if (isAuthenticated) {
+  //     return cart?.items?.totalAmount;
+  //   } else {
+  //     return (
+  //       (cart?.items?.items?.reduce(
+  //         (acc, item) =>
+  //           acc +
+  //           (item?.sku?.details?.combinations?.Price || item?.price || 0) *
+  //             item.quantity,
+  //         0
+  //       ) || 0) +
+  //       (cart?.items?.tiffins?.reduce(
+  //         (acc, item) =>
+  //           acc + parseFloat(item.price || 0) * (item.quantity || 1),
+  //         0
+  //       ) || 0)
+  //     );
+  //   }
+  // }, [cart, isAuthenticated]);
+
+  // const total = useMemo(() => {
+  //   if (isAuthenticated) {
+  //     return cart?.items?.grandTotal;
+  //   } else {
+  //     return (
+  //       (cart?.items?.items?.reduce(
+  //         (acc, item) =>
+  //           acc +
+  //           (item?.sku?.details?.combinations?.Price || item?.price || 0) *
+  //             item.quantity,
+  //         0
+  //       ) || 0) +
+  //       (cart?.items?.tiffins?.reduce(
+  //         (acc, item) =>
+  //           acc + parseFloat(item.price || 0) * (item.quantity || 1),
+  //         0
+  //       ) || 0)
+  //     );
+  //   }
+  // }, [cart, isAuthenticated]);
+
+  // Calculate total delivery charges
+  // const totalDeliveryCharges = useMemo(() => {
+  //   let charges = 0;
+
+  //   // For products (items)
+  //   if (isAuthenticated) {
+  //     // For authenticated users
+  //     (cart?.items?.items || []).forEach((item) => {
+  //       const itemTotal = item.price * item.quantity;
+  //       if (itemTotal < 12) {
+  //         charges += 3;
+  //       }
+  //     });
+
+  //     // For tiffins
+  //     (cart?.items?.tiffins || []).forEach((item) => {
+  //       let itemTotal;
+  //       if (item.customizedItems && item.customizedItems.length > 0) {
+  //         // Calculate based on customized items
+  //         itemTotal =
+  //           item.customizedItems.reduce(
+  //             (acc, cur) => acc + Number(cur.price) * Number(cur.quantity),
+  //             0
+  //           ) * item.quantity;
+  //       } else {
+  //         // Regular tiffin price
+  //         itemTotal = Number(item.price || 0) * item.quantity;
+  //       }
+
+  //       if (itemTotal < 12) {
+  //         charges += 3;
+  //       }
+  //     });
+  //   } else {
+  //     // For non-authenticated users
+  //     (cart?.items?.items || []).forEach((item) => {
+  //       const price =
+  //         item?.sku?.details?.combinations?.Price || item?.price || 0;
+  //       const itemTotal = price * item.quantity;
+  //       if (itemTotal < 12) {
+  //         charges += 3;
+  //       }
+  //     });
+
+  //     (cart?.items?.tiffins || []).forEach((item) => {
+  //       const itemTotal = Number(item.price || 0) * item.quantity;
+  //       if (itemTotal < 12) {
+  //         charges += 3;
+  //       }
+  //     });
+  //   }
+
+  //   return charges;
+  // }, [cart, isAuthenticated]);
+
+  const totalDeliveryCharges = useMemo(() => {
+    let charges = 0;
+
+    if (isAuthenticated) {
+      // For authenticated users
+      (cart?.items?.tiffins || []).forEach((item) => {
+        let itemTotal;
+
+        if (item.customizedItems && item.customizedItems.length > 0) {
+          // Calculate based on customized items
+          itemTotal =
+            item.customizedItems.reduce(
+              (acc, cur) => acc + Number(cur.price) * Number(cur.quantity),
+              0
+            ) * item.quantity;
+        } else {
+          // Regular tiffin price
+          itemTotal = Number(item.price || 0) * item.quantity;
+        }
+
+        if (itemTotal < 12) {
+          charges += 3;
+        }
+      });
+    } else {
+      // For non-authenticated users
+      (cart?.items?.tiffins || []).forEach((item) => {
+        const itemTotal = Number(item.price || 0) * item.quantity;
+        if (itemTotal < 12) {
+          charges += 3;
+        }
+      });
+    }
+
+    return charges;
+  }, [cart, isAuthenticated]);
+
+  // Update the total to include delivery charges
+  // const total = useMemo(() => {
+  //   if (isAuthenticated) {
+  //     return (cart?.items?.grandTotal || 0) + totalDeliveryCharges;
+  //   } else {
+  //     return subtotal + totalDeliveryCharges - (cart?.items?.discount || 0);
+  //   }
+  // }, [cart, isAuthenticated, subtotal, totalDeliveryCharges]);
+
+  // Update the total to include delivery charges
+  // const total = useMemo(() => {
+  //   if (isAuthenticated) {
+  //     return (
+  //       (Number(cart?.items?.grandTotal) || 0) + Number(totalDeliveryCharges)
+  //     );
+  //   } else {
+  //     return (
+  //       Number(subtotal) +
+  //       Number(totalDeliveryCharges) -
+  //       (Number(cart?.items?.discount) || 0)
+  //     );
+  //   }
+  // }, [cart, isAuthenticated, subtotal, totalDeliveryCharges]);
+
   const total = useMemo(() => {
     if (isAuthenticated) {
-      return cart?.items?.grandTotal;
+      return (
+        (Number(cart?.items?.grandTotal) || 0) + Number(totalDeliveryCharges)
+      );
     } else {
       return (
-        (cart?.items?.items?.reduce(
-          (acc, item) =>
-            acc +
-            (item?.sku?.details?.combinations?.Price || item?.price || 0) *
-              item.quantity,
-          0
-        ) || 0) +
-        (cart?.items?.tiffins?.reduce(
-          (acc, item) =>
-            acc + parseFloat(item.price || 0) * (item.quantity || 1),
-          0
-        ) || 0)
+        (Number(subtotal) || 0) +
+        Number(totalDeliveryCharges) -
+        (Number(cart?.items?.discount) || 0)
       );
     }
-  }, [cart, isAuthenticated]);
+  }, [cart, isAuthenticated, subtotal, totalDeliveryCharges]);
 
   const fetchUserCart = async () => {
     try {
@@ -565,6 +723,7 @@ const ShoppingCart = () => {
               onDelete={handleDelete}
               onUpdateQuantity={updateItemQuantity}
               onShowProduct={handleShowProduct}
+              setIsDeliveryAvailable={setIsDeliveryAvailable}
             />
           )}
         </div>
@@ -650,9 +809,11 @@ const ShoppingCart = () => {
               itemCount={cartCount}
               subtotal={subtotal}
               total={total}
+              deliveryCharges={totalDeliveryCharges}
               couponCode={cart.items.couponCode}
               discount={cart.items.discount}
               handleClick={handleClick}
+              deliveryAvailable={isDeliveryAvailable} // ✅ pass boolean here
             />
           </div>
         </div>

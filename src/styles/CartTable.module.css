@@ -4,7 +4,7 @@
 }
 
 .cartItem {
-  border-bottom: 1px solid var(--gray-border);
+  border-bottom: none
 }
 
 .customizedBadge {
@@ -14,6 +14,7 @@
   border-radius: 6px;
   font-size: 10px;
   z-index: 5;
+  margin-left: 4px;
   text-transform: uppercase;
 }
 
@@ -215,4 +216,173 @@
   .removeCell button {
     padding: 5px 6px;
   }
+}
+
+.deliveryWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; 
+  gap: 8px; 
+  padding: 8px 12px;
+}
+
+.deliveryWrapper label {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--gray-darkest);
+}
+
+
+
+.addressDropdown {
+  width: 100%;
+  max-width: 200px;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+  appearance: none; /* hide default arrow */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.addressDropdown option {
+  padding: 10px;
+  font-size: 14px;
+}
+
+
+.deliveryCharge {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--error-dark);
+  white-space: nowrap;
+}
+
+.accordionToggle {
+  width: 40px;
+  text-align: center;
+}
+
+.toggleBtn {
+  background: var(--primary-blue);   
+  color: var(--white);             
+  border: none;
+  border-radius: 50%;              
+  width: 24px;                 
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.toggleBtn:hover {
+  background: var(--cool-light-blue-gray);
+}
+
+.innerTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border: 1px solid var(--gray-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.innerTable th,
+.innerTable td {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--gray-border); 
+}
+
+.innerTable td:nth-child(1) {
+  text-align: center;
+  width: 40px;
+}
+
+.innerTable td:nth-child(3) {
+  text-align: center;
+  width: 80px; 
+}
+
+/* .deliveryRow {
+  border-bottom: 1px solid var(--gray-border);
+} */
+
+.deliveryCharge {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--error-dark);
+  white-space: nowrap;
+}
+
+.freeDelivery {
+  font-size: 13px;
+  font-weight: 500;
+  color: green;
+  white-space: nowrap;
+}
+
+.deliveryMessage {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+.addAddressBtn {
+  margin-top: 6px;
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.addAddressBtn:hover {
+  color: #0056b3;
+}
+
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* shift content to left */
+  gap: 8px; /* space between button and text */
+  background: var(--ultra-light-gray);
+  padding: 10px 14px;
+  border: 1px solid var(--gray-border);
+  border-radius: 6px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.accordionHeader:hover {
+  background: var(--cool-light-blue-gray);
+}
+
+.accordionTitle {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--gray-darkest);
+}
+
+.accordionRow{
+    border-bottom: 1px solid var(--gray-border);
 }
